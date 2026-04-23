@@ -1,0 +1,17 @@
+#!/bin/sh
+
+printf "\n🔍 Checking commit message...\n"
+
+if npx --no -- commitlint --edit "$1"; then
+    printf "✅ Commit message follows the conventional commit format!\n"
+else
+    printf "\n❌ Commit message does not follow the conventional commit format.\n"
+    printf "Please format your commit message like this:\n"
+    printf "type(scope): subject\n\n"
+    printf "Examples:\n"
+    printf "feat(user-auth): add login functionality\n"
+    printf "fix(api): resolve data fetching issue\n"
+    printf "docs(readme): update installation instructions\n\n"
+    printf "Allowed types: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test\n"
+    exit 1
+fi

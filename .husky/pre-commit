@@ -1,0 +1,12 @@
+#!/bin/sh
+
+printf "\n🚀 Starting pre-commit checks...\n"
+
+if npx lint-staged; then
+    printf "✅ Lint-staged checks passed successfully!\n"
+else
+    printf "❌ Lint-staged checks failed. Please fix the issues and try committing again.\n"
+    exit 1
+fi
+
+printf "🎉 All pre-commit checks passed! Proceeding with commit...\n\n"
