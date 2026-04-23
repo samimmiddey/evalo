@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* 2xl */
+@media screen and (max-width: 1535px) {
+   .container {
+      @apply max-w-300;
+   }
+}
+
+/* XL */
+@media screen and (max-width: 1279px) {
+   .container {
+      @apply max-w-256;
+   }
+}
+
+/* LG */
+@media screen and (max-width: 1023px) {
+   .container {
+      @apply max-w-192;
+   }
+}
+
+/* MD */
+@media screen and (max-width: 767px) {
+   .container {
+      @apply max-w-160;
+   }
+}
+
+/* SM */
+@media screen and (max-width: 639px) {
+   .container {
+      @apply max-w-full;
+   }
+}
+
+/* XS */
+@media screen and (max-width: 479px) {}
