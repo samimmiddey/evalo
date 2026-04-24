@@ -7,6 +7,30 @@
    .container {
       @apply max-w-300;
    }
+
+   .s-padding {
+      padding: 5rem 0;
+   }
+
+   .s-padding-t {
+      padding-top: 5rem;
+   }
+
+   .s-padding-b {
+      padding-bottom: 5rem;
+   }
+
+   .s-margin {
+      margin: 5rem 0;
+   }
+
+   .s-margin-t {
+      margin-top: 5rem;
+   }
+
+   .s-margin-b {
+      margin-bottom: 5rem;
+   }
 }
 
 /* XL */
@@ -21,12 +45,60 @@
    .container {
       @apply max-w-192;
    }
+
+   .s-padding {
+      padding: 4.5rem 0;
+   }
+
+   .s-padding-t {
+      padding-top: 4.5rem;
+   }
+
+   .s-padding-b {
+      padding-bottom: 4.5rem;
+   }
+
+   .s-margin {
+      margin: 4.5rem 0;
+   }
+
+   .s-margin-t {
+      margin-top: 4.5rem;
+   }
+
+   .s-margin-b {
+      margin-bottom: 4.5rem;
+   }
 }
 
 /* MD */
 @media screen and (max-width: 767px) {
    .container {
       @apply max-w-160;
+   }
+
+   .s-padding {
+      padding: 4rem 0;
+   }
+
+   .s-padding-t {
+      padding-top: 4rem;
+   }
+
+   .s-padding-b {
+      padding-bottom: 4rem;
+   }
+
+   .s-margin {
+      margin: 4rem 0;
+   }
+
+   .s-margin-t {
+      margin-top: 4rem;
+   }
+
+   .s-margin-b {
+      margin-bottom: 4rem;
    }
 }
 
