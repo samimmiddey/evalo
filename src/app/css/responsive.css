@@ -36,14 +36,14 @@
 /* XL */
 @media screen and (max-width: 1279px) {
    .container {
-      @apply max-w-256;
+      @apply max-w-5xl;
    }
 }
 
 /* LG */
 @media screen and (max-width: 1023px) {
    .container {
-      @apply max-w-192;
+      @apply max-w-3xl;
    }
 
    .s-padding {
