@@ -56,10 +56,26 @@ export interface PricingDataTypes {
    plans: PricingCard[];
 }
 
-// Home Data Types
+// Testimonial Types
+export interface TestimonialCard {
+   name: string;
+   role: string;
+   review: string;
+   avatar: string;
+}
+
+export interface TestimonialDataTypes {
+   icon: LucideIcon;
+   header: string;
+   title: string;
+   description: string;
+   reviews: TestimonialCard[];
+}
+
 export interface HomeDataTypes {
    hero: HeroDataTypes;
    features: FeatureDataTypes;
    roles: RoleDataTypes;
    pricing: PricingDataTypes;
+   testimonials: TestimonialDataTypes;
 }

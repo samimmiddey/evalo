@@ -1,5 +1,5 @@
 import { HomeDataTypes } from "./home.types";
-import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle, CreditCard } from 'lucide-react'
+import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle, CreditCard, MessageSquareQuote } from 'lucide-react'
 
 export const homeData: HomeDataTypes = {
    hero: {
@@ -122,6 +122,44 @@ export const homeData: HomeDataTypes = {
                "Recording and playback link"
             ],
             isPopular: false
+         }
+      ]
+   },
+   testimonials: {
+      icon: MessageSquareQuote,
+      header: "Success Stories",
+      title: "Loved by Candidates and Experts",
+      description: "See how Evalo is helping candidates land their dream jobs and experts monetize their interview skills.",
+      reviews: [
+         {
+            name: "Sarah Chen",
+            role: "Software Engineer at Google",
+            review: "Evalo's mock interviews completely changed my prep strategy. The AI feedback on my answers was incredibly detailed, and the overall insights have helped me improve in key areas immensely.",
+            avatar: "S",
+         },
+         {
+            name: "James Rodriguez",
+            role: "Frontend Developer",
+            review: "I was struggling with behavioral questions and react-specific system design. The platform paired me with a Senior Frontend Engineer who gave me the exact insights I needed to pass my final rounds at Meta.",
+            avatar: "J",
+         },
+         {
+            name: "Priya Patel",
+            role: "Senior Backend Engineer",
+            review: "As an interviewer, this platform makes evaluating candidates so seamless. The persistent chat and built-in AI hints let me focus entirely on the candidate's problem-solving skills rather than taking notes.",
+            avatar: "P",
+         },
+         {
+            name: "Michael Chang",
+            role: "Data Scientist",
+            review: "The credit system is fantastic. I can practice algorithms exactly when I need to, and the post-interview analytics showed me exactly where I was wasting time on array manipulations.",
+            avatar: "M",
+         },
+         {
+            name: "Emily Davis",
+            role: "Product Manager",
+            review: "I use Evalo to practice product sense and estimation interviews. The experts I've met here are top tier, and having the session recordings to review later is an absolute game changer.",
+            avatar: "E",
          }
       ]
    }
