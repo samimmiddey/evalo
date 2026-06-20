@@ -34,7 +34,7 @@ export function TerminalCard() {
             delay: 1.25,
             ease: "easeInOut",
          }}
-         className="w-full pt-14 lg:pt-16 2xl:pt-20 relative z-999"
+         className="w-full pt-14 lg:pt-16 2xl:pt-20 relative z-9"
       >
          <Terminal
             code={reactCode}
