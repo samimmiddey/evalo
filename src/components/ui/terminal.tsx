@@ -111,7 +111,7 @@ export function Terminal({
 
    const [currentText, setCurrentText] = useState("");
    const [charIdx, setCharIdx] = useState(0);
-   const [phase, setPhase] = useState<"idle" | "typing" | "done">("idle");
+   const [phase, setPhase] = useState<"idle" | "typing" | "evaluating" | "evaluated" | "done">("idle");
    const [cursorVisible, setCursorVisible] = useState(true);
 
    useEffect(() => {
@@ -135,9 +135,20 @@ export function Terminal({
          );
          return () => clearTimeout(t);
       } else {
-         setPhase("done");
+         const t = setTimeout(() => {
+            setPhase("evaluating");
+         }, 400);
+         return () => clearTimeout(t);
       }
    }, [phase, charIdx, code, typingSpeed]);
+
+   useEffect(() => {
+      if (phase !== "evaluating") return;
+      const t = setTimeout(() => {
+         setPhase("evaluated");
+      }, 1500); // Simulate running tests
+      return () => clearTimeout(t);
+   }, [phase]);
 
    useEffect(() => {
       const interval = setInterval(() => setCursorVisible((v) => !v), 530);
@@ -180,35 +191,73 @@ export function Terminal({
                   <span className="text-[#7aa2f7] mr-2">TS</span>
                   {filename}
                </div>
-               <div className="flex items-center px-4 py-2 text-[#565f89]">
-                  <span className="text-[#565f89] mr-2">TS</span>
-                  components.ts
-               </div>
             </div>
 
-            {/* Code Content */}
-            <div
-               ref={contentRef}
-               className="no-visible-scrollbar h-80 sm:h-100 lg:h-110 2xl:h-120 overflow-y-auto p-4 font-mono text-[13px] leading-[22px]"
-            >
-               {lines.map((line, i) => (
-                  <div key={i} className="flex">
-                     <div className="w-8 shrink-0 text-right pr-4 text-[#3b4261] select-none">
-                        {i + 1}
+            {/* Split Content */}
+            <div className="flex flex-col md:flex-row h-80 min-h-120">
+               {/* Code Content */}
+               <div
+                  ref={contentRef}
+                  className="flex-1 no-visible-scrollbar overflow-y-auto p-4 font-mono text-[13px] leading-[22px] border-b md:border-b-0 md:border-r border-[#292e42]"
+               >
+                  {lines.map((line, i) => (
+                     <div key={i} className="flex">
+                        <div className="w-8 shrink-0 text-right pr-4 text-[#3b4261] select-none">
+                           {i + 1}
+                        </div>
+                        <div className="flex-1 whitespace-pre-wrap break-all">
+                           <SyntaxHighlightedText text={line} />
+                           {i === lines.length - 1 && (
+                              <span
+                                 className={cn(
+                                    "ml-px inline-block h-[15px] w-2 bg-[#c0caf5] align-middle transition-opacity duration-100",
+                                    !cursorVisible && (phase === "evaluating" || phase === "evaluated" || phase === "done") && "opacity-0",
+                                 )}
+                              />
+                           )}
+                        </div>
                      </div>
-                     <div className="flex-1 whitespace-pre-wrap break-all">
-                        <SyntaxHighlightedText text={line} />
-                        {i === lines.length - 1 && (
-                           <span
-                              className={cn(
-                                 "ml-px inline-block h-[15px] w-2 bg-[#c0caf5] align-middle transition-opacity duration-100",
-                                 !cursorVisible && phase === "done" && "opacity-0",
-                              )}
-                           />
-                        )}
-                     </div>
+                  ))}
+               </div>
+
+               {/* Terminal Output */}
+               <div className="w-full md:w-[350px] lg:w-[400px] flex flex-col bg-[#16161e] font-mono text-[13px]">
+                  <div className="px-4 py-2 border-b border-[#292e42] text-[#565f89] text-xs uppercase tracking-wider flex justify-between items-center">
+                     <span>Terminal</span>
+                     <span className="text-[#9ece6a] lowercase">bash</span>
                   </div>
-               ))}
+                  <div className="flex-1 p-4 overflow-y-auto no-visible-scrollbar">
+                     {(phase === "evaluating" || phase === "evaluated") && (
+                        <div className="text-[#c0caf5] leading-[22px]">
+                           <div className="flex items-center gap-2 mb-2 text-[#7aa2f7]">
+                              <span className="text-[#ff9e64]">➜</span>
+                              <span>npm run test two-sum.spec.ts</span>
+                           </div>
+
+                           {phase === "evaluating" && (
+                              <div className="text-[#565f89] animate-pulse mt-2">
+                                 Running tests...
+                              </div>
+                           )}
+
+                           {phase === "evaluated" && (
+                              <div className="space-y-1 mt-2">
+                                 <div className="text-[#9ece6a]">✓ Test Case 1: Passed (2ms)</div>
+                                 <div className="text-[#9ece6a]">✓ Test Case 2: Passed (1ms)</div>
+                                 <div className="text-[#9ece6a]">✓ Test Case 3: Passed (1ms)</div>
+                                 <div className="text-[#9ece6a]">✓ Test Case 4: Passed (1ms)</div>
+                                 <div className="mt-4 border-t border-[#292e42] pt-2">
+                                    <div className="text-[#7aa2f7] font-bold">All tests passed!</div>
+                                    <div className="text-[#ff9e64] mt-1">Score: 100/100</div>
+                                    <div className="text-[#565f89] text-xs mt-2">Time complexity: O(N)</div>
+                                    <div className="text-[#565f89] text-xs">Space complexity: O(N)</div>
+                                 </div>
+                              </div>
+                           )}
+                        </div>
+                     )}
+                  </div>
+               </div>
             </div>
          </div>
       </div>
