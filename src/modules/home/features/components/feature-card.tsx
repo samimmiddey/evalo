@@ -19,7 +19,7 @@ const FeatureCard = ({ i, feature, Icon, className }: FeatureCardProps) => {
          className={`group relative p-6 md:p-7 2xl:p-8 rounded-2xl bg-surface-dark/80 border border-violet-500/25 overflow-hidden transition-all duration-300 hover:translate-y-[-5px] hover:border-violet-500/50 hover:bg-surface-hover/90 hover:shadow-glow-violet ${className ?? ""}`}
       >
          {/* Background Glow */}
-         <div className="absolute top-0 right-0 w-40 h-40 bg-violet-500/5 rounded-full blur-3xl group-hover:bg-violet-500/10 transition-colors duration-500" />
+         <div className="absolute top-0 right-0 w-40 h-40 bg-violet-500/20 rounded-full blur-3xl group-hover:bg-violet-500/50 transition-colors duration-500" />
 
          {/* Icon Container */}
          <div className="relative z-10 mb-5 2xl:mb-6 inline-flex p-2.5 lg:p-3 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 group-hover:text-violet-300 group-hover:border-violet-400/50 group-hover:bg-violet-500/20 transition-all duration-300 shadow-sm">
