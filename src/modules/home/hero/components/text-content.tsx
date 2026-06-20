@@ -1,3 +1,5 @@
+"use client";
+
 import HeaderText from '@/components/common/header-text';
 import { Button } from '@/components/ui/button';
 import { homeData } from '@/data/home/home.data';
@@ -25,7 +27,7 @@ const TextContent = () => {
                text={homeData.hero.header}
             />
          </motion.div>
-         <h1 className="mx-auto w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-4xl text-center text-4xl sm:text-5xl font-semibold lg:text-6xl 2xl:text-7xl text-violet-100 font-outfit leading-[1.05]">
+         <h1 className="mx-auto w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-4xl text-center text-5xl md:text-[54px] font-bold lg:text-6xl 2xl:text-[80px] text-gray-100 font-outfit leading-[1.1] tracking-tight pb-2">
             {homeData.hero.title
                .split(" ")
                .map((word, index) => (
@@ -38,7 +40,7 @@ const TextContent = () => {
                         delay: index * 0.1,
                         ease: "easeInOut",
                      }}
-                     className="mr-2 inline-block"
+                     className="mr-3 inline-block"
                   >
                      {word}
                   </motion.span>
