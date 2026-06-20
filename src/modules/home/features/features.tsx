@@ -5,7 +5,6 @@ import PrimaryBody from '@/components/common/primary-body'
 import PrimaryTitle from '@/components/common/primary-title'
 import HeaderLayout from '@/components/layouts/header-layout'
 import { homeData } from '@/data/home/home.data'
-import { Zap } from 'lucide-react'
 import FeatureCard from './components/feature-card'
 
 const Features = () => {
@@ -13,17 +12,17 @@ const Features = () => {
       <div className='s-margin-t container'>
          <HeaderLayout>
             <HeaderText
-               icon={Zap}
-               text='Built for Excellence'
+               icon={homeData.features.icon}
+               text={homeData.features.header}
             />
-            <PrimaryTitle text="Everything You Need to Succeed" className='mt-1 2xl:mt-2' />
+            <PrimaryTitle text={homeData.features.title} className='mt-1 2xl:mt-2' />
             <PrimaryBody
-               text="Practice and complete interviews easily with structured assessments, clear instructions, and real-time feedback designed to help you improve."
+               text={homeData.features.description}
             />
          </HeaderLayout>
 
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 2xl:gap-6">
-            {homeData.features.map((feature, i) => {
+            {homeData.features.cards.map((feature, i) => {
                const Icon = feature.icon;
                return (
                   <FeatureCard

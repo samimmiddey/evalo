@@ -15,7 +15,7 @@ const FeatureCard = ({ i, feature, Icon, className }: FeatureCardProps) => {
          initial={{ opacity: 0, y: 20 }}
          whileInView={{ opacity: 1, y: 0 }}
          viewport={{ once: true, margin: "-50px", amount: 0.1 }}
-         transition={{ duration: 0.25, delay: i * 0.1, ease: 'easeInOut' }}
+         transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
          className={`group relative p-6 md:p-7 2xl:p-8 rounded-2xl bg-surface-dark/80 border border-violet-500/25 overflow-hidden transition-all duration-300 hover:translate-y-[-5px] hover:border-violet-500/50 hover:bg-surface-hover/90 hover:shadow-glow-violet ${className ?? ""}`}
       >
          {/* Background Glow */}

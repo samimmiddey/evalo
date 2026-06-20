@@ -17,7 +17,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
    const mdWidth = useMediaQuery(767);
 
    return (
-      <div className='fixed top-0 left-0 right-0 h-15 2xl:h-16 border-b border-violet-100/7 backdrop-blur-xl z-50'>
+      <div className='fixed top-0 left-0 right-0 h-15 2xl:h-16 border-b border-violet-100/7 backdrop-blur-xl z-99999'>
          <div className="container h-full">
             <div className='flex items-center justify-between gap-4 h-full'>
                <div className='flex items-center gap-4'>
