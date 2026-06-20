@@ -9,27 +9,27 @@
    }
 
    .s-padding {
-      padding: 5rem 0;
+      padding: 5.5rem 0;
    }
 
    .s-padding-t {
-      padding-top: 5rem;
+      padding-top: 5.5rem;
    }
 
    .s-padding-b {
-      padding-bottom: 5rem;
+      padding-bottom: 5.5rem;
    }
 
    .s-margin {
-      margin: 5rem 0;
+      margin: 5.5rem 0;
    }
 
    .s-margin-t {
-      margin-top: 5rem;
+      margin-top: 5.5rem;
    }
 
    .s-margin-b {
-      margin-bottom: 5rem;
+      margin-bottom: 5.5rem;
    }
 
    .brands-cover::after,

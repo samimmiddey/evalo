@@ -1,8 +1,18 @@
-import React from 'react'
+import { cn } from '@/lib/utils'
 
-const PrimaryTitle = () => {
+interface PrimaryTitleProps {
+   text: string
+   className?: string
+}
+
+const PrimaryTitle = ({
+   text,
+   className,
+}: PrimaryTitleProps) => {
    return (
-      <div>PrimaryTitle</div>
+      <h2 className={cn('font-outfit font-semibold text-3xl lg:text-[40px] 2xl:text-5xl', className)}>
+         {text}
+      </h2>
    )
 }
 

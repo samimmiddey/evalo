@@ -132,27 +132,27 @@
 
 /* common classes */
 .s-padding {
-  padding: 6rem 0;
+  padding: 6.5rem 0;
 }
 
 .s-padding-t {
-  padding-top: 6rem;
+  padding-top: 6.5rem;
 }
 
 .s-padding-b {
-  padding-bottom: 6rem;
+  padding-bottom: 6.5rem;
 }
 
 .s-margin {
-  margin: 6rem 0;
+  margin: 6.5rem 0;
 }
 
 .s-margin-t {
-  margin-top: 6rem;
+  margin-top: 6.5rem;
 }
 
 .s-margin-b {
-  margin-bottom: 6rem;
+  margin-bottom: 6.5rem;
 }
 
 /* Container */
@@ -217,9 +217,12 @@
 
 /* Utilities */
 .no-visible-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
 .no-visible-scrollbar::-webkit-scrollbar {
   display: none;
 }

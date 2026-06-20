@@ -1,4 +1,6 @@
+import HeaderText from '@/components/common/header-text';
 import { Button } from '@/components/ui/button';
+import { homeData } from '@/data/home/home.data';
 import { Sparkle } from 'lucide-react';
 import { motion } from "motion/react";
 
@@ -18,17 +20,13 @@ const TextContent = () => {
             }}
             className='mb-4 2xl:mb-5'
          >
-            <Button
-               variant="outline"
-               size="lg"
-               className='border-violet-400/25! bg-violet-600/15! text-violet-300 hover:translate-y-0 font-lobster text-[15px] 2xl:text-lg gap-2 max-sm:px-3'
-            >
-               <Sparkle />
-               Go beyond the surface to evaluate true potential
-            </Button>
+            <HeaderText
+               icon={Sparkle}
+               text={homeData.hero.header}
+            />
          </motion.div>
          <h1 className="mx-auto w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-4xl text-center text-4xl sm:text-5xl font-semibold lg:text-6xl 2xl:text-7xl text-violet-100 font-outfit leading-[1.05]">
-            {"Ace your next interview with real experts"
+            {homeData.hero.title
                .split(" ")
                .map((word, index) => (
                   <motion.span
@@ -57,9 +55,9 @@ const TextContent = () => {
                duration: 0.3,
                delay: 0.8,
             }}
-            className="mx-auto max-w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-3xl mt-1 py-4 text-center text-[15px] 2xl:text-lg font-normal text-slate-300"
+            className="mx-auto max-w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-3xl mt-1 py-4 text-center text-[15px] 2xl:text-lg font-normal text-gray-300"
          >
-            Book 1:1 mock interviews with senior engineers from top companies. Get AI powered feedback, role-specific questions, and the confidence to land yout dream job.
+            {homeData.hero.description}
          </motion.p>
          <motion.div
             initial={{
