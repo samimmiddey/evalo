@@ -181,3 +181,36 @@
   background: linear-gradient(180deg, rgba(9, 9, 11, 0) 0%, rgba(9, 9, 11, 1) 100%);
   z-index: 9999;
 }
+
+/* Brands */
+.swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+
+.brands-cover {
+  position: relative;
+}
+
+.brands-cover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  background: RGBA(9, 9, 11, 0);
+  background: linear-gradient(90deg, rgba(9, 9, 11, 1) 0%, rgba(9, 9, 11, 0) 100%);
+  z-index: 9999;
+}
+
+.brands-cover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  background: RGBA(9, 9, 11, 0);
+  background: linear-gradient(270deg, rgba(9, 9, 11, 1) 0%, rgba(9, 9, 11, 0) 100%);
+  z-index: 9999;
+}
