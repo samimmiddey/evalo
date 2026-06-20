@@ -43,7 +43,7 @@ const RoleCard = ({ i, role, type }: RoleCardProps) => {
          whileInView={{ opacity: 1, y: 0 }}
          viewport={{ once: true, margin: "-50px", amount: 0.1 }}
          transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
-         className={`group relative flex flex-col h-full rounded-3xl bg-[#0f1016]/90 border ${theme.border} overflow-hidden transition-all duration-500 hover:-translate-y-2 ${theme.shadow}`}
+         className={`group relative flex flex-col h-full rounded-3xl bg-surface-dark/90 border ${theme.border} overflow-hidden transition-all duration-500 hover:-translate-y-2 ${theme.shadow}`}
       >
          {/* Top Gradient Wash */}
          <div className={`absolute inset-0 bg-linear-to-b ${theme.gradient} opacity-50`} />
