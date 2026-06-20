@@ -101,7 +101,7 @@ export const homeData: HomeDataTypes = {
             credit: "5 credits per month",
             features: [
                "5 mock interviews per month",
-               "AI-assisted evaluation",
+               "AI feedback report",
                "HD video call via stream",
                "Persistent chat thread",
                "Credits roll over monthly"
@@ -118,7 +118,8 @@ export const homeData: HomeDataTypes = {
                "AI feedback report",
                "HD video call via stream",
                "Persistent chat thread",
-               "Credits roll over monthly"
+               "Credits roll over monthly",
+               "Recording and playback link"
             ],
             isPopular: false
          }
