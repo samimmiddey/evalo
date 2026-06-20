@@ -38,8 +38,28 @@ export interface RoleDataTypes {
    interviewer: RoleCard;
 }
 
+// Pricing Types
+export interface PricingCard {
+   title: string;
+   price: string;
+   description: string;
+   credit: string;
+   features: string[];
+   isPopular?: boolean;
+}
+
+export interface PricingDataTypes {
+   icon: LucideIcon;
+   header: string;
+   title: string;
+   description: string;
+   plans: PricingCard[];
+}
+
+// Home Data Types
 export interface HomeDataTypes {
    hero: HeroDataTypes;
    features: FeatureDataTypes;
    roles: RoleDataTypes;
+   pricing: PricingDataTypes;
 }

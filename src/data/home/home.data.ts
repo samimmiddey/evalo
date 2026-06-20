@@ -1,5 +1,5 @@
 import { HomeDataTypes } from "./home.types";
-import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle } from 'lucide-react'
+import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle, CreditCard } from 'lucide-react'
 
 export const homeData: HomeDataTypes = {
    hero: {
@@ -75,5 +75,53 @@ export const homeData: HomeDataTypes = {
             "Build reputation as a trusted interviewer",
          ],
       },
+   },
+   pricing: {
+      icon: CreditCard,
+      header: "Simple, Transparent Pricing",
+      title: "Invest in Your Career Growth",
+      description: "Choose the plan that fits your needs. Whether you're just starting out or preparing for top-tier tech interviews, we have you covered.",
+      plans: [
+         {
+            title: "Free",
+            price: "$0",
+            description: "Perfect for getting started and exploring the platform.",
+            credit: "1 credit per month",
+            features: [
+               "1 mock interview session",
+               "HD video call via Stream",
+               "Persistent chat thread",
+            ],
+            isPopular: false
+         },
+         {
+            title: "Starter",
+            price: "$29",
+            description: "Ideal for focused preparation and consistent practice.",
+            credit: "5 credits per month",
+            features: [
+               "5 mock interviews per month",
+               "AI-assisted evaluation",
+               "HD video call via stream",
+               "Persistent chat thread",
+               "Credits roll over monthly"
+            ],
+            isPopular: true
+         },
+         {
+            title: "Pro",
+            price: "$79",
+            description: "For serious candidates aiming for top tech companies.",
+            credit: "15 credits per month",
+            features: [
+               "15 mock interview sessions",
+               "AI feedback report",
+               "HD video call via stream",
+               "Persistent chat thread",
+               "Credits roll over monthly"
+            ],
+            isPopular: false
+         }
+      ]
    }
 }
