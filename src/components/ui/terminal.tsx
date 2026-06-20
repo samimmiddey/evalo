@@ -1,99 +1,7 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-
-const KEY_SOUNDS_DOWN: Record<string, [number, number]> = {
-   A: [31542, 85],
-   B: [40621, 107],
-   C: [39632, 95],
-   D: [32492, 85],
-   E: [23317, 83],
-   F: [32973, 87],
-   G: [33453, 94],
-   H: [33986, 93],
-   I: [25795, 91],
-   J: [34425, 88],
-   K: [34932, 90],
-   L: [35410, 95],
-   M: [41610, 93],
-   N: [41103, 90],
-   O: [26309, 84],
-   P: [26804, 83],
-   Q: [22245, 95],
-   R: [23817, 92],
-   S: [32031, 88],
-   T: [24297, 92],
-   U: [25313, 95],
-   V: [40136, 94],
-   W: [22790, 89],
-   X: [39148, 76],
-   Y: [24811, 93],
-   Z: [38694, 80],
-   " ": [51541, 144],
-   "-": [42594, 90],
-   "@": [23317, 83],
-   "/": [42594, 90],
-   ".": [42594, 90],
-   ":": [42594, 90],
-   "0": [26309, 84],
-   "1": [25313, 95],
-   "2": [23317, 83],
-   "3": [23817, 92],
-   "4": [24297, 92],
-   "5": [24811, 93],
-   "6": [25313, 95],
-   "7": [25795, 91],
-   "8": [26309, 84],
-   "9": [26804, 83],
-   Enter: [19065, 110],
-};
-
-const KEY_SOUNDS_UP: Record<string, [number, number]> = {
-   A: [31632, 80],
-   B: [40736, 95],
-   C: [39732, 85],
-   D: [32577, 80],
-   E: [23402, 80],
-   F: [33063, 80],
-   G: [33553, 85],
-   H: [34081, 85],
-   I: [25890, 85],
-   J: [34515, 85],
-   K: [35027, 85],
-   L: [35510, 85],
-   M: [41710, 85],
-   N: [41198, 85],
-   O: [26394, 80],
-   P: [26889, 80],
-   Q: [22345, 85],
-   R: [23912, 85],
-   S: [32121, 80],
-   T: [24392, 85],
-   U: [25413, 85],
-   V: [40236, 85],
-   W: [22880, 85],
-   X: [39228, 70],
-   Y: [24911, 85],
-   Z: [38779, 75],
-   " ": [51691, 130],
-   "-": [42689, 85],
-   "@": [23402, 80],
-   "/": [42689, 85],
-   ".": [42689, 85],
-   ":": [42689, 85],
-   "0": [26394, 80],
-   "1": [25413, 85],
-   "2": [23402, 80],
-   "3": [23912, 85],
-   "4": [24392, 85],
-   "5": [24911, 85],
-   "6": [25413, 85],
-   "7": [25890, 85],
-   "8": [26394, 80],
-   "9": [26889, 80],
-   Enter: [19180, 100],
-};
 
 function useInView(ref: React.RefObject<HTMLElement | null>, once = true) {
    const [inView, setInView] = useState(false);
@@ -122,101 +30,54 @@ function useInView(ref: React.RefObject<HTMLElement | null>, once = true) {
    return inView;
 }
 
-type TokenType =
-   | "command"
-   | "flag"
-   | "string"
-   | "number"
-   | "operator"
-   | "path"
-   | "variable"
-   | "comment"
-   | "default";
+function tokenizeCode(text: string) {
+   const tokens: { type: string; value: string }[] = [];
+   const regex = /([A-Za-z0-9_]+|['"`][^'"`]*['"`]|[{}()[\]<>/:;.,=+\-*&|?!]+|\s+)/g;
+   const parts = text.match(regex) || [];
 
-interface Token {
-   type: TokenType;
-   value: string;
-}
-
-function tokenizeBash(text: string): Token[] {
-   const tokens: Token[] = [];
-   const words = text.split(/(\s+)/);
-
-   let isFirstWord = true;
-
-   for (const word of words) {
-      if (/^\s+$/.test(word)) {
-         tokens.push({ type: "default", value: word });
-         continue;
+   for (const part of parts) {
+      if (/^\s+$/.test(part)) {
+         tokens.push({ type: "whitespace", value: part });
+      } else if (/^['"`]/.test(part)) {
+         tokens.push({ type: "string", value: part });
+      } else if (/^(import|from|export|default|return|if|else|await)$/.test(part)) {
+         tokens.push({ type: "control", value: part });
+      } else if (/^(function|const|let|var|true|false|new|async|type|interface|div|span|p|h1|h2|h3|button|input|form)$/.test(part)) {
+         tokens.push({ type: "keyword", value: part });
+      } else if (/^(React|useState|useEffect|useRef|motion|useMemo|useCallback)$/.test(part)) {
+         tokens.push({ type: "module", value: part });
+      } else if (/^[{}()[\]<>/:;.,=+\-*&|?!]+$/.test(part)) {
+         if (part.includes("<") || part.includes(">") || part === "/" || part === "=") {
+            tokens.push({ type: "punctuationTag", value: part });
+         } else {
+            tokens.push({ type: "punctuation", value: part });
+         }
+      } else if (/^[A-Z][a-zA-Z0-9]*$/.test(part)) {
+         tokens.push({ type: "component", value: part });
+      } else if (/^[0-9]+$/.test(part)) {
+         tokens.push({ type: "number", value: part });
+      } else {
+         tokens.push({ type: "default", value: part });
       }
-
-      if (word.startsWith("#")) {
-         tokens.push({ type: "comment", value: word });
-         continue;
-      }
-
-      if (word.startsWith("$")) {
-         tokens.push({ type: "variable", value: word });
-         isFirstWord = false;
-         continue;
-      }
-
-      if (word.startsWith("--") || word.startsWith("-")) {
-         tokens.push({ type: "flag", value: word });
-         isFirstWord = false;
-         continue;
-      }
-
-      if (/^["'].*["']$/.test(word)) {
-         tokens.push({ type: "string", value: word });
-         isFirstWord = false;
-         continue;
-      }
-
-      if (/^\d+$/.test(word)) {
-         tokens.push({ type: "number", value: word });
-         isFirstWord = false;
-         continue;
-      }
-
-      if (/^[|>&<]+$/.test(word)) {
-         tokens.push({ type: "operator", value: word });
-         isFirstWord = true;
-         continue;
-      }
-
-      if (word.includes("/") || word.startsWith(".") || word.startsWith("~")) {
-         tokens.push({ type: "path", value: word });
-         isFirstWord = false;
-         continue;
-      }
-
-      if (isFirstWord) {
-         tokens.push({ type: "command", value: word });
-         isFirstWord = false;
-         continue;
-      }
-
-      tokens.push({ type: "default", value: word });
    }
-
    return tokens;
 }
 
-const tokenColors: Record<TokenType, string> = {
-   command: "text-emerald-400",
-   flag: "text-sky-400",
-   string: "text-amber-300",
-   number: "text-purple-400",
-   operator: "text-red-400",
-   path: "text-cyan-300",
-   variable: "text-pink-400",
-   comment: "text-neutral-500",
-   default: "text-neutral-300",
+const tokenColors: Record<string, string> = {
+   control: "text-[#bb9af7]", // import, export, return
+   keyword: "text-[#bb9af7]", // const, function, div
+   string: "text-[#9ece6a]",
+   module: "text-[#7aa2f7]",
+   component: "text-[#2ac3de]",
+   number: "text-[#ff9e64]",
+   punctuation: "text-[#89ddff]",
+   punctuationTag: "text-[#89ddff]",
+   default: "text-[#c0caf5]",
+   whitespace: "",
 };
 
 function SyntaxHighlightedText({ text }: { text: string }) {
-   const tokens = tokenizeBash(text);
+   const tokens = tokenizeCode(text);
 
    return (
       <>
@@ -229,50 +90,29 @@ function SyntaxHighlightedText({ text }: { text: string }) {
    );
 }
 
-interface TerminalLine {
-   type: "command" | "output";
-   content: string;
-}
-
 export interface TerminalProps {
-   commands: string[];
-   outputs?: Record<number, string[]>;
-   username?: string;
+   code: string;
+   filename?: string;
    className?: string;
    typingSpeed?: number;
-   delayBetweenCommands?: number;
    initialDelay?: number;
 }
 
 export function Terminal({
-   commands = ["npx shadcn@latest init"],
-   outputs = {},
-   username = "Manus-Macbook",
+   code,
+   filename = "App.tsx",
    className,
-   typingSpeed = 50,
-   delayBetweenCommands = 800,
+   typingSpeed = 20,
    initialDelay = 500,
 }: TerminalProps) {
    const containerRef = useRef<HTMLDivElement>(null);
    const contentRef = useRef<HTMLDivElement>(null);
    const inView = useInView(containerRef);
 
-   const [lines, setLines] = useState<TerminalLine[]>([]);
    const [currentText, setCurrentText] = useState("");
-   const [commandIdx, setCommandIdx] = useState(0);
    const [charIdx, setCharIdx] = useState(0);
-   const [outputIdx, setOutputIdx] = useState(-1);
-   const [phase, setPhase] = useState<
-      "idle" | "typing" | "executing" | "outputting" | "pausing" | "done"
-   >("idle");
+   const [phase, setPhase] = useState<"idle" | "typing" | "done">("idle");
    const [cursorVisible, setCursorVisible] = useState(true);
-
-   const currentCommand = commands[commandIdx] || "";
-   const currentOutputs = useMemo(
-      () => outputs[commandIdx] || [],
-      [outputs, commandIdx],
-   );
-   const isLastCommand = commandIdx === commands.length - 1;
 
    useEffect(() => {
       if (!inView || phase !== "idle") return;
@@ -283,73 +123,21 @@ export function Terminal({
    useEffect(() => {
       if (phase !== "typing") return;
 
-      if (charIdx < currentCommand.length) {
+      if (charIdx < code.length) {
          const t = setTimeout(
             () => {
-               setCurrentText(currentCommand.slice(0, charIdx + 1));
-               setCharIdx((c) => c + 1);
+               // Type multiple characters at a time for faster realistic typing
+               const charsToType = Math.floor(Math.random() * 3) + 1;
+               setCurrentText(code.slice(0, charIdx + charsToType));
+               setCharIdx((c) => c + charsToType);
             },
-            typingSpeed + Math.random() * 30,
+            typingSpeed + Math.random() * 20,
          );
          return () => clearTimeout(t);
       } else {
-         const t = setTimeout(() => {
-            setPhase("executing");
-         }, 80);
-         return () => clearTimeout(t);
-      }
-   }, [phase, charIdx, currentCommand, typingSpeed]);
-
-   useEffect(() => {
-      if (phase !== "executing") return;
-
-      setLines((prev) => [...prev, { type: "command", content: currentCommand }]);
-      setCurrentText("");
-
-      if (currentOutputs.length > 0) {
-         setOutputIdx(0);
-         setPhase("outputting");
-      } else if (isLastCommand) {
          setPhase("done");
-      } else {
-         setPhase("pausing");
       }
-   }, [phase, currentCommand, currentOutputs.length, isLastCommand]);
-
-   useEffect(() => {
-      if (phase !== "outputting") return;
-
-      if (outputIdx >= 0 && outputIdx < currentOutputs.length) {
-         const t = setTimeout(() => {
-            setLines((prev) => [
-               ...prev,
-               { type: "output", content: currentOutputs[outputIdx] },
-            ]);
-            setOutputIdx((i) => i + 1);
-         }, 150);
-         return () => clearTimeout(t);
-      } else if (outputIdx >= currentOutputs.length) {
-         const t = setTimeout(() => {
-            if (isLastCommand) {
-               setPhase("done");
-            } else {
-               setPhase("pausing");
-            }
-         }, 300);
-         return () => clearTimeout(t);
-      }
-   }, [phase, outputIdx, currentOutputs, isLastCommand]);
-
-   useEffect(() => {
-      if (phase !== "pausing") return;
-      const t = setTimeout(() => {
-         setCharIdx(0);
-         setOutputIdx(-1);
-         setCommandIdx((c) => c + 1);
-         setPhase("typing");
-      }, delayBetweenCommands);
-      return () => clearTimeout(t);
-   }, [phase, delayBetweenCommands]);
+   }, [phase, charIdx, code, typingSpeed]);
 
    useEffect(() => {
       const interval = setInterval(() => setCursorVisible((v) => !v), 530);
@@ -360,80 +148,67 @@ export function Terminal({
       if (contentRef.current) {
          contentRef.current.scrollTop = contentRef.current.scrollHeight;
       }
-   }, [lines, phase]);
+   }, [currentText]);
 
-   const prompt = (
-      <span className="text-neutral-500">
-         <span className="text-sky-500">{username}</span>
-         <span className="text-emerald-600">:</span>
-         <span className="text-sky-400">~</span>
-         <span className="text-neutral-500">$</span>{" "}
-      </span>
-   );
+   const lines = currentText.split("\n");
 
    return (
       <div
          ref={containerRef}
          className={cn(
-            "mx-auto w-full max-w-5xl font-mono text-xs",
+            "mx-auto w-full max-w-5xl font-mono text-[13px]",
             className,
          )}
       >
-         <div className="overflow-hidden rounded-lg border border-violet-800/20 bg-violet-600/10 shadow-2xl">
+         <div className="overflow-hidden rounded-lg border border-[#292e42] bg-[#1a1b26] shadow-2xl backdrop-blur-md">
             {/* Title Bar */}
-            <div className="flex items-center gap-2 bg-violet-600/50 px-4 py-3">
+            <div className="flex items-center bg-[#16161e] px-4 py-2 border-b border-[#292e42]">
                <div className="flex items-center gap-1.5">
-                  <div className="h-3 w-3 rounded-full bg-red-500 transition-colors hover:bg-red-600" />
-                  <div className="h-3 w-3 rounded-full bg-yellow-500 transition-colors hover:bg-yellow-600" />
-                  <div className="h-3 w-3 rounded-full bg-green-500 transition-colors hover:bg-green-600" />
+                  <div className="h-3 w-3 rounded-full bg-[#f7768e]" />
+                  <div className="h-3 w-3 rounded-full bg-[#e0af68]" />
+                  <div className="h-3 w-3 rounded-full bg-[#9ece6a]" />
                </div>
-               <div className="flex-1 text-center">
-                  <span className="truncate text-xs text-gray-100">
-                     {username} — bash
-                  </span>
+               <div className="flex-1 text-center text-xs text-[#a9b1d6] font-sans">
+                  {filename} - evalo
                </div>
-               <div className="w-13" />
+               <div className="w-12" />
             </div>
 
-            {/* Terminal Content */}
+            {/* Tabs */}
+            <div className="flex items-center bg-[#16161e] text-xs font-sans">
+               <div className="flex items-center bg-[#1a1b26] px-4 py-2 border-t-2 border-[#7aa2f7] text-[#c0caf5] min-w-[120px]">
+                  <span className="text-[#7aa2f7] mr-2">TS</span>
+                  {filename}
+               </div>
+               <div className="flex items-center px-4 py-2 text-[#565f89]">
+                  <span className="text-[#565f89] mr-2">TS</span>
+                  components.ts
+               </div>
+            </div>
+
+            {/* Code Content */}
             <div
                ref={contentRef}
-               className="no-visible-scrollbar h-60 sm:h-80 lg:h-100 2xl:h-112 overflow-y-auto p-4 font-mono"
+               className="no-visible-scrollbar h-80 sm:h-100 lg:h-110 2xl:h-120 overflow-y-auto p-4 font-mono text-[13px] leading-[22px]"
             >
                {lines.map((line, i) => (
-                  <div key={i} className="leading-relaxed whitespace-pre-wrap">
-                     {line.type === "command" ? (
-                        <span>
-                           {prompt}
-                           <SyntaxHighlightedText text={line.content} />
-                        </span>
-                     ) : (
-                        <span className="text-neutral-400">{line.content}</span>
-                     )}
+                  <div key={i} className="flex">
+                     <div className="w-8 shrink-0 text-right pr-4 text-[#3b4261] select-none">
+                        {i + 1}
+                     </div>
+                     <div className="flex-1 whitespace-pre-wrap break-all">
+                        <SyntaxHighlightedText text={line} />
+                        {i === lines.length - 1 && (
+                           <span
+                              className={cn(
+                                 "ml-px inline-block h-[15px] w-2 bg-[#c0caf5] align-middle transition-opacity duration-100",
+                                 !cursorVisible && phase === "done" && "opacity-0",
+                              )}
+                           />
+                        )}
+                     </div>
                   </div>
                ))}
-
-               {phase === "typing" && (
-                  <div className="leading-relaxed whitespace-pre-wrap">
-                     {prompt}
-                     <SyntaxHighlightedText text={currentText} />
-                     <span className="ml-0.5 inline-block h-4 w-2 bg-neutral-300 align-middle" />
-                  </div>
-               )}
-
-               {(phase === "done" ||
-                  phase === "pausing" ||
-                  phase === "outputting") && (
-                     <div className="leading-relaxed whitespace-pre-wrap">
-                        {prompt}
-                        <span
-                           className={cn(
-                              "inline-block h-4 w-2 bg-neutral-300 align-middle transition-opacity duration-100",
-                              !cursorVisible && "opacity-0",
-                           )}
-                        />
-                     </div>
-                  )}
             </div>
          </div>
       </div>

@@ -214,3 +214,12 @@
   background: linear-gradient(270deg, rgba(9, 9, 11, 1) 0%, rgba(9, 9, 11, 0) 100%);
   z-index: 9999;
 }
+
+/* Utilities */
+.no-visible-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.no-visible-scrollbar::-webkit-scrollbar {
+  display: none;
+}
