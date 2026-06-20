@@ -7,7 +7,7 @@ import Image from 'next/image';
 const Brands = () => {
 	const [emblaRef] = useEmblaCarousel(
 		{ loop: true, watchDrag: false },
-		[AutoScroll({ playOnInit: true, stopOnInteraction: false, stopOnMouseEnter: false, stopOnFocusIn: false, speed: 1 })]
+		[AutoScroll({ playOnInit: true, stopOnInteraction: false, stopOnMouseEnter: false, stopOnFocusIn: false, speed: 0.75 })]
 	);
 
 	return (
