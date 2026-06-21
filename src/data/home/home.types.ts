@@ -72,10 +72,19 @@ export interface TestimonialDataTypes {
    reviews: TestimonialCard[];
 }
 
+// CTA Types
+export interface CTADataTypes {
+   icon: LucideIcon;
+   header: string;
+   title: string;
+   description: string;
+}
+
 export interface HomeDataTypes {
    hero: HeroDataTypes;
    features: FeatureDataTypes;
    roles: RoleDataTypes;
    pricing: PricingDataTypes;
    testimonials: TestimonialDataTypes;
+   cta: CTADataTypes;
 }

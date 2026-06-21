@@ -1,5 +1,5 @@
 import { HomeDataTypes } from "./home.types";
-import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle, CreditCard, MessageSquareQuote } from 'lucide-react'
+import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle, CreditCard, MessageSquareQuote, Rocket } from 'lucide-react'
 
 export const homeData: HomeDataTypes = {
    hero: {
@@ -162,5 +162,11 @@ export const homeData: HomeDataTypes = {
             avatar: "E",
          }
       ]
+   },
+   cta: {
+      icon: Rocket,
+      header: "Get Started",
+      title: "Ready to accelerate your career?",
+      description: "Join thousands of candidates and industry experts who are already using Evalo to sharpen their skills, gain valuable interview experience, connect with opportunities, and achieve their professional goals with confidence."
    }
 }
