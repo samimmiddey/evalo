@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils";
-import { HomeIcon, MessageCircleIcon, StarIcon, TagIcon, X } from "lucide-react";
+import { HomeIcon, MessageCircleIcon, StarIcon, TagIcon, X, BotMessageSquare } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -33,14 +33,17 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
          {/* Sidebar */}
          <aside
             className={cn(
-               "fixed left-0 top-0 h-screen w-full bg-gradient-to-b from-zinc-900 to-zinc-950 border-r border-white/[0.08] z-50 flex flex-col transform transition-transform duration-300 ease-in-out",
+               "fixed left-0 top-0 h-dvh w-full bg-linear-to-b from-zinc-900 to-zinc-950 border-r border-white/8 z-999999 flex flex-col transform transition-transform duration-300 ease-in-out",
                isOpen ? "translate-x-0" : "-translate-x-full",
-               "md:hidden pt-15"
+               "md:hidden"
             )}
          >
             {/* Header */}
-            <div className="px-5 py-4 border-b border-white/[0.08] flex items-center justify-between">
-               <span className="text-[15px] font-medium text-zinc-50">Navigation</span>
+            <div className="px-5 py-4 border-b border-white/8 flex items-center justify-between">
+               <Link href='/' className='flex items-center gap-1.5 text-violet-400' onClick={onClose}>
+                  <BotMessageSquare className='mt-0.5 h-6.5 w-6.5' />
+                  <h4 className='font-musemoderno font-bold text-xl'>evalo</h4>
+               </Link>
                <button
                   onClick={onClose}
                   className="p-1 hover:bg-zinc-800 rounded-lg transition-colors"
@@ -55,7 +58,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                <p className="text-[11px] font-medium text-zinc-600 uppercase tracking-widest px-2 mb-3">
                   Menu
                </p>
-               <div className="space-y-1">
+               <div className="space-y-4">
                   {links.map(({ label, href, icon }) => {
                      const isActive = pathname === href;
                      return (
@@ -77,19 +80,6 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                   })}
                </div>
             </nav>
-
-            {/* Footer */}
-            <div className="px-3 py-4 border-t border-white/[0.08]">
-               <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-zinc-800/30 hover:bg-zinc-800/50 transition-colors">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
-                     JD
-                  </div>
-                  <div className="min-w-0">
-                     <p className="text-[13px] font-medium text-zinc-50 truncate">John Doe</p>
-                     <p className="text-xs text-zinc-500 truncate">john@acme.com</p>
-                  </div>
-               </div>
-            </div>
          </aside>
       </>
    )

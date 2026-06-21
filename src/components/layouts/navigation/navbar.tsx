@@ -21,15 +21,6 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
          <div className="container h-full">
             <div className='flex items-center justify-between gap-4 h-full'>
                <div className='flex items-center gap-4'>
-                  {!mdWidth && (
-                     <button
-                        onClick={onMenuClick}
-                        className='p-2 hover:bg-zinc-800 rounded-lg transition-colors md:hidden'
-                        aria-label="Toggle menu"
-                     >
-                        <Menu className='w-5 h-5 text-gray-100' />
-                     </button>
-                  )}
                   <Link href='/' className='flex items-center gap-1.5 text-violet-400'>
                      <BotMessageSquare className='mt-0.5 h-6.5 2xl:h-7 w-6.5 2xl:w-7' />
                      <h4 className='font-musemoderno font-bold text-xl 2xl:text-2xl'>evalo</h4>
@@ -60,6 +51,15 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                   <Show when="signed-in">
                      <UserButton />
                   </Show>
+                  {!mdWidth && (
+                     <button
+                        onClick={onMenuClick}
+                        className='p-2 hover:bg-zinc-800 rounded-lg transition-colors md:hidden'
+                        aria-label="Toggle menu"
+                     >
+                        <Menu className='w-5 h-5 text-gray-100' />
+                     </button>
+                  )}
                </div>
             </div>
          </div>
