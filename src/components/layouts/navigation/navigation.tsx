@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Navbar from './navbar'
 import Sidebar from './sidebar'
+import Footer from './footer'
 
 const Navigation = ({ children }: { children: React.ReactNode }) => {
    const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -12,6 +13,7 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
          <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
          {children}
+         <Footer />
       </div>
    )
 }
