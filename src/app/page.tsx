@@ -1,4 +1,4 @@
-import HomeComponent from '@/modules/home'
+import HomeComponent from '@/features/home'
 
 const Home = () => {
   return (

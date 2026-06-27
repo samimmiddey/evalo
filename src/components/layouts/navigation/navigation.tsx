@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Navbar from './navbar'
 import Sidebar from './sidebar'
 import Footer from './footer'
+import { Toaster } from 'sonner';
 
 const Navigation = ({ children }: { children: React.ReactNode }) => {
    const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -14,6 +15,7 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
          {children}
          <Footer />
+         <Toaster position="top-center" richColors />
       </div>
    )
 }

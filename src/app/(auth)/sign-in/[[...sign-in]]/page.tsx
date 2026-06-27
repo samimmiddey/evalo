@@ -1,4 +1,4 @@
-import { SignIn } from '@clerk/nextjs'
+import SignIn from '@/features/auth/sign-in'
 
 const SignInPage = () => {
    return (
