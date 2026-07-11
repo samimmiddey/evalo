@@ -2,14 +2,14 @@ import PrimaryBody from '@/components/common/primary-body'
 
 const AuthBranding = () => {
    return (
-      <div className="hidden md:flex w-full md:w-1/2 bg-surface-dark p-6 lg:p-8 2xl:p-10 flex-col justify-between relative group border-r border-border/40">
+      <div className="hidden md:flex w-full md:w-1/2 bg-surface-dark p-6 lg:p-8 2xl:p-10 flex-col justify-between gap-7 relative group border-r border-border/40">
          {/* Background decorative elements */}
-         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-soft-light z-0"></div>
-         <div className="absolute top-[-30%] left-[-10%] w-[70%] h-[70%] rounded-full bg-violet-600/20 blur-[120px] z-0 transition-transform duration-1000 group-hover:scale-110"></div>
-         <div className="absolute bottom-[-30%] right-[-10%] w-[70%] h-[70%] rounded-full bg-fuchsia-600/20 blur-[120px] z-0 transition-transform duration-1000 group-hover:scale-110"></div>
+         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-soft-light z-0" />
+         <div className="absolute top-[-30%] left-[-10%] w-[70%] h-[70%] rounded-full bg-violet-600/20 blur-[120px] z-0 transition-transform duration-1000 group-hover:scale-110" />
+         <div className="absolute bottom-[-30%] right-[-10%] w-[70%] h-[70%] rounded-full bg-fuchsia-600/20 blur-[120px] z-0 transition-transform duration-1000 group-hover:scale-110" />
 
          {/* Grid Pattern */}
-         <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[24px_24px] mask-[radial-gradient(ellipse_60%_50%_at_50%_50%,black_70%,transparent_100%)] z-0 opacity-50"></div>
+         <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[24px_24px] mask-[radial-gradient(ellipse_60%_50%_at_50%_50%,black_70%,transparent_100%)] z-0 opacity-50" />
 
          <div className="z-10 flex flex-col gap-2 mt-4 ml-2">
             <h1 className="text-4xl 2xl:text-5xl font-lobster font-bold tracking-tight bg-linear-to-r from-white via-violet-200 to-white/70 bg-clip-text text-transparent drop-shadow-sm">Evalo</h1>
@@ -22,7 +22,7 @@ const AuthBranding = () => {
          <div className="z-10 mt-auto mb-4 mx-2">
             <div className="p-7 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl relative overflow-hidden group/card transition-all duration-500 hover:bg-white/[0.07] hover:border-white/20">
                {/* Subtle inner glow for the card */}
-               <div className="absolute -top-24 -right-24 w-48 h-48 bg-violet-500/20 rounded-full blur-[50px] opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 z-0"></div>
+               <div className="absolute -top-24 -right-24 w-48 h-48 bg-violet-500/20 rounded-full blur-[50px] opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 z-0" />
 
                <blockquote className="space-y-6 relative z-10">
                   <svg className="h-8 w-8 text-violet-400/50 mb-2" fill="currentColor" viewBox="0 0 24 24">

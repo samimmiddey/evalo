@@ -1,22 +1,38 @@
 import AuthContainer from './components/auth-container'
-import AuthHeader from './components/auht-header'
+import AuthHeader from './components/auth-header'
 import { authData } from '@/data/auth/auth.data'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { otpSchema, OtpSchemaTypes } from './schemas/auth.schema'
 
 interface OTPProps {
-   handleVerify: () => Promise<void>;
+   handleVerify: (data: OtpSchemaTypes) => Promise<void>;
    fetchStatus: string;
-   errors: {
-      fields: {
-         code?: string
-      }
-   };
-   sendNewCode: () => Promise<void>;
+   sendNewCode: () => Promise<unknown> | void;
 }
 
-const OTP = ({ handleVerify, fetchStatus, errors, sendNewCode }: OTPProps) => {
+const OTP = ({ handleVerify, fetchStatus, sendNewCode }: OTPProps) => {
+   const {
+      register,
+      handleSubmit,
+      reset,
+      formState:
+      { errors: formErrors }
+   } = useForm<OtpSchemaTypes>({
+      resolver: zodResolver(otpSchema),
+      defaultValues: {
+         code: '',
+      }
+   });
+
+   const onSubmit = async (data: OtpSchemaTypes) => {
+      await handleVerify(data);
+      reset();
+   }
+
    return (
       <AuthContainer>
 
@@ -27,17 +43,18 @@ const OTP = ({ handleVerify, fetchStatus, errors, sendNewCode }: OTPProps) => {
          />
 
          {/* Sign up form */}
-         <form className="space-y-5" onSubmit={handleVerify}>
+         <form className="space-y-5" onSubmit={void handleSubmit(onSubmit)}>
             <div className="space-y-2 2xl:space-y-3">
                <Label htmlFor="code">{authData.otp.form.code.label}</Label>
                <Input
                   type={authData.otp.form.code.type}
                   placeholder={authData.otp.form.code.placeholder}
+                  {...register('code')}
                />
                {
-                  errors.fields.code && (
-                     <p className="text-red-500 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
-                        {errors.fields.code}
+                  formErrors.code && (
+                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
+                        {formErrors.code?.message}
                      </p>
                   )
                }
@@ -50,13 +67,13 @@ const OTP = ({ handleVerify, fetchStatus, errors, sendNewCode }: OTPProps) => {
                className="w-full h-11 font-medium font-inter"
                size="lg"
                variant="white"
-               type='submit'
                disabled={fetchStatus === 'fetching'}
             >
-               {fetchStatus === 'fetching' ? 'Creating account...' : authData.otp.form.button}
+               {fetchStatus === 'fetching' ? 'Verifying...' : authData.otp.form.button}
             </Button>
          </form>
 
+         <button className='cursor-pointer hover:underline text-sm 2xl:text-base' onClick={() => void sendNewCode()}>I need a new code</button>
       </AuthContainer>
    )
 }

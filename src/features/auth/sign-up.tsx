@@ -7,13 +7,13 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import GoogleButton from './components/google-button';
 import ContinueDivider from './components/continue-divider';
-import AuthHeader from './components/auht-header';
+import AuthHeader from './components/auth-header';
 import AuthFooter from './components/auth-footer';
 import { authData } from '@/data/auth/auth.data';
 import { useAuth, useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { authSchema, AuthSchemaTypes } from './schemas/auth.schema';
+import { authSchema, AuthSchemaTypes, OtpSchemaTypes } from './schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import OTP from './otp';
@@ -29,7 +29,11 @@ const SignUp = () => {
       reset,
       formState: { errors: formErrors },
    } = useForm<AuthSchemaTypes>({
-      resolver: zodResolver(authSchema)
+      resolver: zodResolver(authSchema),
+      defaultValues: {
+         email: '',
+         password: '',
+      }
    });
 
    const onSubmit = async (data: AuthSchemaTypes) => {
@@ -46,43 +50,30 @@ const SignUp = () => {
          return
       }
 
-      if (!error) await signUp.verifications.sendEmailCode();
+      if (!error) {
+         await signUp.verifications.sendEmailCode();
+         reset();
+      }
    }
 
-   const handleVerify = async (formData: FormData) => {
-      const code = formData.get('code') as string
+   const handleVerify = async (data: OtpSchemaTypes) => {
+      const code = data.code;
 
       await signUp.verifications.verifyEmailCode({
          code,
-      })
+      });
+
       if (signUp.status === 'complete') {
          await signUp.finalize({
-            // Redirect the user to the home page after signing up
-            navigate: ({ session, decorateUrl }) => {
-               // Handle session tasks
-               // See https://clerk.com/docs/guides/development/custom-flows/authentication/session-tasks
-               if (session?.currentTask) {
-                  console.log(session?.currentTask)
-                  return
-               }
-
-               // If no session tasks, navigate the signed-in user to the home page
-               const url = decorateUrl('/')
-               if (url.startsWith('http')) {
-                  window.location.href = url
-               } else {
-                  router.push(url)
-               }
-            },
+            navigate: () => router.push('/')
          })
       } else {
-         // Check why the sign-up is not complete
-         console.error('Sign-up attempt not complete:', signUp)
+         toast.error(errors.global?.[0]?.message ?? 'Something went wrong')
       }
    }
 
    if (signUp.status === 'complete' || isSignedIn) {
-      return null
+      return null;
    }
 
    if (
@@ -92,19 +83,11 @@ const SignUp = () => {
    ) {
       return (
          <>
-            <h1>Verify your account</h1>
-            <form action={handleVerify}>
-               <div>
-                  <label htmlFor="code">Code</label>
-                  <input id="code" name="code" type="text" />
-               </div>
-               {errors.fields.code && <p>{errors.fields.code.message}</p>}
-               <button type="submit" disabled={fetchStatus === 'fetching'}>
-                  Verify
-               </button>
-            </form>
-            <button onClick={() => signUp.verifications.sendEmailCode()}>I need a new code</button>
-            <OTP />
+            <OTP
+               handleVerify={handleVerify}
+               fetchStatus={fetchStatus}
+               sendNewCode={() => signUp.verifications.sendEmailCode()}
+            />
          </>
       )
    }
@@ -119,7 +102,7 @@ const SignUp = () => {
          />
 
          {/* Sign up form */}
-         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+         <form className="space-y-5" onSubmit={void handleSubmit(onSubmit)}>
             <div className="space-y-2 2xl:space-y-3">
                <Label htmlFor="email">{authData.signUp.form.email.label}</Label>
                <Input
@@ -129,7 +112,7 @@ const SignUp = () => {
                />
                {
                   formErrors[authData.signUp.form.email.name] && (
-                     <p className="text-red-500 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
+                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
                         {formErrors[authData.signUp.form.email.name]?.message}
                      </p>
                   )
@@ -149,7 +132,7 @@ const SignUp = () => {
                />
                {
                   formErrors[authData.signUp.form.email.name] && (
-                     <p className="text-red-500 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
+                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
                         {formErrors[authData.signUp.form.email.name]?.message}
                      </p>
                   )

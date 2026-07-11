@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import AuthBranding from "./auth-branding";
 import { ReactNode } from "react";
 
@@ -17,8 +16,8 @@ export default function AuthContainer({ children }: Props) {
             <AuthBranding />
 
             {/* Right Column - Form */}
-            <div className="w-full md:w-1/2 p-6 sm:p-8 lg:p-10 2xl:p-12 flex flex-col justify-center relative">
-               <div className="w-full max-w-sm mx-auto space-y-8 relative z-10">
+            <div className="w-full md:w-1/2 max-sm:px-6 max-sm:py-7 sm:p-8 lg:p-10 2xl:p-12 flex flex-col justify-center relative">
+               <div className="w-full max-w-sm mx-auto space-y-6 md:space-y-8 relative z-10">
                   {children}
                </div>
             </div>

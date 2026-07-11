@@ -13,4 +13,12 @@ export const authSchema = z.object({
       .regex(passwordRegex, { message: 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character' })
 });
 
+export const otpSchema = z.object({
+   code: z
+      .string()
+      .length(6, { message: 'Code must be 6 digits long' })
+      .regex(/^[0-9]{6}$/, { message: 'Code must contain only numbers' })
+});
+
 export type AuthSchemaTypes = z.infer<typeof authSchema>;
+export type OtpSchemaTypes = z.infer<typeof otpSchema>;

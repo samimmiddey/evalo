@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import GoogleButton from './components/google-button'
 import ContinueDivider from './components/continue-divider'
-import AuthHeader from './components/auht-header'
+import AuthHeader from './components/auth-header'
 import AuthFooter from './components/auth-footer'
 import { authData } from '@/data/auth/auth.data'
 

@@ -8,7 +8,7 @@ interface Props {
 
 const AuthHeader = ({ title, desc }: Props) => {
    return (
-      <div className="space-y-2 text-center md:text-left">
+      <div className="space-y-2 text-left">
          <PrimaryTitle
             text={title}
             className="text-[30px]! 2xl:text-[32px]!"
