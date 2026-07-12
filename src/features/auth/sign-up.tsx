@@ -124,6 +124,7 @@ const SignUp = () => {
                handleVerify={handleVerify}
                fetchStatus={fetchStatus}
                resendCode={resendCode}
+               signUp={signUp}
             />
          </>
       )

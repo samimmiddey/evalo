@@ -12,14 +12,20 @@ import { otpSchema, OtpSchemaTypes } from './schemas/auth.schema'
 import { useEffect, useState } from 'react'
 import useAuthStore from '@/store/auth-store'
 import CustomSpinner from '@/components/common/custom-spinner';
+import { getClerkErrorMessage } from '@/utils/clerk-error';
+import { toast } from 'sonner';
+import { useSignUp } from '@clerk/nextjs';
+
+type SignUpType = ReturnType<typeof useSignUp>['signUp'];
 
 interface OTPProps {
    handleVerify: (data: OtpSchemaTypes) => Promise<boolean>;
    fetchStatus: string;
    resendCode: () => Promise<unknown> | void;
+   signUp: SignUpType;
 }
 
-const OTP = ({ handleVerify, fetchStatus, resendCode }: OTPProps) => {
+const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
    const { otpExpiresAt, setOtpExpiresAt, hasRequestedResend, setHasRequestedResend } = useAuthStore();
    const [now, setNow] = useState(() => Date.now());
    const [isOtpVerifying, setIsOtpVerifying] = useState<boolean>(false);
@@ -76,6 +82,17 @@ const OTP = ({ handleVerify, fetchStatus, resendCode }: OTPProps) => {
       };
    }, [otpExpiresAt, setOtpExpiresAt]);
 
+   // Reset OTP flow to go back to sign up page
+   const onBack = async () => {
+      const { error } = await signUp.reset();
+      if (error) {
+         toast.error(getClerkErrorMessage(error));
+         return;
+      }
+      setOtpExpiresAt(null);
+      setHasRequestedResend(false);
+   };
+
    return (
       <AuthContainer>
 
@@ -129,23 +146,34 @@ const OTP = ({ handleVerify, fetchStatus, resendCode }: OTPProps) => {
             </Button>
          </form>
 
-         <button
-            className='cursor-pointer not-disabled:hover:underline text-sm 2xl:text-base disabled:opacity-50 disabled:cursor-not-allowed'
-            onClick={() => {
-               void resendCode();
-               const expiresAt = Date.now() + 60000;
-               setOtpExpiresAt(expiresAt);
-               setNow(Date.now());
-               setHasRequestedResend(true);
-            }}
-            disabled={timeLeft > 0 || fetchStatus === 'fetching'}
-         >
-            {timeLeft > 0
-               ? `Resend code (${timeLeft})`
-               : hasRequestedResend
-                  ? 'Resend code'
-                  : 'I need a new code'}
-         </button>
+         <div className="flex flex-col items-center gap-6 2xl:gap-8 text-center">
+            <button
+               className='cursor-pointer not-disabled:hover:underline text-sm 2xl:text-base disabled:opacity-50 disabled:cursor-not-allowed'
+               onClick={() => {
+                  void resendCode();
+                  const expiresAt = Date.now() + 60000;
+                  setOtpExpiresAt(expiresAt);
+                  setNow(Date.now());
+                  setHasRequestedResend(true);
+               }}
+               disabled={timeLeft > 0 || fetchStatus === 'fetching'}
+            >
+               {timeLeft > 0
+                  ? `Resend code (${timeLeft})`
+                  : hasRequestedResend
+                     ? 'Resend code'
+                     : 'I need a new code'}
+            </button>
+            <Button
+               variant='secondary'
+               className='flex items-center gap-3 text-gray-300'
+               onClick={() => void onBack()}
+               type='button'
+            >
+               Use a different email
+            </Button>
+         </div>
+
       </AuthContainer>
    )
 }
