@@ -3,7 +3,6 @@
 import AuthContainer from './components/auth-container';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import GoogleButton from './components/google-button';
 import ContinueDivider from './components/continue-divider';
@@ -150,12 +149,7 @@ const SignUp = () => {
                }
             </div>
             <div className="space-y-2 2xl:space-y-3">
-               <div className="flex items-center justify-between">
-                  <Label htmlFor="password">{authData.signUp.form.password.label}</Label>
-                  <Link href="/forgot-password" className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">
-                     Forgot password?
-                  </Link>
-               </div>
+               <Label htmlFor="password">{authData.signUp.form.password.label}</Label>
                <Input
                   type={authData.signUp.form.password.type}
                   placeholder={authData.signUp.form.password.placeholder}

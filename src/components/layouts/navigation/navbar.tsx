@@ -2,11 +2,12 @@
 
 import { Button } from '@/components/ui/button'
 import { navigationData } from '@/data/navigation/navigation.data'
-import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import { Show, UserButton } from '@clerk/nextjs'
 import { BotMessageSquare, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import useMediaQuery from '@/hooks/use-media-query'
+import { authData } from '@/data/auth/auth.data'
 
 interface NavbarProps {
    onMenuClick: () => void
@@ -41,12 +42,12 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                </div>
                <div className='flex items-center gap-2'>
                   <Show when="signed-out">
-                     <SignInButton>
+                     <Link href={authData.signUp.footer.linkUrl}>
                         <Button variant="ghost" size="lg">Sign In</Button>
-                     </SignInButton>
-                     <SignUpButton>
+                     </Link>
+                     <Link href={authData.signIn.footer.linkUrl}>
                         <Button variant="white" size="lg">Get Started</Button>
-                     </SignUpButton>
+                     </Link>
                   </Show>
                   <Show when="signed-in">
                      <UserButton />
