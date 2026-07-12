@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { navigationData } from '@/data/navigation/navigation.data'
-import { Show, UserButton } from '@clerk/nextjs'
+import { Show, UserButton, useUser } from '@clerk/nextjs'
 import { BotMessageSquare, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -14,6 +14,8 @@ interface NavbarProps {
 }
 
 const Navbar = ({ onMenuClick }: NavbarProps) => {
+   const { isLoaded } = useUser();
+
    const pathname = usePathname();
    const mdWidth = useMediaQuery(767);
 
@@ -49,9 +51,13 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                         <Button variant="white" size="lg">Get Started</Button>
                      </Link>
                   </Show>
-                  <Show when="signed-in">
-                     <UserButton />
-                  </Show>
+                  {!isLoaded ? (
+                     <div className="h-8 w-8 rounded-full bg-zinc-800 animate-pulse" />
+                  ) : (
+                     <Show when="signed-in">
+                        <UserButton />
+                     </Show>
+                  )}
                   {!mdWidth && (
                      <button
                         onClick={onMenuClick}

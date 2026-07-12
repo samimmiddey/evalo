@@ -105,14 +105,16 @@ const SignUp = () => {
       if (error) {
          toast.error(getClerkErrorMessage(error));
       } else {
-         toast.success('A new code has been sent.');
+         toast.success('A new code has been sent');
       }
    };
 
+   // Redirect to home page if user is already signed in or sign up is complete
    if (signUp.status === 'complete' || isSignedIn) {
-      return <AuthRedirectionLoader />;
+      return <AuthRedirectionLoader text="Creating account..." />;
    }
 
+   // Show OTP form
    if (
       signUp.status === 'missing_requirements' &&
       signUp.unverifiedFields.includes('email_address') &&
@@ -155,7 +157,7 @@ const SignUp = () => {
                />
                {
                   formErrors[authData.signUp.form.email.name] && (
-                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
+                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-1.5">
                         {formErrors[authData.signUp.form.email.name]?.message}
                      </p>
                   )
@@ -170,7 +172,7 @@ const SignUp = () => {
                />
                {
                   formErrors[authData.signUp.form.password.name] && (
-                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
+                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-1.5">
                         {formErrors[authData.signUp.form.password.name]?.message}
                      </p>
                   )
@@ -203,7 +205,7 @@ const SignUp = () => {
          <ContinueDivider />
 
          {/* Google auth button */}
-         <GoogleButton />
+         <GoogleButton sso={(params) => signUp.sso(params)} />
 
          {/* Auth Footer */}
          <AuthFooter

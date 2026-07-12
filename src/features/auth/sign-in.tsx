@@ -94,7 +94,7 @@ const SignIn = () => {
                />
                {
                   formErrors[authData.signIn.form.email.name] && (
-                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
+                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-1.5">
                         {formErrors[authData.signIn.form.email.name]?.message}
                      </p>
                   )
@@ -114,7 +114,7 @@ const SignIn = () => {
                />
                {
                   formErrors[authData.signIn.form.password.name] && (
-                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
+                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-1.5">
                         {formErrors[authData.signIn.form.password.name]?.message}
                      </p>
                   )
@@ -144,7 +144,7 @@ const SignIn = () => {
          <ContinueDivider />
 
          {/* Google auth button */}
-         <GoogleButton />
+         <GoogleButton sso={(params) => signIn.sso(params)} />
 
          {/* Auth Footer */}
          <AuthFooter
