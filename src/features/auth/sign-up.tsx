@@ -17,6 +17,7 @@ import { authSchema, AuthSchemaTypes, OtpSchemaTypes } from './schemas/auth.sche
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import OTP from './otp';
+import AuthRedirectionLoader from './components/auth-redirection-loader';
 
 const SignUp = () => {
    const { signUp, errors, fetchStatus } = useSignUp();
@@ -98,7 +99,7 @@ const SignUp = () => {
    };
 
    if (signUp.status === 'complete' || isSignedIn) {
-      return null;
+      return <AuthRedirectionLoader />;
    }
 
    if (
