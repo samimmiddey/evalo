@@ -11,10 +11,10 @@ import { otpSchema, OtpSchemaTypes } from './schemas/auth.schema'
 interface OTPProps {
    handleVerify: (data: OtpSchemaTypes) => Promise<void>;
    fetchStatus: string;
-   sendNewCode: () => Promise<unknown> | void;
+   resendCode: () => Promise<unknown> | void;
 }
 
-const OTP = ({ handleVerify, fetchStatus, sendNewCode }: OTPProps) => {
+const OTP = ({ handleVerify, fetchStatus, resendCode }: OTPProps) => {
    const {
       register,
       handleSubmit,
@@ -43,7 +43,12 @@ const OTP = ({ handleVerify, fetchStatus, sendNewCode }: OTPProps) => {
          />
 
          {/* Sign up form */}
-         <form className="space-y-5" onSubmit={void handleSubmit(onSubmit)}>
+         <form
+            className="space-y-5"
+            onSubmit={(e) => {
+               void handleSubmit(onSubmit)(e);
+            }}
+         >
             <div className="space-y-2 2xl:space-y-3">
                <Label htmlFor="code">{authData.otp.form.code.label}</Label>
                <Input
@@ -73,7 +78,7 @@ const OTP = ({ handleVerify, fetchStatus, sendNewCode }: OTPProps) => {
             </Button>
          </form>
 
-         <button className='cursor-pointer hover:underline text-sm 2xl:text-base' onClick={() => void sendNewCode()}>I need a new code</button>
+         <button className='cursor-pointer hover:underline text-sm 2xl:text-base' onClick={() => void resendCode()}>I need a new code</button>
       </AuthContainer>
    )
 }

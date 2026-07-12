@@ -36,6 +36,7 @@ const SignUp = () => {
       }
    });
 
+   // Sign up with email and password
    const onSubmit = async (data: AuthSchemaTypes) => {
       const emailAddress = data.email
       const password = data.password
@@ -51,26 +52,50 @@ const SignUp = () => {
       }
 
       if (!error) {
-         await signUp.verifications.sendEmailCode();
+         const { error: verificationError } = await signUp.verifications.sendEmailCode();
+
+         if (verificationError) {
+            toast.error(verificationError.message);
+            return;
+         }
+
          reset();
       }
    }
 
+   // Verify OTP
    const handleVerify = async (data: OtpSchemaTypes) => {
       const code = data.code;
 
-      await signUp.verifications.verifyEmailCode({
+      const { error } = await signUp.verifications.verifyEmailCode({
          code,
       });
+
+      if (error) {
+         toast.error(error.message);
+         return;
+      }
 
       if (signUp.status === 'complete') {
          await signUp.finalize({
             navigate: () => router.push('/')
-         })
+         });
+         toast.success('Account created successfully');
       } else {
-         toast.error(errors.global?.[0]?.message ?? 'Something went wrong')
+         toast.error(errors.global?.[0]?.message ?? 'Failed to sign up');
       }
    }
+
+   // Resend OTP
+   const resendCode = async () => {
+      const { error } = await signUp.verifications.sendEmailCode();
+
+      if (error) {
+         toast.error(error.message);
+      } else {
+         toast.success('A new code has been sent.');
+      }
+   };
 
    if (signUp.status === 'complete' || isSignedIn) {
       return null;
@@ -86,7 +111,7 @@ const SignUp = () => {
             <OTP
                handleVerify={handleVerify}
                fetchStatus={fetchStatus}
-               sendNewCode={() => signUp.verifications.sendEmailCode()}
+               resendCode={resendCode}
             />
          </>
       )
@@ -102,7 +127,12 @@ const SignUp = () => {
          />
 
          {/* Sign up form */}
-         <form className="space-y-5" onSubmit={void handleSubmit(onSubmit)}>
+         <form
+            className="space-y-5"
+            onSubmit={(e) => {
+               void handleSubmit(onSubmit)(e);
+            }}
+         >
             <div className="space-y-2 2xl:space-y-3">
                <Label htmlFor="email">{authData.signUp.form.email.label}</Label>
                <Input
@@ -131,9 +161,9 @@ const SignUp = () => {
                   {...register(authData.signUp.form.password.name)}
                />
                {
-                  formErrors[authData.signUp.form.email.name] && (
+                  formErrors[authData.signUp.form.password.name] && (
                      <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
-                        {formErrors[authData.signUp.form.email.name]?.message}
+                        {formErrors[authData.signUp.form.password.name]?.message}
                      </p>
                   )
                }
