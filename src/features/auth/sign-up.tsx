@@ -17,10 +17,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import OTP from './otp';
 import AuthRedirectionLoader from './components/auth-redirection-loader';
+import { getClerkErrorMessage } from '@/utils/clerk-error';
+import { useState } from 'react';
+import CustomSpinner from '@/components/common/custom-spinner';
 
 const SignUp = () => {
    const { signUp, errors, fetchStatus } = useSignUp();
    const { isSignedIn } = useAuth();
+   const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
+
    const router = useRouter();
 
    const {
@@ -38,6 +43,7 @@ const SignUp = () => {
 
    // Sign up with email and password
    const onSubmit = async (data: AuthSchemaTypes) => {
+      setIsSigningUp(true);
       const emailAddress = data.email
       const password = data.password
 
@@ -47,20 +53,24 @@ const SignUp = () => {
       })
 
       if (error) {
-         toast.error(error.message);
-         return
+         toast.error(getClerkErrorMessage(error));
+         setIsSigningUp(false);
+         return;
       }
 
       if (!error) {
          const { error: verificationError } = await signUp.verifications.sendEmailCode();
 
          if (verificationError) {
-            toast.error(verificationError.message);
+            toast.error(getClerkErrorMessage(verificationError));
+            setIsSigningUp(false);
             return;
          }
 
          reset();
       }
+
+      setIsSigningUp(false);
    }
 
    // Verify OTP
@@ -72,7 +82,7 @@ const SignUp = () => {
       });
 
       if (error) {
-         toast.error(error.message);
+         toast.error(getClerkErrorMessage(error));
          return false;
       }
 
@@ -93,7 +103,7 @@ const SignUp = () => {
       const { error } = await signUp.verifications.sendEmailCode();
 
       if (error) {
-         toast.error(error.message);
+         toast.error(getClerkErrorMessage(error));
       } else {
          toast.success('A new code has been sent.');
       }
@@ -174,9 +184,17 @@ const SignUp = () => {
                size="lg"
                variant="white"
                type='submit'
-               disabled={fetchStatus === 'fetching'}
+               disabled={fetchStatus === 'fetching' || isSigningUp}
             >
-               {fetchStatus === 'fetching' ? 'Creating account...' : authData.signUp.form.button}
+               {
+                  isSigningUp ?
+                     <CustomSpinner
+                        text='Creating Account...'
+                        spinnerClass='text-gray-700'
+                        textClass='text-gray-700'
+                     /> :
+                     authData.signUp.form.button
+               }
             </Button>
          </form>
 

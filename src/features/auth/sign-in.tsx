@@ -16,9 +16,14 @@ import { useForm } from 'react-hook-form'
 import { authSchema, AuthSchemaTypes } from './schemas/auth.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
+import { getClerkErrorMessage } from '@/utils/clerk-error'
+import { useState } from 'react'
+import CustomSpinner from '@/components/common/custom-spinner'
 
 const SignIn = () => {
    const { signIn, errors, fetchStatus } = useSignIn();
+   const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
+
    const router = useRouter();
 
    const {
@@ -36,6 +41,7 @@ const SignIn = () => {
 
    // Sign in with email and password
    const onSubmit = async (data: AuthSchemaTypes) => {
+      setIsSigningIn(true);
       const emailAddress = data.email;
       const password = data.password;
 
@@ -45,7 +51,8 @@ const SignIn = () => {
       });
 
       if (error) {
-         toast.error(error.message);
+         toast.error(getClerkErrorMessage(error));
+         setIsSigningIn(false);
          return;
       };
 
@@ -58,6 +65,8 @@ const SignIn = () => {
       } else {
          toast.error(errors.global?.[0]?.message ?? 'Failed to sign in');
       }
+
+      setIsSigningIn(false);
    }
 
    return (
@@ -117,9 +126,17 @@ const SignIn = () => {
                size="lg"
                variant="white"
                type='submit'
-               disabled={fetchStatus === 'fetching'}
+               disabled={fetchStatus === 'fetching' || isSigningIn}
             >
-               {fetchStatus === 'fetching' ? 'Signing in...' : authData.signIn.form.button}
+               {
+                  isSigningIn ?
+                     <CustomSpinner
+                        text='Signing In...'
+                        spinnerClass='text-gray-700'
+                        textClass='text-gray-700'
+                     /> :
+                     authData.signIn.form.button
+               }
             </Button>
          </form>
 

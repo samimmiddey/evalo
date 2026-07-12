@@ -1,10 +1,18 @@
 import { Spinner } from '@/components/ui/spinner';
+import { cn } from '@/lib/utils';
 
-const CustomSpinner = ({ text }: { text: string }) => {
+interface CustomSpinnerProps {
+   text: string;
+   containerClass?: string;
+   spinnerClass?: string;
+   textClass?: string;
+}
+
+const CustomSpinner = ({ text, containerClass, spinnerClass, textClass }: CustomSpinnerProps) => {
    return (
-      <div className='flex items-center gap-2.5 2xl:gap-3'>
-         <Spinner className='size-4.5 2xl:size-5 text-gray-300' />
-         <p className='text-sm 2xl:text-[15px] text-gray-300'>{text}</p>
+      <div className={cn('flex items-center gap-2.5 2xl:gap-3', containerClass)}>
+         <Spinner className={cn('size-4.5 2xl:size-5 text-gray-300', spinnerClass)} />
+         <p className={cn('text-sm text-gray-300', textClass)}>{text}</p>
       </div>
    )
 };

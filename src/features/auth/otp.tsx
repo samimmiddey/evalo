@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { otpSchema, OtpSchemaTypes } from './schemas/auth.schema'
 import { useEffect, useState } from 'react'
 import useAuthStore from '@/store/auth-store'
+import CustomSpinner from '@/components/common/custom-spinner';
 
 interface OTPProps {
    handleVerify: (data: OtpSchemaTypes) => Promise<boolean>;
@@ -21,6 +22,7 @@ interface OTPProps {
 const OTP = ({ handleVerify, fetchStatus, resendCode }: OTPProps) => {
    const { otpExpiresAt, setOtpExpiresAt, hasRequestedResend, setHasRequestedResend } = useAuthStore();
    const [now, setNow] = useState(() => Date.now());
+   const [isOtpVerifying, setIsOtpVerifying] = useState<boolean>(false);
 
    const {
       register,
@@ -36,12 +38,14 @@ const OTP = ({ handleVerify, fetchStatus, resendCode }: OTPProps) => {
    });
 
    const onSubmit = async (data: OtpSchemaTypes) => {
+      setIsOtpVerifying(true);
       const success = await handleVerify(data);
       if (success) {
          setOtpExpiresAt(null);
          setHasRequestedResend(false);
          reset();
       }
+      setIsOtpVerifying(false);
    }
 
    // Derived value from auth store
@@ -97,7 +101,7 @@ const OTP = ({ handleVerify, fetchStatus, resendCode }: OTPProps) => {
                />
                {
                   formErrors.code && (
-                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-2">
+                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-1.5">
                         {formErrors.code?.message}
                      </p>
                   )
@@ -111,9 +115,17 @@ const OTP = ({ handleVerify, fetchStatus, resendCode }: OTPProps) => {
                className="w-full h-11 font-medium font-inter"
                size="lg"
                variant="white"
-               disabled={fetchStatus === 'fetching'}
+               disabled={fetchStatus === 'fetching' || isOtpVerifying}
             >
-               {fetchStatus === 'fetching' ? 'Verifying...' : authData.otp.form.button}
+               {
+                  isOtpVerifying ?
+                     <CustomSpinner
+                        text='Verifying...'
+                        spinnerClass='text-gray-700'
+                        textClass='text-gray-700'
+                     />
+                     : authData.otp.form.button
+               }
             </Button>
          </form>
 
