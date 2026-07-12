@@ -73,7 +73,7 @@ const SignUp = () => {
 
       if (error) {
          toast.error(error.message);
-         return;
+         return false;
       }
 
       if (signUp.status === 'complete') {
@@ -81,8 +81,10 @@ const SignUp = () => {
             navigate: () => router.push('/')
          });
          toast.success('Account created successfully');
+         return true;
       } else {
          toast.error(errors.global?.[0]?.message ?? 'Failed to sign up');
+         return false;
       }
    }
 
