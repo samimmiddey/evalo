@@ -1,17 +1,31 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
 const isPublicRoute = createRouteMatcher([
    '/sign-in(.*)',
    '/sign-up(.*)',
+   '/forgot-password(.*)',
    '/sso-callback(.*)',
    '/'
-])
+]);
+
+const isAuthRoute = createRouteMatcher([
+   '/sign-in(.*)',
+   '/sign-up(.*)',
+   '/forgot-password(.*)',
+]);
 
 export default clerkMiddleware(async (auth, req) => {
+   const { userId } = await auth();
+
+   if (userId && isAuthRoute(req)) {
+      return NextResponse.redirect(new URL('/', req.url))
+   };
+
    if (!isPublicRoute(req)) {
       await auth.protect()
    }
-})
+});
 
 export const config = {
    matcher: [
@@ -22,4 +36,4 @@ export const config = {
       // Always run for Clerk-specific frontend API routes
       '/__clerk/(.*)',
    ],
-}
+};

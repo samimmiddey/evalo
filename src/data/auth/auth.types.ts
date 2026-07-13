@@ -1,4 +1,4 @@
-import { AuthSchemaTypes } from "@/features/auth/schemas/auth.schema";
+import { AuthSchemaTypes, ForgotPasswordSchemaEmailTypes } from "@/features/auth/schemas/auth.schema";
 
 export interface HeaderProps {
    title: string;
@@ -34,6 +34,36 @@ export interface OtpFormProps {
    button: string;
 }
 
+export interface StepOneFormProps {
+   email: {
+      name: keyof ForgotPasswordSchemaEmailTypes;
+      label: string;
+      type: string;
+      placeholder: string;
+   };
+   button: string;
+}
+
+export interface StepTwoFormProps {
+   code: {
+      name: keyof ForgotPasswordSchemaEmailTypes;
+      label: string;
+      type: string;
+      placeholder: string;
+   };
+   button: string;
+}
+
+export interface StepThreeFormProps {
+   password: {
+      name: keyof ForgotPasswordSchemaEmailTypes;
+      label: string;
+      type: string;
+      placeholder: string;
+   };
+   button: string;
+}
+
 export interface AuthData {
    signIn: {
       header: HeaderProps;
@@ -48,5 +78,19 @@ export interface AuthData {
    otp: {
       header: HeaderProps;
       form: OtpFormProps;
+   },
+   forgotPassword: {
+      stepOne: {
+         header: HeaderProps;
+         form: StepOneFormProps;
+      },
+      stepTwo: {
+         header: HeaderProps;
+         form: StepTwoFormProps;
+      },
+      stepThree: {
+         header: HeaderProps;
+         form: StepThreeFormProps;
+      }
    }
 }
