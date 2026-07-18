@@ -38,6 +38,7 @@ const eslintConfig = defineConfig([
       "no-unused-vars": "off",
       "no-throw-literal": "off",
       "@typescript-eslint/only-throw-error": "off",
+      "@typescript-eslint/prefer-nullish-coalescing": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {

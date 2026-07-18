@@ -15,7 +15,7 @@ import { forgotPasswordEmailSchema, ForgotPasswordSchemaEmailTypes } from './sch
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getClerkErrorMessage } from '@/utils/clerk-error'
 import { toast } from 'sonner'
-import AuthRedirectionLoader from './components/auth-redirection-loader'
+import ScreenLoader from '@/components/common/screen-loader'
 
 export default function ForgotPassword() {
    const { signIn, fetchStatus } = useSignIn();
@@ -153,7 +153,7 @@ export default function ForgotPassword() {
    return (
       <>
          {isCompleting ? (
-            <AuthRedirectionLoader text='Signing you in...' />
+            <ScreenLoader text='Signing you in...' />
          ) : (
             <AuthContainer>
 

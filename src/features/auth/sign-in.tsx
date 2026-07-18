@@ -58,7 +58,7 @@ const SignIn = () => {
 
       if (signIn.status === 'complete') {
          await signIn.finalize({
-            navigate: () => router.push('/')
+            navigate: () => router.push('/dashboard')
          });
          toast.success('Signed in successfully');
          reset();

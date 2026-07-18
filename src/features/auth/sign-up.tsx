@@ -16,10 +16,10 @@ import { authSchema, AuthSchemaTypes, OtpSchemaTypes } from './schemas/auth.sche
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import OTP from './otp';
-import AuthRedirectionLoader from './components/auth-redirection-loader';
 import { getClerkErrorMessage } from '@/utils/clerk-error';
 import { useState } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
+import ScreenLoader from '@/components/common/screen-loader';
 
 const SignUp = () => {
    const { signUp, errors, fetchStatus } = useSignUp();
@@ -88,7 +88,7 @@ const SignUp = () => {
 
       if (signUp.status === 'complete') {
          await signUp.finalize({
-            navigate: () => router.push('/')
+            navigate: () => router.push('/dashboard')
          });
          toast.success('Account created successfully');
          return true;
@@ -111,7 +111,7 @@ const SignUp = () => {
 
    // Redirect to home page if user is already signed in or sign up is complete
    if (signUp.status === 'complete' || isSignedIn) {
-      return <AuthRedirectionLoader text="Creating account..." />;
+      return <ScreenLoader text="Creating account..." />;
    }
 
    // Show OTP form
