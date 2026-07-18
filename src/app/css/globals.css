@@ -180,7 +180,7 @@
   bottom: 0;
   background: #09090B;
   background: linear-gradient(180deg, rgba(9, 9, 11, 0) 0%, rgba(9, 9, 11, 1) 100%);
-  z-index: 9999;
+  z-index: 998;
 }
 
 /* Brands */
@@ -201,7 +201,7 @@
   width: 300px;
   background: RGBA(9, 9, 11, 0);
   background: linear-gradient(90deg, rgba(9, 9, 11, 1) 0%, rgba(9, 9, 11, 0) 100%);
-  z-index: 9999;
+  z-index: 998;
 }
 
 .brands-cover::before {
@@ -213,7 +213,7 @@
   width: 300px;
   background: RGBA(9, 9, 11, 0);
   background: linear-gradient(270deg, rgba(9, 9, 11, 1) 0%, rgba(9, 9, 11, 0) 100%);
-  z-index: 9999;
+  z-index: 998;
 }
 
 /* Utilities */

@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from 'react'
-import Navbar from './navbar'
-import Sidebar from './sidebar'
-import Footer from './footer'
+import { useState } from 'react';
+import Navbar from './navbar';
+import Sidebar from './sidebar';
+import Footer from './footer';
 import { Toaster } from 'sonner';
-import useScrollToTop from '@/hooks/use-scroll-to-top'
+import useScrollToTop from '@/hooks/use-scroll-to-top';
 
-const Navigation = ({ children }: { children: React.ReactNode }) => {
+const Navigation = ({ children }: { children: React.ReactNode; }) => {
    const [sidebarOpen, setSidebarOpen] = useState(false);
 
    useScrollToTop();
@@ -20,7 +20,7 @@ const Navigation = ({ children }: { children: React.ReactNode }) => {
          <Footer />
          <Toaster position="top-center" richColors />
       </div>
-   )
-}
+   );
+};
 
-export default Navigation
+export default Navigation;

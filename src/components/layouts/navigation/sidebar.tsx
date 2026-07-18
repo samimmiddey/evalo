@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { cn } from "@/lib/utils";
 import { HomeIcon, MessageCircleIcon, StarIcon, TagIcon, X, BotMessageSquare } from "lucide-react";
@@ -6,8 +6,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface SidebarProps {
-   isOpen: boolean
-   onClose: () => void
+   isOpen: boolean;
+   onClose: () => void;
 }
 
 export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
@@ -18,7 +18,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       { label: "Featured", href: "/featured", icon: <StarIcon className="w-5 h-5" /> },
       { label: "Pricing", href: "/pricing", icon: <TagIcon className="w-5 h-5" /> },
       { label: "Contact", href: "/contact", icon: <MessageCircleIcon className="w-5 h-5" /> },
-   ]
+   ];
 
    return (
       <>
@@ -33,7 +33,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
          {/* Sidebar */}
          <aside
             className={cn(
-               "fixed left-0 top-0 h-dvh w-full bg-linear-to-b from-zinc-900 to-zinc-950 border-r border-white/8 z-999999 flex flex-col transform transition-transform duration-300 ease-in-out",
+               "fixed left-0 top-0 h-dvh w-full bg-linear-to-b from-zinc-900 to-zinc-950 border-r border-white/8 z-9999 flex flex-col transform transition-transform duration-300 ease-in-out",
                isOpen ? "translate-x-0" : "-translate-x-full",
                "md:hidden"
             )}
@@ -76,13 +76,13 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                            {icon}
                            {label}
                         </Link>
-                     )
+                     );
                   })}
                </div>
             </nav>
          </aside>
       </>
-   )
-}
+   );
+};
 
 export default Sidebar;

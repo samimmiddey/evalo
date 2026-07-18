@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { navigationData } from '@/data/navigation/navigation.data'
-import { Show, UserButton, useUser } from '@clerk/nextjs'
-import { BotMessageSquare, Menu } from 'lucide-react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import useMediaQuery from '@/hooks/use-media-query'
-import { authData } from '@/data/auth/auth.data'
+import { Button } from '@/components/ui/button';
+import { navigationData } from '@/data/navigation/navigation.data';
+import { Show, UserButton, useUser } from '@clerk/nextjs';
+import { BotMessageSquare, Menu } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import useMediaQuery from '@/hooks/use-media-query';
+import { authData } from '@/data/auth/auth.data';
 
 interface NavbarProps {
-   onMenuClick: () => void
+   onMenuClick: () => void;
 }
 
 const Navbar = ({ onMenuClick }: NavbarProps) => {
@@ -20,7 +20,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
    const mdWidth = useMediaQuery(767);
 
    return (
-      <div className='fixed top-0 left-0 right-0 h-15 2xl:h-16 border-b border-violet-100/7 backdrop-blur-xl z-99999'>
+      <div className='fixed top-0 left-0 right-0 h-15 2xl:h-16 border-b border-violet-100/7 backdrop-blur-xl z-999'>
          <div className="container h-full">
             <div className='flex items-center justify-between gap-4 h-full'>
                <div className='flex items-center gap-4'>
@@ -71,7 +71,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
             </div>
          </div>
       </div>
-   )
-}
+   );
+};
 
-export default Navbar
+export default Navbar;

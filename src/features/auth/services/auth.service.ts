@@ -1,5 +1,5 @@
 import { getClerkErrorMessage } from "@/utils/clerk-error";
-import { SignupParams, AuthResult, VerifyCodeParams, ResendCodeParams, SignInParams, SendResetCodeParams, VerifyResetCodeParams, SubmitNewPasswordParams, GoogleSsoParams, ResetSignUpParams, SsoCallbackParams } from "../models/auth.params";
+import { SignupParams, AuthResult, VerifyCodeParams, ResendCodeParams, SignInParams, SendResetCodeParams, VerifyResetCodeParams, SubmitNewPasswordParams, GoogleSsoParams, ResetSignUpParams, SsoCallbackParams } from "../models/auth.types";
 
 // Sign up with password
 export const signupWithPassword = async ({
