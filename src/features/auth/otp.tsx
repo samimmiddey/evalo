@@ -1,20 +1,20 @@
 "use client";
 
-import AuthContainer from './components/auth-container'
-import AuthHeader from './components/auth-header'
-import { authData } from '@/data/auth/auth.data'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { otpSchema, OtpSchemaTypes } from './schemas/auth.schema'
-import { useEffect, useState } from 'react'
-import useAuthStore from '@/store/auth-store'
+import AuthContainer from './components/auth-container';
+import AuthHeader from './components/auth-header';
+import { authData } from '@/data/auth/auth.data';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { otpSchema, OtpSchemaTypes } from './schemas/auth.schema';
+import { useEffect, useState } from 'react';
+import useAuthStore from '@/store/auth-store';
 import CustomSpinner from '@/components/common/custom-spinner';
-import { getClerkErrorMessage } from '@/utils/clerk-error';
 import { toast } from 'sonner';
 import { useSignUp } from '@clerk/nextjs';
+import { resetSignUp } from './services/auth.service';
 
 type SignUpType = ReturnType<typeof useSignUp>['signUp'];
 
@@ -52,7 +52,7 @@ const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
          reset();
       }
       setIsOtpVerifying(false);
-   }
+   };
 
    // Derived value from auth store
    const timeLeft = otpExpiresAt
@@ -84,11 +84,15 @@ const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
 
    // Reset OTP flow to go back to sign up page
    const onBack = async () => {
-      const { error } = await signUp.reset();
-      if (error) {
-         toast.error(getClerkErrorMessage(error));
+      if (!signUp) return;
+
+      const result = await resetSignUp({ signUp });
+
+      if (!result.success) {
+         toast.error(result.message);
          return;
       }
+
       setOtpExpiresAt(null);
       setHasRequestedResend(false);
    };
@@ -175,7 +179,7 @@ const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
          </div>
 
       </AuthContainer>
-   )
-}
+   );
+};
 
-export default OTP
+export default OTP;

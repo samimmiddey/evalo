@@ -16,10 +16,10 @@ import { authSchema, AuthSchemaTypes, OtpSchemaTypes } from './schemas/auth.sche
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import OTP from './otp';
-import { getClerkErrorMessage } from '@/utils/clerk-error';
 import { useState } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
 import ScreenLoader from '@/components/common/screen-loader';
+import { resendVerificationCode, signupWithPassword, verifyCode } from './services/auth.service';
 
 const SignUp = () => {
    const { signUp, errors, fetchStatus } = useSignUp();
@@ -44,70 +44,56 @@ const SignUp = () => {
    // Sign up with email and password
    const onSubmit = async (data: AuthSchemaTypes) => {
       setIsSigningUp(true);
-      const emailAddress = data.email
-      const password = data.password
 
-      const { error } = await signUp.password({
-         emailAddress,
-         password,
-      })
+      const result = await signupWithPassword({
+         signUp,
+         emailAddress: data.email,
+         password: data.password,
+      });
 
-      if (error) {
-         toast.error(getClerkErrorMessage(error));
+      if (!result.success) {
+         toast.error(result.message);
          setIsSigningUp(false);
          return;
-      }
+      };
 
-      if (!error) {
-         const { error: verificationError } = await signUp.verifications.sendEmailCode();
-
-         if (verificationError) {
-            toast.error(getClerkErrorMessage(verificationError));
-            setIsSigningUp(false);
-            return;
-         }
-
-         reset();
-      }
-
+      reset();
       setIsSigningUp(false);
-   }
+   };
 
    // Verify OTP
    const handleVerify = async (data: OtpSchemaTypes) => {
-      const code = data.code;
-
-      const { error } = await signUp.verifications.verifyEmailCode({
-         code,
+      const result = await verifyCode({
+         signUp,
+         code: data.code,
+         errors,
+         onNavigate: () => router.push('/dashboard'),
       });
 
-      if (error) {
-         toast.error(getClerkErrorMessage(error));
-         return false;
+      if (result.success) {
+         toast.success('Account created successfully');
+      } else {
+         toast.error(result.message);
       }
 
-      if (signUp.status === 'complete') {
-         await signUp.finalize({
-            navigate: () => router.push('/dashboard')
-         });
-         toast.success('Account created successfully');
-         return true;
-      } else {
-         toast.error(errors.global?.[0]?.message ?? 'Failed to sign up');
-         return false;
-      }
-   }
+      return result.success;
+   };
 
    // Resend OTP
    const resendCode = async () => {
-      const { error } = await signUp.verifications.sendEmailCode();
+      const result = await resendVerificationCode({ signUp });
 
-      if (error) {
-         toast.error(getClerkErrorMessage(error));
-      } else {
+      if (result.success) {
          toast.success('A new code has been sent');
+      } else {
+         toast.error(result.message);
       }
    };
+
+   // Show loader if clerk isn't loaded
+   if (!signUp) {
+      return <ScreenLoader text="Loading..." />;
+   }
 
    // Redirect to home page if user is already signed in or sign up is complete
    if (signUp.status === 'complete' || isSignedIn) {
@@ -129,7 +115,7 @@ const SignUp = () => {
                signUp={signUp}
             />
          </>
-      )
+      );
    }
 
    return (
@@ -215,7 +201,7 @@ const SignUp = () => {
          />
 
       </AuthContainer>
-   )
-}
+   );
+};
 
 export default SignUp;

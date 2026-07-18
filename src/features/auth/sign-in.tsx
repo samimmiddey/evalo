@@ -1,24 +1,25 @@
-"use client"
+"use client";
 
-import AuthContainer from './components/auth-container'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import GoogleButton from './components/google-button'
-import ContinueDivider from './components/continue-divider'
-import AuthHeader from './components/auth-header'
-import AuthFooter from './components/auth-footer'
-import { authData } from '@/data/auth/auth.data'
-import { useSignIn } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { authSchema, AuthSchemaTypes } from './schemas/auth.schema'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'sonner'
-import { getClerkErrorMessage } from '@/utils/clerk-error'
-import { useState } from 'react'
-import CustomSpinner from '@/components/common/custom-spinner'
+import AuthContainer from './components/auth-container';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import GoogleButton from './components/google-button';
+import ContinueDivider from './components/continue-divider';
+import AuthHeader from './components/auth-header';
+import AuthFooter from './components/auth-footer';
+import { authData } from '@/data/auth/auth.data';
+import { useSignIn } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { authSchema, AuthSchemaTypes } from './schemas/auth.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import { useState } from 'react';
+import CustomSpinner from '@/components/common/custom-spinner';
+import { signInWithPassword } from './services/auth.service';
+import ScreenLoader from '@/components/common/screen-loader';
 
 const SignIn = () => {
    const { signIn, errors, fetchStatus } = useSignIn();
@@ -42,31 +43,28 @@ const SignIn = () => {
    // Sign in with email and password
    const onSubmit = async (data: AuthSchemaTypes) => {
       setIsSigningIn(true);
-      const emailAddress = data.email;
-      const password = data.password;
 
-      const { error } = await signIn.password({
-         emailAddress,
-         password,
+      const result = await signInWithPassword({
+         signIn,
+         emailAddress: data.email,
+         password: data.password,
+         errors,
+         onNavigate: () => router.push('/dashboard'),
       });
 
-      if (error) {
-         toast.error(getClerkErrorMessage(error));
-         setIsSigningIn(false);
-         return;
-      };
-
-      if (signIn.status === 'complete') {
-         await signIn.finalize({
-            navigate: () => router.push('/dashboard')
-         });
+      if (result.success) {
          toast.success('Signed in successfully');
          reset();
       } else {
-         toast.error(errors.global?.[0]?.message ?? 'Failed to sign in');
-      }
+         toast.error(result.message);
+      };
 
       setIsSigningIn(false);
+   };
+
+   // Show loader if clerk isn't loaded
+   if (!signIn) {
+      return <ScreenLoader text="Loading..." />;
    }
 
    return (
@@ -154,7 +152,7 @@ const SignIn = () => {
          />
 
       </AuthContainer>
-   )
-}
+   );
+};
 
 export default SignIn;

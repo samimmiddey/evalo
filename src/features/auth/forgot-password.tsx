@@ -1,21 +1,21 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { useSignIn } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation'
-import AuthContainer from './components/auth-container'
-import AuthHeader from './components/auth-header'
-import { authData } from '@/data/auth/auth.data'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import CustomSpinner from '@/components/common/custom-spinner'
-import { useForm } from 'react-hook-form'
-import { forgotPasswordEmailSchema, ForgotPasswordSchemaEmailTypes } from './schemas/auth.schema'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { getClerkErrorMessage } from '@/utils/clerk-error'
-import { toast } from 'sonner'
-import ScreenLoader from '@/components/common/screen-loader'
+import React, { useState } from 'react';
+import { useSignIn } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import AuthContainer from './components/auth-container';
+import AuthHeader from './components/auth-header';
+import { authData } from '@/data/auth/auth.data';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import CustomSpinner from '@/components/common/custom-spinner';
+import { useForm } from 'react-hook-form';
+import { forgotPasswordEmailSchema, ForgotPasswordSchemaEmailTypes } from './schemas/auth.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import ScreenLoader from '@/components/common/screen-loader';
+import { sendResetCode, submitNewPassword, verifyResetCode } from './services/auth.service';
 
 export default function ForgotPassword() {
    const { signIn, fetchStatus } = useSignIn();
@@ -43,7 +43,7 @@ export default function ForgotPassword() {
    });
 
    // Step 1: Send the password reset code to the user's email
-   async function sendCode(e: React.FormEvent) {
+   async function handleSendCode(e: React.FormEvent) {
       e.preventDefault();
 
       const valid = await trigger('email');
@@ -53,20 +53,10 @@ export default function ForgotPassword() {
 
       const data = getValues();
 
-      const { error: createError } = await signIn.create({
-         identifier: data.email,
-      });
+      const result = await sendResetCode({ signIn, email: data.email });
 
-      if (createError) {
-         toast.error(getClerkErrorMessage(createError))
-         setIsSendingCode(false);
-         return;
-      }
-
-      const { error: sendCodeError } = await signIn.resetPasswordEmailCode.sendCode();
-
-      if (sendCodeError) {
-         toast.error(getClerkErrorMessage(sendCodeError))
+      if (!result.success) {
+         toast.error(result.message);
          setIsSendingCode(false);
          return;
       }
@@ -76,7 +66,7 @@ export default function ForgotPassword() {
    }
 
    // Step 2: Verify the code provided by the user
-   async function verifyCode(e: React.FormEvent) {
+   async function handleVerifyCode(e: React.FormEvent) {
       e.preventDefault();
 
       const valid = await trigger('code');
@@ -86,21 +76,17 @@ export default function ForgotPassword() {
 
       const data = getValues();
 
-      const { error } = await signIn.resetPasswordEmailCode.verifyCode({
-         code: data.code,
-      });
+      const result = await verifyResetCode({ signIn, code: data.code });
 
-      if (error) {
-         toast.error(getClerkErrorMessage(error))
-         setIsVerifyingCode(false);
-         return;
+      if (!result.success) {
+         toast.error(result.message);
       }
 
       setIsVerifyingCode(false);
    }
 
    // Step 3: Submit the new password
-   async function submitNewPassword(e: React.FormEvent) {
+   async function handleSubmitNewPassword(e: React.FormEvent) {
       e.preventDefault();
 
       const valid = await trigger('password');
@@ -110,45 +96,37 @@ export default function ForgotPassword() {
 
       const data = getValues();
 
-      const { error } = await signIn.resetPasswordEmailCode.submitPassword({
+      setIsCompleting(true);
+
+      const result = await submitNewPassword({
+         signIn,
          password: data.password,
-         // Optional: sign the user out of all other authenticated sessions
-         signOutOfOtherSessions: true,
-      })
-      if (error) {
-         toast.error(getClerkErrorMessage(error))
+         onNavigate: () => router.push('/'),
+      });
+
+      if (!result.success) {
+         setIsCompleting(false);
+         toast.error(result.message);
          setIsSubmittingPassword(false);
          return;
       }
 
-      if (signIn.status === 'complete') {
-         setIsCompleting(true);
-
-         const { error } = await signIn.finalize({
-            navigate: () => router.push('/'),
-         });
-
-         if (error) {
-            setIsCompleting(false);
-            toast.error(getClerkErrorMessage(error))
-            setIsSubmittingPassword(false);
-            return;
-         };
-
-         toast.success('Password reset successfully and signed you in');
-         setIsSubmittingPassword(false);
-      } else {
-         toast.error('Failed to reset password. Please try again');
-         setIsSubmittingPassword(false);
-      }
+      toast.success('Password reset successfully and signed you in');
+      setIsSubmittingPassword(false);
    }
 
+   // Check if clerk is loaded
+   if (!signIn) {
+      return <ScreenLoader text="Loading..." />;
+   }
+
+   // Determine the current step based on the sign-in status and whether the code has been sent
    const currentStep: "stepOne" | "stepTwo" | "stepThree" =
       signIn.status === 'needs_new_password'
          ? 'stepThree'
          : codeSent
             ? 'stepTwo'
-            : 'stepOne'
+            : 'stepOne';
 
    return (
       <>
@@ -166,7 +144,7 @@ export default function ForgotPassword() {
                <>
                   {/* Step 1 UI: Collect the user's email so you can send them a password reset code */}
                   {!codeSent && (
-                     <form onSubmit={e => void sendCode(e)} className="space-y-5">
+                     <form onSubmit={e => void handleSendCode(e)} className="space-y-5">
                         <div className="space-y-2 2xl:space-y-3">
                            <Label htmlFor="email">{authData.forgotPassword.stepOne.form.email.label}</Label>
                            <Input
@@ -204,7 +182,7 @@ export default function ForgotPassword() {
 
                   {/* Step 2 UI: Collect the code provided by the user */}
                   {codeSent && signIn.status !== 'needs_new_password' && (
-                     <form onSubmit={e => void verifyCode(e)} className="space-y-5">
+                     <form onSubmit={e => void handleVerifyCode(e)} className="space-y-5">
                         <div className="space-y-2 2xl:space-y-3">
                            <Label htmlFor="code">{authData.forgotPassword.stepTwo.form.code.label}</Label>
                            <Input
@@ -242,7 +220,7 @@ export default function ForgotPassword() {
 
                   {/* Step 3 UI: Collect the new password from the user */}
                   {signIn.status === 'needs_new_password' && (
-                     <form onSubmit={e => void submitNewPassword(e)} className="space-y-5">
+                     <form onSubmit={e => void handleSubmitNewPassword(e)} className="space-y-5">
                         <div className="space-y-2 2xl:space-y-3">
                            <Label htmlFor="password">{authData.forgotPassword.stepThree.form.password.label}</Label>
                            <Input
@@ -281,5 +259,5 @@ export default function ForgotPassword() {
             </AuthContainer>
          )}
       </>
-   )
+   );
 }

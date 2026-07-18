@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import { OAuthStrategy } from '@clerk/shared/types';
 import { toast } from 'sonner';
-import { getClerkErrorMessage } from '@/utils/clerk-error';
 import { useState } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
+import { signInWithGoogle } from '../services/auth.service';
 
 interface GoogleButtonProps {
    // pass either signUp or signIn depending on which page renders this
-   sso: (params: { strategy: OAuthStrategy; redirectCallbackUrl: string; redirectUrl: string }) => Promise<{ error: unknown }>;
+   sso: (params: { strategy: OAuthStrategy; redirectCallbackUrl: string; redirectUrl: string; }) => Promise<{ error: unknown; }>;
 }
 
 const GoogleButton = ({ sso }: GoogleButtonProps) => {
@@ -17,17 +17,14 @@ const GoogleButton = ({ sso }: GoogleButtonProps) => {
 
    const handleGoogleSignIn = async () => {
       setIsRedirecting(true);
-      const { error } = await sso({
-         strategy: 'oauth_google',
-         redirectCallbackUrl: '/sso-callback',
-         redirectUrl: '/',
-      });
 
-      if (error) {
-         toast.error(getClerkErrorMessage(error));
+      const result = await signInWithGoogle({ sso });
+
+      if (!result.success) {
+         toast.error(result.message);
          setIsRedirecting(false);
       }
-   }
+   };
 
    return (
       <Button
@@ -68,7 +65,7 @@ const GoogleButton = ({ sso }: GoogleButtonProps) => {
             </>
          )}
       </Button>
-   )
-}
+   );
+};
 
-export default GoogleButton
+export default GoogleButton;
