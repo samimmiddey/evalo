@@ -1,29 +1,24 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "motion/react";
-import { AlertOctagon, RotateCw, Home } from "lucide-react";
+import { Home, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PrimaryTitle from "@/components/common/primary-title";
 import PrimaryBody from "@/components/common/primary-body";
 
-const CustomError = ({
-   error,
-   reset,
-}: {
-   error: Error & { digest?: string; };
-   reset: () => void;
-}) => {
+const CustomNotFound = () => {
    return (
       <div className="px-6 relative flex min-h-[85vh] items-center justify-center overflow-hidden py-12">
-         {/* Huge Background Error Text */}
+         {/* Huge Background 404 */}
          <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden select-none">
             <motion.h1
                initial={{ opacity: 0, y: 50 }}
                animate={{ opacity: 0.04, y: 0 }}
                transition={{ duration: 1.2, ease: "easeOut" }}
-               className="text-[25vw] font-black leading-none tracking-tighter text-destructive"
+               className="text-[35vw] font-black leading-none tracking-tighter"
             >
-               ERROR
+               404
             </motion.h1>
          </div>
 
@@ -35,7 +30,7 @@ const CustomError = ({
                   opacity: [0.1, 0.2, 0.1],
                }}
                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-               className="h-[40vh] w-[40vh] rounded-full bg-destructive/30 blur-[100px] md:h-[60vh] md:w-[60vh]"
+               className="h-[40vh] w-[40vh] rounded-full bg-primary/30 blur-[100px] md:h-[60vh] md:w-[60vh]"
             />
          </div>
 
@@ -55,9 +50,9 @@ const CustomError = ({
                      damping: 15,
                      delay: 0.1,
                   }}
-                  className="relative z-10 flex size-24 items-center justify-center rounded-3xl border border-destructive/20 bg-background/60 shadow-2xl backdrop-blur-xl 2xl:size-32"
+                  className="relative z-10 flex size-24 items-center justify-center rounded-3xl border border-primary/20 bg-background/60 shadow-2xl backdrop-blur-xl 2xl:size-32"
                >
-                  <AlertOctagon className="size-10 text-destructive 2xl:size-14" />
+                  <Map className="size-10 text-primary 2xl:size-14" />
                </motion.div>
                {/* Animated Ripple Effects */}
                <style>{`
@@ -68,28 +63,24 @@ const CustomError = ({
                      }
                   }
                `}</style>
-               <div className="absolute inset-0 rounded-3xl border-2 border-destructive/40 animate-[custom-ping_3s_cubic-bezier(0,0,0.2,1)_infinite]" />
-               <div className="absolute inset-0 rounded-3xl border-2 border-destructive/40 animate-[custom-ping_3s_cubic-bezier(0,0,0.2,1)_1.5s_infinite]" />
+               <div className="absolute inset-0 rounded-3xl border-2 border-primary/40 animate-[custom-ping_3s_cubic-bezier(0,0,0.2,1)_infinite]" />
+               <div className="absolute inset-0 rounded-3xl border-2 border-primary/40 animate-[custom-ping_3s_cubic-bezier(0,0,0.2,1)_1.5s_infinite]" />
             </div>
 
             <div className="mb-10 flex flex-col gap-4 2xl:gap-6">
-               <PrimaryTitle text="Oops! Something went wrong" />
-               <PrimaryBody text={error.message || "We encountered an unexpected error while processing your request. Please try again."} />
+               <PrimaryTitle text="Looks like you're lost" />
+               <PrimaryBody text="The page you are looking for is missing in action. It might have been moved, deleted, or you may have mistyped the address." />
             </div>
 
             <div className="flex w-full flex-col items-center justify-center gap-4 sm:flex-row">
-               <Button onClick={() => reset()} size="lg" className="group relative px-8 w-full sm:w-auto">
-                  <RotateCw className="size-4 transition-transform duration-500 group-hover:rotate-180" />
-                  <span className="font-medium">Try Again</span>
+               <Button asChild size="lg" className="group relative w-full px-8 sm:w-auto">
+                  <Link href="/" className="flex items-center gap-2">
+                     <Home className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5" />
+                     <span className="font-medium">Back to Homepage</span>
+                  </Link>
                </Button>
-               <Button
-                  variant="outline"
-                  size="lg"
-                  className="group px-8 w-full sm:w-auto"
-                  onClick={() => window.location.href = '/'}
-               >
-                  <Home className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5" />
-                  <span className="font-medium">Go to Homepage</span>
+               <Button variant="outline" size="lg" className="w-full px-8 sm:w-auto" onClick={() => window.history.back()}>
+                  Go Back
                </Button>
             </div>
          </motion.div>
@@ -97,4 +88,4 @@ const CustomError = ({
    );
 };
 
-export default CustomError;
+export default CustomNotFound;
