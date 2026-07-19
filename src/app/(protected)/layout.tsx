@@ -4,7 +4,13 @@ import ScreenLoader from '@/components/common/screen-loader';
 
 const ProtectedLayout = ({ children }: { children: React.ReactNode; }) => {
    return (
-      <Suspense fallback={<ScreenLoader text="Preparing your workspace..." />}>
+      <Suspense
+         fallback={
+            <div className='s-padding-t'>
+               <ScreenLoader text="Preparing your workspace..." />
+            </div>
+         }
+      >
          <UserGate>
             {children}
          </UserGate>
