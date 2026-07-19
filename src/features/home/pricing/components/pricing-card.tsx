@@ -1,9 +1,12 @@
+"use client";
+
 import { motion } from 'motion/react';
 import { Check, Sparkles } from 'lucide-react';
 import { CheckoutButton, useSubscription } from '@clerk/nextjs/experimental';
 import { Plan } from '../models/pricing.types';
 import { Button } from '@/components/ui/button';
 import { Show } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
 interface PricingCardProps {
    i: number;
@@ -12,6 +15,8 @@ interface PricingCardProps {
 
 const PricingCard = ({ i, plan }: PricingCardProps) => {
    const { data: subscription, revalidate } = useSubscription();
+
+   const router = useRouter();
 
    const activeSubscription = subscription?.subscriptionItems.find(
       (item) => item.status === "active"
@@ -68,6 +73,23 @@ const PricingCard = ({ i, plan }: PricingCardProps) => {
                </div>
             </div>
 
+            {/* Checkout Button when signed out */}
+            <Show when='signed-out'>
+               <Button
+                  className={`w-full h-auto py-3.25 2xl:py-3.75 rounded-xl font-semibold font-outfit tracking-wide transition-all duration-300 mb-8 lg:mb-9 
+                     ${isPopular
+                        ? "bg-violet-600 hover:bg-violet-500 text-white shadow-[0_0_20px_rgba(124,58,237,0.3)]"
+                        : "bg-white/5 hover:bg-white/10 text-gray-200 border border-white/10"
+                     }`}
+                  onClick={() => {
+                     router.push('/sign-in');
+                  }}
+               >
+                  Get Started
+               </Button>
+            </Show>
+
+            {/* Checkout Button when signed in */}
             <Show when="signed-in">
                <CheckoutButton
                   for="user"
