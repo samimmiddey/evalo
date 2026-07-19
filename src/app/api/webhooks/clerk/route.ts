@@ -15,10 +15,10 @@ export async function POST(req: Request) {
    const payload = await req.text();
    const headerPayload = await headers();
 
-   const secret = process.env.CLERK_WEBHOOK_SECRET;
+   const secret = process.env.CLERK_WEBHOOK_USER_SECRET;
 
    if (!secret) {
-      throw new Error("Missing CLERK_WEBHOOK_SECRET");
+      throw new Error("Missing CLERK_WEBHOOK_USER_SECRET");
    };
 
    const wh = new Webhook(secret);
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
          'svix-signature': headerPayload.get('svix-signature')!
       }) as WebhookEvent;
    } catch {
-      return new Response('Invalid signature', { status: 400 })
+      return new Response('Invalid signature', { status: 400 });
    }
 
    if (evt.type === 'user.created') {
@@ -52,8 +52,9 @@ export async function POST(req: Request) {
                currentPlan: 'free',
                creditsLastAllocatedAt: new Date(),
             },
-         })
-      } catch {
+         });
+      } catch (error) {
+         console.error('Failed to handle user.created:', error);
          return new Response('Database error', { status: 500 });
       }
    }
