@@ -73,8 +73,13 @@ export async function POST(req: Request) {
          }
 
          const newPeriodStart = new Date(data.period_start);
-         const newCredits = PLAN_CREDITS[planSlug];
-         const rolledCredits = newCredits + (dbUser.credits ?? 0);
+         let rolledCredits = dbUser.credits ?? 0;
+
+         // Skip adding credits for the initial free subscription.
+         // The user.created webhook already allocated the free credits.
+         if (!(planSlug === "free" && dbUser.currentPlan === "free")) {
+            rolledCredits += PLAN_CREDITS[planSlug];
+         }
 
          await db.user.update({
             where: { clerkUserId },
