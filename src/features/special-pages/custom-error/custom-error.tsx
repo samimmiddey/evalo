@@ -43,7 +43,7 @@ const CustomError = ({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 mx-auto flex w-full max-w-[650px] flex-col items-center justify-center text-center 2xl:max-w-[800px]"
+            className="relative z-10 mx-auto flex w-full max-w-162.5 flex-col items-center justify-center text-center 2xl:max-w-200"
          >
             <div className="relative mb-10 flex items-center justify-center">
                <motion.div

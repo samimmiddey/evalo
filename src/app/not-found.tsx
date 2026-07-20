@@ -1,4 +1,4 @@
-import CustomNotFound from '@/features/custom-not-found/custom-not-found';
+import CustomNotFound from '@/features/special-pages/custom-not-found/custom-not-found';
 
 const NotFoundPage = () => {
    return (

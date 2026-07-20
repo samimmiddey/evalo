@@ -1,6 +1,6 @@
 "use client";
 
-import CustomError from "@/features/custom-error/custom-error";
+import CustomError from "@/features/special-pages/custom-error/custom-error";
 
 export default function ErrorPage({
    error,
