@@ -1,4 +1,4 @@
-import { checkUser } from '@/services/user.service';
+import { checkUser } from '@/services/server/user.service';
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { customDelay } from '@/utils/custom-delay';

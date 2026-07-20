@@ -23,7 +23,7 @@ export const checkUser = async () => {
       return loggedInUser;
    } catch (error: unknown) {
       if (error instanceof Error) {
-         throw new Error(error.message);
+         throw error;
       }
 
       throw new Error("Failed to check user");
