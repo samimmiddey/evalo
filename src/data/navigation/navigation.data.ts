@@ -6,8 +6,8 @@ export const navigationData: NavigationItem[] = [
       href: "/",
    },
    {
-      name: "Featured",
-      href: "/featured",
+      name: "Explore",
+      href: "/explore",
    },
    {
       name: "Pricing",
@@ -17,7 +17,7 @@ export const navigationData: NavigationItem[] = [
       name: "Contact",
       href: "/contact",
    }
-]
+];
 
 export const footerData: FooterDataTypes = {
    description: "Evaluate talent with clarity and confidence. The best platform for modern technical interviews and talent assessment.",
@@ -25,7 +25,7 @@ export const footerData: FooterDataTypes = {
       {
          title: "Product",
          links: [
-            { name: "Features", href: "/#features" },
+            { name: "Explore", href: "/#explore" },
             { name: "Pricing", href: "/#pricing" },
             { name: "Testimonials", href: "/#testimonials" },
          ]
@@ -45,4 +45,4 @@ export const footerData: FooterDataTypes = {
       { icon: 'github', href: '' },
       { icon: 'linkedin', href: '' }
    ]
-}
+};

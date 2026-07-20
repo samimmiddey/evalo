@@ -7,7 +7,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode; }) => {
       <Suspense
          fallback={
             <div className='s-padding-t'>
-               <ScreenLoader text="Preparing your workspace..." />
+               <ScreenLoader text="Loading..." />
             </div>
          }
       >

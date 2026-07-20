@@ -2,7 +2,7 @@
 
 import CustomError from "@/features/custom-error/custom-error";
 
-export default function Error({
+export default function ErrorPage({
    error,
    reset,
 }: {
