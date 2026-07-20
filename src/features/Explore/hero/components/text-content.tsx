@@ -29,7 +29,7 @@ const TextContent = () => {
                      delay: index * 0.08,
                      ease: "easeInOut",
                   }}
-                  className="mr-3 inline-block"
+                  className="mr-2.5 sm:mr-3 inline-block"
                >
                   {word}
                </motion.span>

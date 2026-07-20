@@ -1,31 +1,29 @@
-"use client"
+"use client";
 
-import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import TextContent from "./components/text-content";
 import { ExpertCardsPreview } from "./components/expert-cards-preview";
 
 const Hero = () => {
    return (
-      <div className="-mt-16">
-         <div className="relative hero-cover [&_.animate-first]:animation-duration-[60s] [&_.animate-second]:animation-duration-[65s] [&_.animate-third]:animation-duration-[70s] [&_.animate-fourth]:animation-duration-[75s] [&_.animate-fifth]:animation-duration-[80s]">
-            <BackgroundGradientAnimation
-               containerClassName="w-full h-auto min-h-0"
-               gradientBackgroundStart="rgb(12, 10, 20)"
-               gradientBackgroundEnd="rgb(8, 6, 18)"
-               firstColor="124, 58, 237"     // violet-600
-               secondColor="139, 92, 246"    // violet-500
-               thirdColor="168, 85, 247"     // purple-500
-               fourthColor="79, 70, 229"     // indigo-600
-               fifthColor="109, 40, 217"     // violet-700
-               pointerColor="139, 92, 246"   // violet-500
-            >
-               <div className="mt-15 2xl:mt-16 s-padding relative z-20">
-                  <div className="container">
-                     <TextContent />
-                     <ExpertCardsPreview />
-                  </div>
-               </div>
-            </BackgroundGradientAnimation>
+      <div className="-mt-16 relative overflow-hidden bg-[#0A0812]">
+         {/* Premium geometric grid pattern */}
+         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-size[32px_32px] pointer-events-none" />
+
+         {/* Elegant mask to fade grid edges */}
+         <div className="absolute inset-0 bg-linear-to-b from-transparent via-[#0A0812]/50 to-[#0A0812] pointer-events-none" />
+
+         {/* Rich radial ambient glows for inner page depth */}
+         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-87.5 rounded-full bg-violet-600/15 blur-[120px] pointer-events-none" />
+         <div className="absolute top-12 left-1/2 -translate-x-1/2 w-225 h-112.5 rounded-full bg-indigo-500/10 blur-[150px] pointer-events-none" />
+
+         {/* Subtle top border highlight */}
+         <div className="absolute top-16 left-0 right-0 h-px bg-linear-to-r from-transparent via-violet-500/20 to-transparent pointer-events-none" />
+
+         <div className="mt-15 2xl:mt-16 s-padding relative z-20">
+            <div className="container">
+               <TextContent />
+               <ExpertCardsPreview />
+            </div>
          </div>
       </div>
    );
