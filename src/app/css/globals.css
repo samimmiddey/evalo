@@ -227,3 +227,8 @@
 .no-visible-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.icon-size {
+  height: 20px;
+  width: 20px;
+}

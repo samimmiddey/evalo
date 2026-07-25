@@ -11,9 +11,10 @@ import { useRouter } from 'next/navigation';
 interface PricingCardProps {
    i: number;
    plan: Plan;
+   disableAnimation?: boolean;
 }
 
-const PricingCard = ({ i, plan }: PricingCardProps) => {
+const PricingCard = ({ i, plan, disableAnimation = false }: PricingCardProps) => {
    const { data: subscription, revalidate } = useSubscription();
 
    const router = useRouter();
@@ -34,11 +35,11 @@ const PricingCard = ({ i, plan }: PricingCardProps) => {
    return (
       <motion.div
          key={i}
-         initial={{ opacity: 0, y: 30 }}
+         initial={disableAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
          whileInView={{ opacity: 1, y: 0 }}
          viewport={{ once: true, margin: "-50px", amount: 0.1 }}
-         transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
-         className={`group relative flex flex-col h-full rounded-3xl bg-surface-dark/90 border transition-all duration-500 hover:-translate-y-2 
+         transition={disableAnimation ? { duration: 0 } : { duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
+         className={`group relative flex flex-col h-full rounded-3xl bg-surface-dark/90 border transition-all duration-500 ${disableAnimation ? '' : 'hover:-translate-y-2'} 
          ${isPopular
                ? 'border-violet-500/50 shadow-glow-violet scale-100 lg:scale-105 z-10'
                : 'border-white/5 hover:border-violet-500/30 mt-0 lg:mt-4'}`}
@@ -47,7 +48,7 @@ const PricingCard = ({ i, plan }: PricingCardProps) => {
          {isPopular && <div className="absolute inset-0 bg-linear-to-b from-violet-600/20 via-transparent to-transparent opacity-50 pointer-events-none rounded-3xl" />}
 
          {/* Ambient Glow */}
-         {isPopular && <div className="absolute top-0 right-25 lg:right-0 h-[200px] lg:h-[300px] 2xl:w-[400px] w-[200px] lg:w-[300px] 2xl:h-[400px] rounded-full blur-[100px] bg-violet-500/20 -translate-y-1/2 translate-x-1/3 pointer-events-none" />}
+         {isPopular && <div className="absolute top-0 right-25 lg:right-0 h-50 lg:h-75 2xl:w-100 w-50 lg:w-75 2xl:h-100 rounded-full blur-[100px] bg-violet-500/20 -translate-y-1/2 translate-x-1/3 pointer-events-none" />}
 
          <div className="relative z-10 flex flex-col grow p-7 lg:p-7.5 2xl:p-9">
             {isPopular && (

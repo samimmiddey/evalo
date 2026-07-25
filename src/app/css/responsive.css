@@ -36,6 +36,12 @@
    .brands-cover::before {
       width: 250px;
    }
+
+
+   .icon-size {
+      height: 16px;
+      width: 16px;
+   }
 }
 
 /* XL */

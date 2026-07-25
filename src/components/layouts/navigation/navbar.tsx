@@ -3,11 +3,14 @@
 import { Button } from '@/components/ui/button';
 import { navigationData } from '@/data/navigation/navigation.data';
 import { Show, UserButton, useUser } from '@clerk/nextjs';
-import { BotMessageSquare, Menu } from 'lucide-react';
+import { BotMessageSquare, CalendarDays, Menu, Users } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import useMediaQuery from '@/hooks/use-media-query';
 import { authData } from '@/data/auth/auth.data';
+import { useDbUser } from '@/hooks/use-db-user';
+import PrimaryBody from '@/components/common/primary-body';
+import CreditButton from './components/credit-button';
 
 interface NavbarProps {
    onMenuClick: () => void;
@@ -15,6 +18,7 @@ interface NavbarProps {
 
 const Navbar = ({ onMenuClick }: NavbarProps) => {
    const { isLoaded } = useUser();
+   const { isLoading: isUserLoading, user, error: userError } = useDbUser();
 
    const pathname = usePathname();
    const mdWidth = useMediaQuery(767);
@@ -51,6 +55,52 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                         <Button variant="white" size="lg">Get Started</Button>
                      </Link>
                   </Show>
+                  <div className="flex items-center gap-2 mr-2">
+                     {
+                        isUserLoading ? <div className="h-8 w-25 rounded-sm bg-zinc-800 animate-pulse" /> : (
+                           <Show when='signed-in'>
+                              {/* Dashboard Button */}
+                              {
+                                 user?.role === 'INTERVIEWER' && (
+                                    <Link href='/dashboard'>
+                                       <Button variant="ghost" size="lg">Dashboard</Button>
+                                    </Link>
+                                 )
+                              }
+
+                              {/* Appointments and Explore Buttons */}
+                              {
+                                 user?.role === 'INTERVIEWEE' && (
+                                    <>
+                                       <Link href='/explore'>
+                                          <Button variant="ghost" size="lg">
+                                             <Users className='icon-size' />
+                                             <span className="max-sm:hidden">Explore</span>
+                                          </Button>
+                                       </Link>
+                                       <Link href='/appointments'>
+                                          <Button variant="white" size="lg">
+                                             <CalendarDays className='icon-size' />
+                                             <span className="max-sm:hidden">Appointments</span>
+                                          </Button>
+                                       </Link>
+                                    </>
+                                 )
+                              }
+
+                              {/* Credits Button */}
+                              <CreditButton
+                                 role={user?.role}
+                                 credits={user?.credits}
+                              />
+
+                           </Show>
+                        )
+                     }
+
+                     {/* Error */}
+                     {userError && <PrimaryBody className='text-red-500 text-sm!' text={userError} />}
+                  </div>
                   {!isLoaded ? (
                      <div className="h-8 w-8 rounded-full bg-zinc-800 animate-pulse" />
                   ) : (
