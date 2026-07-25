@@ -1,15 +1,25 @@
 'use client';
 
-import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, Briefcase } from 'lucide-react';
 import OnboardingContainer from './components/onboarding-container';
 import OnboardingHeader from './components/onboarding-header';
 import IntervieweeTab from './components/interviewee-tab';
 import InterviewerTab from './components/interviewer-tab';
+import { FormProvider, useForm } from 'react-hook-form';
+import { onboardingSchema, OnboardingSchemaTypes } from './schemas/onboarding.schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { defaultValues, onboardingData } from '@/data/onboarding/onboarding.data';
 
 const Onboarding = () => {
-   const [activeRole, setActiveRole] = useState<'interviewee' | 'interviewer'>('interviewee');
+   const methods = useForm<OnboardingSchemaTypes>({
+      resolver: zodResolver(onboardingSchema),
+      defaultValues
+   });
+
+   const onFormSubmit = (data: OnboardingSchemaTypes) => {
+      console.log(data);
+   };
 
    return (
       <div className="relative min-h-screen flex items-center justify-center bg-zinc-950 px-4 py-10 overflow-hidden">
@@ -32,42 +42,54 @@ const Onboarding = () => {
                <OnboardingHeader />
 
                {/* Role tabs */}
-               <Tabs
-                  value={activeRole}
-                  onValueChange={(val) => setActiveRole(val as 'interviewee' | 'interviewer')}
-                  className="w-full space-y-4"
-               >
-                  <TabsList className="w-full grid grid-cols-2 h-12! bg-zinc-950/60 p-1 rounded-xl border border-white/10">
-                     <TabsTrigger
-                        value="interviewee"
-                        className="h-full rounded-lg font-medium text-sm flex items-center justify-center gap-2 cursor-pointer data-[state=active]:bg-violet-500/20 data-[state=active]:text-violet-300 data-[state=active]:border-violet-500/40 transition-all"
+               <FormProvider {...methods}>
+                  <form
+                     onSubmit={e => {
+                        void methods.handleSubmit(onFormSubmit)(e);
+                     }}
+                  >
+                     <Tabs
+                        value={methods.watch('role')}
+                        onValueChange={(val) => methods.setValue('role', val as 'interviewee' | 'interviewer')}
+                        className="w-full space-y-4"
                      >
-                        <User className="w-4 h-4 text-violet-300" />
-                        <span>Interviewee</span>
-                     </TabsTrigger>
+                        <TabsList className="w-full grid grid-cols-2 h-12! bg-zinc-950/60 p-1 rounded-xl border border-white/10">
+                           {
+                              onboardingData.tabs.map((tab) => {
+                                 return (
+                                    <TabsTrigger
+                                       key={tab.value}
+                                       value={tab.value}
+                                       className="h-full rounded-lg font-medium text-sm flex items-center justify-center gap-2 cursor-pointer data-[state=active]:bg-violet-500/20 data-[state=active]:text-violet-300 data-[state=active]:border-violet-500/40 transition-all"
+                                    >
+                                       <tab.icon className="w-4 h-4 text-violet-300" />
+                                       <span>{tab.text}</span>
+                                    </TabsTrigger>
+                                 );
+                              })
+                           }
+                        </TabsList>
+                        <TabsContent value={onboardingData.tabs[0].value} className="mt-0 mb-2 focus-visible:outline-none">
+                           <IntervieweeTab />
+                        </TabsContent>
 
-                     <TabsTrigger
-                        value="interviewer"
-                        className="h-full rounded-lg font-medium text-sm flex items-center justify-center gap-2 cursor-pointer data-[state=active]:bg-violet-500/20 data-[state=active]:text-violet-300 data-[state=active]:border-violet-500/40 transition-all"
+                        <TabsContent value={onboardingData.tabs[1].value} className="mt-0 mb-2 focus-visible:outline-none">
+                           <InterviewerTab />
+                        </TabsContent>
+                     </Tabs>
+
+                     {/* CTA */}
+                     <Button
+                        className="w-full h-11 rounded-lg flex items-center justify-center gap-2 group transition-all mt-4"
+                        size="lg"
+                        type="submit"
+                        variant='white'
                      >
-                        <Briefcase className="w-4 h-4 text-violet-300" />
-                        <span className='font-inter'>Interviewer</span>
-                     </TabsTrigger>
-                  </TabsList>
-
-
-                  <TabsContent value="interviewee" className="mt-0 mb-2 focus-visible:outline-none">
-                     <IntervieweeTab
-                        onChangeRole={() => setActiveRole('interviewer')}
-                     />
-                  </TabsContent>
-
-                  <TabsContent value="interviewer" className="mt-0 mb-2 focus-visible:outline-none">
-                     <InterviewerTab
-                        onChangeRole={() => setActiveRole('interviewee')}
-                     />
-                  </TabsContent>
-               </Tabs>
+                        <span>{onboardingData.formBtnText}</span>
+                        <onboardingData.formBtnIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                     </Button>
+                  </form>
+               </FormProvider>
 
             </OnboardingContainer>
          </div>

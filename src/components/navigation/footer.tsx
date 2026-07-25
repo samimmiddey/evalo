@@ -1,9 +1,9 @@
-import { BotMessageSquare } from 'lucide-react'
-import Link from 'next/link'
-import { footerData } from '@/data/navigation/navigation.data'
+import { BotMessageSquare } from 'lucide-react';
+import Link from 'next/link';
+import { footerData } from '@/data/navigation/navigation.data';
 
 const Footer = () => {
-   const SocialIcon = ({ type }: { type: string }) => {
+   const SocialIcon = ({ type }: { type: string; }) => {
       switch (type) {
          case 'twitter': return (
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -25,13 +25,13 @@ const Footer = () => {
          );
          default: return null;
       }
-   }
+   };
 
    return (
       <footer className="relative s-padding-t pb-6 s-margin-t overflow-hidden border-t border-white/5">
          {/* Deep background ambient glows */}
-         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[120px] pointer-events-none" />
-         <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-fuchsia-600/10 rounded-full blur-[120px] pointer-events-none" />
+         <div className="absolute top-0 left-1/4 w-150 h-150 bg-violet-600/10 rounded-full blur-[120px] pointer-events-none" />
+         <div className="absolute bottom-0 right-1/4 w-150 h-150 bg-fuchsia-600/10 rounded-full blur-[120px] pointer-events-none" />
 
          {/* Top glassmorphic gradient line */}
          <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-violet-500/50 to-transparent" />
@@ -118,7 +118,7 @@ const Footer = () => {
             </div>
          </div>
       </footer>
-   )
-}
+   );
+};
 
-export default Footer
+export default Footer;

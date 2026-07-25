@@ -20,6 +20,7 @@ import { useState } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
 import ScreenLoader from '@/components/common/screen-loader';
 import { resendVerificationCode, signupWithPassword, verifyCode } from './services/auth.service';
+import InputError from '@/components/common/input-error';
 
 const SignUp = () => {
    const { signUp, errors, fetchStatus } = useSignUp();
@@ -143,9 +144,7 @@ const SignUp = () => {
                />
                {
                   formErrors[authData.signUp.form.email.name] && (
-                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-1.5">
-                        {formErrors[authData.signUp.form.email.name]?.message}
-                     </p>
+                     <InputError message={formErrors[authData.signUp.form.email.name]?.message as string} />
                   )
                }
             </div>
@@ -158,9 +157,7 @@ const SignUp = () => {
                />
                {
                   formErrors[authData.signUp.form.password.name] && (
-                     <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-1.5">
-                        {formErrors[authData.signUp.form.password.name]?.message}
-                     </p>
+                     <InputError message={formErrors[authData.signUp.form.password.name]?.message as string} />
                   )
                }
             </div>

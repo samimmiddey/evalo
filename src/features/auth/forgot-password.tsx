@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import ScreenLoader from '@/components/common/screen-loader';
 import { sendResetCode, submitNewPassword, verifyResetCode } from './services/auth.service';
+import InputError from '@/components/common/input-error';
 
 export default function ForgotPassword() {
    const { signIn, fetchStatus } = useSignIn();
@@ -154,9 +155,7 @@ export default function ForgotPassword() {
                            />
                            {
                               formErrors[authData.forgotPassword.stepOne.form.email.name] && (
-                                 <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-1.5">
-                                    {formErrors[authData.forgotPassword.stepOne.form.email.name]?.message}
-                                 </p>
+                                 <InputError message={formErrors[authData.forgotPassword.stepOne.form.email.name]?.message as string} />
                               )
                            }
                         </div>
@@ -192,9 +191,7 @@ export default function ForgotPassword() {
                            />
                            {
                               formErrors[authData.forgotPassword.stepTwo.form.code.name] && (
-                                 <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-1.5">
-                                    {formErrors[authData.forgotPassword.stepTwo.form.code.name]?.message}
-                                 </p>
+                                 <InputError message={formErrors[authData.forgotPassword.stepTwo.form.code.name]?.message as string} />
                               )
                            }
                         </div>
@@ -230,9 +227,7 @@ export default function ForgotPassword() {
                            />
                            {
                               formErrors[authData.forgotPassword.stepThree.form.password.name] && (
-                                 <p className="text-red-400 text-xs 2xl:text-sm -mt-0.5 2xl:-mt-1.5">
-                                    {formErrors[authData.forgotPassword.stepThree.form.password.name]?.message}
-                                 </p>
+                                 <InputError message={formErrors[authData.forgotPassword.stepThree.form.password.name]?.message as string} />
                               )
                            }
                         </div>

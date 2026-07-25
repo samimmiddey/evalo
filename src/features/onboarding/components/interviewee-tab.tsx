@@ -1,15 +1,22 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
 import SelectedRoleBadge from './selected-role-badge';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { useFormContext } from 'react-hook-form';
+import { onboardingData } from '@/data/onboarding/onboarding.data';
+import NoDataCard from '@/components/common/no-data-card';
+import InputError from '@/components/common/input-error';
 
-interface Props {
-   onChangeRole: () => void;
-}
+const IntervieweeTab = () => {
+   const methods = useFormContext();
+   const data = onboardingData.intervieweeTab;
 
-const IntervieweeTab = ({ onChangeRole }: Props) => {
+   if (!data) {
+      return <NoDataCard text="No Data Available" />;
+   }
+
    return (
       <motion.div
          initial={{ opacity: 0, y: 10 }}
@@ -18,46 +25,61 @@ const IntervieweeTab = ({ onChangeRole }: Props) => {
          className="space-y-6"
       >
          {/* Selected role */}
-         <SelectedRoleBadge role="Interviewee" onChangeRole={onChangeRole} />
+         <SelectedRoleBadge
+            role={data.selectedRoleBadge.title}
+            onChangeRole={() => methods.setValue('role', data.selectedRoleBadge.value)}
+         />
 
          {/* Context card */}
          <div className="rounded-xl border border-violet-500/20 bg-violet-500/5 p-4 2xl:p-5 space-y-3.5 relative overflow-hidden">
             <div className="flex items-center gap-2.5">
                <div className="w-8 h-8 rounded-lg bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-300">
-                  <Sparkles className="w-4 h-4" />
+                  <data.contextCard.icon className="w-4 h-4" />
                </div>
                <div>
-                  <h4 className="text-sm font-semibold text-white">Interviewee Experience</h4>
-                  <p className="text-xs text-zinc-400">Everything you need to practice and stand out</p>
+                  <h4 className="text-sm font-semibold text-white">{data.contextCard.title}</h4>
+                  <p className="text-xs text-zinc-400">{data.contextCard.description}</p>
                </div>
             </div>
 
             <ul className="space-y-2 pt-2 border-t border-white/5">
-               <li className="flex items-center gap-2 text-xs text-zinc-300">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-violet-400 shrink-0" />
-                  <span>AI-powered interactive mock technical interviews</span>
-               </li>
-               <li className="flex items-center gap-2 text-xs text-zinc-300">
-                  <Zap className="w-3.5 h-3.5 text-violet-400 shrink-0" />
-                  <span>Real-time feedback & instant candidate skill analytics</span>
-               </li>
-               <li className="flex items-center gap-2 text-xs text-zinc-300">
-                  <ShieldCheck className="w-3.5 h-3.5 text-violet-400 shrink-0" />
-                  <span>Direct candidate profile visibility for hiring managers</span>
-               </li>
+               {
+                  data.contextCard.list.map((item) => (
+                     <li key={item.title} className="flex items-center gap-2 text-xs text-zinc-300">
+                        <item.icon className="w-3.5 h-3.5 text-violet-400 shrink-0" />
+                        <span>{item.title}</span>
+                     </li>
+                  ))
+               }
             </ul>
          </div>
 
-         {/* CTA */}
-         <Button
-            className="w-full h-11 rounded-lg flex items-center justify-center gap-2 group transition-all"
-            size="lg"
-            type="button"
-            variant='white'
-         >
-            <span>Go to Dashboard</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-         </Button>
+         {/* Form fields */}
+         <div className="space-y-6">
+            {
+               data.formFields.map((field) => {
+                  return (
+                     <div key={field.name} className="flex flex-col gap-2">
+                        <Label htmlFor={field.name} className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
+                           <field.icon className="w-3.5 h-3.5 text-violet-400" />
+                           {field.label}
+                        </Label>
+                        <Input
+                           {...methods.register(field.name)}
+                           type={field.type}
+                           placeholder={field.placeholder}
+                           className="text-sm!"
+                        />
+                        {
+                           methods.formState.errors[field.name] && (
+                              <InputError message={methods.formState.errors[field.name]?.message as string} />
+                           )
+                        }
+                     </div>
+                  );
+               })
+            }
+         </div>
       </motion.div>
    );
 };

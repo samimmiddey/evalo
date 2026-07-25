@@ -1,148 +1,139 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { Briefcase, Building2, Clock, Compass, FileText, ArrowRight } from 'lucide-react';
 import SelectedRoleBadge from './selected-role-badge';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useFormContext } from 'react-hook-form';
+import { DOMAINS, onboardingData, YEARS_OF_EXPERIENCE } from '@/data/onboarding/onboarding.data';
+import NoDataCard from '@/components/common/no-data-card';
+import InputError from '@/components/common/input-error';
+import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
 
-const YEARS_OF_EXPERIENCE = [
-   '1 yr', '2 yrs', '3 yrs', '4 yrs', '5 yrs',
-   '6 yrs', '7 yrs', '8 yrs', '9 yrs', '10+ yrs',
-];
+const InterviewerTab = () => {
+   const methods = useFormContext<OnboardingSchemaTypes>();
+   const data = onboardingData.interviewerTab;
 
-const DOMAINS = [
-   'Frontend', 'Backend', 'Full Stack', 'DevOps',
-   'Mobile', 'Data Science', 'ML / AI', 'Security', 'QA', 'Cloud',
-];
-
-interface Props {
-   onChangeRole: () => void;
-}
-
-const InterviewerTab = ({ onChangeRole }: Props) => {
-   const [exp, setExp] = useState('5 yrs');
-   const [domain, setDomain] = useState('Full Stack');
+   if (!true) {
+      return <NoDataCard text="No Data Available" />;
+   }
 
    return (
       <motion.div
          initial={{ opacity: 0, y: 10 }}
          animate={{ opacity: 1, y: 0 }}
          transition={{ duration: 0.3 }}
-         className="space-y-5"
+         className="space-y-6"
       >
          {/* Selected role badge */}
-         <SelectedRoleBadge role="Interviewer" onChangeRole={onChangeRole} />
+         <SelectedRoleBadge
+            role={data.selectedRoleBadge.title}
+            onChangeRole={() => methods.setValue('role', data.selectedRoleBadge.value as 'interviewee' | 'interviewer')}
+         />
 
-         {/* Form */}
-         <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+         {/* Form fields */}
+         <div className="space-y-4">
 
             {/* Designation + Company */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-               <div className="space-y-2">
-                  <Label htmlFor="designation" className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
-                     <Briefcase className="w-3.5 h-3.5 text-violet-400" />
-                     Designation
-                  </Label>
-                  <Input
-                     id="designation"
-                     type="text"
-                     placeholder="e.g. Senior Tech Lead"
-                     className="text-sm!"
-                  />
-               </div>
-               <div className="space-y-2">
-                  <Label htmlFor="company" className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
-                     <Building2 className="w-3.5 h-3.5 text-violet-400" />
-                     Company
-                  </Label>
-                  <Input
-                     id="company"
-                     type="text"
-                     placeholder="e.g. Acme Inc or Freelance"
-                     className="text-sm!"
-                  />
-               </div>
-            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3.5 gap-y-4.5">
 
-            {/* Years of Experience */}
-            <div className="space-y-2">
-               <Label className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-violet-400" />
-                  Years of Experience
-               </Label>
-               <ToggleGroup
-                  type="single"
-                  value={exp}
-                  onValueChange={(val) => val && setExp(val)}
-                  className="flex flex-wrap gap-1.5 w-full justify-start"
-               >
-                  {YEARS_OF_EXPERIENCE.map((year) => (
-                     <ToggleGroupItem
-                        key={year}
-                        value={year}
-                        aria-label={year}
-                        className="text-xs h-7 px-3.5 rounded-full border border-white/10 bg-zinc-950/40 text-zinc-300 hover:bg-white/5 hover:text-white data-[state=on]:bg-violet-500/20 data-[state=on]:border-violet-500/50 data-[state=on]:text-violet-300 data-[state=on]:shadow-[0_0_12px_rgba(139,92,246,0.2)] transition-all cursor-pointer"
+               {
+                  data.formFields.map((field) => (
+                     <div
+                        key={field.name}
+                        className={`flex flex-col gap-2 ${field.type === "chips" || field.type === "textarea"
+                           ? "sm:col-span-2"
+                           : ""
+                           }`}
                      >
-                        {year}
-                     </ToggleGroupItem>
-                  ))}
-               </ToggleGroup>
-            </div>
+                        <Label htmlFor={field.name} className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
+                           <field.icon className="w-3.5 h-3.5 text-violet-400" />
+                           {field.label}
+                        </Label>
 
-            {/* Domain */}
-            <div className="space-y-2">
-               <Label className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
-                  <Compass className="w-3.5 h-3.5 text-violet-400" />
-                  Domain Expertise
-               </Label>
-               <ToggleGroup
-                  type="single"
-                  value={domain}
-                  onValueChange={(val) => val && setDomain(val)}
-                  className="flex flex-wrap gap-1.5 w-full justify-start"
-               >
-                  {DOMAINS.map((item) => (
-                     <ToggleGroupItem
-                        key={item}
-                        value={item}
-                        aria-label={item}
-                        className="text-xs h-7 px-3.5 rounded-full border border-white/10 bg-zinc-950/40 text-zinc-300 hover:bg-white/5 hover:text-white data-[state=on]:bg-violet-500/20 data-[state=on]:border-violet-500/50 data-[state=on]:text-violet-300 data-[state=on]:shadow-[0_0_12px_rgba(139,92,246,0.2)] transition-all cursor-pointer"
-                     >
-                        {item}
-                     </ToggleGroupItem>
-                  ))}
-               </ToggleGroup>
-            </div>
+                        {/* Text Input */}
+                        {
+                           (field.type === 'text' || field.type === 'number') && (
+                              <Input
+                                 {...methods.register(field.name as keyof OnboardingSchemaTypes)}
+                                 type={field.type}
+                                 placeholder={field.placeholder}
+                                 className="text-sm!"
+                              />
+                           )
+                        }
 
-            {/* About yourself */}
-            <div className="space-y-2">
-               <Label htmlFor="about" className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-violet-400" />
-                  About yourself
-               </Label>
-               <Textarea
-                  id="about"
-                  placeholder="Share your background, expertise, and what you look for in candidates..."
-                  className="min-h-22 text-sm! resize-none"
-               />
-            </div>
+                        {/* Select Menu */}
+                        {
+                           field.type === 'select' && (
+                              <Select
+                                 value={methods.watch(field.name as keyof OnboardingSchemaTypes)}
+                                 onValueChange={val => methods.setValue(field.name as keyof OnboardingSchemaTypes, val, { shouldValidate: true })}
+                              >
+                                 <SelectTrigger className="w-full">
+                                    <SelectValue placeholder={YEARS_OF_EXPERIENCE[0].label} />
+                                 </SelectTrigger>
+                                 <SelectContent>
+                                    <SelectGroup>
+                                       <SelectLabel>{field.label}</SelectLabel>
+                                       {YEARS_OF_EXPERIENCE.map((item) => (
+                                          <SelectItem key={item.value} value={item.value}>
+                                             {item.label}
+                                          </SelectItem>
+                                       ))}
+                                    </SelectGroup>
+                                 </SelectContent>
+                              </Select>
+                           )
+                        }
 
-            {/* CTA */}
-            <Button
-               className="w-full h-11 rounded-lg flex items-center justify-center gap-2 group transition-all"
-               size="lg"
-               type="button"
-               variant='white'
-            >
-               <span>Go to Dashboard</span>
-               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
-         </form>
+                        {/* Chips Selection */}
+                        {
+                           field.type === 'chips' && (
+                              <ToggleGroup
+                                 type="single"
+                                 value={methods.watch(field.name as keyof OnboardingSchemaTypes)}
+                                 onValueChange={(val) => val && methods.setValue(field.name as keyof OnboardingSchemaTypes, val, { shouldValidate: true })}
+                                 className="flex flex-wrap gap-1.5 w-full justify-start"
+                              >
+                                 {DOMAINS.map((item) => (
+                                    <ToggleGroupItem
+                                       key={item}
+                                       value={item}
+                                       aria-label={item}
+                                       className="text-xs h-7 px-3.5 rounded-full border border-white/10 bg-zinc-950/40 text-zinc-300 hover:bg-white/5 hover:text-white data-[state=on]:bg-violet-500/20 data-[state=on]:border-violet-500/50 data-[state=on]:text-violet-300 data-[state=on]:shadow-[0_0_12px_rgba(139,92,246,0.2)] transition-all cursor-pointer"
+                                    >
+                                       {item}
+                                    </ToggleGroupItem>
+                                 ))}
+                              </ToggleGroup>
+                           )
+                        }
+
+                        {/* Textarea */}
+                        {
+                           field.type === 'textarea' && (
+                              <Textarea
+                                 {...methods.register(field.name as keyof OnboardingSchemaTypes)}
+                                 placeholder={field.placeholder}
+                                 className="min-h-22 text-sm! resize-none"
+                              />
+                           )
+                        }
+
+                        {
+                           methods.formState.errors[field.name as keyof OnboardingSchemaTypes] && (
+                              <InputError message={methods.formState.errors[field.name as keyof OnboardingSchemaTypes]?.message as string} />
+                           )
+                        }
+                     </div>
+                  ))
+               }
+            </div>
+         </div>
       </motion.div>
    );
 };
