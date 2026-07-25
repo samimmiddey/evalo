@@ -9,7 +9,7 @@ export const completeSetup = async (data: OnboardingSchemaTypes) => {
    const { isAuthenticated, userId } = await auth();
 
    if (!isAuthenticated) {
-      return { message: 'No signed-in user' };
+      return { success: false, message: 'No signed-in user' };
    }
 
    const client = await clerkClient();

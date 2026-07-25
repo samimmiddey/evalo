@@ -1,0 +1,28 @@
+import { apiResponse } from "@/lib/api-response";
+import { completeSetup } from "@/features/onboarding/services/server/onboarding.service";
+import { OnboardingSchemaTypes } from "@/features/onboarding/schemas/onboarding.schemas";
+
+export async function POST(req: Request) {
+   try {
+      const body = await req.json() as OnboardingSchemaTypes;
+
+      const result = await completeSetup(body);
+
+      if (!result.success) {
+         return apiResponse({
+            statusCode: result.message === 'No signed-in user' ? 401 : 400,
+            error: result.message ?? 'Onboarding failed'
+         });
+      }
+
+      return apiResponse({
+         statusCode: 200,
+         data: { success: true }
+      });
+   } catch (error: unknown) {
+      return apiResponse({
+         statusCode: 500,
+         error: error instanceof Error ? error.message : "Internal Server Error"
+      });
+   }
+}
