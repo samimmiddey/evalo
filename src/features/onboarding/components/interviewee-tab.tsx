@@ -8,9 +8,11 @@ import { useFormContext } from 'react-hook-form';
 import { onboardingData } from '@/data/onboarding/onboarding.data';
 import NoDataCard from '@/components/common/no-data-card';
 import InputError from '@/components/common/input-error';
+import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
+import { Role } from '@/data/onboarding/onboardiong.types';
 
 const IntervieweeTab = () => {
-   const methods = useFormContext();
+   const methods = useFormContext<OnboardingSchemaTypes>();
    const data = onboardingData.intervieweeTab;
 
    if (!data) {
@@ -27,7 +29,7 @@ const IntervieweeTab = () => {
          {/* Selected role */}
          <SelectedRoleBadge
             role={data.selectedRoleBadge.title}
-            onChangeRole={() => methods.setValue('role', data.selectedRoleBadge.value)}
+            onChangeRole={() => methods.setValue('role', data.selectedRoleBadge.value as Role)}
          />
 
          {/* Context card */}
@@ -65,14 +67,14 @@ const IntervieweeTab = () => {
                            {field.label}
                         </Label>
                         <Input
-                           {...methods.register(field.name)}
+                           {...methods.register(field.name as keyof OnboardingSchemaTypes)}
                            type={field.type}
                            placeholder={field.placeholder}
                            className="text-sm!"
                         />
                         {
-                           methods.formState.errors[field.name] && (
-                              <InputError message={methods.formState.errors[field.name]?.message as string} />
+                           methods.formState.errors[field.name as keyof OnboardingSchemaTypes] && (
+                              <InputError message={methods.formState.errors[field.name as keyof OnboardingSchemaTypes]?.message as string} />
                            )
                         }
                      </div>

@@ -61,3 +61,5 @@ export interface YearsOfExperienceData {
 }
 
 export type DomainsData = string[];
+
+export type Role = 'interviewee' | 'interviewer';
