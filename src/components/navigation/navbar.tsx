@@ -9,7 +9,6 @@ import { usePathname } from 'next/navigation';
 import useMediaQuery from '@/hooks/use-media-query';
 import { authData } from '@/data/auth/auth.data';
 import { useDbUser } from '@/hooks/use-db-user';
-import PrimaryBody from '@/components/common/primary-body';
 import CreditButton from './components/credit-button';
 
 interface NavbarProps {
@@ -18,7 +17,7 @@ interface NavbarProps {
 
 const Navbar = ({ onMenuClick }: NavbarProps) => {
    const { isLoaded } = useUser();
-   const { isLoading: isUserLoading, user, error: userError } = useDbUser();
+   const { isLoading: isUserLoading, user } = useDbUser();
 
    const pathname = usePathname();
    const mdWidth = useMediaQuery(767);
@@ -97,9 +96,6 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                            </Show>
                         )
                      }
-
-                     {/* Error */}
-                     {userError && <PrimaryBody className='text-red-500 text-sm!' text={userError} />}
                   </div>
                   {!isLoaded ? (
                      <div className="h-8 w-8 rounded-full bg-zinc-800 animate-pulse" />

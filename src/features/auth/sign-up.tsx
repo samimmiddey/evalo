@@ -67,7 +67,7 @@ const SignUp = () => {
          signUp,
          code: data.code,
          errors,
-         onNavigate: () => router.push('/dashboard'),
+         onNavigate: () => router.push('/onboarding'),
       });
 
       if (result.success) {

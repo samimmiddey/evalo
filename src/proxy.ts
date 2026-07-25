@@ -19,15 +19,29 @@ const isAuthRoute = createRouteMatcher([
    '/forgot-password(.*)',
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
-   const { userId } = await auth();
+const isOnboardingRoute = createRouteMatcher(['/onboarding(.*)']);
 
-   if (userId && isAuthRoute(req)) {
+export default clerkMiddleware(async (auth, req) => {
+   const { isAuthenticated, sessionClaims } = await auth();
+
+   // Redirect to home page if user is already authenticated and is on auth page
+   if (isAuthenticated && isAuthRoute(req)) {
       return NextResponse.redirect(new URL('/', req.url));
    };
 
+   // Protect all routes except public routes
    if (!isPublicRoute(req)) {
       await auth.protect();
+   }
+
+   // Don't try to redirect users who are already on onboarding route
+   if (isOnboardingRoute(req) && isAuthenticated) {
+      return NextResponse.next();
+   }
+
+   // Authenticated but onboarding is not complete
+   if (isAuthenticated && !sessionClaims?.metadata?.onboardingComplete) {
+      return NextResponse.redirect(new URL('/onboarding', req.url));
    }
 });
 

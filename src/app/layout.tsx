@@ -5,8 +5,7 @@ import "./css/responsive.css";
 import "./css/external.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
-import { dark } from '@clerk/ui/themes'
-import Navigation from "@/components/layouts/navigation/navigation";
+import { dark } from '@clerk/ui/themes';
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -52,11 +51,9 @@ export default function RootLayout({
             defaultTheme="dark"
             disableTransitionOnChange
           >
-            <Navigation>
-              <div className="bg-zinc-950">
-                {children}
-              </div>
-            </Navigation>
+            <div className="bg-zinc-950">
+              {children}
+            </div>
           </ThemeProvider>
         </ClerkProvider>
       </body>
