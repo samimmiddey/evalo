@@ -1,8 +1,11 @@
 import z from "zod";
 
+const role = ['INTERVIEWEE', 'INTERVIEWER'] as const;
+const domainValue = ['FRONTEND', 'BACKEND', 'FULLSTACK', 'DEVOPS', 'DSA', 'SYSTEM_DESIGN', 'MOBILE', 'ML_AI', 'SECURITY', 'QA', 'CLOUD'] as const;
+
 export const onboardingSchema = z.object({
    // Common fields
-   role: z.enum(['interviewee', 'interviewer'], { error: 'Role is required' }),
+   role: z.enum(role, { error: 'Role is required' }),
    name: z.string()
       .min(1, 'Full name is required')
       .min(3, 'Full name must be at least 3 characters long'),
@@ -10,21 +13,21 @@ export const onboardingSchema = z.object({
    // Interviewer only fields
    designation: z.string().optional(),
    company: z.string().optional(),
-   yoe: z.string().optional(),
-   expertise: z.string().optional(),
-   about: z.string().optional()
+   experience: z.string().optional(),
+   expertise: z.array(z.enum(domainValue)).optional(),
+   bio: z.string().optional()
 }).superRefine((data, ctx) => {
-   if (data.role === 'interviewer') {
-      const requiredFields: { key: 'designation' | 'company' | 'yoe' | 'expertise' | 'about', message: string; }[] = [
+   if (data.role === 'INTERVIEWER') {
+      const requiredFields: { key: 'designation' | 'company' | 'experience' | 'expertise' | 'bio', message: string; }[] = [
          { key: 'designation', message: 'Designation is required' },
          { key: 'company', message: 'Company is required' },
-         { key: 'yoe', message: 'Years of experience is required' },
+         { key: 'experience', message: 'Years of experience is required' },
          { key: 'expertise', message: 'Expertise is required' },
-         { key: 'about', message: 'About is required' },
+         { key: 'bio', message: 'About is required' },
       ];
 
       requiredFields.forEach(({ key, message }) => {
-         if (!data[key]) {
+         if (!data[key] || (Array.isArray(data[key]) && (data[key] as unknown[]).length === 0)) {
             ctx.addIssue({
                code: 'custom',
                message,
@@ -33,11 +36,11 @@ export const onboardingSchema = z.object({
          }
       });
 
-      if (data?.about && data.about.length > 500) {
+      if (data?.bio && data.bio.length > 500) {
          ctx.addIssue({
             code: 'custom',
-            message: 'About must be at most 500 characters long',
-            path: ['about']
+            message: 'Bio must be at most 500 characters long',
+            path: ['bio']
          });
       }
    }

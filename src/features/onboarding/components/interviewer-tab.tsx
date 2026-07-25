@@ -12,7 +12,7 @@ import { DOMAINS, onboardingData, YEARS_OF_EXPERIENCE } from '@/data/onboarding/
 import NoDataCard from '@/components/common/no-data-card';
 import InputError from '@/components/common/input-error';
 import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
-import { Role } from '@/data/onboarding/onboardiong.types';
+import { DomainValue, Role } from '@/data/onboarding/onboardiong.types';
 
 const InterviewerTab = () => {
    const methods = useFormContext<OnboardingSchemaTypes>();
@@ -71,7 +71,7 @@ const InterviewerTab = () => {
                         {
                            field.type === 'select' && (
                               <Select
-                                 value={methods.watch(field.name as keyof OnboardingSchemaTypes)}
+                                 value={methods.watch(field.name as keyof OnboardingSchemaTypes) as string}
                                  onValueChange={val => methods.setValue(field.name as keyof OnboardingSchemaTypes, val, { shouldValidate: true })}
                               >
                                  <SelectTrigger className="w-full">
@@ -95,19 +95,19 @@ const InterviewerTab = () => {
                         {
                            field.type === 'chips' && (
                               <ToggleGroup
-                                 type="single"
-                                 value={methods.watch(field.name as keyof OnboardingSchemaTypes)}
-                                 onValueChange={(val) => val && methods.setValue(field.name as keyof OnboardingSchemaTypes, val, { shouldValidate: true })}
+                                 type="multiple"
+                                 value={methods.watch(field.name as keyof OnboardingSchemaTypes) as DomainValue[]}
+                                 onValueChange={(val) => methods.setValue(field.name as keyof OnboardingSchemaTypes, val as DomainValue[], { shouldValidate: true })}
                                  className="flex flex-wrap gap-1.5 w-full justify-start"
                               >
                                  {DOMAINS.map((item) => (
                                     <ToggleGroupItem
-                                       key={item}
-                                       value={item}
-                                       aria-label={item}
+                                       key={item.value}
+                                       value={item.value}
+                                       aria-label={item.name}
                                        className="text-xs h-7 px-3.5 rounded-full border border-white/10 bg-zinc-950/40 text-zinc-300 hover:bg-white/5 hover:text-white data-[state=on]:bg-violet-500/20 data-[state=on]:border-violet-500/50 data-[state=on]:text-violet-300 data-[state=on]:shadow-[0_0_12px_rgba(139,92,246,0.2)] transition-all cursor-pointer"
                                     >
-                                       {item}
+                                       {item.name}
                                     </ToggleGroupItem>
                                  ))}
                               </ToggleGroup>
@@ -127,7 +127,7 @@ const InterviewerTab = () => {
 
                         {
                            methods.formState.errors[field.name as keyof OnboardingSchemaTypes] && (
-                              <InputError message={methods.formState.errors[field.name as keyof OnboardingSchemaTypes]?.message as string} />
+                              <InputError message={methods.formState.errors[field.name as keyof OnboardingSchemaTypes]?.message} />
                            )
                         }
                      </div>

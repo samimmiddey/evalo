@@ -13,18 +13,18 @@ export const onboardingData: OnboardingData = {
       {
          icon: User,
          text: 'Interviewee',
-         value: 'interviewee'
+         value: 'INTERVIEWEE'
       },
       {
          icon: Briefcase,
          text: 'Interviewer',
-         value: 'interviewer'
+         value: 'INTERVIEWER'
       }
    ],
    intervieweeTab: {
       selectedRoleBadge: {
          title: 'Interviewee',
-         value: 'interviewer'
+         value: 'INTERVIEWER'
       },
       contextCard: {
          icon: Sparkles,
@@ -58,7 +58,7 @@ export const onboardingData: OnboardingData = {
    interviewerTab: {
       selectedRoleBadge: {
          title: 'Interviewer',
-         value: 'interviewee'
+         value: 'INTERVIEWEE'
       },
       formFields: [
          {
@@ -84,7 +84,7 @@ export const onboardingData: OnboardingData = {
          },
          {
             type: 'select',
-            name: 'yoe',
+            name: 'experience',
             label: 'Years of Experience',
             placeholder: 'Enter Your Years of Experience',
             icon: Briefcase,
@@ -98,42 +98,84 @@ export const onboardingData: OnboardingData = {
          },
          {
             type: 'textarea',
-            name: 'about',
-            label: 'About Me',
-            placeholder: 'Enter Your About Me',
+            name: 'bio',
+            label: 'Bio',
+            placeholder: 'Write something about yourself',
             icon: Briefcase,
          },
       ]
    },
-   formBtnText: 'Go to Dashboard',
+   formBtnText: 'Complete Setup',
    formBtnIcon: ArrowRight
 };
 
 export const defaultValues: OnboardingSchemaTypes = {
-   role: 'interviewee' as const,
+   role: 'INTERVIEWER' as const,
    name: '',
    designation: '',
    company: '',
-   yoe: '',
-   expertise: '',
-   about: ''
+   experience: '',
+   expertise: [],
+   bio: ''
 };
 
 export const YEARS_OF_EXPERIENCE: YearsOfExperienceData[] = [
    { label: "Select Your Experience", value: "null" },
-   { label: "1 year", value: "1 year" },
-   { label: "2 years", value: "2 years" },
-   { label: "3 years", value: "3 years" },
-   { label: "4 years", value: "4 years" },
-   { label: "5 years", value: "5 years" },
-   { label: "6 years", value: "6 years" },
-   { label: "7 years", value: "7 years" },
-   { label: "8 years", value: "8 years" },
-   { label: "9 years", value: "9 years" },
-   { label: "10+ years", value: "10+ years" },
+   { label: "1 year", value: "1" },
+   { label: "2 years", value: "2" },
+   { label: "3 years", value: "3" },
+   { label: "4 years", value: "4" },
+   { label: "5 years", value: "5" },
+   { label: "6 years", value: "6" },
+   { label: "7 years", value: "7" },
+   { label: "8 years", value: "8" },
+   { label: "9 years", value: "9" },
+   { label: "10 years", value: "10" },
 ];
 
-export const DOMAINS: DomainsData = [
-   'Frontend', 'Backend', 'Full Stack', 'DevOps',
-   'Mobile', 'Data Science', 'ML / AI', 'Security', 'QA', 'Cloud',
+export const DOMAINS: DomainsData[] = [
+   {
+      name: 'Frontend',
+      value: 'FRONTEND'
+   },
+   {
+      name: 'Backend',
+      value: 'BACKEND'
+   },
+   {
+      name: 'Full Stack',
+      value: 'FULLSTACK'
+   },
+   {
+      name: 'DevOps',
+      value: 'DEVOPS'
+   },
+   {
+      name: 'DSA',
+      value: 'DSA'
+   },
+   {
+      name: 'System Design',
+      value: 'SYSTEM_DESIGN'
+   },
+   {
+      name: 'Mobile',
+      value: 'MOBILE'
+   },
+   {
+      name: 'ML / AI',
+      value: 'ML_AI'
+   },
+   {
+      name: 'Security',
+      value: 'SECURITY'
+   },
+   {
+      name: 'QA',
+      value: 'QA'
+   },
+   {
+      name: 'Cloud',
+      value: 'CLOUD'
+   },
 ];

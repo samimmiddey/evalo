@@ -37,14 +37,18 @@ enum PayoutStatus {
   PROCESSED
 }
 
-enum InterviewCategory {
+enum InterviewExpertise {
   FRONTEND
   BACKEND
   FULLSTACK
+  DEVOPS
   DSA
   SYSTEM_DESIGN
-  DEVOPS
   MOBILE
+  ML_AI
+  SECURITY
+  QA
+  CLOUD
 }
 
 enum FeedbackRating {
@@ -81,12 +85,12 @@ model User {
 
   // interviewer only
   bio           String?
-  title         String?
+  designation   String?
   company       String?
-  yearsExp      Int?
-  categories    InterviewCategory[]
-  creditRate    Int                 @default(1)
-  creditBalance Int                 @default(0)
+  experience    Int?
+  expertise     InterviewExpertise[]
+  creditRate    Int                  @default(1)
+  creditBalance Int                  @default(0)
 
   availabilityStart     Availability[]
   bookingsAsInterviewee Booking[]           @relation("IntervieweeBookings")

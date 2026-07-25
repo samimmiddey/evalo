@@ -60,6 +60,11 @@ export interface YearsOfExperienceData {
    value: string;
 }
 
-export type DomainsData = string[];
+export type DomainValue = 'FRONTEND' | 'BACKEND' | 'FULLSTACK' | 'DEVOPS' | 'DSA' | 'SYSTEM_DESIGN' | 'MOBILE' | 'ML_AI' | 'SECURITY' | 'QA' | 'CLOUD';
 
-export type Role = 'interviewee' | 'interviewer';
+export interface DomainsData {
+   name: string;
+   value: DomainValue;
+};
+
+export type Role = 'INTERVIEWEE' | 'INTERVIEWER';
