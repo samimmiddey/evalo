@@ -31,7 +31,9 @@ export default function SSOCallback() {
    return (
       <div>
          {/* Render captcha in case a sign-in is transferred to a sign-up */}
-         <ScreenLoader text='Signing you in...' />
+         <div className='s-padding-t'>
+            <ScreenLoader text='Signing you in...' />
+         </div>
          <div id="clerk-captcha" />
       </div>
    );
