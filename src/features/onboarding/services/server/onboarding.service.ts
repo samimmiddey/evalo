@@ -2,10 +2,12 @@
 
 import { onboardingSchema, OnboardingSchemaTypes } from "@/features/onboarding/schemas/onboarding.schemas";
 import { db } from "@/lib/prisma";
+import { serverError } from "@/lib/server-error";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { CompleteSetupResponse } from "../../models/onboarding.types";
 
 // Complete onboarding setup
-export const completeSetup = async (data: OnboardingSchemaTypes) => {
+export const completeSetup = async (data: OnboardingSchemaTypes): Promise<CompleteSetupResponse> => {
    const { isAuthenticated, userId } = await auth();
 
    if (!isAuthenticated) {
@@ -13,7 +15,6 @@ export const completeSetup = async (data: OnboardingSchemaTypes) => {
    }
 
    const client = await clerkClient();
-
 
    try {
       const { role, name, designation, company, experience, expertise, bio } = onboardingSchema.parse(data);
@@ -24,11 +25,11 @@ export const completeSetup = async (data: OnboardingSchemaTypes) => {
          data: {
             role,
             name,
-            designation,
-            company,
-            experience: Number(experience),
-            expertise,
-            bio
+            ...(designation && { designation }),
+            ...(company && { company }),
+            ...(experience && { experience: Number(experience) }),
+            ...(expertise && { expertise }),
+            ...(bio && { bio })
          }
       });
 
@@ -41,10 +42,6 @@ export const completeSetup = async (data: OnboardingSchemaTypes) => {
 
       return { success: true };
    } catch (error: unknown) {
-      if (error instanceof Error) {
-         throw error;
-      }
-
-      throw new Error("Something went wrong");
+      return serverError(error, 'Failed to complete onboarding');
    }
 };

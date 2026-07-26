@@ -40,7 +40,7 @@ export default clerkMiddleware(async (auth, req) => {
    }
 
    // Authenticated but onboarding is not complete
-   if (isAuthenticated && !sessionClaims?.metadata?.onboardingComplete) {
+   if (isAuthenticated && !sessionClaims?.metadata?.onboardingComplete && !req.nextUrl.pathname.startsWith('/api')) {
       return NextResponse.redirect(new URL('/onboarding', req.url));
    }
 });

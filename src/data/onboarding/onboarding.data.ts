@@ -110,7 +110,7 @@ export const onboardingData: OnboardingData = {
 };
 
 export const defaultValues: OnboardingSchemaTypes = {
-   role: 'INTERVIEWER' as const,
+   role: 'INTERVIEWEE' as const,
    name: '',
    designation: '',
    company: '',

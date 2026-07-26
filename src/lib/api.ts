@@ -7,7 +7,7 @@ export const api = ky.create({
    },
    timeout: 10000,
    retry: {
-      limit: 3,
+      limit: 0,
       methods: ["get", "post", "put", "patch", "delete"],
    }
 });

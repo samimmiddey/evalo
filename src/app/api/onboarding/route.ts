@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
       const result = await completeSetup(body);
 
-      if (!result.success) {
+      if (result && !result.success) {
          return apiResponse({
             statusCode: result.message === 'No signed-in user' ? 401 : 400,
             error: result.message ?? 'Onboarding failed'

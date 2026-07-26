@@ -43,6 +43,14 @@ export const onboardingSchema = z.object({
             path: ['bio']
          });
       }
+
+      if (!data.experience || data.experience === 'null') {
+         ctx.addIssue({
+            code: 'custom',
+            message: 'Years of experience is required',
+            path: ['experience'],
+         });
+      }
    }
 });
 

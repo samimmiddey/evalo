@@ -1,4 +1,4 @@
-import { HTTPError } from "ky";
+import { isHTTPError } from "ky";
 
 interface ErrorResponse {
    success: false;
@@ -6,10 +6,10 @@ interface ErrorResponse {
    error: string;
 }
 
-export const apiError = async (error: unknown, fallbackMessage: string): Promise<never> => {
-   if (error instanceof HTTPError) {
-      const body = await error.response.json<ErrorResponse>().catch(() => null);
-      throw new Error(body?.error ?? error.message);
+export const apiError = (error: unknown, fallbackMessage: string): never => {
+   if (isHTTPError(error)) {
+      const data = error.data as ErrorResponse | undefined;
+      throw new Error(data?.error ?? fallbackMessage);
    }
 
    if (error instanceof Error) {

@@ -6,7 +6,7 @@ interface MutationResult<T, A extends (...args: never[]) => Promise<T>> {
    isPending: boolean;
    error: string | null;
    data: T | null;
-   trigger: (...args: Parameters<A>) => Promise<void>;
+   mutate: (...args: Parameters<A>) => Promise<void>;
 }
 
 export const useMutation = <T, A extends (...args: never[]) => Promise<T>>(
@@ -16,7 +16,7 @@ export const useMutation = <T, A extends (...args: never[]) => Promise<T>>(
    const [error, setError] = useState<string | null>(null);
    const [data, setData] = useState<T | null>(null);
 
-   const trigger = async (...args: Parameters<A>) => {
+   const mutate = async (...args: Parameters<A>) => {
       setIsPending(true);
       setError(null);
       setData(null);
@@ -34,5 +34,5 @@ export const useMutation = <T, A extends (...args: never[]) => Promise<T>>(
       }
    };
 
-   return { isPending, error, data, trigger };
+   return { isPending, error, data, mutate };
 };

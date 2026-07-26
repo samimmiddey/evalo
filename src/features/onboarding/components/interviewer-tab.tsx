@@ -102,6 +102,7 @@ const InterviewerTab = () => {
                               >
                                  {DOMAINS.map((item) => (
                                     <ToggleGroupItem
+                                       type='button'
                                        key={item.value}
                                        value={item.value}
                                        aria-label={item.name}

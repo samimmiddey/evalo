@@ -6,6 +6,7 @@ import "./css/external.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from '@clerk/ui/themes';
+import { Toaster } from "sonner";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -54,6 +55,7 @@ export default function RootLayout({
             <div className="bg-zinc-950">
               {children}
             </div>
+            <Toaster position="top-center" richColors />
           </ThemeProvider>
         </ClerkProvider>
       </body>

@@ -11,16 +11,42 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { defaultValues, onboardingData } from '@/data/onboarding/onboarding.data';
 import { Role } from '@/data/onboarding/onboardiong.types';
+import { useMutation } from '@/hooks/use-mutation';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import CustomSpinner from '@/components/common/custom-spinner';
+import { onboardUser } from './services/client/onboarding.service';
+import { useSession } from '@clerk/nextjs';
 
 const Onboarding = () => {
+   const { session } = useSession();
+   const router = useRouter();
+
+   const { isPending, data, error, mutate: mutateOnboard } = useMutation(onboardUser);
+
    const methods = useForm<OnboardingSchemaTypes>({
       resolver: zodResolver(onboardingSchema),
       defaultValues
    });
 
-   const onFormSubmit = (data: OnboardingSchemaTypes) => {
-      console.log(data);
+   // Submit onboarding form
+   const onFormSubmit = async (data: OnboardingSchemaTypes) => {
+      await mutateOnboard(data);
    };
+
+   useEffect(() => {
+      if (error) {
+         toast.error(error);
+      }
+
+      if (data) {
+         toast.success('Your profile has been set up!');
+         void session?.reload().then(() => {
+            router.push('/dashboard');
+         });
+      }
+   }, [error, data]);
 
    return (
       <div className="relative min-h-screen flex items-center justify-center bg-zinc-950 px-4 py-10 overflow-hidden">
@@ -85,9 +111,24 @@ const Onboarding = () => {
                         size="lg"
                         type="submit"
                         variant='white'
+                        disabled={isPending}
                      >
-                        <span>{onboardingData.formBtnText}</span>
-                        <onboardingData.formBtnIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        {
+                           isPending ? (
+                              <>
+                                 <CustomSpinner
+                                    text='Submitting...'
+                                    spinnerClass='text-gray-700'
+                                    textClass='text-gray-700'
+                                 />
+                              </>
+                           ) : (
+                              <>
+                                 <span>{onboardingData.formBtnText}</span>
+                                 <onboardingData.formBtnIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              </>
+                           )
+                        }
                      </Button>
                   </form>
                </FormProvider>

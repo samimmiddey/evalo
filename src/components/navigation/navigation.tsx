@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Navbar from './navbar';
 import Sidebar from './sidebar';
 import Footer from './footer';
-import { Toaster } from 'sonner';
 import useScrollToTop from '@/hooks/use-scroll-to-top';
 
 const Navigation = ({ children }: { children: React.ReactNode; }) => {
@@ -18,7 +17,6 @@ const Navigation = ({ children }: { children: React.ReactNode; }) => {
          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
          {children}
          <Footer />
-         <Toaster position="top-center" richColors />
       </div>
    );
 };
