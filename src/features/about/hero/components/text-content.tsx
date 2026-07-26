@@ -1,6 +1,6 @@
 "use client";
 
-import { exploreData } from "@/data/explore/explore.data";
+import { aboutData } from "@/data/about/about.data";
 import { Telescope } from "lucide-react";
 import { motion } from "motion/react";
 import HeaderText from "@/components/common/header-text";
@@ -15,11 +15,11 @@ const TextContent = () => {
             transition={{ duration: 0.3, delay: 0.1 }}
             className="mb-4 2xl:mb-5"
          >
-            <HeaderText icon={Telescope} text={exploreData.hero.header} />
+            <HeaderText icon={Telescope} text={aboutData.hero.header} />
          </motion.div>
 
          <h1 className="mx-auto w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-4xl text-center text-5xl md:text-[54px] font-bold lg:text-6xl 2xl:text-[80px] text-gray-100 font-outfit leading-[1.1] tracking-tight pb-2">
-            {exploreData.hero.title.split(" ").map((word, index) => (
+            {aboutData.hero.title.split(" ").map((word, index) => (
                <motion.span
                   key={index}
                   initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
@@ -42,7 +42,7 @@ const TextContent = () => {
             transition={{ duration: 0.3, delay: 0.7 }}
             className="mx-auto max-w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-3xl mt-1 py-4 text-center text-[15px] 2xl:text-lg font-normal text-gray-300"
          >
-            {exploreData.hero.description}
+            {aboutData.hero.description}
          </motion.p>
 
          <motion.div

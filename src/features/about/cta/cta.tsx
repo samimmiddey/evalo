@@ -3,7 +3,7 @@
 import HeaderText from "@/components/common/header-text";
 import PrimaryBody from "@/components/common/primary-body";
 import PrimaryTitle from "@/components/common/primary-title";
-import { exploreData } from "@/data/explore/explore.data";
+import { aboutData } from "@/data/about/about.data";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
 import { ArrowRight, Search, Star, Users } from "lucide-react";
@@ -41,15 +41,15 @@ const CTA = () => {
                <div className="flex flex-col justify-between gap-8 p-8 lg:p-12 2xl:p-16">
                   <div className="flex flex-col items-start gap-4 2xl:gap-5">
                      <HeaderText
-                        icon={exploreData.cta.icon}
-                        text={exploreData.cta.header}
+                        icon={aboutData.cta.icon}
+                        text={aboutData.cta.header}
                      />
                      <PrimaryTitle
-                        text={exploreData.cta.title}
+                        text={aboutData.cta.title}
                         className="text-left mt-0 text-gray-100 max-w-xl"
                      />
                      <PrimaryBody
-                        text={exploreData.cta.description}
+                        text={aboutData.cta.description}
                         className="text-left text-gray-400 max-w-lg"
                      />
                   </div>

@@ -6,8 +6,8 @@ export const navigationData: NavigationItem[] = [
       href: "/",
    },
    {
-      name: "Explore",
-      href: "/explore",
+      name: "About",
+      href: "/about",
    },
    {
       name: "Pricing",
@@ -25,7 +25,7 @@ export const footerData: FooterDataTypes = {
       {
          title: "Product",
          links: [
-            { name: "Explore", href: "/#explore" },
+            { name: "About", href: "/#about" },
             { name: "Pricing", href: "/#pricing" },
             { name: "Testimonials", href: "/#testimonials" },
          ]

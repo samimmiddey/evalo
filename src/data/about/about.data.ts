@@ -1,4 +1,4 @@
-import { ExploreDataTypes } from "./explore.types";
+import { AboutDataTypes } from "./about.types";
 import {
    Search,
    Users,
@@ -9,7 +9,7 @@ import {
    Rocket,
 } from "lucide-react";
 
-export const exploreData: ExploreDataTypes = {
+export const aboutData: AboutDataTypes = {
    hero: {
       header: "Browse. Filter. Book.",
       title: "Find your perfect interview expert",
@@ -18,7 +18,7 @@ export const exploreData: ExploreDataTypes = {
    },
    features: {
       icon: Telescope,
-      header: "How Explore Works",
+      header: "How Evalo Works",
       title: "Everything you need to find the right match",
       description:
          "Powerful search and discovery tools to help you connect with the right expert for your specific goals.",

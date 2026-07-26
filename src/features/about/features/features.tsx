@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import HeaderText from "@/components/common/header-text";
 import PrimaryBody from "@/components/common/primary-body";
 import PrimaryTitle from "@/components/common/primary-title";
-import { exploreData } from "@/data/explore/explore.data";
+import { aboutData } from "@/data/about/about.data";
 import FeatureRow from "./components/feature-card";
 import { motion } from "motion/react";
 
@@ -21,22 +21,22 @@ const Features = () => {
                className="lg:sticky lg:top-28 flex flex-col items-start gap-4 lg:gap-5 2xl:gap-6"
             >
                <HeaderText
-                  icon={exploreData.features.icon}
-                  text={exploreData.features.header}
+                  icon={aboutData.features.icon}
+                  text={aboutData.features.header}
                />
                <PrimaryTitle
-                  text={exploreData.features.title}
+                  text={aboutData.features.title}
                   className="text-left mt-0"
                />
                <PrimaryBody
-                  text={exploreData.features.description}
+                  text={aboutData.features.description}
                   className="text-left"
                />
             </motion.div>
 
             {/* Right: Numbered feature rows */}
             <div className="flex flex-col divide-y-0 border-t border-white/5">
-               {exploreData.features.cards.map((feature, i) => {
+               {aboutData.features.cards.map((feature, i) => {
                   const Icon = feature.icon;
                   return (
                      <FeatureRow

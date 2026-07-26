@@ -1,37 +1,37 @@
 import { LucideIcon } from "lucide-react";
 
 // Hero Types
-export interface ExploreHeroDataTypes {
+export interface AboutHeroDataTypes {
    header: string;
    title: string;
    description: string;
 }
 
 // Features Types
-export interface ExploreFeatureCard {
+export interface AboutFeatureCard {
    icon: LucideIcon;
    title: string;
    description: string;
 }
 
-export interface ExploreFeatureDataTypes {
+export interface AboutFeatureDataTypes {
    icon: LucideIcon;
    header: string;
    title: string;
    description: string;
-   cards: ExploreFeatureCard[];
+   cards: AboutFeatureCard[];
 }
 
 // CTA Types
-export interface ExploreCTADataTypes {
+export interface AboutCTADataTypes {
    icon: LucideIcon;
    header: string;
    title: string;
    description: string;
 }
 
-export interface ExploreDataTypes {
-   hero: ExploreHeroDataTypes;
-   features: ExploreFeatureDataTypes;
-   cta: ExploreCTADataTypes;
+export interface AboutDataTypes {
+   hero: AboutHeroDataTypes;
+   features: AboutFeatureDataTypes;
+   cta: AboutCTADataTypes;
 }
