@@ -1,27 +1,47 @@
 'use client';
 
+import { useState } from 'react';
+import FilterSidebar from './components/filters/filter-sidebar';
 import Header from './components/header';
 import InterviewerList from './components/interviewer-list';
-import SearchBar from './components/filters/search-bar';
-import Categories from './components/filters/categories';
+import useView from '@/hooks/use-view';
 
 const Explore = () => {
+   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
+   const [hideFilters, setHideFilters] = useState<boolean>(false);
+
+   const { view, setView } = useView();
+
    return (
       <div className="container s-margin-t">
 
-         {/* Page Header */}
-         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-            <Header />
+         {/* Header */}
+         <Header
+            onOpenSidebar={() => setOpenSidebar(prevState => !prevState)}
+            onHideFilters={() => setHideFilters(prevState => !prevState)}
+            hideFilters={hideFilters}
+            view={view}
+            setView={setView}
+         />
 
-            {/* Search Bar */}
-            <SearchBar />
+         <div className={`${hideFilters ? '' : 'grid grid-cols-1 lg:grid-cols-[2.75fr_9.25fr] gap-6 2xl:gap-8 items-start'}`}>
+
+            {/* Desktop Filter Sidebar */}
+            {
+               !hideFilters &&
+               <div className="hidden lg:flex shrink-0 lg:sticky lg:top-22  lg:self-start">
+                  <FilterSidebar
+                     open={openSidebar}
+                     onClose={setOpenSidebar}
+                  />
+               </div>
+            }
+
+            {/* Interviewer Grid */}
+            <InterviewerList view={view} />
+
          </div>
 
-         {/* Categories / Filters */}
-         <Categories />
-
-         {/* Interviewer Grid */}
-         <InterviewerList />
       </div>
    );
 };

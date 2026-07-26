@@ -104,7 +104,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                         <UserButton />
                      </Show>
                   )}
-                  {!mdWidth && (
+                  {mdWidth && (
                      <button
                         onClick={onMenuClick}
                         className='p-2 hover:bg-zinc-800 rounded-lg transition-colors md:hidden'

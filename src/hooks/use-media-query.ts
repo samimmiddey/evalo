@@ -5,7 +5,7 @@ const useMediaQuery = (query: number) => {
 
    useEffect(() => {
       const handleResize = () => {
-         setMatches(window.innerWidth > query);
+         setMatches(window.innerWidth < query);
       };
 
       handleResize();

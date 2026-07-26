@@ -1,3 +1,4 @@
+import { ViewType } from '@/models/ui.types';
 import InterviwerCard from './interviewer-card';
 
 const MOCK_INTERVIEWERS = [
@@ -81,12 +82,18 @@ const MOCK_INTERVIEWERS = [
    }
 ];
 
-const InterviewerList = () => {
+interface InterviewerListProps {
+   view: ViewType;
+}
+
+const InterviewerList = ({ view }: InterviewerListProps) => {
    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-         {MOCK_INTERVIEWERS.map((interviewer) => (
-            <InterviwerCard key={interviewer.id} interviewer={interviewer} />
-         ))}
+      <div className={`grid gap-5 2xl:gap-6 ${view === 'list' ? 'md:grid-cols-1' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'}`}>
+         {
+            MOCK_INTERVIEWERS.map((interviewer) => (
+               <InterviwerCard key={interviewer.id} interviewer={interviewer} />
+            ))
+         }
       </div>
    );
 };
