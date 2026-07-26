@@ -1,7 +1,6 @@
 import { checkUser } from '@/services/server/user.service';
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { customDelay } from '@/utils/custom-delay';
 import { db } from '@/lib/prisma';
 import { Prisma } from '@/generated/prisma/client';
 import React from 'react';
@@ -13,8 +12,7 @@ const UserGate = async ({ children }: { children: React.ReactNode; }) => {
       const clerkUser = await currentUser();
       if (!clerkUser) redirect('/sign-in');
 
-      // Give the webhook a chance to land
-      await customDelay(2000);
+      // Get the user from DB
       user = await checkUser();
 
       // Still missing — reconcile ourselves
@@ -25,7 +23,6 @@ const UserGate = async ({ children }: { children: React.ReactNode; }) => {
                update: {},
                create: {
                   clerkUserId: clerkUser.id,
-                  name: `${clerkUser.firstName} ${clerkUser.lastName}`,
                   imageUrl: clerkUser.imageUrl,
                   email: clerkUser.emailAddresses[0].emailAddress,
                   credits: 1,

@@ -1,10 +1,12 @@
 "use server";
 
 import { db } from "@/lib/prisma";
+import { serverError } from "@/lib/server-error";
+import { UserServer } from "@/models/user.model";
 import { currentUser } from "@clerk/nextjs/server";
 
 // Check user and allocate credits if needed
-export const checkUser = async () => {
+export const checkUser = async (): Promise<UserServer | null> => {
    const user = await currentUser();
 
    if (!user) {
@@ -22,10 +24,6 @@ export const checkUser = async () => {
 
       return loggedInUser;
    } catch (error: unknown) {
-      if (error instanceof Error) {
-         throw error;
-      }
-
-      throw new Error("Failed to check user");
+      return serverError(error, 'Failed to fetch user');
    };
 };

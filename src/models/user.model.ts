@@ -1,28 +1,39 @@
 import { BaseResponse } from "./api.model";
 
-export interface User {
+export type UserRole = 'INTERVIEWEE' | 'INTERVIEWER' | 'UNASSIGNED';
+export type AssignedRole = Exclude<UserRole, 'UNASSIGNED'>;
+
+export interface UserServer {
    id: string;
    clerkUserId: string;
    email: string;
-   name: string;
-   imageUrl: string;
-   role: string;
-   createdAt: string;
-   updatedAt: string;
+   firstName: string | null;
+   lastName: string | null;
+   imageUrl: string | null;
+   role: UserRole;
+   createdAt: Date;
+   updatedAt: Date;
    credits: number;
    currentPlan: string;
-   creditsLastAllocatedAt: string;
-   lastProcessedPeriodStart: string;
+   creditsLastAllocatedAt: Date | null;
+   lastProcessedPeriodStart: Date | null;
    bio: string | null;
-   title: string | null;
+   designation: string | null;
    company: string | null;
-   yearsExp: number | null;
-   categories: string[];
+   experience: number | null;
+   expertise: string[];
    creditRate: number;
    creditBalance: number;
 }
 
-export type UserResponse = BaseResponse<User>;
+export type UserClient = Omit<
+   UserServer,
+   'createdAt' | 'updatedAt' | 'creditsLastAllocatedAt' | 'lastProcessedPeriodStart'
+> & {
+   createdAt: string;
+   updatedAt: string;
+   creditsLastAllocatedAt: string | null;
+   lastProcessedPeriodStart: string | null;
+};
 
-export type UserRole = 'INTERVIEWEE' | 'INTERVIEWER' | 'UNASSIGNED';
-export type AssignedRole = Exclude<UserRole, 'UNASSIGNED'>;
+export type UserResponse = BaseResponse<UserClient>;

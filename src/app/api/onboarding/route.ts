@@ -2,6 +2,8 @@ import { apiResponse } from "@/lib/api-response";
 import { completeSetup } from "@/features/onboarding/services/server/onboarding.service";
 import { OnboardingSchemaTypes } from "@/features/onboarding/schemas/onboarding.schemas";
 
+const isDev = process.env.NODE_ENV === 'development';
+
 export async function POST(req: Request) {
    try {
       const body = await req.json() as OnboardingSchemaTypes;
@@ -22,7 +24,7 @@ export async function POST(req: Request) {
    } catch (error: unknown) {
       return apiResponse({
          statusCode: 500,
-         error: error instanceof Error ? error.message : "Internal Server Error"
+         error: isDev && error instanceof Error ? error.message : "Internal Server Error"
       });
    }
 }

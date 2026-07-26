@@ -3,9 +3,9 @@
 import { DB_USER } from "@/config/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
-import { User, UserResponse } from "@/models/user.model";
+import { UserClient, UserResponse } from "@/models/user.model";
 
-export const getUser = async (): Promise<User> => {
+export const getUser = async (): Promise<UserClient> => {
    try {
       const res = await api.get(DB_USER).json<UserResponse>();
 

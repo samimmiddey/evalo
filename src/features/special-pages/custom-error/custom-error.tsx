@@ -74,7 +74,9 @@ const CustomError = ({
 
             <div className="mb-10 flex flex-col gap-4 2xl:gap-6">
                <PrimaryTitle text="Oops! Something went wrong" />
-               <PrimaryBody text={error.message || "We encountered an unexpected error while processing your request. Please try again."} />
+               <PrimaryBody
+                  text={process.env.NODE_ENV === 'development' ? error.message : "We encountered an unexpected error while processing your request. Please try again."}
+               />
             </div>
 
             <div className="flex w-full flex-col items-center justify-center gap-4 sm:flex-row">
