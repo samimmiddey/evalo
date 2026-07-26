@@ -20,7 +20,7 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
       const { role, firstName, lastName, designation, company, experience, expertise, bio } = onboardingSchema.parse(data);
 
       // Update user profile
-      await db.user.update({
+      const updatedUser = await db.user.update({
          where: { clerkUserId: userId },
          data: {
             role,
@@ -33,7 +33,8 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
                expertise,
                bio
             })
-         }
+         },
+         select: { role: true }
       });
 
       // Update clerk user
@@ -49,7 +50,7 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
          }
       });
 
-      return { success: true };
+      return { success: true, role: updatedUser.role };
    } catch (error: unknown) {
       return serverError(error, 'Failed to complete onboarding');
    }

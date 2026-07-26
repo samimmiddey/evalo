@@ -23,7 +23,7 @@ const Onboarding = () => {
    const { session } = useSession();
    const router = useRouter();
 
-   const { isPending, data, error, mutate: mutateOnboard } = useMutation(onboardUser);
+   const { isPending, error, mutate: mutateOnboard } = useMutation(onboardUser);
 
    const methods = useForm<OnboardingSchemaTypes>({
       resolver: zodResolver(onboardingSchema),
@@ -32,21 +32,22 @@ const Onboarding = () => {
 
    // Submit onboarding form
    const onFormSubmit = async (data: OnboardingSchemaTypes) => {
-      await mutateOnboard(data);
+      const result = await mutateOnboard(data);
+
+      if (result) {
+         toast.success('Your profile has been set up successfully!');
+         const destination = result.role === 'INTERVIEWER' ? '/dashboard' : '/explore';
+         void session?.reload().then(() => {
+            router.replace(destination);
+         });
+      }
    };
 
    useEffect(() => {
       if (error) {
          toast.error(error);
       }
-
-      if (data) {
-         toast.success('Your profile has been set up successfully!');
-         void session?.reload().then(() => {
-            router.push('/dashboard');
-         });
-      }
-   }, [error, data]);
+   }, [error]);
 
    return (
       <div className="relative min-h-screen flex items-center justify-center bg-zinc-950 px-4 py-10 overflow-hidden">

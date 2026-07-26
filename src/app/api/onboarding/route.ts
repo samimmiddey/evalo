@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
       return apiResponse({
          statusCode: 200,
-         data: { success: true }
+         data: { role: result.role }
       });
    } catch (error: unknown) {
       return apiResponse({
