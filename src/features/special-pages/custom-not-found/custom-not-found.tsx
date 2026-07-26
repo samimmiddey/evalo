@@ -6,8 +6,11 @@ import { Home, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PrimaryTitle from "@/components/common/primary-title";
 import PrimaryBody from "@/components/common/primary-body";
+import { useRouter } from "next/navigation";
 
 const CustomNotFound = () => {
+   const router = useRouter();
+
    return (
       <div className="px-6 relative flex min-h-[85vh] items-center justify-center overflow-hidden py-12">
          {/* Huge Background 404 */}
@@ -79,7 +82,7 @@ const CustomNotFound = () => {
                      <span className="font-medium">Back to Homepage</span>
                   </Link>
                </Button>
-               <Button variant="outline" size="lg" className="w-full px-8 sm:w-auto" onClick={() => window.history.back()}>
+               <Button variant="outline" size="lg" className="w-full px-8 sm:w-auto" onClick={() => router.back()}>
                   Go Back
                </Button>
             </div>
