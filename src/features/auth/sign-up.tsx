@@ -9,7 +9,7 @@ import ContinueDivider from './components/continue-divider';
 import AuthHeader from './components/auth-header';
 import AuthFooter from './components/auth-footer';
 import { authData } from '@/data/auth/auth.data';
-import { useSignUp } from '@clerk/nextjs';
+import { useAuth, useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { authSchema, AuthSchemaTypes, OtpSchemaTypes } from './schemas/auth.schema';
@@ -24,6 +24,7 @@ import InputError from '@/components/common/input-error';
 
 const SignUp = () => {
    const { signUp, errors, fetchStatus } = useSignUp();
+   const { isSignedIn } = useAuth();
    const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
 
    const router = useRouter();
@@ -95,8 +96,8 @@ const SignUp = () => {
       return <ScreenLoader text="Loading..." />;
    }
 
-   // Show loader if sign up is complete
-   if (signUp.status === 'complete') {
+   // Show loader if sign up is complete or user is already signed in
+   if (signUp.status === 'complete' || isSignedIn) {
       return (
          <ScreenLoader
             text="Redirecting to onboarding..."
@@ -149,7 +150,7 @@ const SignUp = () => {
                {
                   formErrors[authData.signUp.form.email.name] && (
                      <InputError
-                        message={formErrors[authData.signUp.form.email.name]?.message as string}
+                        message={formErrors[authData.signUp.form.email.name]?.message}
                         className='-mt-0.5 2xl:-mt-1.5'
                      />
                   )
@@ -165,7 +166,7 @@ const SignUp = () => {
                {
                   formErrors[authData.signUp.form.password.name] && (
                      <InputError
-                        message={formErrors[authData.signUp.form.password.name]?.message as string}
+                        message={formErrors[authData.signUp.form.password.name]?.message}
                         className='-mt-0.5 2xl:-mt-1.5'
                      />
                   )
