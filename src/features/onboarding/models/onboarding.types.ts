@@ -1,12 +1,12 @@
-import { Role } from "@/data/onboarding/onboardiong.types";
+import { UserRole } from "@/models/user.model";
 import { BaseResponse } from "@/models/api.model";
 
 export interface Onboarding {
-   role: Role | 'UNASSIGNED';
+   role: UserRole;
 }
 
 export type CompleteSetupResponse =
-   | { success: true; role: Role | 'UNASSIGNED'; }
+   | { success: true; role: UserRole; }
    | { success: false; message: string; };
 
 export type OnboardingResponse = BaseResponse<Onboarding>;

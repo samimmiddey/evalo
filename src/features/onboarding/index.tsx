@@ -10,20 +10,17 @@ import { onboardingSchema, OnboardingSchemaTypes } from './schemas/onboarding.sc
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { defaultValues, onboardingData } from '@/data/onboarding/onboarding.data';
-import { Role } from '@/data/onboarding/onboardiong.types';
+import { AssignedRole } from '@/models/user.model';
 import { useMutation } from '@/hooks/use-mutation';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import CustomSpinner from '@/components/common/custom-spinner';
 import { onboardUser } from './services/client/onboarding.service';
-import { useSession } from '@clerk/nextjs';
+import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 
 const Onboarding = () => {
-   const { session } = useSession();
-   const router = useRouter();
-
    const { isPending, error, mutate: mutateOnboard } = useMutation(onboardUser);
+   const roleBasedRedirect = useRoleBasedRedirect();
 
    const methods = useForm<OnboardingSchemaTypes>({
       resolver: zodResolver(onboardingSchema),
@@ -36,10 +33,7 @@ const Onboarding = () => {
 
       if (result) {
          toast.success('Your profile has been set up successfully!');
-         const destination = result.role === 'INTERVIEWER' ? '/dashboard' : '/explore';
-         void session?.reload().then(() => {
-            router.replace(destination);
-         });
+         void roleBasedRedirect();
       }
    };
 
@@ -78,7 +72,7 @@ const Onboarding = () => {
                   >
                      <Tabs
                         value={methods.watch('role')}
-                        onValueChange={(val) => methods.setValue('role', val as Role)}
+                        onValueChange={(val) => methods.setValue('role', val as AssignedRole)}
                         className="w-full space-y-4"
                      >
                         <TabsList className="w-full grid grid-cols-2 h-12! bg-zinc-950/60 p-1 rounded-xl border border-white/10">

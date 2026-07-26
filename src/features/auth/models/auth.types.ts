@@ -68,6 +68,7 @@ export interface SsoCallbackParams {
    clerk: ReturnType<typeof useClerk>;
    signIn: SignInResource;
    signUp: SignUpResource;
-   onNavigate: () => void;
+   onNavigateSignIn: () => void;
+   onNavigateSignUp: () => void;
    onTransferToSignIn: () => void;
 }

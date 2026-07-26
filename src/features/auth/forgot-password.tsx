@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { useSignIn } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
 import AuthContainer from './components/auth-container';
 import AuthHeader from './components/auth-header';
 import { authData } from '@/data/auth/auth.data';
@@ -17,6 +16,7 @@ import { toast } from 'sonner';
 import ScreenLoader from '@/components/common/screen-loader';
 import { sendResetCode, submitNewPassword, verifyResetCode } from './services/auth.service';
 import InputError from '@/components/common/input-error';
+import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 
 export default function ForgotPassword() {
    const { signIn, fetchStatus } = useSignIn();
@@ -27,7 +27,7 @@ export default function ForgotPassword() {
    const [isSubmittingPassword, setIsSubmittingPassword] = useState<boolean>(false);
    const [isCompleting, setIsCompleting] = useState<boolean>(false);
 
-   const router = useRouter();
+   const roleBasedRedirect = useRoleBasedRedirect();
 
    const {
       register,
@@ -102,7 +102,7 @@ export default function ForgotPassword() {
       const result = await submitNewPassword({
          signIn,
          password: data.password,
-         onNavigate: () => router.push('/'),
+         onNavigate: () => void roleBasedRedirect()
       });
 
       if (!result.success) {
@@ -156,7 +156,7 @@ export default function ForgotPassword() {
                            {
                               formErrors[authData.forgotPassword.stepOne.form.email.name] && (
                                  <InputError
-                                    message={formErrors[authData.forgotPassword.stepOne.form.email.name]?.message as string}
+                                    message={formErrors[authData.forgotPassword.stepOne.form.email.name]?.message}
                                     className='-mt-0.5 2xl:-mt-1.5'
                                  />
                               )
@@ -195,7 +195,7 @@ export default function ForgotPassword() {
                            {
                               formErrors[authData.forgotPassword.stepTwo.form.code.name] && (
                                  <InputError
-                                    message={formErrors[authData.forgotPassword.stepTwo.form.code.name]?.message as string}
+                                    message={formErrors[authData.forgotPassword.stepTwo.form.code.name]?.message}
                                     className='-mt-0.5 2xl:-mt-1.5'
                                  />
                               )
@@ -234,7 +234,7 @@ export default function ForgotPassword() {
                            {
                               formErrors[authData.forgotPassword.stepThree.form.password.name] && (
                                  <InputError
-                                    message={formErrors[authData.forgotPassword.stepThree.form.password.name]?.message as string}
+                                    message={formErrors[authData.forgotPassword.stepThree.form.password.name]?.message}
                                     className='-mt-0.5 2xl:-mt-1.5'
                                  />
                               )

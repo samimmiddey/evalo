@@ -23,3 +23,6 @@ export interface User {
 }
 
 export type UserResponse = BaseResponse<User>;
+
+export type UserRole = 'INTERVIEWEE' | 'INTERVIEWER' | 'UNASSIGNED';
+export type AssignedRole = Exclude<UserRole, 'UNASSIGNED'>;

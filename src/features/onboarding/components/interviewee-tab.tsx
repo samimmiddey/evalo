@@ -9,7 +9,7 @@ import { onboardingData } from '@/data/onboarding/onboarding.data';
 import NoDataCard from '@/components/common/no-data-card';
 import InputError from '@/components/common/input-error';
 import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
-import { Role } from '@/data/onboarding/onboardiong.types';
+import { AssignedRole } from '@/models/user.model';
 
 const IntervieweeTab = () => {
    const methods = useFormContext<OnboardingSchemaTypes>();
@@ -29,7 +29,7 @@ const IntervieweeTab = () => {
          {/* Selected role */}
          <SelectedRoleBadge
             role={data.selectedRoleBadge.title}
-            onChangeRole={() => methods.setValue('role', data.selectedRoleBadge.value as Role)}
+            onChangeRole={() => methods.setValue('role', data.selectedRoleBadge.value as AssignedRole)}
          />
 
          {/* Context card */}
@@ -74,7 +74,7 @@ const IntervieweeTab = () => {
                         />
                         {
                            methods.formState.errors[field.name as keyof OnboardingSchemaTypes] && (
-                              <InputError message={methods.formState.errors[field.name as keyof OnboardingSchemaTypes]?.message as string} />
+                              <InputError message={methods.formState.errors[field.name as keyof OnboardingSchemaTypes]?.message} />
                            )
                         }
                      </div>

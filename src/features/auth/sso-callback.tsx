@@ -5,6 +5,7 @@ import { useClerk, useSignIn, useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { ssoCallback } from './services/auth.service';
+import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 
 export default function SSOCallback() {
    const clerk = useClerk();
@@ -12,6 +13,8 @@ export default function SSOCallback() {
    const { signUp } = useSignUp();
    const router = useRouter();
    const hasRun = useRef(false);
+
+   const roleBasedRedirect = useRoleBasedRedirect();
 
    useEffect(() => {
       void (async () => {
@@ -22,7 +25,8 @@ export default function SSOCallback() {
             clerk,
             signIn,
             signUp,
-            onNavigate: () => router.push('/dashboard'),
+            onNavigateSignIn: () => void roleBasedRedirect(),
+            onNavigateSignUp: () => router.push('/onboarding'),
             onTransferToSignIn: () => router.push('/sign-in'),
          });
       })();

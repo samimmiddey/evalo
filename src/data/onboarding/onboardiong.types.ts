@@ -66,5 +66,3 @@ export interface DomainsData {
    label: string;
    value: DomainValue;
 };
-
-export type Role = 'INTERVIEWEE' | 'INTERVIEWER';

@@ -47,6 +47,7 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
       await client.users.updateUserMetadata(userId, {
          publicMetadata: {
             onboardingComplete: true,
+            role
          }
       });
 

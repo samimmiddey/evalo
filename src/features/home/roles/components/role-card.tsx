@@ -1,15 +1,15 @@
-import { motion } from 'motion/react'
-import { Check, User, BriefcaseBusiness } from 'lucide-react'
-import { RoleCard as RoleCardType } from '@/data/home/home.types'
+import { motion } from 'motion/react';
+import { Check, User, BriefcaseBusiness } from 'lucide-react';
+import { RoleCard as RoleCardType } from '@/data/home/home.types';
 
 interface RoleCardProps {
-   i: number
-   role: RoleCardType
-   type: "Interviewees" | "Interviewers"
+   i: number;
+   role: RoleCardType;
+   type: "Interviewees" | "Interviewers";
 }
 
 const RoleCard = ({ i, role, type }: RoleCardProps) => {
-   const isInterviewee = type === "Interviewees"
+   const isInterviewee = type === "Interviewees";
 
    // Distinct themes for each role side to make them uniquely attractive side-by-side
    const theme = isInterviewee ? {
@@ -32,9 +32,9 @@ const RoleCard = ({ i, role, type }: RoleCardProps) => {
       check: "text-fuchsia-400",
       listBg: "bg-fuchsia-950/20 border-fuchsia-500/10 group-hover:border-fuchsia-500/20",
       shadow: "hover:shadow-[0_0_40px_rgba(217,70,239,0.15)]"
-   }
+   };
 
-   const HeaderIcon = isInterviewee ? User : BriefcaseBusiness
+   const HeaderIcon = isInterviewee ? User : BriefcaseBusiness;
 
    return (
       <motion.div
@@ -49,7 +49,7 @@ const RoleCard = ({ i, role, type }: RoleCardProps) => {
          <div className={`absolute inset-0 bg-linear-to-b ${theme.gradient} opacity-50`} />
 
          {/* Massive Ambient Glow */}
-         <div className={`absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[100px] transition-colors duration-700 ${theme.glow} -translate-y-1/2 translate-x-1/3`} />
+         <div className={`absolute top-0 right-0 w-125 h-125 rounded-full blur-[100px] transition-colors duration-700 ${theme.glow} -translate-y-1/2 translate-x-1/3`} />
 
          <div className="relative z-10 flex flex-col grow p-7 lg:p-9 2xl:p-11">
 
@@ -85,7 +85,7 @@ const RoleCard = ({ i, role, type }: RoleCardProps) => {
             </div>
          </div>
       </motion.div>
-   )
-}
+   );
+};
 
-export default RoleCard
+export default RoleCard;

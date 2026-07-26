@@ -11,8 +11,9 @@ import { DOMAINS, onboardingData, YEARS_OF_EXPERIENCE } from '@/data/onboarding/
 import NoDataCard from '@/components/common/no-data-card';
 import InputError from '@/components/common/input-error';
 import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
-import { DomainValue, Role } from '@/data/onboarding/onboardiong.types';
+import { DomainValue } from '@/data/onboarding/onboardiong.types';
 import { MultiSelect } from '@/components/common/multi-select';
+import { AssignedRole } from '@/models/user.model';
 
 const InterviewerTab = () => {
    const methods = useFormContext<OnboardingSchemaTypes>();
@@ -32,7 +33,7 @@ const InterviewerTab = () => {
          {/* Selected role badge */}
          <SelectedRoleBadge
             role={data.selectedRoleBadge.title}
-            onChangeRole={() => methods.setValue('role', data.selectedRoleBadge.value as Role)}
+            onChangeRole={() => methods.setValue('role', data.selectedRoleBadge.value as AssignedRole)}
          />
 
          {/* Form fields */}

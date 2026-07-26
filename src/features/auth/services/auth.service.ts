@@ -160,7 +160,7 @@ export const signInWithGoogle = async ({ sso }: GoogleSsoParams): Promise<AuthRe
    const { error } = await sso({
       strategy: 'oauth_google',
       redirectCallbackUrl: '/sso-callback',
-      redirectUrl: '/dashboard',
+      redirectUrl: '/',
    });
 
    if (error) {
@@ -175,12 +175,13 @@ export const ssoCallback = async ({
    clerk,
    signIn,
    signUp,
-   onNavigate,
+   onNavigateSignIn,
+   onNavigateSignUp,
    onTransferToSignIn,
 }: SsoCallbackParams): Promise<void> => {
    // Returning Google user — sign-in is complete
    if (signIn.status === 'complete') {
-      await signIn.finalize({ navigate: onNavigate });
+      await signIn.finalize({ navigate: onNavigateSignIn });
       return;
    }
 
@@ -189,7 +190,7 @@ export const ssoCallback = async ({
       await signIn.create({ transfer: true });
       const signInStatus = signIn.status as typeof signIn.status | 'complete';
       if (signInStatus === 'complete') {
-         await signIn.finalize({ navigate: onNavigate });
+         await signIn.finalize({ navigate: onNavigateSignIn });
          return;
       }
       onTransferToSignIn();
@@ -200,7 +201,7 @@ export const ssoCallback = async ({
    if (signIn.isTransferable) {
       await signUp.create({ transfer: true });
       if (signUp.status === 'complete') {
-         await signUp.finalize({ navigate: onNavigate });
+         await signUp.finalize({ navigate: onNavigateSignUp });
          return;
       }
       onTransferToSignIn();
@@ -209,7 +210,7 @@ export const ssoCallback = async ({
 
    // New Google sign-up is complete
    if (signUp.status === 'complete') {
-      await signUp.finalize({ navigate: onNavigate });
+      await signUp.finalize({ navigate: onNavigateSignUp });
       return;
    }
 
@@ -219,7 +220,7 @@ export const ssoCallback = async ({
       if (sessionId) {
          await clerk.setActive({
             session: sessionId,
-            navigate: onNavigate
+            navigate: onNavigateSignIn
          });
       }
    }

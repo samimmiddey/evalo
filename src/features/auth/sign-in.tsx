@@ -11,7 +11,6 @@ import AuthHeader from './components/auth-header';
 import AuthFooter from './components/auth-footer';
 import { authData } from '@/data/auth/auth.data';
 import { useSignIn } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { authSchema, AuthSchemaTypes } from './schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,12 +20,13 @@ import CustomSpinner from '@/components/common/custom-spinner';
 import { signInWithPassword } from './services/auth.service';
 import ScreenLoader from '@/components/common/screen-loader';
 import InputError from '@/components/common/input-error';
+import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 
 const SignIn = () => {
    const { signIn, errors, fetchStatus } = useSignIn();
    const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
 
-   const router = useRouter();
+   const roleBasedRedirect = useRoleBasedRedirect();
 
    const {
       register,
@@ -50,7 +50,7 @@ const SignIn = () => {
          emailAddress: data.email,
          password: data.password,
          errors,
-         onNavigate: () => router.push('/dashboard'),
+         onNavigate: () => void roleBasedRedirect()
       });
 
       if (result.success) {
@@ -94,7 +94,7 @@ const SignIn = () => {
                {
                   formErrors[authData.signIn.form.email.name] && (
                      <InputError
-                        message={formErrors[authData.signIn.form.email.name]?.message as string}
+                        message={formErrors[authData.signIn.form.email.name]?.message}
                         className='-mt-0.5 2xl:-mt-1.5'
                      />
                   )
@@ -115,7 +115,7 @@ const SignIn = () => {
                {
                   formErrors[authData.signIn.form.password.name] && (
                      <InputError
-                        message={formErrors[authData.signIn.form.password.name]?.message as string}
+                        message={formErrors[authData.signIn.form.password.name]?.message}
                         className='-mt-0.5 2xl:-mt-1.5'
                      />
                   )
