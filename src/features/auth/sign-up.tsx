@@ -9,7 +9,7 @@ import ContinueDivider from './components/continue-divider';
 import AuthHeader from './components/auth-header';
 import AuthFooter from './components/auth-footer';
 import { authData } from '@/data/auth/auth.data';
-import { useAuth, useSignUp } from '@clerk/nextjs';
+import { useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { authSchema, AuthSchemaTypes, OtpSchemaTypes } from './schemas/auth.schema';
@@ -24,7 +24,6 @@ import InputError from '@/components/common/input-error';
 
 const SignUp = () => {
    const { signUp, errors, fetchStatus } = useSignUp();
-   const { isSignedIn } = useAuth();
    const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
 
    const router = useRouter();
@@ -96,9 +95,14 @@ const SignUp = () => {
       return <ScreenLoader text="Loading..." />;
    }
 
-   // Redirect to home page if user is already signed in or sign up is complete
-   if (signUp.status === 'complete' || isSignedIn) {
-      return <ScreenLoader text="Creating account..." />;
+   // Show loader if sign up is complete
+   if (signUp.status === 'complete') {
+      return (
+         <ScreenLoader
+            text="Redirecting to onboarding..."
+            className='min-h-screen fixed inset-0 z-99999 overflow-hidden bg-zinc-950'
+         />
+      );
    }
 
    // Show OTP form
@@ -135,7 +139,7 @@ const SignUp = () => {
                void handleSubmit(onSubmit)(e);
             }}
          >
-            <div className="space-y-2 2xl:space-y-3">
+            <div className="flex flex-col gap-2 2xl:gap-2.5">
                <Label htmlFor="email">{authData.signUp.form.email.label}</Label>
                <Input
                   type={authData.signUp.form.email.type}
@@ -144,11 +148,14 @@ const SignUp = () => {
                />
                {
                   formErrors[authData.signUp.form.email.name] && (
-                     <InputError message={formErrors[authData.signUp.form.email.name]?.message as string} />
+                     <InputError
+                        message={formErrors[authData.signUp.form.email.name]?.message as string}
+                        className='-mt-0.5 2xl:-mt-1.5'
+                     />
                   )
                }
             </div>
-            <div className="space-y-2 2xl:space-y-3">
+            <div className="flex flex-col gap-2 2xl:gap-2.5">
                <Label htmlFor="password">{authData.signUp.form.password.label}</Label>
                <Input
                   type={authData.signUp.form.password.type}
@@ -157,7 +164,10 @@ const SignUp = () => {
                />
                {
                   formErrors[authData.signUp.form.password.name] && (
-                     <InputError message={formErrors[authData.signUp.form.password.name]?.message as string} />
+                     <InputError
+                        message={formErrors[authData.signUp.form.password.name]?.message as string}
+                        className='-mt-0.5 2xl:-mt-1.5'
+                     />
                   )
                }
             </div>

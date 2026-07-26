@@ -17,23 +17,32 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
    const client = await clerkClient();
 
    try {
-      const { role, name, designation, company, experience, expertise, bio } = onboardingSchema.parse(data);
+      const { role, firstName, lastName, designation, company, experience, expertise, bio } = onboardingSchema.parse(data);
 
       // Update user profile
       await db.user.update({
          where: { clerkUserId: userId },
          data: {
             role,
-            name,
-            ...(designation && { designation }),
-            ...(company && { company }),
-            ...(experience && { experience: Number(experience) }),
-            ...(expertise && { expertise }),
-            ...(bio && { bio })
+            firstName,
+            lastName,
+            ...(role === 'INTERVIEWER' && {
+               designation,
+               company,
+               experience: Number(experience),
+               expertise,
+               bio
+            })
          }
       });
 
       // Update clerk user
+      await client.users.updateUser(userId, {
+         firstName,
+         lastName,
+      });
+
+      // Update clerk metadata
       await client.users.updateUserMetadata(userId, {
          publicMetadata: {
             onboardingComplete: true,

@@ -57,7 +57,7 @@ const IntervieweeTab = () => {
          </div>
 
          {/* Form fields */}
-         <div className="space-y-6">
+         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3.5 gap-y-4.5">
             {
                data.formFields.map((field) => {
                   return (

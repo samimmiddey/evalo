@@ -6,9 +6,14 @@ const domainValue = ['FRONTEND', 'BACKEND', 'FULLSTACK', 'DEVOPS', 'DSA', 'SYSTE
 export const onboardingSchema = z.object({
    // Common fields
    role: z.enum(role, { error: 'Role is required' }),
-   name: z.string()
-      .min(1, 'Full name is required')
-      .min(3, 'Full name must be at least 3 characters long'),
+   firstName: z.string()
+      .min(1, 'First name is required')
+      .min(3, 'First name must be at least 3 characters long')
+      .max(50, 'First name must be at most 50 characters long'),
+   lastName: z.string()
+      .min(1, 'Last name is required')
+      .min(3, 'Last name must be at least 3 characters long')
+      .max(50, 'Last name must be at most 50 characters long'),
 
    // Interviewer only fields
    designation: z.string().optional(),

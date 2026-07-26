@@ -107,7 +107,7 @@ const Onboarding = () => {
 
                      {/* CTA */}
                      <Button
-                        className="w-full h-11 rounded-lg flex items-center justify-center gap-2 group transition-all mt-4"
+                        className="w-full h-11 rounded-lg flex items-center justify-center gap-2 group transition-all mt-4 mb-2"
                         size="lg"
                         type="submit"
                         variant='white'

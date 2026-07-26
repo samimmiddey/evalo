@@ -63,7 +63,7 @@ export interface YearsOfExperienceData {
 export type DomainValue = 'FRONTEND' | 'BACKEND' | 'FULLSTACK' | 'DEVOPS' | 'DSA' | 'SYSTEM_DESIGN' | 'MOBILE' | 'ML_AI' | 'SECURITY' | 'QA' | 'CLOUD';
 
 export interface DomainsData {
-   name: string;
+   label: string;
    value: DomainValue;
 };
 

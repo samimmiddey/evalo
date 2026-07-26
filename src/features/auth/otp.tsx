@@ -114,7 +114,7 @@ const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
                void handleSubmit(onSubmit)(e);
             }}
          >
-            <div className="space-y-2 2xl:space-y-3">
+            <div className="flex flex-col gap-2 2xl:gap-2.5">
                <Label htmlFor="code">{authData.otp.form.code.label}</Label>
                <Input
                   type={authData.otp.form.code.type}
@@ -123,7 +123,10 @@ const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
                />
                {
                   formErrors.code && (
-                     <InputError message={formErrors.code?.message as string} />
+                     <InputError
+                        message={formErrors.code?.message as string}
+                        className='-mt-0.5 2xl:-mt-1.5'
+                     />
                   )
                }
             </div>

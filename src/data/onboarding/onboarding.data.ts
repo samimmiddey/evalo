@@ -48,9 +48,16 @@ export const onboardingData: OnboardingData = {
       formFields: [
          {
             type: 'text',
-            name: 'name',
-            label: 'Full Name',
-            placeholder: 'Enter Your Full Name',
+            name: 'firstName',
+            label: 'First Name',
+            placeholder: 'Enter Your first Name',
+            icon: Briefcase,
+         },
+         {
+            type: 'text',
+            name: 'lastName',
+            label: 'Last Name',
+            placeholder: 'Enter Your last Name',
             icon: Briefcase,
          }
       ]
@@ -63,9 +70,16 @@ export const onboardingData: OnboardingData = {
       formFields: [
          {
             type: 'text',
-            name: 'name',
-            label: 'Full Name',
-            placeholder: 'Enter Your Full Name',
+            name: 'firstName',
+            label: 'First Name',
+            placeholder: 'Enter Your first Name',
+            icon: Briefcase,
+         },
+         {
+            type: 'text',
+            name: 'lastName',
+            label: 'Last Name',
+            placeholder: 'Enter Your last Name',
             icon: Briefcase,
          },
          {
@@ -111,7 +125,8 @@ export const onboardingData: OnboardingData = {
 
 export const defaultValues: OnboardingSchemaTypes = {
    role: 'INTERVIEWEE' as const,
-   name: '',
+   firstName: '',
+   lastName: '',
    designation: '',
    company: '',
    experience: '',
@@ -135,47 +150,47 @@ export const YEARS_OF_EXPERIENCE: YearsOfExperienceData[] = [
 
 export const DOMAINS: DomainsData[] = [
    {
-      name: 'Frontend',
+      label: 'Frontend',
       value: 'FRONTEND'
    },
    {
-      name: 'Backend',
+      label: 'Backend',
       value: 'BACKEND'
    },
    {
-      name: 'Full Stack',
+      label: 'Full Stack',
       value: 'FULLSTACK'
    },
    {
-      name: 'DevOps',
+      label: 'DevOps',
       value: 'DEVOPS'
    },
    {
-      name: 'DSA',
+      label: 'DSA',
       value: 'DSA'
    },
    {
-      name: 'System Design',
+      label: 'System Design',
       value: 'SYSTEM_DESIGN'
    },
    {
-      name: 'Mobile',
+      label: 'Mobile',
       value: 'MOBILE'
    },
    {
-      name: 'ML / AI',
+      label: 'ML / AI',
       value: 'ML_AI'
    },
    {
-      name: 'Security',
+      label: 'Security',
       value: 'SECURITY'
    },
    {
-      name: 'QA',
+      label: 'QA',
       value: 'QA'
    },
    {
-      name: 'Cloud',
+      label: 'Cloud',
       value: 'CLOUD'
    },
 ];

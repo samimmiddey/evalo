@@ -4,7 +4,6 @@ import { motion } from 'motion/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import SelectedRoleBadge from './selected-role-badge';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useFormContext } from 'react-hook-form';
@@ -13,6 +12,7 @@ import NoDataCard from '@/components/common/no-data-card';
 import InputError from '@/components/common/input-error';
 import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
 import { DomainValue, Role } from '@/data/onboarding/onboardiong.types';
+import { MultiSelect } from '@/components/common/multi-select';
 
 const InterviewerTab = () => {
    const methods = useFormContext<OnboardingSchemaTypes>();
@@ -45,7 +45,7 @@ const InterviewerTab = () => {
                   data.formFields.map((field) => (
                      <div
                         key={field.name}
-                        className={`flex flex-col gap-2 ${field.type === "chips" || field.type === "textarea"
+                        className={`flex flex-col gap-2 ${field.type === "textarea"
                            ? "sm:col-span-2"
                            : ""
                            }`}
@@ -94,24 +94,14 @@ const InterviewerTab = () => {
                         {/* Chips Selection */}
                         {
                            field.type === 'chips' && (
-                              <ToggleGroup
-                                 type="multiple"
-                                 value={methods.watch(field.name as keyof OnboardingSchemaTypes) as DomainValue[]}
+                              <MultiSelect
+                                 options={DOMAINS}
                                  onValueChange={(val) => methods.setValue(field.name as keyof OnboardingSchemaTypes, val as DomainValue[], { shouldValidate: true })}
-                                 className="flex flex-wrap gap-1.5 w-full justify-start"
-                              >
-                                 {DOMAINS.map((item) => (
-                                    <ToggleGroupItem
-                                       type='button'
-                                       key={item.value}
-                                       value={item.value}
-                                       aria-label={item.name}
-                                       className="text-xs h-7 px-3.5 rounded-full border border-white/10 bg-zinc-950/40 text-zinc-300 hover:bg-white/5 hover:text-white data-[state=on]:bg-violet-500/20 data-[state=on]:border-violet-500/50 data-[state=on]:text-violet-300 data-[state=on]:shadow-[0_0_12px_rgba(139,92,246,0.2)] transition-all cursor-pointer"
-                                    >
-                                       {item.name}
-                                    </ToggleGroupItem>
-                                 ))}
-                              </ToggleGroup>
+                                 placeholder="Choose expertise..."
+                                 variant="inverted"
+                                 className="rounded-lg border border-input bg-transparent dark:bg-input/30 px-2.5 h-10 2xl:h-11 text-sm 2xl:text-base focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-expanded:border-ring aria-expanded:ring-3 aria-expanded:ring-ring/50 transition-all hover:bg-input/30 hover:translate-y-0"
+                                 maxCount={1}
+                              />
                            )
                         }
 

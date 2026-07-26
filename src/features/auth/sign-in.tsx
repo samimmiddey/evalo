@@ -84,7 +84,7 @@ const SignIn = () => {
                void handleSubmit(onSubmit)(e);
             }}
          >
-            <div className="space-y-2 2xl:space-y-3">
+            <div className="flex flex-col gap-2 2xl:gap-2.5">
                <Label htmlFor="email">{authData.signIn.form.email.label}</Label>
                <Input
                   type={authData.signIn.form.email.type}
@@ -93,11 +93,14 @@ const SignIn = () => {
                />
                {
                   formErrors[authData.signIn.form.email.name] && (
-                     <InputError message={formErrors[authData.signIn.form.email.name]?.message as string} />
+                     <InputError
+                        message={formErrors[authData.signIn.form.email.name]?.message as string}
+                        className='-mt-0.5 2xl:-mt-1.5'
+                     />
                   )
                }
             </div>
-            <div className="space-y-2 2xl:space-y-3">
+            <div className="flex flex-col gap-2 2xl:gap-2.5">
                <div className="flex items-center justify-between">
                   <Label htmlFor="password">{authData.signIn.form.password.label}</Label>
                   <Link href="/forgot-password" className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">
@@ -111,7 +114,10 @@ const SignIn = () => {
                />
                {
                   formErrors[authData.signIn.form.password.name] && (
-                     <InputError message={formErrors[authData.signIn.form.password.name]?.message as string} />
+                     <InputError
+                        message={formErrors[authData.signIn.form.password.name]?.message as string}
+                        className='-mt-0.5 2xl:-mt-1.5'
+                     />
                   )
                }
             </div>

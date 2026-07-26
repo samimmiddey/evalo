@@ -146,7 +146,7 @@ export default function ForgotPassword() {
                   {/* Step 1 UI: Collect the user's email so you can send them a password reset code */}
                   {!codeSent && (
                      <form onSubmit={e => void handleSendCode(e)} className="space-y-5">
-                        <div className="space-y-2 2xl:space-y-3">
+                        <div className="flex flex-col gap-2 2xl:gap-2.5">
                            <Label htmlFor="email">{authData.forgotPassword.stepOne.form.email.label}</Label>
                            <Input
                               type={authData.forgotPassword.stepOne.form.email.type}
@@ -155,7 +155,10 @@ export default function ForgotPassword() {
                            />
                            {
                               formErrors[authData.forgotPassword.stepOne.form.email.name] && (
-                                 <InputError message={formErrors[authData.forgotPassword.stepOne.form.email.name]?.message as string} />
+                                 <InputError
+                                    message={formErrors[authData.forgotPassword.stepOne.form.email.name]?.message as string}
+                                    className='-mt-0.5 2xl:-mt-1.5'
+                                 />
                               )
                            }
                         </div>
@@ -182,7 +185,7 @@ export default function ForgotPassword() {
                   {/* Step 2 UI: Collect the code provided by the user */}
                   {codeSent && signIn.status !== 'needs_new_password' && (
                      <form onSubmit={e => void handleVerifyCode(e)} className="space-y-5">
-                        <div className="space-y-2 2xl:space-y-3">
+                        <div className="flex flex-col gap-2 2xl:gap-2.5">
                            <Label htmlFor="code">{authData.forgotPassword.stepTwo.form.code.label}</Label>
                            <Input
                               type={authData.forgotPassword.stepTwo.form.code.type}
@@ -191,7 +194,10 @@ export default function ForgotPassword() {
                            />
                            {
                               formErrors[authData.forgotPassword.stepTwo.form.code.name] && (
-                                 <InputError message={formErrors[authData.forgotPassword.stepTwo.form.code.name]?.message as string} />
+                                 <InputError
+                                    message={formErrors[authData.forgotPassword.stepTwo.form.code.name]?.message as string}
+                                    className='-mt-0.5 2xl:-mt-1.5'
+                                 />
                               )
                            }
                         </div>
@@ -218,7 +224,7 @@ export default function ForgotPassword() {
                   {/* Step 3 UI: Collect the new password from the user */}
                   {signIn.status === 'needs_new_password' && (
                      <form onSubmit={e => void handleSubmitNewPassword(e)} className="space-y-5">
-                        <div className="space-y-2 2xl:space-y-3">
+                        <div className="flex flex-col gap-2 2xl:gap-2.5">
                            <Label htmlFor="password">{authData.forgotPassword.stepThree.form.password.label}</Label>
                            <Input
                               type={authData.forgotPassword.stepThree.form.password.type}
@@ -227,7 +233,10 @@ export default function ForgotPassword() {
                            />
                            {
                               formErrors[authData.forgotPassword.stepThree.form.password.name] && (
-                                 <InputError message={formErrors[authData.forgotPassword.stepThree.form.password.name]?.message as string} />
+                                 <InputError
+                                    message={formErrors[authData.forgotPassword.stepThree.form.password.name]?.message as string}
+                                    className='-mt-0.5 2xl:-mt-1.5'
+                                 />
                               )
                            }
                         </div>

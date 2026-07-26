@@ -35,7 +35,7 @@ export async function POST(req: Request) {
    }
 
    if (evt.type === 'user.created') {
-      const { id, first_name, last_name, image_url, email_addresses } = evt.data;
+      const { id, image_url, email_addresses } = evt.data;
 
       try {
          await db.user.upsert({
@@ -45,7 +45,6 @@ export async function POST(req: Request) {
             update: {},
             create: {
                clerkUserId: id,
-               name: `${first_name} ${last_name}`,
                imageUrl: image_url,
                email: email_addresses[0].email_address,
                credits: PLAN_CREDITS.free,
