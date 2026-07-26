@@ -72,7 +72,7 @@ const SignUp = () => {
       });
 
       if (result.success) {
-         toast.success('Account created successfully');
+         toast.success('Account created successfully. Please complete the onboarding.');
       } else {
          toast.error(result.message);
       }

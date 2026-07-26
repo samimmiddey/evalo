@@ -41,7 +41,7 @@ const Onboarding = () => {
       }
 
       if (data) {
-         toast.success('Your profile has been set up!');
+         toast.success('Your profile has been set up successfully!');
          void session?.reload().then(() => {
             router.push('/dashboard');
          });
