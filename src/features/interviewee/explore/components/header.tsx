@@ -3,7 +3,7 @@ import PrimaryTitle from '@/components/common/primary-title';
 import HeaderLayout from '@/components/layouts/header-layout';
 import { Button } from '@/components/ui/button';
 import useMediaQuery from '@/hooks/use-media-query';
-import { ViewType } from '@/models/ui.types';
+import { ViewType } from '@/types/ui.types';
 import { Filter, Grid2x2, Rows3 } from 'lucide-react';
 
 interface HeaderProps {

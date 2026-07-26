@@ -10,7 +10,7 @@ import { onboardingSchema, OnboardingSchemaTypes } from './schemas/onboarding.sc
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { defaultValues, onboardingData } from '@/data/onboarding/onboarding.data';
-import { AssignedRole } from '@/models/user.model';
+import { AssignedRole } from '@/types/user.types';
 import { useMutation } from '@/hooks/use-mutation';
 import { useEffect } from 'react';
 import { toast } from 'sonner';

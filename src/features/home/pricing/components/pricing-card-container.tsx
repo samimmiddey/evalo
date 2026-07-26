@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { Plan } from '../models/pricing.types';
+import { Plan } from '../types/pricing.types';
 import PricingCard from './pricing-card';
 
 interface PricingCardContainerProps {

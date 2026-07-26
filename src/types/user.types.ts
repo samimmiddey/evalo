@@ -1,4 +1,4 @@
-import { BaseResponse } from "./api.model";
+import { BaseResponse } from "./api.types";
 
 export type UserRole = 'INTERVIEWEE' | 'INTERVIEWER' | 'UNASSIGNED';
 export type AssignedRole = Exclude<UserRole, 'UNASSIGNED'>;

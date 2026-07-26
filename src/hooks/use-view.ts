@@ -1,4 +1,4 @@
-import { ViewType } from '@/models/ui.types';
+import { ViewType } from '@/types/ui.types';
 import { useState } from 'react';
 
 const useView = () => {

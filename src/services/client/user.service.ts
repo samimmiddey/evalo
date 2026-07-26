@@ -3,7 +3,7 @@
 import { DB_USER } from "@/config/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
-import { UserClient, UserResponse } from "@/models/user.model";
+import { UserClient, UserResponse } from "@/types/user.types";
 
 export const getUser = async (): Promise<UserClient> => {
    try {

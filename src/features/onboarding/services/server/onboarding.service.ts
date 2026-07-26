@@ -4,7 +4,7 @@ import { onboardingSchema, OnboardingSchemaTypes } from "@/features/onboarding/s
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { CompleteSetupResponse } from "../../models/onboarding.types";
+import { CompleteSetupResponse } from "../../types/onboarding.types";
 
 // Complete onboarding setup
 export const completeSetup = async (data: OnboardingSchemaTypes): Promise<CompleteSetupResponse> => {

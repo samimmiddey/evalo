@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
-import { UserServer } from "@/models/user.model";
+import { UserServer } from "@/types/user.types";
 import { currentUser } from "@clerk/nextjs/server";
 
 // Check user and allocate credits if needed

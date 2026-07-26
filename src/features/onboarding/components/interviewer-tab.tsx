@@ -13,7 +13,7 @@ import InputError from '@/components/common/input-error';
 import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
 import { DomainValue } from '@/data/onboarding/onboardiong.types';
 import { MultiSelect } from '@/components/common/multi-select';
-import { AssignedRole } from '@/models/user.model';
+import { AssignedRole } from '@/types/user.types';
 
 const InterviewerTab = () => {
    const methods = useFormContext<OnboardingSchemaTypes>();

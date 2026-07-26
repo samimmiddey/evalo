@@ -9,7 +9,7 @@ import { onboardingData } from '@/data/onboarding/onboarding.data';
 import NoDataCard from '@/components/common/no-data-card';
 import InputError from '@/components/common/input-error';
 import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
-import { AssignedRole } from '@/models/user.model';
+import { AssignedRole } from '@/types/user.types';
 
 const IntervieweeTab = () => {
    const methods = useFormContext<OnboardingSchemaTypes>();

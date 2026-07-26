@@ -1,5 +1,5 @@
-import { UserRole } from "@/models/user.model";
-import { BaseResponse } from "@/models/api.model";
+import { UserRole } from "@/types/user.types";
+import { BaseResponse } from "@/types/api.types";
 
 export interface Onboarding {
    role: UserRole;

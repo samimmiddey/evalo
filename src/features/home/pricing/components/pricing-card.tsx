@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { Check, Sparkles } from 'lucide-react';
 import { CheckoutButton, useSubscription } from '@clerk/nextjs/experimental';
-import { Plan } from '../models/pricing.types';
+import { Plan } from '../types/pricing.types';
 import { Button } from '@/components/ui/button';
 import { Show } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
