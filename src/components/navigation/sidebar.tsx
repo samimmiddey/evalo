@@ -49,13 +49,13 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                   className="p-1 hover:bg-zinc-800 rounded-lg transition-colors"
                   aria-label="Close menu"
                >
-                  <X className="w-5 h-5 text-zinc-400" />
+                  <X className="w-5 h-5 text-gray-400" />
                </button>
             </div>
 
             {/* Navigation */}
             <nav className="flex-1 px-3 py-4">
-               <p className="text-[11px] font-medium text-zinc-600 uppercase tracking-widest px-2 mb-3">
+               <p className="text-[11px] font-medium text-gray-600 uppercase tracking-widest px-2 mb-3">
                   Menu
                </p>
                <div className="space-y-4">
@@ -70,7 +70,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                               "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                               isActive
                                  ? "bg-violet-500/20 text-violet-400 border border-violet-500/30 shadow-lg shadow-violet-500/10"
-                                 : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
+                                 : "text-gray-400 hover:bg-zinc-800/50 hover:text-gray-200"
                            )}
                         >
                            {icon}
