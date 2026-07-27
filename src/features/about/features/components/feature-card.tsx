@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 
 interface FeatureRowProps {
    i: number;
-   feature: { title: string; description: string };
+   feature: { title: string; description: string; };
    Icon: React.ElementType;
 }
 
@@ -29,10 +29,10 @@ const FeatureRow = ({ i, feature, Icon }: FeatureRowProps) => {
                <Icon className="w-5 h-5 2xl:w-6 2xl:h-6" />
             </div>
             <div>
-               <h3 className="font-outfit font-semibold text-base lg:text-lg 2xl:text-xl text-gray-100 group-hover:text-white transition-colors duration-300 mb-2">
+               <h3 className="font-outfit font-semibold text-base lg:text-lg 2xl:text-xl text-zinc-100 group-hover:text-zinc-100 transition-colors duration-300 mb-2">
                   {feature.title}
                </h3>
-               <p className="font-inter text-sm 2xl:text-[15px] text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+               <p className="font-inter text-sm 2xl:text-[15px] text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-300">
                   {feature.description}
                </p>
             </div>

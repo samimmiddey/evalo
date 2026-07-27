@@ -133,8 +133,8 @@ const SignIn = () => {
                   isSigningIn ?
                      <CustomSpinner
                         text='Signing In...'
-                        spinnerClass='text-gray-700'
-                        textClass='text-gray-700'
+                        spinnerClass='text-zinc-700'
+                        textClass='text-zinc-700'
                      /> :
                      authData.signIn.form.button
                }

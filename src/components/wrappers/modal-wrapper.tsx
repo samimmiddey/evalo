@@ -34,7 +34,7 @@ const ModalWrapper = ({ open, onClose, title, description, children }: ModalWrap
                         {title}
                      </span>
                   </div>
-                  <p className="text-sm text-gray-400 font-inter max-w-xl leading-relaxed">
+                  <p className="text-sm text-zinc-400 font-inter max-w-xl leading-relaxed">
                      {description}
                   </p>
                </div>
@@ -44,7 +44,7 @@ const ModalWrapper = ({ open, onClose, title, description, children }: ModalWrap
                   onClick={onClose}
                   className="shrink-0 flex items-center justify-center w-6 2xl:w-7 h-6 2xl:h-7 rounded-lg
                      bg-white/5 hover:bg-white/10 border border-white/8 hover:border-white/15
-                     text-gray-400 hover:text-white transition-all duration-200 mt-0.5 cursor-pointer"
+                     text-zinc-400 hover:text-zinc-100 transition-all duration-200 mt-0.5 cursor-pointer"
                   aria-label="Close modal"
                >
                   <X className="w-4 h-4" />

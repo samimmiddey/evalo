@@ -20,7 +20,7 @@ const buttonVariants = cva(
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
         gold: "bg-amber-400 text-[#0a0a0b] hover:bg-amber-300 hover:shadow-[0_12px_36px_rgba(251,191,36,0.35)]",
-        white: "bg-violet-100 text-gray-900 hover:bg-violet-200 hover:shadow-[0_12px_36px_rgba(166,132,255,0.35)]"
+        white: "bg-violet-100 text-zinc-900 hover:bg-violet-200 hover:shadow-[0_12px_36px_rgba(166,132,255,0.35)]"
       },
       size: {
         default:

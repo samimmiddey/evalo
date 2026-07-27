@@ -27,7 +27,7 @@ const TextContent = () => {
                text={homeData.hero.header}
             />
          </motion.div>
-         <h1 className="mx-auto w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-4xl text-center text-5xl md:text-[54px] font-bold lg:text-6xl 2xl:text-[80px] text-gray-100 font-outfit leading-[1.1] tracking-tight pb-2">
+         <h1 className="mx-auto w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-4xl text-center text-5xl md:text-[54px] font-bold lg:text-6xl 2xl:text-[80px] text-zinc-100 font-outfit leading-[1.1] tracking-tight pb-2">
             {homeData.hero.title
                .split(" ")
                .map((word, index) => (
@@ -57,7 +57,7 @@ const TextContent = () => {
                duration: 0.3,
                delay: 0.8,
             }}
-            className="mx-auto max-w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-3xl mt-1 py-4 text-center text-[15px] 2xl:text-lg font-normal text-gray-300"
+            className="mx-auto max-w-full md:max-w-xl lg:max-w-2xl 2xl:max-w-3xl mt-1 py-4 text-center text-[15px] 2xl:text-lg font-normal text-zinc-300"
          >
             {homeData.hero.description}
          </motion.p>

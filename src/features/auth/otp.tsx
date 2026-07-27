@@ -144,8 +144,8 @@ const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
                   isOtpVerifying ?
                      <CustomSpinner
                         text='Verifying...'
-                        spinnerClass='text-gray-700'
-                        textClass='text-gray-700'
+                        spinnerClass='text-zinc-700'
+                        textClass='text-zinc-700'
                      />
                      : authData.otp.form.button
                }
@@ -172,7 +172,7 @@ const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
             </button>
             <Button
                variant='secondary'
-               className='flex items-center gap-3 text-gray-300'
+               className='flex items-center gap-3 text-zinc-300'
                onClick={() => void onBack()}
                type='button'
             >

@@ -1,8 +1,8 @@
-import { Quote, Star } from 'lucide-react'
-import { TestimonialCard as TestimonialCardType } from '@/data/home/home.types'
+import { Quote, Star } from 'lucide-react';
+import { TestimonialCard as TestimonialCardType } from '@/data/home/home.types';
 
 interface TestimonialCardProps {
-   testimonial: TestimonialCardType
+   testimonial: TestimonialCardType;
 }
 
 const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
@@ -16,15 +16,15 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
             {/* Header: Avatar + Info */}
             <div className="flex items-center gap-4 mb-6 2xl:mb-8 relative z-10">
                <div className="relative">
-                  <div className="h-12 2xl:w-14 w-12 2xl:h-14 rounded-full bg-linear-to-br from-violet-500 to-fuchsia-600 p-[2px]">
-                     <div className="w-full h-full rounded-full bg-surface-dark flex items-center justify-center text-white font-bold text-xl">
+                  <div className="h-12 2xl:w-14 w-12 2xl:h-14 rounded-full bg-linear-to-br from-violet-500 to-fuchsia-600 p-0.5">
+                     <div className="w-full h-full rounded-full bg-surface-dark flex items-center justify-center text-zinc-100 font-bold text-xl">
                         {testimonial.avatar}
                      </div>
                   </div>
                   {/* Verified check badge */}
                   <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-surface-dark rounded-full flex items-center justify-center">
                      <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                        <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <svg className="w-2.5 h-2.5 text-zinc-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                            <polyline points="20 6 9 17 4 12" />
                         </svg>
                      </div>
@@ -32,7 +32,7 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
                </div>
 
                <div className="flex flex-col">
-                  <span className="text-white font-semibold text-[17px] 2xl:text-lg">{testimonial.name}</span>
+                  <span className="text-zinc-100 font-semibold text-[17px] 2xl:text-lg">{testimonial.name}</span>
                   <span className="text-violet-400 text-[13px] 2xl:text-sm font-medium">{testimonial.role}</span>
                </div>
             </div>
@@ -45,15 +45,15 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
             </div>
 
             {/* Review text */}
-            <p className="text-gray-300 text-sm lg:text-[15px] 2xl:text-[17px] leading-relaxed relative z-10 grow font-inter">
+            <p className="text-zinc-300 text-sm lg:text-[15px] 2xl:text-[17px] leading-relaxed relative z-10 grow font-inter">
                {testimonial.review}
             </p>
 
             {/* Large background quote icon */}
-            <Quote className="absolute -bottom-6 -right-6 w-32 h-32 text-white/2 group-hover:text-violet-500/5 transition-colors duration-500 -rotate-12 pointer-events-none" />
+            <Quote className="absolute -bottom-6 -right-6 w-32 h-32 text-zinc-100/2 group-hover:text-violet-500/5 transition-colors duration-500 -rotate-12 pointer-events-none" />
          </div>
       </div>
-   )
-}
+   );
+};
 
-export default TestimonialCard
+export default TestimonialCard;

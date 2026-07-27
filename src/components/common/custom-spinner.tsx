@@ -11,8 +11,8 @@ interface CustomSpinnerProps {
 const CustomSpinner = ({ text, containerClass, spinnerClass, textClass }: CustomSpinnerProps) => {
    return (
       <div className={cn('flex items-center gap-2 2xl:gap-2.5', containerClass)}>
-         <Spinner className={cn('size-4.5 2xl:size-5 text-gray-300', spinnerClass)} />
-         <p className={cn('text-sm text-gray-300', textClass)}>{text}</p>
+         <Spinner className={cn('size-4.5 2xl:size-5 text-zinc-300', spinnerClass)} />
+         <p className={cn('text-sm text-zinc-300', textClass)}>{text}</p>
       </div>
    )
 };

@@ -51,7 +51,7 @@ const InterviewerTab = () => {
                            : ""
                            }`}
                      >
-                        <Label htmlFor={field.name} className="text-sm font-medium text-gray-300 flex items-center gap-1.5">
+                        <Label htmlFor={field.name} className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
                            <field.icon className="w-3.5 h-3.5 text-violet-400" />
                            {field.label}
                         </Label>

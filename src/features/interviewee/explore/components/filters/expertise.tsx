@@ -16,7 +16,7 @@ const EXPERTISE = [
 const Expertise = () => {
    return (
       <div className="flex flex-col gap-2.5 2xl:gap-3">
-         <PrimaryBody className="text-sm! font-medium! text-gray-300!" text='Expertise' />
+         <PrimaryBody className="text-sm! font-medium! text-zinc-300!" text='Expertise' />
          <div className="flex flex-wrap gap-2 2xl:gap-2.5 w-full">
             {EXPERTISE.map((category, index) => (
                <Badge
@@ -24,8 +24,8 @@ const Expertise = () => {
                   className={`
                      shrink-0 p-3 cursor-pointer transition-colors font-medium
                      ${index === 0
-                        ? 'bg-violet-500 hover:bg-violet-600 text-white border-transparent'
-                        : 'bg-zinc-900 border-white/10 text-gray-400 hover:text-white hover:border-white/20'
+                        ? 'bg-violet-500 hover:bg-violet-600 text-zinc-100 border-transparent'
+                        : 'bg-zinc-900 border-white/10 text-zinc-400 hover:text-zinc-100 hover:border-white/20'
                      }
                   `}
                >

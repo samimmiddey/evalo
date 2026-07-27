@@ -1,4 +1,4 @@
-import PrimaryBody from '@/components/common/primary-body'
+import PrimaryBody from '@/components/common/primary-body';
 
 const AuthBranding = () => {
    return (
@@ -32,16 +32,16 @@ const AuthBranding = () => {
                   </svg>
                   <PrimaryBody
                      text="Evalo has completely transformed how we discover and evaluate engineering talent. The intuitive design and deep insights are unmatched."
-                     className='text-gray-200'
+                     className='text-zinc-200'
                   />
                   <footer className="flex items-center gap-4 pt-4 border-t border-white/10">
-                     <div className="w-12 h-12 rounded-full bg-linear-to-tr from-violet-600 to-fuchsia-600 p-[2px] shadow-lg shadow-violet-500/20">
+                     <div className="w-12 h-12 rounded-full bg-linear-to-tr from-violet-600 to-fuchsia-600 p-0.5 shadow-lg shadow-violet-500/20">
                         <div className="w-full h-full bg-surface-dark rounded-full flex items-center justify-center">
-                           <span className="text-white font-bold font-outfit text-sm">SD</span>
+                           <span className="text-zinc-100 font-bold font-outfit text-sm">SD</span>
                         </div>
                      </div>
                      <div className="flex flex-col">
-                        <span className="text-base text-white font-medium">Sofia Davis</span>
+                        <span className="text-base text-zinc-100 font-medium">Sofia Davis</span>
                         <span className="text-sm text-violet-300/80">VP of Engineering, Acme Corp</span>
                      </div>
                   </footer>
@@ -49,7 +49,7 @@ const AuthBranding = () => {
             </div>
          </div>
       </div>
-   )
-}
+   );
+};
 
-export default AuthBranding
+export default AuthBranding;

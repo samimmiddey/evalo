@@ -38,7 +38,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                         <Link
                            href={item.href}
                            key={item.href}
-                           className={`hover:text-violet-400 font-medium text-sm 2xl:text-[15px] py-1 px-3 transition-colors ${pathname === item.href ? 'text-violet-400' : 'text-gray-100'}`}
+                           className={`hover:text-violet-400 font-medium text-sm 2xl:text-[15px] py-1 px-3 transition-colors ${pathname === item.href ? 'text-violet-400' : 'text-zinc-100'}`}
                         >
                            {item.name}
                         </Link>
@@ -110,7 +110,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                         className='p-2 hover:bg-zinc-800 rounded-lg transition-colors md:hidden'
                         aria-label="Toggle menu"
                      >
-                        <Menu className='w-5 h-5 text-gray-100' />
+                        <Menu className='w-5 h-5 text-zinc-100' />
                      </button>
                   )}
                </div>

@@ -62,22 +62,22 @@ export function ExpertCardsPreview() {
                   {/* Avatar */}
                   <div className="flex items-center gap-3.5">
                      <div
-                        className={`w-11 h-11 rounded-full bg-linear-to-br ${expert.colorFrom} ${expert.colorTo} flex items-center justify-center text-white text-sm font-bold font-outfit shrink-0 shadow-md`}
+                        className={`w-11 h-11 rounded-full bg-linear-to-br ${expert.colorFrom} ${expert.colorTo} flex items-center justify-center text-zinc-100 text-sm font-bold font-outfit shrink-0 shadow-md`}
                      >
                         {expert.initials}
                      </div>
                      <div className="min-w-0">
-                        <p className="text-gray-100 font-semibold font-outfit text-sm truncate">
+                        <p className="text-zinc-100 font-semibold font-outfit text-sm truncate">
                            {expert.name}
                         </p>
-                        <p className="text-gray-400 text-xs font-inter truncate">
+                        <p className="text-zinc-400 text-xs font-inter truncate">
                            {expert.role}
                         </p>
                      </div>
                   </div>
 
                   {/* Specialty badge */}
-                  <div className="flex items-center gap-2 text-xs text-gray-400 font-inter">
+                  <div className="flex items-center gap-2 text-xs text-zinc-400 font-inter">
                      <Briefcase className="w-3.5 h-3.5 text-violet-400 shrink-0" />
                      <span>{expert.specialty}</span>
                   </div>
@@ -86,11 +86,11 @@ export function ExpertCardsPreview() {
                   <div className="flex items-center justify-between pt-2 border-t border-white/5">
                      <div className="flex items-center gap-1 text-yellow-400">
                         <Star className="w-3.5 h-3.5 fill-current" />
-                        <span className="text-xs font-medium text-gray-200">
+                        <span className="text-xs font-medium text-zinc-200">
                            {expert.rating.toFixed(1)}
                         </span>
                      </div>
-                     <span className="text-xs text-gray-500 font-inter">
+                     <span className="text-xs text-zinc-500 font-inter">
                         {expert.sessions} sessions
                      </span>
                   </div>

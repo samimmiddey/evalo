@@ -173,8 +173,8 @@ export default function ForgotPassword() {
                               isSendingCode ?
                                  <CustomSpinner
                                     text='Sending Code...'
-                                    spinnerClass='text-gray-700'
-                                    textClass='text-gray-700'
+                                    spinnerClass='text-zinc-700'
+                                    textClass='text-zinc-700'
                                  /> :
                                  authData.forgotPassword.stepOne.form.button
                            }
@@ -212,8 +212,8 @@ export default function ForgotPassword() {
                               isVerifyingCode ?
                                  <CustomSpinner
                                     text='Sending Code...'
-                                    spinnerClass='text-gray-700'
-                                    textClass='text-gray-700'
+                                    spinnerClass='text-zinc-700'
+                                    textClass='text-zinc-700'
                                  /> :
                                  authData.forgotPassword.stepTwo.form.button
                            }
@@ -251,8 +251,8 @@ export default function ForgotPassword() {
                               isSubmittingPassword ?
                                  <CustomSpinner
                                     text='Updating Password...'
-                                    spinnerClass='text-gray-700'
-                                    textClass='text-gray-700'
+                                    spinnerClass='text-zinc-700'
+                                    textClass='text-zinc-700'
                                  /> :
                                  authData.forgotPassword.stepThree.form.button
                            }

@@ -15,7 +15,7 @@ const SelectedRoleBadge = ({ role, onChangeRole }: Props) => {
             <div className="w-6 h-6 rounded-md bg-violet-500/15 flex items-center justify-center text-violet-400">
                {isInterviewee ? <User className="w-3.5 h-3.5" /> : <Briefcase className="w-3.5 h-3.5" />}
             </div>
-            <span className="text-gray-400 font-medium">Selected Role:</span>
+            <span className="text-zinc-400 font-medium">Selected Role:</span>
             <Badge
                variant="secondary"
                className="capitalize text-xs font-semibold px-2.5 py-0.5 bg-violet-500/20 text-violet-300 border-violet-500/30 shadow-sm"

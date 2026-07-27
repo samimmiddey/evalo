@@ -34,7 +34,7 @@ const FaqItem = ({ item, index }: FaqItemProps) => {
             </span>
 
             {/* Question text */}
-            <span className="flex-1 font-outfit font-semibold text-base lg:text-lg 2xl:text-xl text-gray-200 group-hover:text-white transition-colors duration-300 leading-snug">
+            <span className="flex-1 font-outfit font-semibold text-base lg:text-lg 2xl:text-xl text-zinc-200 group-hover:text-zinc-100 transition-colors duration-300 leading-snug">
                {item.question}
             </span>
 
@@ -72,7 +72,7 @@ const FaqItem = ({ item, index }: FaqItemProps) => {
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="overflow-hidden"
                >
-                  <p className="pl-10 lg:pl-14 pb-6 lg:pb-7 2xl:pb-8 font-inter text-sm 2xl:text-[15px] text-gray-400 leading-relaxed max-w-3xl">
+                  <p className="pl-10 lg:pl-14 pb-6 lg:pb-7 2xl:pb-8 font-inter text-sm 2xl:text-[15px] text-zinc-400 leading-relaxed max-w-3xl">
                      {item.answer}
                   </p>
                </motion.div>

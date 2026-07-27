@@ -68,7 +68,7 @@ const RoleCard = ({ i, role, type }: RoleCardProps) => {
                {role.title}
             </h3>
 
-            <p className="text-gray-400 font-inter text-sm lg:text-base 2xl:text-[17px] leading-relaxed mb-7 lg:mb-8 2xl:mb-10">
+            <p className="text-zinc-400 font-inter text-sm lg:text-base 2xl:text-[17px] leading-relaxed mb-7 lg:mb-8 2xl:mb-10">
                {role.description}
             </p>
 
@@ -79,7 +79,7 @@ const RoleCard = ({ i, role, type }: RoleCardProps) => {
                      <div className="p-1 rounded-full bg-surface-dark border border-white/5 shadow-[inset_0_1px_3px_rgba(255,255,255,0.1)] shrink-0">
                         <Check className={`w-4 h-4 ${theme.check}`} strokeWidth={3} />
                      </div>
-                     <span className="text-gray-200 font-inter text-sm 2xl:text-base font-medium">{point}</span>
+                     <span className="text-zinc-200 font-inter text-sm 2xl:text-base font-medium">{point}</span>
                   </div>
                ))}
             </div>

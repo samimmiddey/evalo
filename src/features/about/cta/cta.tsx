@@ -46,11 +46,11 @@ const CTA = () => {
                      />
                      <PrimaryTitle
                         text={aboutData.cta.title}
-                        className="text-left mt-0 text-gray-100 max-w-xl"
+                        className="text-left mt-0 text-zinc-100 max-w-xl"
                      />
                      <PrimaryBody
                         text={aboutData.cta.description}
-                        className="text-left text-gray-400 max-w-lg"
+                        className="text-left text-zinc-400 max-w-lg"
                      />
                   </div>
 
@@ -77,10 +77,10 @@ const CTA = () => {
                         className="flex flex-row lg:flex-col items-center lg:items-start gap-3 lg:gap-2 px-8 lg:px-10 py-5 lg:py-7 2xl:py-8"
                      >
                         <Icon className="w-4 h-4 text-violet-400 shrink-0" />
-                        <p className="font-outfit font-bold text-xl 2xl:text-2xl text-gray-100 leading-none">
+                        <p className="font-outfit font-bold text-xl 2xl:text-2xl text-zinc-100 leading-none">
                            {value}
                         </p>
-                        <p className="font-inter text-xs text-gray-500 lg:mt-0.5">
+                        <p className="font-inter text-xs text-zinc-500 lg:mt-0.5">
                            {label}
                         </p>
                      </div>

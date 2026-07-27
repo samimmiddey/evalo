@@ -44,7 +44,7 @@ const Footer = () => {
                      <BotMessageSquare className='mt-0.5 h-6.5 2xl:h-7 w-6.5 2xl:w-7' />
                      <h4 className='font-musemoderno font-bold text-xl 2xl:text-2xl'>evalo</h4>
                   </Link>
-                  <p className="text-gray-400 font-inter text-[15px] leading-relaxed max-w-sm">
+                  <p className="text-zinc-400 font-inter text-[15px] leading-relaxed max-w-sm">
                      {footerData.description}
                   </p>
                </div>
@@ -52,7 +52,7 @@ const Footer = () => {
                {/* Navigation Links */}
                {footerData.columns.map((col, idx) => (
                   <div key={idx} className="flex flex-col gap-5 lg:gap-6 xl:col-span-1">
-                     <h5 className="text-gray-100 font-semibold text-lg font-outfit tracking-wide">
+                     <h5 className="text-zinc-100 font-semibold text-lg font-outfit tracking-wide">
                         {col.title}
                      </h5>
                      <div className="flex flex-col gap-4">
@@ -60,7 +60,7 @@ const Footer = () => {
                            <Link
                               key={lIdx}
                               href={link.href}
-                              className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300 font-inter text-[15px] w-fit"
+                              className="group flex items-center gap-3 text-zinc-400 hover:text-zinc-100 transition-all duration-300 font-inter text-[15px] w-fit"
                            >
                               {link.name}
                            </Link>
@@ -71,15 +71,15 @@ const Footer = () => {
 
                {/* Mini CTA */}
                <div className="xl:col-span-2 flex flex-col gap-5 lg:gap-6">
-                  <h5 className="text-gray-100 font-semibold text-lg font-outfit tracking-wide">
+                  <h5 className="text-zinc-100 font-semibold text-lg font-outfit tracking-wide">
                      Ready to start?
                   </h5>
-                  <p className="text-gray-400 font-inter text-[15px] leading-relaxed">
+                  <p className="text-zinc-400 font-inter text-[15px] leading-relaxed">
                      Join thousands of candidates and experts who are already using Evalo to achieve their goals.
                   </p>
                   <div className="relative group w-fit mt-1">
                      <div className="absolute -inset-0.5 bg-linear-to-r from-violet-600 to-fuchsia-600 rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-500" />
-                     <Link href="/signup" className="relative flex items-center gap-2 px-6 py-3 bg-surface-dark border border-white/10 rounded-xl text-white font-medium hover:bg-surface-hover transition-colors shadow-xl">
+                     <Link href="/signup" className="relative flex items-center gap-2 px-6 py-3 bg-surface-dark border border-white/10 rounded-xl text-zinc-100 font-medium hover:bg-surface-hover transition-colors shadow-xl">
                         Get Started for Free
                         <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -91,13 +91,13 @@ const Footer = () => {
 
             {/* Giant Watermark Text & Footer Bottom */}
             <div className="w-full border-t border-white/5 relative overflow-hidden pt-6 flex flex-col items-center">
-               <h1 className="text-[14vw] xl:text-[180px] leading-none font-bold text-center text-white/3 select-none pointer-events-none font-musemoderno tracking-tighter uppercase mb-4 md:mb-0">
+               <h1 className="text-[14vw] xl:text-[180px] leading-none font-bold text-center text-zinc-100/3 select-none pointer-events-none font-musemoderno tracking-tighter uppercase mb-4 md:mb-0">
                   EVALO
                </h1>
 
                {/* Overlay for social/copyright */}
                <div className="md:absolute inset-0 flex flex-col md:flex-row items-center justify-between md:px-4 md:mt-auto md:pb-6 gap-6 z-10 h-fit self-end w-full">
-                  <p className="text-gray-500 font-inter text-[15px]">
+                  <p className="text-zinc-500 font-inter text-[15px]">
                      {footerData.copyright}
                   </p>
 
@@ -108,7 +108,7 @@ const Footer = () => {
                            href={social.href}
                            target="_blank"
                            rel="noopener noreferrer"
-                           className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-violet-600 hover:border-violet-500 hover:shadow-[0_0_20px_rgba(124,58,237,0.5)] hover:-translate-y-1 transition-all duration-300"
+                           className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-zinc-100 hover:bg-violet-600 hover:border-violet-500 hover:shadow-[0_0_20px_rgba(124,58,237,0.5)] hover:-translate-y-1 transition-all duration-300"
                         >
                            <SocialIcon type={social.icon} />
                         </Link>

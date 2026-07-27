@@ -30,7 +30,7 @@ const FilterSidebar = ({ open, onClose }: FilterSidebarProps) => {
                   className="bg-zinc-950 border-t border-white/10 py-2 px-6 flex flex-col z-9999 overflow-hidden"
                >
                   <DrawerHeader className='p-0! mb-4 mt-2 shrink-0'>
-                     <DrawerTitle className="m-0 text-lg font-semibold text-white flex items-center gap-2">
+                     <DrawerTitle className="m-0 text-lg font-semibold text-zinc-100 flex items-center gap-2">
                         <Filter className="w-4 h-4 text-violet-400" />
                         Filters
                      </DrawerTitle>
@@ -67,7 +67,7 @@ const SidebarContent = () => {
       <div className="flex flex-col gap-4 h-full pb-6 lg:pb-8">
 
          <div className="hidden lg:flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-zinc-100 flex items-center gap-2">
                <Filter className="w-4 h-4 text-violet-400" />
                Filters
             </h2>

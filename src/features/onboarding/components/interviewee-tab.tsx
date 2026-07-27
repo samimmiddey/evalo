@@ -39,15 +39,15 @@ const IntervieweeTab = () => {
                   <data.contextCard.icon className="w-4 h-4" />
                </div>
                <div>
-                  <h4 className="text-sm font-semibold text-white">{data.contextCard.title}</h4>
-                  <p className="text-xs text-gray-400">{data.contextCard.description}</p>
+                  <h4 className="text-sm font-semibold text-zinc-100">{data.contextCard.title}</h4>
+                  <p className="text-xs text-zinc-400">{data.contextCard.description}</p>
                </div>
             </div>
 
             <ul className="space-y-2 pt-2 border-t border-white/5">
                {
                   data.contextCard.list.map((item) => (
-                     <li key={item.title} className="flex items-center gap-2 text-xs text-gray-300">
+                     <li key={item.title} className="flex items-center gap-2 text-xs text-zinc-300">
                         <item.icon className="w-3.5 h-3.5 text-violet-400 shrink-0" />
                         <span>{item.title}</span>
                      </li>
@@ -62,7 +62,7 @@ const IntervieweeTab = () => {
                data.formFields.map((field) => {
                   return (
                      <div key={field.name} className="flex flex-col gap-2">
-                        <Label htmlFor={field.name} className="text-sm font-medium text-gray-300 flex items-center gap-1.5">
+                        <Label htmlFor={field.name} className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
                            <field.icon className="w-3.5 h-3.5 text-violet-400" />
                            {field.label}
                         </Label>

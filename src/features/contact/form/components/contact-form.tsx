@@ -32,10 +32,10 @@ const ContactForm = () => {
             {/* Left side: Contact Info Card */}
             <div className="p-8 lg:p-10 2xl:p-12 border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col justify-between">
                <div>
-                  <h3 className="font-outfit text-2xl lg:text-3xl font-semibold text-gray-100 mb-3">
+                  <h3 className="font-outfit text-2xl lg:text-3xl font-semibold text-zinc-100 mb-3">
                      Let&apos;s talk
                   </h3>
-                  <p className="text-gray-400 font-inter text-sm lg:text-[15px] leading-relaxed mb-10">
+                  <p className="text-zinc-400 font-inter text-sm lg:text-[15px] leading-relaxed mb-10">
                      Whether you have a question about our services, pricing, or anything else, our team is ready to answer all your questions.
                   </p>
 
@@ -45,8 +45,8 @@ const ContactForm = () => {
                            <Mail className="w-5 h-5" />
                         </div>
                         <div className="pt-0.5">
-                           <p className="text-gray-500 font-inter text-sm mb-1">Email us at</p>
-                           <p className="text-gray-200 font-medium group-hover/item:text-white transition-colors duration-300">hello@evalo.io</p>
+                           <p className="text-zinc-500 font-inter text-sm mb-1">Email us at</p>
+                           <p className="text-zinc-200 font-medium group-hover/item:text-zinc-100 transition-colors duration-300">hello@evalo.io</p>
                         </div>
                      </div>
 
@@ -55,8 +55,8 @@ const ContactForm = () => {
                            <Phone className="w-5 h-5" />
                         </div>
                         <div className="pt-0.5">
-                           <p className="text-gray-500 font-inter text-sm mb-1">Call us directly</p>
-                           <p className="text-gray-200 font-medium group-hover/item:text-white transition-colors duration-300">+1 (555) 123-4567</p>
+                           <p className="text-zinc-500 font-inter text-sm mb-1">Call us directly</p>
+                           <p className="text-zinc-200 font-medium group-hover/item:text-zinc-100 transition-colors duration-300">+1 (555) 123-4567</p>
                         </div>
                      </div>
 
@@ -65,8 +65,8 @@ const ContactForm = () => {
                            <MapPin className="w-5 h-5" />
                         </div>
                         <div className="pt-0.5">
-                           <p className="text-gray-500 font-inter text-sm mb-1">Visit our office</p>
-                           <p className="text-gray-200 font-medium group-hover/item:text-white transition-colors duration-300">123 Innovation Dr.<br />San Francisco, CA 94103</p>
+                           <p className="text-zinc-500 font-inter text-sm mb-1">Visit our office</p>
+                           <p className="text-zinc-200 font-medium group-hover/item:text-zinc-100 transition-colors duration-300">123 Innovation Dr.<br />San Francisco, CA 94103</p>
                         </div>
                      </div>
                   </div>
@@ -115,7 +115,7 @@ const ContactForm = () => {
                                  Select a subject…
                               </option>
                               {SUBJECTS.map((s) => (
-                                 <option key={s} value={s} className="bg-zinc-900 text-gray-100">
+                                 <option key={s} value={s} className="bg-zinc-900 text-zinc-100">
                                     {s}
                                  </option>
                               ))}

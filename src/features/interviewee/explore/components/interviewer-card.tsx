@@ -42,27 +42,27 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
                   />
                </div>
                <div>
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="text-lg font-semibold text-zinc-100">
                      {interviewer.firstName} {interviewer.lastName}
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
                      <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
-                     <span className="text-sm font-medium text-gray-300">{interviewer.rating}</span>
-                     <span className="text-xs text-gray-500">({interviewer.reviews})</span>
+                     <span className="text-sm font-medium text-zinc-300">{interviewer.rating}</span>
+                     <span className="text-xs text-zinc-500">({interviewer.reviews})</span>
                   </div>
                </div>
             </div>
          </div>
 
          <div className="space-y-2.5 mb-4 2xl:mb-5 grow relative z-10">
-            <div className="flex items-center gap-2 text-gray-300 text-sm">
+            <div className="flex items-center gap-2 text-zinc-300 text-sm">
                <Briefcase className="w-4 h-4 text-violet-400 shrink-0" />
                <span className="font-medium truncate">{interviewer.designation}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-400 text-sm">
+            <div className="flex items-center gap-2 text-zinc-400 text-sm">
                <Building2 className="w-4 h-4 text-violet-400 shrink-0" />
                <span className="truncate">{interviewer.company}</span>
-               <span className="text-gray-600">•</span>
+               <span className="text-zinc-600">•</span>
                <span>{interviewer.experience}+ yrs exp</span>
             </div>
          </div>
@@ -77,7 +77,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
                <Badge
                   key={skill}
                   variant='outline'
-                  className="px-2.5 py-3! rounded-md bg-white/5 text-gray-300"
+                  className="px-2.5 py-3! rounded-md bg-white/5 text-zinc-300"
                >
                   {skill}
                </Badge>
@@ -89,7 +89,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
          <Button
             variant='default'
             size='lg'
-            className="w-full bg-violet-600 hover:bg-violet-700 text-white border-0 transition-all"
+            className="w-full bg-violet-600 hover:bg-violet-700 text-zinc-100 border-0 transition-all"
          >
             View Profile
          </Button>

@@ -187,8 +187,8 @@ const SignUp = () => {
                   isSigningUp ?
                      <CustomSpinner
                         text='Creating Account...'
-                        spinnerClass='text-gray-700'
-                        textClass='text-gray-700'
+                        spinnerClass='text-zinc-700'
+                        textClass='text-zinc-700'
                      /> :
                      authData.signUp.form.button
                }

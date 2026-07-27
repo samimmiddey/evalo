@@ -47,7 +47,7 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView }: He
                            }
                         }}
                         variant="outline"
-                        className={`max-md:h-10 w-fit shrink-0 bg-zinc-900/50 hover:bg-zinc-800 border-white/10 text-white ${hideFilters ? 'opacity-50! hover:opacity-60!' : 'opacity-100'}`}
+                        className={`max-md:h-10 w-fit shrink-0 bg-zinc-900/50 hover:bg-zinc-800 border-white/10 text-zinc-100 ${hideFilters ? 'opacity-50! hover:opacity-60!' : 'opacity-100'}`}
                      >
                         <Filter className="w-4 h-4 md:mr-2" />
                         <span className='hidden md:block'>Filters</span>
@@ -64,7 +64,7 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView }: He
                            <Button
                               onClick={() => setView(view === 'grid' ? 'list' : 'grid')}
                               variant="outline"
-                              className="w-fit shrink-0 bg-zinc-900/50 hover:bg-zinc-800 border-white/10 text-white"
+                              className="w-fit shrink-0 bg-zinc-900/50 hover:bg-zinc-800 border-white/10 text-zinc-100"
                            >
                               {
                                  view === 'list' ?

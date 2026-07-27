@@ -38,8 +38,8 @@ const GoogleButton = ({ sso }: GoogleButtonProps) => {
          {isRedirecting ? (
             <CustomSpinner
                text='Redirecting to Google...'
-               spinnerClass='text-gray-300'
-               textClass='text-gray-300'
+               spinnerClass='text-zinc-300'
+               textClass='text-zinc-300'
             />
          ) : (
             <>

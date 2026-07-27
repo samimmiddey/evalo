@@ -856,7 +856,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                              getBadgeAnimationClass(),
                                              multiSelectVariants({ variant }),
                                              customStyle?.gradient &&
-                                             "text-white border-transparent",
+                                             "text-zinc-100 border-transparent",
                                              responsiveSettings.compactMode &&
                                              "text-xs px-1.5 py-0.5",
                                              screenSize === "mobile" &&
@@ -923,7 +923,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               {selectedValues.length > responsiveSettings.maxCount && (
                                  <Badge
                                     className={cn(
-                                       "bg-zinc-500/20 text-gray-300 border border-zinc-500/40 hover:bg-zinc-500/30",
+                                       "bg-zinc-500/20 text-zinc-300 border border-zinc-500/40 hover:bg-zinc-500/30",
                                        getBadgeAnimationClass(),
                                        multiSelectVariants({ variant }),
                                        responsiveSettings.compactMode &&
