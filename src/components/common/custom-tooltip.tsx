@@ -9,7 +9,7 @@ interface CustomTooltipProps {
 const CustomTooltip = ({ trigger, content }: CustomTooltipProps) => {
    return (
       <Tooltip>
-         <TooltipTrigger>
+         <TooltipTrigger asChild>
             {trigger}
          </TooltipTrigger>
          <TooltipContent className='font-medium'>
