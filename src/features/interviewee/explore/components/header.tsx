@@ -1,3 +1,4 @@
+import CustomTooltip from '@/components/common/custom-tooltip';
 import PrimaryBody from '@/components/common/primary-body';
 import PrimaryTitle from '@/components/common/primary-title';
 import HeaderLayout from '@/components/layouts/header-layout';
@@ -27,31 +28,45 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView }: He
          </div>
 
          <div className="flex items-center gap-2.5 2xl:gap-3">
-            <Button
-               onClick={() => {
-                  if (lgWidth) {
-                     void onOpenSidebar();
-                  } else {
-                     void onHideFilters();
-                  }
-               }}
-               variant="outline"
-               className={`w-fit shrink-0 ${hideFilters ? 'bg-violet-900/15! hover:bg-violet-900/25! border-violet-600/30! text-violet-300!' : 'bg-zinc-900/50 hover:bg-zinc-800 border-white/10 text-white'}`}
-            >
-               <Filter className="w-4 h-4 mr-2" />
-               Filters
-            </Button>
-            <Button
-               onClick={() => setView(view === 'grid' ? 'list' : 'grid')}
-               variant="outline"
-               className="w-fit shrink-0 bg-zinc-900/50 hover:bg-zinc-800 border-white/10 text-white"
-            >
-               {
-                  view === 'list' ?
-                     <Rows3 className="w-4 h-4" /> :
-                     <Grid2x2 className="w-4 h-4" />
+            <CustomTooltip
+               trigger={
+                  <Button
+                     onClick={() => {
+                        if (lgWidth) {
+                           void onOpenSidebar();
+                        } else {
+                           void onHideFilters();
+                        }
+                     }}
+                     variant="outline"
+                     className={`w-fit shrink-0 bg-zinc-900/50 hover:bg-zinc-800 border-white/10 text-white ${hideFilters ? 'opacity-50! hover:opacity-60!' : 'opacity-100'}`}
+                  >
+                     <Filter className="w-4 h-4 mr-2" />
+                     Filters
+                  </Button>
                }
-            </Button>
+               content={
+                  <p>{hideFilters ? 'Show' : 'Hide'} Filters</p>
+               }
+            />
+            <CustomTooltip
+               trigger={
+                  <Button
+                     onClick={() => setView(view === 'grid' ? 'list' : 'grid')}
+                     variant="outline"
+                     className="w-fit shrink-0 bg-zinc-900/50 hover:bg-zinc-800 border-white/10 text-white"
+                  >
+                     {
+                        view === 'list' ?
+                           <Rows3 className="w-4 h-4" /> :
+                           <Grid2x2 className="w-4 h-4" />
+                     }
+                  </Button>
+               }
+               content={
+                  <p>View {view === 'list' ? 'Grid' : 'List'} </p>
+               }
+            />
          </div>
       </div>
    );

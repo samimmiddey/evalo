@@ -1,4 +1,7 @@
+import PrimaryBody from '@/components/common/primary-body';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { Briefcase, Building2, Star } from 'lucide-react';
 
 interface Interviewer {
@@ -44,46 +47,52 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
                      <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
-                     <span className="text-sm font-medium text-zinc-300">{interviewer.rating}</span>
-                     <span className="text-xs text-zinc-500">({interviewer.reviews})</span>
+                     <span className="text-sm font-medium text-gray-300">{interviewer.rating}</span>
+                     <span className="text-xs text-gray-500">({interviewer.reviews})</span>
                   </div>
                </div>
             </div>
          </div>
 
-         <div className="space-y-2.5 mb-5 grow relative z-10">
-            <div className="flex items-center gap-2 text-zinc-300 text-sm">
+         <div className="space-y-2.5 mb-4 2xl:mb-5 grow relative z-10">
+            <div className="flex items-center gap-2 text-gray-300 text-sm">
                <Briefcase className="w-4 h-4 text-violet-400 shrink-0" />
                <span className="font-medium truncate">{interviewer.designation}</span>
             </div>
-            <div className="flex items-center gap-2 text-zinc-400 text-sm">
+            <div className="flex items-center gap-2 text-gray-400 text-sm">
                <Building2 className="w-4 h-4 text-violet-400 shrink-0" />
                <span className="truncate">{interviewer.company}</span>
-               <span className="text-zinc-600">•</span>
+               <span className="text-gray-600">•</span>
                <span>{interviewer.experience}+ yrs exp</span>
             </div>
          </div>
 
-         <p className="text-sm text-zinc-400 mb-6 line-clamp-3 leading-relaxed relative z-10">
-            {interviewer.bio}
-         </p>
+         <PrimaryBody
+            className="text-sm! mb-5 2xl:mb-6 line-clamp-3 leading-relaxed"
+            text={interviewer.bio}
+         />
 
-         <div className="flex flex-wrap gap-2 mb-6 relative z-10">
+         <div className="flex flex-wrap gap-2 mb-4.5 2xl:mb-5 relative z-10">
             {interviewer.expertise.map((skill) => (
-               <span
+               <Badge
                   key={skill}
-                  className="inline-flex items-center px-2.5 py-1 rounded-md bg-white/5 border border-white/5 text-xs font-medium text-zinc-300"
+                  variant='outline'
+                  className="px-2.5 py-3! rounded-md bg-white/5 text-gray-300"
                >
                   {skill}
-               </span>
+               </Badge>
             ))}
          </div>
 
-         <div className="mt-auto pt-4 border-t border-white/5 relative z-10">
-            <Button className="w-full bg-violet-600 hover:bg-violet-700 text-white border-0 transition-colors">
-               View Profile
-            </Button>
-         </div>
+         <Separator className="mb-4.5 2xl:mb-5 bg-white/5" />
+
+         <Button
+            variant='default'
+            size='lg'
+            className="w-full bg-violet-600 hover:bg-violet-700 text-white border-0 transition-all"
+         >
+            View Profile
+         </Button>
       </div>
    );
 };
