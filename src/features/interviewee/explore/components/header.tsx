@@ -18,7 +18,6 @@ interface HeaderProps {
 
 const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView }: HeaderProps) => {
    const lgWidth = useMediaQuery(1024);
-   const mdWidth = useMediaQuery(768);
 
    return (
       <div className="flex max-lg:flex-col lg:items-end lg:justify-between gap-4 mb-7 sm:mb-8 lg:mb-9 2xl:mb-10">
@@ -47,7 +46,7 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView }: He
                            }
                         }}
                         variant="outline"
-                        className={`max-md:h-10 w-fit shrink-0 bg-zinc-900/50 hover:bg-zinc-800 border-white/10 text-zinc-100 ${hideFilters ? 'opacity-50! hover:opacity-60!' : 'opacity-100'}`}
+                        className={`max-lg:h-10 w-fit shrink-0 bg-zinc-900/50 hover:bg-zinc-800 border-white/10 text-zinc-100 ${hideFilters ? 'opacity-50! hover:opacity-60!' : 'opacity-100'}`}
                      >
                         <Filter className="w-4 h-4 md:mr-2" />
                         <span className='hidden md:block'>Filters</span>
@@ -58,7 +57,7 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView }: He
                   }
                />
                {
-                  !mdWidth && (
+                  !lgWidth && (
                      <CustomTooltip
                         trigger={
                            <Button

@@ -3,11 +3,24 @@
 import { GET_INTERVIEWERS } from "@/config/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
-import { Interviewer, InterviewersResponse } from "../../types/interviewee.type";
+import { GetInterviewersParams, GetInterviewersResponse, InterviewersResponse } from "../../types/interviewee.type";
 
-export const getInterviewers = async (): Promise<Interviewer[]> => {
+export const getInterviewers = async (params: GetInterviewersParams = {}): Promise<GetInterviewersResponse> => {
    try {
-      const res = await api.get(GET_INTERVIEWERS).json<InterviewersResponse>();
+      const { page, pageSize, search, expertise, experience } = params;
+      const searchParams = new URLSearchParams();
+
+      if (page) searchParams.set("page", page.toString());
+      if (pageSize) searchParams.set("pageSize", pageSize.toString());
+      if (search) searchParams.set("search", search);
+      if (expertise) searchParams.set("expertise", expertise);
+      if (experience?.length) {
+         experience.forEach((exp) => searchParams.append("experience", exp));
+      }
+
+      const res = await api
+         .get(`${GET_INTERVIEWERS}?${searchParams.toString()}`)
+         .json<InterviewersResponse>();
 
       if (!res.success) {
          throw new Error(res.error);

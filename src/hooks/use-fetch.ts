@@ -13,7 +13,7 @@ export const useFetch = <T>(
    fetcherFunction: () => Promise<T>,
    deps: unknown[] = []
 ): FetchResult<T> => {
-   const [isLoading, setIsLoading] = useState<boolean>(false);
+   const [isLoading, setIsLoading] = useState<boolean>(true);
    const [error, setError] = useState<string | null>(null);
    const [data, setData] = useState<T | null>(null);
 

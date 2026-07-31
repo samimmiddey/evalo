@@ -1,11 +1,26 @@
 import { apiResponse } from "@/lib/api-response";
 import { getInterviewers } from "@/features/interviewee/services/server/interviewee.service";
+import { NextRequest } from "next/server";
 
 const isDev = process.env.NODE_ENV === 'development';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
    try {
-      const interviewers = await getInterviewers();
+      const { searchParams } = new URL(request.url);
+
+      const page = Number(searchParams.get("page")) || 1;
+      const pageSize = Number(searchParams.get("pageSize")) || 10;
+      const search = searchParams.get("search") || undefined;
+      const expertise = searchParams.get("expertise") || undefined;
+      const experience = searchParams.getAll("experience");
+
+      const interviewers = await getInterviewers({
+         page,
+         pageSize,
+         search,
+         expertise,
+         experience: experience.length ? experience : undefined,
+      });
 
       if (!interviewers) {
          return apiResponse({
