@@ -1,5 +1,3 @@
-"use server";
-
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { UserServer } from "@/types/user.types";

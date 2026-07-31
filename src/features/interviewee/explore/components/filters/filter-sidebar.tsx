@@ -5,6 +5,7 @@ import SearchBar from './search-bar';
 import Expertise from './expertise';
 import Experience from './experience';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from '@/components/ui/drawer';
+import CustomTooltip from '@/components/common/custom-tooltip';
 
 interface FilterSidebarProps {
    open: boolean;
@@ -71,9 +72,16 @@ const SidebarContent = () => {
                <Filter className="w-4 h-4 text-violet-400" />
                Filters
             </h2>
-            <Button variant="ghost" size="sm" className="text-xs! px-3">
-               Clear all
-            </Button>
+            <CustomTooltip
+               trigger={
+                  <Button variant="ghost" size="sm" className="text-xs! px-3">
+                     Clear
+                  </Button>
+               }
+               content={
+                  <p>Clear Filters</p>
+               }
+            />
          </div>
 
          <Separator className='my-1 hidden lg:block' />

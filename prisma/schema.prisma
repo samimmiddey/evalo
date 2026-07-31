@@ -92,8 +92,10 @@ model User {
   expertise     InterviewExpertise[]
   creditRate    Int                  @default(1)
   creditBalance Int                  @default(0)
+  averageRating Float?
+  totalRatings  Int                  @default(0)
 
-  availabilityStart     Availability[]
+  availabilities        Availability[]
   bookingsAsInterviewee Booking[]           @relation("IntervieweeBookings")
   bookingsAsInterviewer Booking[]           @relation("InterviewerBookings")
   transactions          CreditTransaction[]

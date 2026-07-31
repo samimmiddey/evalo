@@ -5,12 +5,16 @@ import FilterSidebar from './components/filters/filter-sidebar';
 import Header from './components/header';
 import InterviewerList from './components/interviewer-list';
 import useView from '@/hooks/use-view';
+import { useFetch } from '@/hooks/use-fetch';
+import { getInterviewers } from '../services/client/interviewee.service';
 
 const Explore = () => {
    const [openSidebar, setOpenSidebar] = useState<boolean>(false);
    const [hideFilters, setHideFilters] = useState<boolean>(false);
 
    const { view, setView } = useView();
+
+   const { isLoading, data, error } = useFetch(() => getInterviewers());
 
    return (
       <div className="container s-margin-t">
@@ -38,7 +42,11 @@ const Explore = () => {
             }
 
             {/* Interviewer Grid */}
-            <InterviewerList view={view} />
+            <InterviewerList
+               view={view}
+               interviewers={data || []}
+               isLoading={isLoading}
+            />
 
          </div>
 

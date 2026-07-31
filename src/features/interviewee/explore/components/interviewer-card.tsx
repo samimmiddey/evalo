@@ -3,20 +3,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Briefcase, Building2, Star } from 'lucide-react';
-
-interface Interviewer {
-   id: string;
-   firstName: string;
-   lastName: string;
-   designation: string;
-   company: string;
-   experience: number;
-   expertise: string[];
-   bio: string;
-   imageUrl: string;
-   rating: number;
-   reviews: number;
-}
+import { Interviewer } from '../../types/interviewee.type';
+import { getImage } from '@/utils/get-image';
 
 interface InterviewerCardProps {
    interviewer: Interviewer;
@@ -36,7 +24,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
                <div className="relative h-14 w-14 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-violet-500/30 transition-colors bg-zinc-800">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                     src={interviewer.imageUrl}
+                     src={getImage(interviewer.imageUrl)}
                      alt={`${interviewer.firstName} ${interviewer.lastName}`}
                      className="h-full w-full object-cover"
                   />
@@ -47,8 +35,8 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
                      <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
-                     <span className="text-sm font-medium text-zinc-300">{interviewer.rating}</span>
-                     <span className="text-xs text-zinc-500">({interviewer.reviews})</span>
+                     <span className="text-sm font-medium text-zinc-300">{interviewer.totalRatings ?? '0'}</span>
+                     <span className="text-xs text-zinc-500">({interviewer.averageRating ?? '0.0'})</span>
                   </div>
                </div>
             </div>
@@ -69,7 +57,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
 
          <PrimaryBody
             className="text-sm! mb-5 2xl:mb-6 line-clamp-3 leading-relaxed"
-            text={interviewer.bio}
+            text={interviewer.bio ?? "No bio available"}
          />
 
          <div className="flex flex-wrap gap-2 mb-4.5 2xl:mb-5 relative z-10">

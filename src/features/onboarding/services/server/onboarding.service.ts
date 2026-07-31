@@ -1,5 +1,3 @@
-"use server";
-
 import { onboardingSchema, OnboardingSchemaTypes } from "@/features/onboarding/schemas/onboarding.schemas";
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
