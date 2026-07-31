@@ -33,7 +33,7 @@ const CreditButton = ({ role, credits }: CreditButtonProps) => {
             onClick={handleButton}
          >
             <Coins className='icon-size' />
-            {credits} {role === 'INTERVIEWER' ? 'Earned' : 'Credits'}
+            <span className='max-lg:hidden'>{credits} {role === 'INTERVIEWER' ? 'Earned' : 'Credits'}</span>
          </Button>
          <UpgradeModal open={openModal} onClose={() => setOpenModal(prev => !prev)} />
       </>

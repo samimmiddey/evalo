@@ -32,7 +32,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                      <h4 className='font-musemoderno font-bold text-xl 2xl:text-2xl'>evalo</h4>
                   </Link>
                </div>
-               <div className="hidden md:flex items-center gap-10">
+               <div className="hidden md:flex items-center gap-6 lg:gap-10">
                   {
                      navigationData.map((item) => (
                         <Link
@@ -54,7 +54,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                         <Button variant="white" size="lg">Get Started</Button>
                      </Link>
                   </Show>
-                  <div className="flex items-center gap-2 mr-2">
+                  <div className="flex items-center gap-2 mr-1 lg:mr-2">
                      {
                         isUserLoading ? <div className="h-8 w-25 rounded-sm bg-zinc-800 animate-pulse" /> : (
                            <Show when='signed-in'>
@@ -74,13 +74,13 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                                        <Link href='/explore'>
                                           <Button variant="ghost" size="lg">
                                              <Users className='icon-size' />
-                                             <span className="max-sm:hidden">Explore</span>
+                                             <span className="max-lg:hidden">Explore</span>
                                           </Button>
                                        </Link>
                                        <Link href='/appointments'>
                                           <Button variant="white" size="lg">
                                              <CalendarDays className='icon-size' />
-                                             <span className="max-sm:hidden">Appointments</span>
+                                             <span className="max-lg:hidden">Appointments</span>
                                           </Button>
                                        </Link>
                                     </>
@@ -107,10 +107,10 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                   {mdWidth && (
                      <button
                         onClick={onMenuClick}
-                        className='p-2 hover:bg-zinc-800 rounded-lg transition-colors md:hidden'
+                        className='p-1.25 hover:bg-zinc-800 rounded-lg transition-colors md:hidden cursor-pointer'
                         aria-label="Toggle menu"
                      >
-                        <Menu className='w-5 h-5 text-zinc-100' />
+                        <Menu className='w-6 h-6 text-zinc-100' />
                      </button>
                   )}
                </div>

@@ -1,7 +1,8 @@
 "use client";
 
+import { navigationData } from "@/data/navigation/navigation.data";
 import { cn } from "@/lib/utils";
-import { HomeIcon, MessageCircleIcon, StarIcon, TagIcon, X, BotMessageSquare } from "lucide-react";
+import { X, BotMessageSquare } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -12,13 +13,6 @@ interface SidebarProps {
 
 export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
    const pathname = usePathname();
-
-   const links = [
-      { label: "Home", href: "/", icon: <HomeIcon className="w-5 h-5" /> },
-      { label: "Featured", href: "/featured", icon: <StarIcon className="w-5 h-5" /> },
-      { label: "Pricing", href: "/pricing", icon: <TagIcon className="w-5 h-5" /> },
-      { label: "Contact", href: "/contact", icon: <MessageCircleIcon className="w-5 h-5" /> },
-   ];
 
    return (
       <>
@@ -59,12 +53,12 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                   Menu
                </p>
                <div className="space-y-4">
-                  {links.map(({ label, href, icon }) => {
-                     const isActive = pathname === href;
+                  {navigationData.map((item) => {
+                     const isActive = pathname === item.href;
                      return (
                         <Link
-                           key={label}
-                           href={href}
+                           key={item.name}
+                           href={item.href}
                            onClick={onClose}
                            className={cn(
                               "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
@@ -73,8 +67,8 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                                  : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
                            )}
                         >
-                           {icon}
-                           {label}
+                           {item.icon && <item.icon className="w-5 h-5" />}
+                           {item.name}
                         </Link>
                      );
                   })}

@@ -1,21 +1,26 @@
 import { FooterDataTypes, NavigationItem } from "./navigation.types";
+import { HomeIcon, MessageCircleIcon, StarIcon, TagIcon } from "lucide-react";
 
 export const navigationData: NavigationItem[] = [
    {
       name: "Home",
       href: "/",
+      icon: HomeIcon
    },
    {
       name: "About",
       href: "/about",
+      icon: StarIcon
    },
    {
       name: "Pricing",
       href: "/pricing",
+      icon: TagIcon
    },
    {
       name: "Contact",
       href: "/contact",
+      icon: MessageCircleIcon
    }
 ];
 
