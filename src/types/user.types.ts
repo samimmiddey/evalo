@@ -1,5 +1,13 @@
 import { BaseResponse } from "./api.types";
 
+export type PLAN = "pro" | "starter" | "free";
+
+export const PLAN_CREDITS: Record<PLAN, number> = {
+   pro: 15,
+   starter: 5,
+   free: 1,
+};
+
 export type UserRole = 'INTERVIEWEE' | 'INTERVIEWER' | 'UNASSIGNED';
 export type AssignedRole = Exclude<UserRole, 'UNASSIGNED'>;
 

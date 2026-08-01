@@ -1,19 +1,21 @@
 import { checkUser } from '@/services/server/user.service';
-import { currentUser } from '@clerk/nextjs/server';
+import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/prisma';
 import { Prisma } from '@/generated/prisma/client';
 import React from 'react';
+import { PLAN_CREDITS } from '@/types/user.types';
 
 const UserGate = async ({ children }: { children: React.ReactNode; }) => {
-   let user = await checkUser();
+   const { sessionClaims } = await auth();
 
-   if (!user) {
+   // Onboarding is complete — no DB round trip needed
+   if (!sessionClaims?.metadata?.onboardingComplete) {
       const clerkUser = await currentUser();
       if (!clerkUser) redirect('/sign-in');
 
       // Get the user from DB
-      user = await checkUser();
+      let user = await checkUser();
 
       // Still missing — reconcile ourselves
       if (!user) {
@@ -25,7 +27,7 @@ const UserGate = async ({ children }: { children: React.ReactNode; }) => {
                   clerkUserId: clerkUser.id,
                   imageUrl: clerkUser.imageUrl,
                   email: clerkUser.emailAddresses[0].emailAddress,
-                  credits: 1,
+                  credits: PLAN_CREDITS.free,
                   currentPlan: "free",
                   creditsLastAllocatedAt: new Date(),
                },

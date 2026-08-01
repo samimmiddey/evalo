@@ -2,14 +2,7 @@ import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { db } from '@/lib/prisma';
 import type { WebhookEvent } from '@clerk/nextjs/server';
-
-type PLAN = "pro" | "starter" | "free";
-
-const PLAN_CREDITS: Record<PLAN, number> = {
-   pro: 15,
-   starter: 5,
-   free: 1,
-};
+import { PLAN_CREDITS } from '@/types/user.types';
 
 export async function POST(req: Request) {
    const payload = await req.text();
