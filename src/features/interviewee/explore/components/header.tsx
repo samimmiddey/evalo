@@ -7,6 +7,7 @@ import useMediaQuery from '@/hooks/use-media-query';
 import { ViewType } from '@/types/ui.types';
 import { Filter, Grid2x2, Rows3 } from 'lucide-react';
 import SearchBar from './filters/search-bar';
+import { FilterParams } from '../types/explore.type';
 
 interface HeaderProps {
    onOpenSidebar: () => void;
@@ -14,9 +15,11 @@ interface HeaderProps {
    hideFilters: boolean;
    view: ViewType;
    setView: (view: ViewType) => void;
+   filterParams: FilterParams;
+   onFilterParams: React.Dispatch<React.SetStateAction<FilterParams>>;
 };
 
-const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView }: HeaderProps) => {
+const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView, filterParams, onFilterParams }: HeaderProps) => {
    const lgWidth = useMediaQuery(1024);
 
    return (
@@ -30,7 +33,7 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView }: He
 
          <div className="flex items-center max-lg:justify-between gap-2.5 2xl:gap-3">
             <div className='block lg:hidden w-full'>
-               <SearchBar />
+               <SearchBar filterParams={filterParams} onFilterParams={onFilterParams} />
             </div>
             <div className="flex items-center gap-2.5 2xl:gap-3">
                <CustomTooltip

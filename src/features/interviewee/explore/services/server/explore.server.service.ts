@@ -30,9 +30,11 @@ export const getInterviewers = async (params: GetInterviewersParams = {}): Promi
       }
 
       // expertise is InterviewExpertise[] — check the array contains this value
-      if (expertise) {
+      if (expertise?.length) {
          andConditions.push({
-            expertise: { has: expertise as InterviewExpertise },
+            OR: expertise.map((exp) => ({
+               expertise: { has: exp as InterviewExpertise },
+            })),
          });
       }
 

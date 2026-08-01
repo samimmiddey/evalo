@@ -5,13 +5,30 @@ import { getInterviewers } from '@/features/interviewee/explore/services/client/
 import InterviewerCardSkeleton from './skeletons/interviewer-card-skeleton';
 import ErrorCard from '@/components/common/error-card';
 import NoDataCard from '@/components/common/no-data-card';
+import { FilterParams } from '../types/explore.type';
+import useDebounce from '@/hooks/use-debounce';
 
 interface InterviewerListProps {
    view: ViewType;
+   filterParams: FilterParams;
 }
 
-const InterviewerList = ({ view }: InterviewerListProps) => {
-   const { isLoading, data, error } = useFetch(() => getInterviewers());
+const InterviewerList = ({ view, filterParams }: InterviewerListProps) => {
+   const debouncedParams = useDebounce(filterParams, 500);
+
+   const params = {
+      page: 1,
+      pageSize: 10,
+      search: debouncedParams.search,
+      expertise: debouncedParams.expertise,
+      experience: debouncedParams.experience
+   };
+
+   // Get all interviewers with pagination and filters
+   const { isLoading, data, error } = useFetch(
+      () => getInterviewers(params),
+      [debouncedParams]
+   );
 
    // Loading state
    if (isLoading) {

@@ -1,35 +1,47 @@
 import PrimaryBody from "@/components/common/primary-body";
 import { Badge } from "@/components/ui/badge";
+import { exploreData } from "@/data/explore/explore.data";
+import { FilterParams } from "../../types/explore.type";
 
-const EXPERTISE = [
-   'All',
-   'Frontend',
-   'Backend',
-   'System Design',
-   'UI/UX',
-   'Mobile',
-   'Data Science',
-   'Machine Learning',
-   'Leadership'
-];
+interface ExpertiseProps {
+   filterParams: FilterParams;
+   onFilterParams: React.Dispatch<React.SetStateAction<FilterParams>>;
+}
 
-const Expertise = () => {
+const Expertise = ({ filterParams, onFilterParams }: ExpertiseProps) => {
+   const handleExpertiseSelection = (category: string) => {
+      onFilterParams(prevState => {
+         if (prevState.expertise?.includes(category)) {
+            return {
+               ...prevState,
+               expertise: prevState.expertise.filter((exp) => exp !== category)
+            };
+         }
+         return {
+            ...prevState,
+            expertise: [...(prevState.expertise || []), category]
+         };
+      });
+   };
+
    return (
       <div className="flex flex-col gap-2.5 2xl:gap-3">
          <PrimaryBody className="text-sm! font-medium! text-zinc-300!" text='Expertise' />
          <div className="flex flex-wrap gap-2 2xl:gap-2.5 w-full">
-            {EXPERTISE.map((category, index) => (
+            {exploreData.expertise.map((item) => (
                <Badge
-                  key={category}
+                  key={item.value}
+                  variant={filterParams.expertise?.includes(item.value) ? "default" : "outline"}
                   className={`
                      shrink-0 p-3 cursor-pointer transition-colors font-medium
-                     ${index === 0
+                     ${filterParams.expertise?.includes(item.value)
                         ? 'bg-violet-500 hover:bg-violet-600 text-zinc-100 border-transparent'
                         : 'bg-zinc-900 border-white/10 text-zinc-400 hover:text-zinc-100 hover:border-white/20'
                      }
                   `}
+                  onClick={() => handleExpertiseSelection(item.value)}
                >
-                  {category}
+                  {item.label}
                </Badge>
             ))}
          </div>

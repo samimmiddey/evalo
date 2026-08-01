@@ -1,8 +1,14 @@
 import PrimaryBody from '@/components/common/primary-body';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
+import { FilterParams } from '../../types/explore.type';
 
-const SearchBar = () => {
+interface SearchBarProps {
+   filterParams: FilterParams;
+   onFilterParams: React.Dispatch<React.SetStateAction<FilterParams>>;
+}
+
+const SearchBar = ({ filterParams, onFilterParams }: SearchBarProps) => {
    return (
       <div className="flex flex-col gap-2.5 2xl:gap-3">
          <PrimaryBody className="text-sm! font-medium! text-zinc-300! max-lg:hidden" text='Search' />
@@ -11,6 +17,8 @@ const SearchBar = () => {
             <Input
                placeholder="Search interviewers..."
                className="w-full pl-10 text-sm!"
+               value={filterParams?.search}
+               onChange={e => onFilterParams(prevState => ({ ...prevState, search: e.target.value }))}
             />
          </div>
       </div>

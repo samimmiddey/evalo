@@ -23,7 +23,7 @@ export interface Interviewer {
 
 export interface FilterParams {
    search?: string;
-   expertise?: string;
+   expertise?: string[];
    experience?: string[];
 }
 
@@ -31,7 +31,7 @@ export interface GetInterviewersParams {
    page?: number;
    pageSize?: number;
    search?: string;
-   expertise?: string;
+   expertise?: string[];
    experience?: string[];
 }
 

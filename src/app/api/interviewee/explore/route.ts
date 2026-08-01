@@ -11,14 +11,14 @@ export async function GET(request: NextRequest) {
       const page = Number(searchParams.get("page")) || 1;
       const pageSize = Number(searchParams.get("pageSize")) || 10;
       const search = searchParams.get("search") || undefined;
-      const expertise = searchParams.get("expertise") || undefined;
+      const expertise = searchParams.getAll("expertise");
       const experience = searchParams.getAll("experience");
 
       const interviewers = await getInterviewers({
          page,
          pageSize,
          search,
-         expertise,
+         expertise: expertise.length ? expertise : undefined,
          experience: experience.length ? experience : undefined,
       });
 

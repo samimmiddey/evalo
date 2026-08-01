@@ -13,7 +13,9 @@ export const getInterviewers = async (params: GetInterviewersParams = {}): Promi
       if (page) searchParams.set("page", page.toString());
       if (pageSize) searchParams.set("pageSize", pageSize.toString());
       if (search) searchParams.set("search", search);
-      if (expertise) searchParams.set("expertise", expertise);
+      if (expertise?.length) {
+         expertise.forEach((exp) => searchParams.append("expertise", exp));
+      }
       if (experience?.length) {
          experience.forEach((exp) => searchParams.append("experience", exp));
       }

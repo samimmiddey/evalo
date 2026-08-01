@@ -6,18 +6,26 @@ import Expertise from './expertise';
 import Experience from './experience';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from '@/components/ui/drawer';
 import CustomTooltip from '@/components/common/custom-tooltip';
+import { FilterParams } from '../../types/explore.type';
 
 interface FilterSidebarProps {
    open: boolean;
    onClose: (value: boolean) => void;
+   filterParams: FilterParams;
+   onFilterParams: React.Dispatch<React.SetStateAction<FilterParams>>;
+   onClear: () => void;
 };
 
-const FilterSidebar = ({ open, onClose }: FilterSidebarProps) => {
+const FilterSidebar = ({ open, onClose, filterParams, onFilterParams, onClear }: FilterSidebarProps) => {
    return (
       <>
          {/* Desktop View */}
          <div className="hidden lg:block w-full h-full">
-            <SidebarContent />
+            <SidebarContent
+               filterParams={filterParams}
+               onFilterParams={onFilterParams}
+               onClear={onClear}
+            />
          </div>
 
          {/* Mobile View */}
@@ -38,7 +46,11 @@ const FilterSidebar = ({ open, onClose }: FilterSidebarProps) => {
                   </DrawerHeader>
 
                   <div className="flex-1 overflow-y-auto min-h-0 pr-2">
-                     <SidebarContent />
+                     <SidebarContent
+                        filterParams={filterParams}
+                        onFilterParams={onFilterParams}
+                        onClear={onClear}
+                     />
                   </div>
 
                   <DrawerFooter className="px-0 py-4 border-t border-white/10 flex-row justify-between gap-4 shrink-0 m-0! w-full bg-zinc-950">
@@ -63,7 +75,13 @@ const FilterSidebar = ({ open, onClose }: FilterSidebarProps) => {
    );
 };
 
-const SidebarContent = () => {
+interface SidebarContentProps {
+   filterParams: FilterParams;
+   onFilterParams: React.Dispatch<React.SetStateAction<FilterParams>>;
+   onClear: () => void;
+}
+
+const SidebarContent = ({ filterParams, onFilterParams, onClear }: SidebarContentProps) => {
    return (
       <div className="flex flex-col gap-4 h-full pb-6 lg:pb-8">
 
@@ -74,7 +92,12 @@ const SidebarContent = () => {
             </h2>
             <CustomTooltip
                trigger={
-                  <Button variant="ghost" size="sm" className="text-xs! px-3">
+                  <Button
+                     variant="ghost"
+                     size="sm"
+                     className="text-xs! px-3"
+                     onClick={onClear}
+                  >
                      Clear
                   </Button>
                }
@@ -88,18 +111,27 @@ const SidebarContent = () => {
 
          {/* Search Bar */}
          <div className='hidden lg:block'>
-            <SearchBar />
+            <SearchBar
+               filterParams={filterParams}
+               onFilterParams={onFilterParams}
+            />
          </div>
 
          <Separator className='my-2' />
 
          {/* Expertise */}
-         <Expertise />
+         <Expertise
+            filterParams={filterParams}
+            onFilterParams={onFilterParams}
+         />
 
          <Separator className='my-2' />
 
          {/* Experience */}
-         <Experience />
+         <Experience
+            filterParams={filterParams}
+            onFilterParams={onFilterParams}
+         />
 
       </div>
    );
