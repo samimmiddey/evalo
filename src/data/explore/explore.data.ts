@@ -1,4 +1,10 @@
-export const exploreData = {
+import { ExploreData } from "./explore.types";
+
+export const exploreData: ExploreData = {
+   header: {
+      title: "Find your perfect interviewer",
+      description: "Connect with industry experts from top companies for mock interviews, career guidance, and technical mentorship."
+   },
    expertise: [
       {
          label: "Frontend",

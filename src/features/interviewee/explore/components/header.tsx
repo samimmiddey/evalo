@@ -8,6 +8,7 @@ import { ViewType } from '@/types/ui.types';
 import { Filter, Grid2x2, Rows3 } from 'lucide-react';
 import SearchBar from './filters/search-bar';
 import { FilterParams } from '../types/explore.type';
+import { exploreData } from '@/data/explore/explore.data';
 
 interface HeaderProps {
    onOpenSidebar: () => void;
@@ -26,8 +27,8 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView, filt
       <div className="flex max-lg:flex-col lg:items-end lg:justify-between gap-4 mb-7 sm:mb-8 lg:mb-9 2xl:mb-10">
          <div className="max-w-2xl">
             <HeaderLayout className='gap-4! items-start text-start mb-0!'>
-               <PrimaryTitle text='Find your perfect interviewer' />
-               <PrimaryBody text='Connect with industry experts from top companies for mock interviews, career guidance, and technical mentorship.' />
+               <PrimaryTitle text={exploreData.header.title} />
+               <PrimaryBody text={exploreData.header.description} />
             </HeaderLayout>
          </div>
 
