@@ -1,5 +1,5 @@
-import Form from './form/form';
-import FAQ from './faq/faq';
+import Form from './sections/form';
+import FAQ from './sections/faq';
 
 const Contact = () => {
    return (

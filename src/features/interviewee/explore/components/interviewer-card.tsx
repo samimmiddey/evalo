@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Briefcase, Building2, Star } from 'lucide-react';
-import { Interviewer } from '../../types/interviewee.type';
+import { Interviewer } from '../types/explore.type';
 import { getImage } from '@/utils/get-image';
 
 interface InterviewerCardProps {
@@ -56,7 +56,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
          </div>
 
          <PrimaryBody
-            className="text-sm! mb-5 2xl:mb-6 line-clamp-3 leading-relaxed"
+            className="text-sm! mb-5 2xl:mb-6 line-clamp-2 leading-relaxed"
             text={interviewer.bio ?? "No bio available"}
          />
 

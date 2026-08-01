@@ -1,4 +1,4 @@
-import { getUser } from "@/services/client/user.service";
+import { getUser } from "@/services/client/user.client.service";
 import { useFetch } from "./use-fetch";
 
 export const useDbUser = () => {

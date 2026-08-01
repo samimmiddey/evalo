@@ -1,7 +1,7 @@
 import { ViewType } from '@/types/ui.types';
 import InterviwerCard from './interviewer-card';
 import { useFetch } from '@/hooks/use-fetch';
-import { getInterviewers } from '../../services/client/interviewee.service';
+import { getInterviewers } from '@/features/interviewee/explore/services/client/explore.client.service';
 import InterviewerCardSkeleton from './skeletons/interviewer-card-skeleton';
 import ErrorCard from '@/components/common/error-card';
 import NoDataCard from '@/components/common/no-data-card';

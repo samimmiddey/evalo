@@ -1,4 +1,4 @@
-import { checkUser } from "@/services/server/user.service";
+import { checkUser } from "@/services/server/user.server.service";
 import { apiResponse } from "@/lib/api-response";
 
 const isDev = process.env.NODE_ENV === 'development';

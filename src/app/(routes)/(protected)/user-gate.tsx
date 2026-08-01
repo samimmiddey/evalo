@@ -1,4 +1,4 @@
-import { checkUser } from '@/services/server/user.service';
+import { checkUser } from '@/services/server/user.server.service';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/prisma';

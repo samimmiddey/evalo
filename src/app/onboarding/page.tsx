@@ -1,4 +1,4 @@
-import Onboarding from '@/features/onboarding';
+import Onboarding from '@/features/onboarding/onboarding';
 
 const OnboardingPage = () => {
    return (

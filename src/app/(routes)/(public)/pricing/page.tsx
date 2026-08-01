@@ -1,4 +1,4 @@
-import Pricing from '@/features/pricing';
+import Pricing from '@/features/pricing/pricing';
 
 const PricingPage = () => {
    return (
