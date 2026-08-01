@@ -1,4 +1,4 @@
-export type ExpertiseEnum = 'DATA_SCIENCE' | 'MACHINE_LEARNING' | 'LEADERSHIP' | 'UI_UX' | 'FRONTEND' | 'BACKEND' | 'SYSTEM_DESIGN' | 'MOBILE';
+export type ExpertiseEnum = "FRONTEND" | "BACKEND" | "FULLSTACK" | "DEVOPS" | "DSA" | "SYSTEM_DESIGN" | "MOBILE" | "ML_AI" | "SECURITY" | "QA" | "CLOUD";
 
 export type ExperienceEnum = '0-2' | '3-5' | '6-9' | '10+';
 

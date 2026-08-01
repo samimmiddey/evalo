@@ -15,28 +15,40 @@ export const exploreData: ExploreData = {
          value: "BACKEND"
       },
       {
-         label: "System Design",
-         value: "SYSTEM_DESIGN"
+         label: "FullStack",
+         value: "FULLSTACK"
       },
       {
-         label: "UI/UX",
-         value: "UI_UX"
+         label: "DevOps",
+         value: "DEVOPS"
+      },
+      {
+         label: "DSA",
+         value: "DSA"
+      },
+      {
+         label: "System Design",
+         value: "SYSTEM_DESIGN"
       },
       {
          label: "Mobile",
          value: "MOBILE"
       },
       {
-         label: "Data Science",
-         value: "DATA_SCIENCE"
-      },
-      {
          label: "Machine Learning",
-         value: "MACHINE_LEARNING"
+         value: "ML_AI"
       },
       {
-         label: "Leadership",
-         value: "LEADERSHIP"
+         label: "Security",
+         value: "SECURITY"
+      },
+      {
+         label: "QA",
+         value: "QA"
+      },
+      {
+         label: "Cloud",
+         value: "CLOUD"
       }
    ],
    experience: [
