@@ -1,12 +1,14 @@
 import { ViewType } from '@/types/ui.types';
 import InterviwerCard from './interviewer-card';
-import { useFetch } from '@/hooks/use-fetch';
+import { useInfiniteFetch } from '@/hooks/use-infinite-fetch';
 import { getInterviewers } from '@/features/interviewee/explore/services/client/explore.client.service';
 import InterviewerCardSkeleton from './skeletons/interviewer-card-skeleton';
 import ErrorCard from '@/components/common/error-card';
 import NoDataCard from '@/components/common/no-data-card';
 import { FilterParams } from '../types/explore.type';
 import useDebounce from '@/hooks/use-debounce';
+import { usePaginationTrigger } from '@/hooks/use-pagination-trigger';
+import ListEndMessage from '@/components/common/list-end-message';
 
 interface InterviewerListProps {
    view: ViewType;
@@ -25,21 +27,21 @@ const InterviewerList = ({ view, filterParams }: InterviewerListProps) => {
    };
 
    // Get all interviewers with pagination and filters
-   const { isLoading, data, error } = useFetch(
-      () => getInterviewers(params),
+   const { isLoading, data, error, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteFetch(
+      (page) => getInterviewers({ ...params, page }),
       [debouncedParams]
    );
+
+   const { ref: sentinelRef } = usePaginationTrigger({
+      onIntersect: fetchNextPage,
+      enabled: hasNextPage,
+      isFetching: isFetchingNextPage
+   });
 
    // Loading state
    if (isLoading) {
       return (
-         <div className={`grid gap-5 2xl:gap-6 ${view === 'list' ? 'md:grid-cols-1' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'}`}>
-            {
-               Array.from({ length: 6 }).map((_, i) => (
-                  <InterviewerCardSkeleton key={i} />
-               ))
-            }
-         </div>
+         <SkeletonLoader view={view} />
       );
    }
 
@@ -49,22 +51,54 @@ const InterviewerList = ({ view, filterParams }: InterviewerListProps) => {
    }
 
    // No data state
-   if (!data?.data || data.data.length === 0) {
+   if (!data || data?.length === 0) {
       return <NoDataCard text="No interviewers found." />;
    }
 
    return (
-      <div className={`grid gap-5 2xl:gap-6 ${view === 'list' ? 'md:grid-cols-1' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'}`}>
-         {
-            data.data?.map((interviewer) => (
-               <InterviwerCard
-                  key={interviewer.id}
-                  interviewer={interviewer}
-               />
-            ))
-         }
+      <div>
+         <div className={`grid gap-5 2xl:gap-6 ${view === 'list' ? 'md:grid-cols-1' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'}`}>
+
+            {/* Interviewers List */}
+            {
+               data?.map((interviewer) => (
+                  <InterviwerCard
+                     key={interviewer.id}
+                     interviewer={interviewer}
+                  />
+               ))
+            }
+
+         </div>
+
+         {/* Loading more state */}
+         <div className='mt-5 2xl:mt-6'>
+            {isFetchingNextPage && <SkeletonLoader view={view} />}
+         </div>
+
+         {/* Empty state */}
+         {!hasNextPage && data?.length > 0 && (
+            <div className='mt-8 2xl:mt-10'>
+               <ListEndMessage text="You've reached the end of the list" />
+            </div>
+         )}
+
+         {/* Pagination trigger */}
+         <div ref={sentinelRef} className="h-6" />
+
       </div>
    );
 };
+
+const SkeletonLoader = ({ view }: { view: ViewType; }) => (
+   <div className={`grid gap-5 2xl:gap-6 ${view === 'list' ? 'md:grid-cols-1' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'}`}>
+      {
+         Array.from({ length: 6 }).map((_, i) => (
+            <InterviewerCardSkeleton key={i} />
+         ))
+      }
+   </div>
+);
+
 
 export default InterviewerList;
