@@ -31,7 +31,7 @@ const Footer = () => {
       <footer className="relative s-padding-t pb-6 s-margin-t overflow-hidden border-t border-white/5">
          {/* Deep background ambient glows */}
          <div className="absolute top-0 left-1/4 w-150 h-150 bg-violet-600/10 rounded-full blur-[120px] pointer-events-none" />
-         <div className="absolute bottom-0 right-1/4 w-150 h-150 bg-fuchsia-600/10 rounded-full blur-[120px] pointer-events-none" />
+         <div className="absolute bottom-0 right-1/4 w-150 h-150 bg-violet-600/10 rounded-full blur-[120px] pointer-events-none" />
 
          {/* Top glassmorphic gradient line */}
          <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-violet-500/50 to-transparent" />
@@ -78,8 +78,7 @@ const Footer = () => {
                      Join thousands of candidates and experts who are already using Evalo to achieve their goals.
                   </p>
                   <div className="relative group w-fit mt-1">
-                     <div className="absolute -inset-0.5 bg-linear-to-r from-violet-600 to-fuchsia-600 rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-500" />
-                     <Link href="/signup" className="relative flex items-center gap-2 px-6 py-3 bg-surface-dark border border-white/10 rounded-xl text-zinc-100 font-medium hover:bg-surface-hover transition-colors shadow-xl">
+                     <Link href="/signup" className="relative flex items-center gap-2 px-6 py-3 bg-zinc-100 border border-white/10 rounded-xl text-zinc-900 font-medium hover:bg-zinc-100 transition-colors shadow-xl">
                         Get Started for Free
                         <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
