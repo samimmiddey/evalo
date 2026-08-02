@@ -7,7 +7,7 @@ import InterviewerList from './components/interviewer-list';
 import useView from '@/hooks/use-view';
 import { FilterParams } from './types/explore.type';
 
-const Explore = () => {
+const InterviewerListing = () => {
    const [openSidebar, setOpenSidebar] = useState<boolean>(false);
    const [hideFilters, setHideFilters] = useState<boolean>(false);
    const [filterParams, setFilterParams] = useState<FilterParams>({
@@ -68,4 +68,4 @@ const Explore = () => {
    );
 };
 
-export default Explore;
+export default InterviewerListing;

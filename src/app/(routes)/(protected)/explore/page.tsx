@@ -1,8 +1,8 @@
-import Explore from '@/features/interviewee/explore/explore';
+import InterviewerListing from '@/features/explore/list/interviewer-listing';
 
 const ExplorePage = () => {
    return (
-      <Explore />
+      <InterviewerListing />
    );
 };
 

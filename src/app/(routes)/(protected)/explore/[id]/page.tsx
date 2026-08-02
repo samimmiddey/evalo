@@ -1,4 +1,4 @@
-import InterviewerDetails from '@/features/interviewee/explore/interviewer-details';
+import InterviewerDetails from '@/features/explore/details/interviewer-details';
 
 const InterviewerDetailsPage = () => {
    return (
