@@ -1,4 +1,4 @@
-import Explore from '@/features/interviewee/explore';
+import Explore from '@/features/interviewee/explore/explore';
 
 const ExplorePage = () => {
    return (

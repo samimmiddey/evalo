@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator';
 import { Briefcase, Building2, Star } from 'lucide-react';
 import { Interviewer } from '../types/explore.type';
 import { getImage } from '@/utils/get-image';
+import Link from 'next/link';
 
 interface InterviewerCardProps {
    interviewer: Interviewer;
@@ -74,13 +75,15 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
 
          <Separator className="mb-4.5 2xl:mb-5 bg-white/5" />
 
-         <Button
-            variant='default'
-            size='lg'
-            className="w-full bg-violet-600 hover:bg-violet-700 text-zinc-100 border-0 transition-all"
-         >
-            View Profile
-         </Button>
+         <Link href={`/explore/${interviewer.id}`}>
+            <Button
+               variant='default'
+               size='lg'
+               className="w-full bg-violet-600 hover:bg-violet-700 text-zinc-100 border-0 transition-all"
+            >
+               View Profile
+            </Button>
+         </Link>
       </div>
    );
 };
