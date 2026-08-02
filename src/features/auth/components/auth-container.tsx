@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import AuthBranding from "./auth-branding";
+import CustomTooltip from "@/components/common/custom-tooltip";
 
 interface Props {
    children: ReactNode;
@@ -13,13 +14,18 @@ export default function AuthContainer({ children }: Props) {
    return (
       <div className="relative min-h-screen w-full flex flex-col lg:grid lg:grid-cols-12 bg-background overflow-x-hidden">
          {/* Circular Go Back Button */}
-         <Link
-            href="/"
-            className="absolute top-5 left-5 z-50 flex items-center justify-center size-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 backdrop-blur-md text-foreground transition-all duration-200 hover:scale-105 active:scale-95 shadow-md"
-            aria-label="Go back to home"
-         >
-            <ArrowLeft className="size-5" />
-         </Link>
+         <CustomTooltip
+            trigger={
+               <Link
+                  href="/"
+                  className="absolute top-5 left-5 z-50 flex items-center justify-center size-9 2xl:size-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 backdrop-blur-md text-foreground transition-all duration-200 hover:scale-105 active:scale-95 shadow-md"
+                  aria-label="Go back to home"
+               >
+                  <ArrowLeft className="size-5" />
+               </Link>
+            }
+            content={<p>Go Back</p>}
+         />
 
          {/* Left Side: Visual / Branding Area (~7fr -> lg:col-span-7) */}
          <div className="hidden lg:flex lg:col-span-7 h-full">

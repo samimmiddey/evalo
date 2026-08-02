@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-   BotMessageSquare,
    Sparkles,
    Activity,
    TrendingUp,
@@ -27,7 +26,7 @@ export default function AuthBranding() {
    }, []);
 
    return (
-      <div className="w-full h-full min-h-screen bg-[#0e111a] p-8 lg:p-14 2xl:p-20 flex flex-col justify-between relative overflow-hidden select-none border-r border-zinc-800/80 font-inter">
+      <div className="w-full h-full min-h-screen bg-[#0e111a] p-8 lg:p-16 2xl:p-20 flex flex-col justify-between relative overflow-hidden select-none border-r border-zinc-800/80">
 
          {/* Subtle Warm Ambient Glows & Technical Grid */}
          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -69,12 +68,7 @@ export default function AuthBranding() {
 
          {/* Header Branding Area */}
          <div className="z-10 relative space-y-5">
-            <div className="flex items-center gap-1.5 text-violet-400">
-               <BotMessageSquare className="mt-0.5 h-6.5 w-6.5" />
-               <h4 className="font-musemoderno font-bold text-xl">evalo</h4>
-            </div>
-
-            <div className="space-y-3.5 max-w-xl">
+            <div className="space-y-3 2xl:space-y-3.5 max-w-xl">
                <h2 className="text-3xl 2xl:text-4xl font-bold tracking-tight text-white leading-tight font-heading">
                   High-fidelity talent validation <span className="bg-linear-to-r from-violet-400 via-violet-400 to-violet-300 bg-clip-text text-transparent">engineered for scale.</span>
                </h2>
@@ -85,7 +79,7 @@ export default function AuthBranding() {
          </div>
 
          {/* Interactive Showcase Dashboard */}
-         <div className="z-10 my-auto py-8 relative w-full max-w-xl mx-auto flex flex-col items-center">
+         <div className="z-10 mt-2 2xl:mt-4 mb-12 py-8 relative w-full max-w-xl mx-auto flex flex-col items-center">
 
             {/* Outer Mockup Shell */}
             <div className="w-full bg-[#151926]/90 rounded-2xl border border-zinc-800/80 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.3)] overflow-hidden">
@@ -262,7 +256,7 @@ export default function AuthBranding() {
          </div>
 
          {/* Bottom Footer Area */}
-         <div className="z-10 pt-6 border-t border-violet-400/20 flex items-center justify-between text-[11px] text-zinc-500 font-mono">
+         <div className="z-10 pt-5 2xl:pt-6 border-t border-violet-400/20 flex items-center justify-between text-[11px] text-zinc-500 font-mono">
             <div className="flex items-center gap-1.5">
                <Activity className="size-3.5 text-zinc-500" />
                TELEMETRY SYSTEMS ACTIVE
