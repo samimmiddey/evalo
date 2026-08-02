@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 import CustomSpinner from '@/components/common/custom-spinner';
 import { onboardUser } from './services/client/onboarding.client.service';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
+import GradientWrapper from '@/components/wrappers/gradient-wrapper';
 
 const Onboarding = () => {
    const { isPending, error, mutate: mutateOnboard } = useMutation(onboardUser);
@@ -44,17 +45,7 @@ const Onboarding = () => {
    }, [error]);
 
    return (
-      <div className="relative min-h-screen flex items-center justify-center bg-zinc-950 px-4 py-10 overflow-hidden">
-
-         {/* Background glow orbs */}
-         <div className="absolute inset-0 z-0 pointer-events-none isolate">
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.12] mix-blend-soft-light" />
-            <div className="absolute top-[-25%] left-[-15%] w-[65%] h-[65%] rounded-full bg-violet-600/20 blur-[150px]" />
-            <div className="absolute bottom-[-25%] right-[-15%] w-[65%] h-[65%] rounded-full bg-fuchsia-600/20 blur-[150px]" />
-         </div>
-
-         {/* Grid pattern */}
-         <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[32px_32px] mask-[radial-gradient(ellipse_75%_75%_at_50%_50%,black_65%,transparent_100%)] z-0 opacity-40" />
+      <GradientWrapper className="flex items-center justify-center px-4 py-10">
 
          {/* Onboarding Container */}
          <div className="relative z-10 w-full">
@@ -130,7 +121,7 @@ const Onboarding = () => {
 
             </OnboardingContainer>
          </div>
-      </div>
+      </GradientWrapper>
    );
 };
 

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { authData } from "@/data/auth/auth.data";
+import GradientWrapper from "@/components/wrappers/gradient-wrapper";
 
 export default function AuthBranding() {
    const [activeTab, setActiveTab] = useState<"architecture" | "optimization" | "quality">("architecture");
@@ -29,45 +30,7 @@ export default function AuthBranding() {
    }, []);
 
    return (
-      <div className="w-full h-full min-h-screen bg-[#0e111a] p-8 lg:p-16 2xl:p-20 flex flex-col justify-between relative overflow-hidden select-none border-r border-zinc-800/80">
-
-         {/* Subtle Warm Ambient Glows & Technical Grid */}
-         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-            {/* Smooth SVG gradients with subtle noise filter to eliminate color banding and create a velvety finish */}
-            <svg className="absolute inset-0 w-full h-full opacity-90" xmlns="http://www.w3.org/2000/svg">
-               <defs>
-                  {/* Top-Right Glow */}
-                  <radialGradient id="top-right-glow" cx="95%" cy="5%" r="60%">
-                     <stop offset="0%" stopColor="rgba(139, 92, 246, 0.15)" />
-                     <stop offset="50%" stopColor="rgba(99, 102, 241, 0.05)" />
-                     <stop offset="100%" stopColor="rgba(14, 17, 26, 0)" />
-                  </radialGradient>
-
-                  {/* Bottom-Left Glow */}
-                  <radialGradient id="bottom-left-glow" cx="5%" cy="95%" r="60%">
-                     <stop offset="0%" stopColor="rgba(219, 39, 119, 0.15)" />
-                     <stop offset="50%" stopColor="rgba(139, 92, 246, 0.05)" />
-                     <stop offset="100%" stopColor="rgba(14, 17, 26, 0)" />
-                  </radialGradient>
-
-                  {/* Noise Texture to dither gradients and prevent banding */}
-                  <filter id="noise-dither">
-                     <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch" />
-                     <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.025 0" />
-                  </filter>
-               </defs>
-
-               {/* Gradient fills */}
-               <rect width="100%" height="100%" fill="url(#top-right-glow)" />
-               <rect width="100%" height="100%" fill="url(#bottom-left-glow)" />
-
-               {/* Noise Overlay */}
-               <rect width="100%" height="100%" filter="url(#noise-dither)" />
-            </svg>
-
-            {/* Premium, ultra-thin dotted grid overlay */}
-            <div className="absolute inset-0 bg-[radial-gradient(#222f44_1.5px,transparent_1.5px)] bg-size-[24px_24px] opacity-40" />
-         </div>
+      <GradientWrapper className="w-full h-full p-8 lg:p-16 2xl:p-20 flex flex-col justify-between select-none border-r border-zinc-800/80">
 
          {/* Header Branding Area */}
          <div className="z-10 relative space-y-5">
@@ -254,6 +217,6 @@ export default function AuthBranding() {
                {data.footer.performance}
             </div>
          </div>
-      </div>
+      </GradientWrapper>
    );
 }
