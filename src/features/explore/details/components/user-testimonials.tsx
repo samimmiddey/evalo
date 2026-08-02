@@ -1,5 +1,8 @@
+import CardLayout from '@/components/layouts/card-layout';
+import { interviewerDetailsData } from '@/data/explore/explore.data';
 import { DetailedInterviewer } from '@/data/explore/explore.types';
-import { MessageSquare, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
+import HeaderTitle from './header-title';
 
 interface UserTestimonialsProps {
    interviewer: DetailedInterviewer;
@@ -7,11 +10,11 @@ interface UserTestimonialsProps {
 
 const UserTestimonials = ({ interviewer }: UserTestimonialsProps) => {
    return (
-      <div className="bg-zinc-900/20 border border-white/5 rounded-2xl p-6 md:p-8 space-y-5 2xl:space-y-6">
-         <h2 className="text-base 2xl:text-lg font-bold text-zinc-100 flex items-center gap-2">
-            <MessageSquare className="h-4 2xl:w-5 w-4 2xl:h-5 text-violet-400" />
-            Candidate Reviews ({interviewer.testimonials.length})
-         </h2>
+      <CardLayout className='space-y-5 2xl:space-y-6'>
+         <HeaderTitle
+            title={interviewerDetailsData.testimonial.title}
+            icon={interviewerDetailsData.testimonial.icon}
+         />
 
          <div className="space-y-4">
             {interviewer.testimonials.map((t) => (
@@ -34,7 +37,7 @@ const UserTestimonials = ({ interviewer }: UserTestimonialsProps) => {
                </div>
             ))}
          </div>
-      </div>
+      </CardLayout>
    );
 };
 

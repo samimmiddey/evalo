@@ -1,4 +1,5 @@
 import { Interviewer } from "@/features/explore/list/types/explore.type";
+import { LucideIcon } from "lucide-react";
 
 export type ExpertiseEnum = "FRONTEND" | "BACKEND" | "FULLSTACK" | "DEVOPS" | "DSA" | "SYSTEM_DESIGN" | "MOBILE" | "ML_AI" | "SECURITY" | "QA" | "CLOUD";
 
@@ -34,6 +35,29 @@ export interface Testimonial {
    date: string;
 }
 
-export interface DetailedInterviewer extends Interviewer {
+export interface WhatToExpect {
+   header: {
+      title: string;
+      icon: LucideIcon;
+   };
+   list: string[];
+}
+
+export interface DetailedInterviewer extends Omit<Interviewer, 'creditRate'> {
    testimonials: Testimonial[];
+}
+
+export interface CardHeader {
+   title: string;
+   icon: LucideIcon;
+}
+
+export interface InterviewerDetails {
+   backBtn: CardHeader;
+   creditRate: number;
+   bio: CardHeader;
+   testimonial: CardHeader;
+   booking: CardHeader;
+   whatToExpect: WhatToExpect;
+   interviewers: DetailedInterviewer[];
 }

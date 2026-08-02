@@ -4,12 +4,13 @@ import { cn } from "@/lib/utils";
 interface GradientWrapperProps {
    children: ReactNode;
    className?: string;
+   showGrid?: boolean;
 }
 
-const GradientWrapper = ({ children, className }: GradientWrapperProps) => {
+const GradientWrapper = ({ children, className, showGrid = true }: GradientWrapperProps) => {
    return (
       <div className={cn("relative min-h-screen bg-[#0e111a] overflow-hidden", className)}>
-         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden h-full">
             {/* Smooth SVG gradients with subtle noise filter to eliminate color banding and create a velvety finish */}
             <svg className="absolute inset-0 w-full h-full opacity-90" xmlns="http://www.w3.org/2000/svg">
                <defs>
@@ -43,7 +44,7 @@ const GradientWrapper = ({ children, className }: GradientWrapperProps) => {
             </svg>
 
             {/* Premium, ultra-thin dotted grid overlay */}
-            <div className="absolute inset-0 bg-[radial-gradient(#222f44_1.5px,transparent_1.5px)] bg-size-[24px_24px] opacity-40" />
+            {showGrid && <div className="absolute inset-0 bg-[radial-gradient(#222f44_1.5px,transparent_1.5px)] bg-size-[24px_24px] opacity-40" />}
          </div>
          {children}
       </div>

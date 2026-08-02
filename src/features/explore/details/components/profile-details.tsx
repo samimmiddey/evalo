@@ -1,9 +1,12 @@
 import PrimaryBody from '@/components/common/primary-body';
 import PrimaryTitle from '@/components/common/primary-title';
+import CardLayout from '@/components/layouts/card-layout';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { interviewerDetailsData } from '@/data/explore/explore.data';
 import { DetailedInterviewer } from '@/data/explore/explore.types';
-import { Star, Briefcase, Coins, User } from 'lucide-react';
+import { Star, Briefcase, Coins } from 'lucide-react';
+import HeaderTitle from './header-title';
 
 interface InterviewerProps {
    interviewer: DetailedInterviewer;
@@ -11,10 +14,8 @@ interface InterviewerProps {
 
 const ProfileDetails = ({ interviewer }: InterviewerProps) => {
    return (
-      <div className="relative overflow-hidden bg-zinc-900/40 border border-white/5 rounded-2xl p-6 2xl:p-8">
-         <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
-
-         <div className="flex flex-col md:flex-row gap-6 items-start relative z-10 mb-7 2xl:mb-10">
+      <CardLayout>
+         <div className="flex flex-col md:flex-row gap-5 2xl:gap-6 items-start relative z-10 mb-7 2xl:mb-10">
             <div className="relative h-24 lg:h-30 w-24 lg:w-30 2xl:h-36 2xl:w-36 rounded-2xl overflow-hidden border-2 border-zinc-300 shrink-0">
                {/* eslint-disable-next-line @next/next/no-img-element */}
                <img
@@ -28,7 +29,7 @@ const ProfileDetails = ({ interviewer }: InterviewerProps) => {
                <div>
                   <div className="flex flex-wrap items-center gap-3">
                      <PrimaryTitle
-                        className="text-xl! md:text-2xl! 2xl:text-3xl! font-bold text-zinc-100"
+                        className="text-2xl! 2xl:text-3xl! font-bold text-zinc-100"
                         text={`${interviewer.firstName} ${interviewer.lastName}`}
                      />
                      <Badge
@@ -58,7 +59,7 @@ const ProfileDetails = ({ interviewer }: InterviewerProps) => {
                   </div>
                   <div className="flex items-center gap-1.5">
                      <Coins className="w-4 h-4 text-violet-400" />
-                     <span className="text-zinc-200 font-medium">{interviewer.creditRate} Credit / session</span>
+                     <span className="text-zinc-200 font-medium">{interviewerDetailsData.creditRate} Credit / session</span>
                   </div>
                </div>
 
@@ -79,16 +80,16 @@ const ProfileDetails = ({ interviewer }: InterviewerProps) => {
          <Separator className='my-5 2xl:my-6 bg-zinc-400/10' />
 
          <div className="space-y-3 2xl:space-y-4">
-            <h2 className="text-base 2xl:text-lg font-bold text-zinc-100 flex items-center gap-2">
-               <User className="h-4 2xl:w-5 w-4 2xl:h-5 text-violet-400" />
-               About Me
-            </h2>
+            <HeaderTitle
+               title={interviewerDetailsData.bio.title}
+               icon={interviewerDetailsData.bio.icon}
+            />
             <PrimaryBody
                className="leading-relaxed text-sm! 2xl:text-base!"
                text={interviewer.bio ?? ''}
             />
          </div>
-      </div>
+      </CardLayout>
    );
 };
 

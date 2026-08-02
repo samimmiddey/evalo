@@ -11,6 +11,9 @@ import {
    ChevronRight
 } from 'lucide-react';
 import { DetailedInterviewer } from '@/data/explore/explore.types';
+import { interviewerDetailsData } from '@/data/explore/explore.data';
+import HeaderTitle from './header-title';
+import GradientWrapper from '@/components/wrappers/gradient-wrapper';
 
 interface BookingFormProps {
    interviewer: DetailedInterviewer;
@@ -88,8 +91,10 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
       setIsBooked(false);
    };
    return (
-      <div className="bg-[#121520]/90 border border-violet-500/15 rounded-2xl overflow-hidden shadow-2xl relative">
-
+      <GradientWrapper
+         className='min-h-auto h-auto relative rounded-2xl shadow-2xl'
+         showGrid={false}
+      >
          {/* Success State Overlay */}
          <AnimatePresence>
             {isBooked && (
@@ -97,56 +102,65 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 bg-zinc-950/95 z-20 flex flex-col items-center justify-center p-6 text-center space-y-4"
+                  className="absolute inset-0 z-20"
                >
-                  <motion.div
-                     initial={{ scale: 0.8, rotate: -15 }}
-                     animate={{ scale: 1, rotate: 0 }}
-                     transition={{ type: 'spring', stiffness: 200 }}
+                  <GradientWrapper
+                     className='min-h-auto h-full w-full flex flex-col items-center justify-center p-6 2xl:p-8 text-center space-y-4'
+                     showGrid={false}
                   >
-                     <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto" />
-                  </motion.div>
-                  <div className="space-y-2">
-                     <h3 className="text-xl font-bold text-zinc-100">Booking Confirmed!</h3>
-                     <p className="text-sm text-zinc-400 max-w-xs leading-relaxed">
-                        Your mock session with {interviewer.firstName} has been scheduled.
-                     </p>
-                  </div>
+                     <motion.div
+                        initial={{ scale: 0.8, rotate: -15 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: 'spring', stiffness: 200 }}
+                     >
+                        <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto" />
+                     </motion.div>
+                     <div className="space-y-2">
+                        <h3 className="text-xl font-bold text-zinc-100">Booking Confirmed!</h3>
+                        <p className="text-sm text-zinc-400 max-w-xs leading-relaxed">
+                           Your mock session with {interviewer.firstName} has been scheduled.
+                        </p>
+                     </div>
 
-                  <div className="w-full bg-white/5 border border-white/5 rounded-xl p-4 text-left text-xs space-y-2 text-zinc-300">
-                     <div className="flex justify-between">
-                        <span className="text-zinc-500">Interviewer:</span>
-                        <span className="font-semibold text-zinc-200">{interviewer.firstName} {interviewer.lastName}</span>
-                     </div>
-                     <div className="flex justify-between">
-                        <span className="text-zinc-500">Date:</span>
-                        <span className="font-semibold text-zinc-200">{selectedDate}</span>
-                     </div>
-                     <div className="flex justify-between">
-                        <span className="text-zinc-500">Time:</span>
-                        <span className="font-semibold text-zinc-200">{selectedTimeSlot}</span>
-                     </div>
-                     {focusArea && (
-                        <div className="pt-1.5 border-t border-white/5">
-                           <span className="text-zinc-500 block mb-1">Focus Areas:</span>
-                           <span className="text-zinc-400 block line-clamp-2">{focusArea}</span>
+                     <div className="w-full bg-white/5 border border-white/5 rounded-xl p-4 text-left text-xs space-y-2 text-zinc-300">
+                        <div className="flex justify-between">
+                           <span className="text-zinc-500">Interviewer</span>
+                           <span className="font-semibold text-zinc-200">{interviewer.firstName} {interviewer.lastName}</span>
                         </div>
-                     )}
-                  </div>
+                        <div className="flex justify-between">
+                           <span className="text-zinc-500">Date</span>
+                           <span className="font-semibold text-zinc-200">{selectedDate}</span>
+                        </div>
+                        <div className="flex justify-between">
+                           <span className="text-zinc-500">Time</span>
+                           <span className="font-semibold text-zinc-200">{selectedTimeSlot}</span>
+                        </div>
+                        {focusArea && (
+                           <div className="pt-1.5 border-t border-white/5">
+                              <span className="text-zinc-500 block mb-1">Focus Areas</span>
+                              <span className="text-zinc-400 block line-clamp-2">{focusArea}</span>
+                           </div>
+                        )}
+                     </div>
 
-                  <Button
-                     onClick={resetBooking}
-                     className="w-full bg-violet-600 hover:bg-violet-700 text-zinc-100 mt-2"
-                  >
-                     Book Another Session
-                  </Button>
+                     <Button
+                        onClick={resetBooking}
+                        className="w-full bg-violet-600 hover:bg-violet-700 text-zinc-100 mt-2"
+                        size='lg'
+                     >
+                        Book Another Session
+                     </Button>
+                  </GradientWrapper>
                </motion.div>
             )}
          </AnimatePresence>
 
-         <div className="p-6 space-y-6">
-            <div className="flex items-center justify-between">
-               <h3 className="font-bold text-zinc-100 text-lg">Book a Session</h3>
+         <div className="p-6 2xl:p-8 space-y-6 relative z-1">
+            <div className="flex max-sm:flex-col sm:items-center justify-between gap-2.5">
+               <HeaderTitle
+                  title={interviewerDetailsData.booking.title}
+                  icon={interviewerDetailsData.booking.icon}
+               />
                <div className="flex items-center gap-1 text-xs font-semibold text-zinc-400">
                   <span className={step === 1 ? 'text-violet-400' : ''}>Date</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -165,7 +179,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
             </div>
 
             {/* Step Content */}
-            <div className="min-h-55">
+            <div className="min-h-55 2xl:min-h-60">
                {step === 1 && (
                   <div className="space-y-4">
                      <p className="text-sm text-zinc-400 flex items-center gap-2">
@@ -181,7 +195,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                                  key={date}
                                  type="button"
                                  onClick={() => handleDateSelect(date)}
-                                 className={`w-full text-left p-3.5 rounded-xl border text-sm font-medium transition-all ${isSelected
+                                 className={`w-full cursor-pointer text-left p-3.5 rounded-xl border text-sm font-medium transition-all ${isSelected
                                     ? 'bg-violet-500/20 border-violet-500 text-violet-300'
                                     : 'bg-white/5 border-white/5 hover:bg-white/10 text-zinc-300'
                                     }`}
@@ -209,7 +223,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                                  key={slot}
                                  type="button"
                                  onClick={() => setSelectedTimeSlot(slot)}
-                                 className={`w-full text-left p-3.5 rounded-xl border text-sm font-medium transition-all ${isSelected
+                                 className={`w-full cursor-pointer text-left p-3.5 rounded-xl border text-sm font-medium transition-all ${isSelected
                                     ? 'bg-violet-500/20 border-violet-500 text-violet-300'
                                     : 'bg-white/5 border-white/5 hover:bg-white/10 text-zinc-300'
                                     }`}
@@ -241,7 +255,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                            <span className="text-zinc-500">Total Charged</span>
                            <span className="text-violet-400 font-semibold flex items-center gap-1">
                               <Coins className="w-3.5 h-3.5" />
-                              {interviewer.creditRate} Credits
+                              {interviewerDetailsData.creditRate} Credit
                            </span>
                         </div>
                      </div>
@@ -255,7 +269,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                            placeholder="e.g. Frontend system design, React render optimization, mock coding feedback..."
                            value={focusArea}
                            onChange={(e) => setFocusArea(e.target.value)}
-                           className="resize-none"
+                           className="resize-none text-sm"
                         />
                      </div>
                   </div>
@@ -268,8 +282,9 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   <Button
                      type="button"
                      variant="outline"
+                     size="lg"
                      onClick={handlePrevStep}
-                     className="border-white/10 hover:bg-white/5 text-zinc-300 w-1/3"
+                     className="w-1/3"
                   >
                      Back
                   </Button>
@@ -278,6 +293,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                {step < 3 ? (
                   <Button
                      type="button"
+                     size="lg"
                      onClick={handleNextStep}
                      className="bg-violet-600 hover:bg-violet-700 text-zinc-100 grow"
                   >
@@ -286,6 +302,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                ) : (
                   <Button
                      type="button"
+                     size="lg"
                      onClick={handleConfirmBooking}
                      disabled={isSubmitting}
                      className="bg-emerald-600 hover:bg-emerald-700 text-zinc-100 grow flex items-center justify-center gap-2"
@@ -295,7 +312,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                )}
             </div>
          </div>
-      </div>
+      </GradientWrapper>
    );
 };
 

@@ -6,6 +6,7 @@ import { Briefcase, Building2, Star } from 'lucide-react';
 import { Interviewer } from '../types/explore.type';
 import { getImage } from '@/utils/get-image';
 import Link from 'next/link';
+import CardLayout from '@/components/layouts/card-layout';
 
 interface InterviewerCardProps {
    interviewer: Interviewer;
@@ -13,13 +14,10 @@ interface InterviewerCardProps {
 
 const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
    return (
-      <div
+      <CardLayout
          key={interviewer.id}
-         className="group relative flex flex-col bg-zinc-900/40 border border-white/5 rounded-2xl p-6 transition-all duration-300 hover:bg-zinc-900/80 hover:border-violet-500/30 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.15)] overflow-hidden"
+         className="group flex flex-col p-6!"
       >
-         {/* Subtle glow effect on hover */}
-         <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-
          <div className="flex items-start justify-between mb-4 relative z-10">
             <div className="flex items-center gap-4">
                <div className="relative h-14 w-14 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-violet-500/30 transition-colors bg-zinc-800">
@@ -84,7 +82,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
                View Profile
             </Button>
          </Link>
-      </div>
+      </CardLayout>
    );
 };
 
