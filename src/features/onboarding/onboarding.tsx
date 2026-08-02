@@ -66,7 +66,7 @@ const Onboarding = () => {
                         onValueChange={(val) => methods.setValue('role', val as AssignedRole)}
                         className="w-full space-y-4"
                      >
-                        <TabsList className="w-full grid grid-cols-2 h-12! bg-[#121520]/80 p-1 rounded-xl border border-zinc-800/80">
+                        <TabsList className="w-full grid grid-cols-2 h-12! bg-[#121520]/80 p-1 rounded-xl border border-violet-400/15">
                            {
                               onboardingData.tabs.map((tab) => {
                                  return (
