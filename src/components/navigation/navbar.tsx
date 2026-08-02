@@ -3,13 +3,14 @@
 import { Button } from '@/components/ui/button';
 import { navigationData } from '@/data/navigation/navigation.data';
 import { Show, UserButton, useUser } from '@clerk/nextjs';
-import { BotMessageSquare, CalendarDays, Menu, Users } from 'lucide-react';
+import { CalendarDays, Menu, Users } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import useMediaQuery from '@/hooks/use-media-query';
 import { authData } from '@/data/auth/auth.data';
 import { useDbUser } from '@/hooks/use-db-user';
 import CreditButton from './components/credit-button';
+import Logo from '../common/logo';
 
 interface NavbarProps {
    onMenuClick: () => void;
@@ -27,9 +28,8 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
          <div className="container h-full">
             <div className='flex items-center justify-between gap-4 h-full'>
                <div className='flex items-center gap-4'>
-                  <Link href='/' className='flex items-center gap-1.5 text-violet-400'>
-                     <BotMessageSquare className='mt-0.5 h-6.5 2xl:h-7 w-6.5 2xl:w-7' />
-                     <h4 className='font-musemoderno font-bold text-xl 2xl:text-2xl'>evalo</h4>
+                  <Link href='/'>
+                     <Logo containerClassName='scale-105 2xl:scale-115' />
                   </Link>
                </div>
                <div className="hidden md:flex items-center gap-6 lg:gap-10">

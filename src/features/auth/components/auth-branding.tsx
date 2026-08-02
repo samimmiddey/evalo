@@ -72,7 +72,7 @@ export default function AuthBranding() {
          {/* Header Branding Area */}
          <div className="z-10 relative space-y-5">
             <div className="space-y-3 2xl:space-y-3.5 max-w-xl">
-               <h2 className="text-3xl 2xl:text-4xl font-bold tracking-tight text-white leading-tight font-heading">
+               <h2 className="text-3xl 2xl:text-4xl font-bold tracking-tight text-zinc-100 leading-tight font-heading">
                   {data.header.titleNormal}<span className="bg-linear-to-r from-violet-400 via-violet-400 to-violet-300 bg-clip-text text-transparent">{data.header.titleHighlight}</span>
                </h2>
                <p className="text-zinc-400 text-sm leading-relaxed max-w-lg">
@@ -114,7 +114,7 @@ export default function AuthBranding() {
                         <span className="absolute bottom-0 right-0 size-3 rounded-full bg-emerald-500 border-2 border-[#151926]" />
                      </div>
                      <div>
-                        <h4 className="text-sm font-bold text-white">{data.dashboard.candidate.name}</h4>
+                        <h4 className="text-sm font-bold text-zinc-100">{data.dashboard.candidate.name}</h4>
                         <p className="text-xs text-zinc-400">{data.dashboard.candidate.role}</p>
                      </div>
                   </div>
@@ -129,19 +129,19 @@ export default function AuthBranding() {
                <div className="px-5 py-2.5 bg-[#121520]/50 border-b border-zinc-800/50 flex items-center gap-4 text-xs font-semibold">
                   <button
                      onClick={() => setActiveTab("architecture")}
-                     className={`pb-1 transition-all border-b-2 ${activeTab === "architecture" ? "border-violet-500 text-white" : "border-transparent text-zinc-400"}`}
+                     className={`pb-1 transition-all border-b-2 ${activeTab === "architecture" ? "border-violet-500 text-zinc-100" : "border-transparent text-zinc-400"}`}
                   >
                      {data.dashboard.tabs.architecture.title}
                   </button>
                   <button
                      onClick={() => setActiveTab("optimization")}
-                     className={`pb-1 transition-all border-b-2 ${activeTab === "optimization" ? "border-violet-500 text-white" : "border-transparent text-zinc-400"}`}
+                     className={`pb-1 transition-all border-b-2 ${activeTab === "optimization" ? "border-violet-500 text-zinc-100" : "border-transparent text-zinc-400"}`}
                   >
                      {data.dashboard.tabs.optimization.title}
                   </button>
                   <button
                      onClick={() => setActiveTab("quality")}
-                     className={`pb-1 transition-all border-b-2 ${activeTab === "quality" ? "border-violet-500 text-white" : "border-transparent text-zinc-400"}`}
+                     className={`pb-1 transition-all border-b-2 ${activeTab === "quality" ? "border-violet-500 text-zinc-100" : "border-transparent text-zinc-400"}`}
                   >
                      {data.dashboard.tabs.quality.title}
                   </button>
@@ -165,7 +165,7 @@ export default function AuthBranding() {
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">{check.score}</span>
+                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-zinc-700/50">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -189,7 +189,7 @@ export default function AuthBranding() {
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">{check.score}</span>
+                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-zinc-700/50">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -213,7 +213,7 @@ export default function AuthBranding() {
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">{check.score}</span>
+                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-zinc-700/50">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -229,7 +229,7 @@ export default function AuthBranding() {
             <motion.div
                animate={{ y: [0, -6, 0] }}
                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-               className="absolute -bottom-4 right-6 bg-[#0e111a] text-white rounded-xl py-3 px-4.5 border border-zinc-800 shadow-xl flex items-center gap-3"
+               className="absolute -bottom-4 right-6 bg-[#0e111a] text-zinc-100 rounded-xl py-3 px-4.5 border border-zinc-800 shadow-xl flex items-center gap-3"
             >
                <div className="size-8 rounded-lg bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-400">
                   <Sparkles className="size-4" />

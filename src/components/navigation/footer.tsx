@@ -1,6 +1,6 @@
-import { BotMessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import { footerData } from '@/data/navigation/navigation.data';
+import Logo from '../common/logo';
 
 const Footer = () => {
    const SocialIcon = ({ type }: { type: string; }) => {
@@ -40,9 +40,8 @@ const Footer = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-8 lg:gap-10 mb-13 lg:mb-15 2xl:mb-16">
                {/* Brand Info */}
                <div className="xl:col-span-2 flex flex-col gap-5 lg:gap-6">
-                  <Link href='/' className='flex items-center gap-1.5 text-violet-400 w-fit'>
-                     <BotMessageSquare className='mt-0.5 h-6.5 2xl:h-7 w-6.5 2xl:w-7' />
-                     <h4 className='font-musemoderno font-bold text-xl 2xl:text-2xl'>evalo</h4>
+                  <Link href='/' className='w-fit'>
+                     <Logo containerClassName='scale-115 2xl:scale-125' />
                   </Link>
                   <p className="text-zinc-400 font-inter text-[15px] leading-relaxed max-w-sm">
                      {footerData.description}
