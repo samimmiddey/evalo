@@ -2,10 +2,11 @@
 
 import ScreenLoader from '@/components/common/screen-loader';
 import { useClerk, useSignIn, useSignUp } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { ssoCallback } from './services/auth.service';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
+import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
 
 export default function SSOCallback() {
    const clerk = useClerk();
@@ -13,6 +14,10 @@ export default function SSOCallback() {
    const { signUp } = useSignUp();
    const router = useRouter();
    const hasRun = useRef(false);
+
+   const searchParams = useSearchParams();
+   const redirectUrl = searchParams.get('redirect_url');
+   const sanitizedUrl = sanitizeRedirectUrl(redirectUrl);
 
    const roleBasedRedirect = useRoleBasedRedirect();
 
@@ -25,9 +30,27 @@ export default function SSOCallback() {
             clerk,
             signIn,
             signUp,
-            onNavigateSignIn: () => void roleBasedRedirect(),
-            onNavigateSignUp: () => router.push('/onboarding'),
-            onTransferToSignIn: () => router.push('/sign-in'),
+            onNavigateSignIn: () => {
+               if (sanitizedUrl) {
+                  router.replace(sanitizedUrl);
+               } else {
+                  void roleBasedRedirect();
+               }
+            },
+            onNavigateSignUp: () => {
+               const onboardingUrl = sanitizedUrl ?
+                  `/onboarding?redirect_url=${encodeURIComponent(sanitizedUrl)}` :
+                  '/onboarding';
+
+               router.replace(onboardingUrl);
+            },
+            onTransferToSignIn: () => {
+               const signInUrl = sanitizedUrl ?
+                  `/sign-in?redirect_url=${encodeURIComponent(sanitizedUrl)}` :
+                  '/sign-in';
+
+               router.replace(signInUrl);
+            },
          });
       })();
    }, [clerk, signIn, signUp]); // eslint-disable-line react-hooks/exhaustive-deps

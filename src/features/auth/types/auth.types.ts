@@ -62,6 +62,7 @@ export interface GoogleSsoParams {
       redirectCallbackUrl: string;
       redirectUrl: string;
    }) => Promise<{ error: unknown; }>;
+   redirectUrl: string | null;
 }
 
 export interface SsoCallbackParams {

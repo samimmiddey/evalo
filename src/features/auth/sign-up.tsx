@@ -10,7 +10,7 @@ import AuthHeader from './components/auth-header';
 import AuthFooter from './components/auth-footer';
 import { authData } from '@/data/auth/auth.data';
 import { useAuth, useSignUp } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { authSchema, AuthSchemaTypes, OtpSchemaTypes } from './schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,6 +21,7 @@ import CustomSpinner from '@/components/common/custom-spinner';
 import ScreenLoader from '@/components/common/screen-loader';
 import { resendVerificationCode, signupWithPassword, verifyCode } from './services/auth.service';
 import InputError from '@/components/common/input-error';
+import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
 
 const SignUp = () => {
    const { signUp, errors, fetchStatus } = useSignUp();
@@ -28,6 +29,7 @@ const SignUp = () => {
    const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
 
    const router = useRouter();
+   const searchParams = useSearchParams();
 
    const {
       register,
@@ -68,7 +70,12 @@ const SignUp = () => {
          signUp,
          code: data.code,
          errors,
-         onNavigate: () => router.push('/onboarding'),
+         onNavigate: () => {
+            const redirectUrl = searchParams.get('redirect_url');
+            const sanitizedUrl = sanitizeRedirectUrl(redirectUrl);
+            const finalUrl = sanitizedUrl ? `/onboarding?redirect_url=${encodeURIComponent(sanitizedUrl)}` : '/onboarding';
+            router.replace(finalUrl);
+         }
       });
 
       if (result.success) {

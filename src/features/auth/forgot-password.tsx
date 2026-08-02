@@ -17,6 +17,8 @@ import ScreenLoader from '@/components/common/screen-loader';
 import { sendResetCode, submitNewPassword, verifyResetCode } from './services/auth.service';
 import InputError from '@/components/common/input-error';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
 
 export default function ForgotPassword() {
    const { signIn, fetchStatus } = useSignIn();
@@ -26,6 +28,10 @@ export default function ForgotPassword() {
    const [isVerifyingCode, setIsVerifyingCode] = useState<boolean>(false);
    const [isSubmittingPassword, setIsSubmittingPassword] = useState<boolean>(false);
    const [isCompleting, setIsCompleting] = useState<boolean>(false);
+
+   const router = useRouter();
+   const searchParams = useSearchParams();
+   const redirectUrl = searchParams.get('redirect_url');
 
    const roleBasedRedirect = useRoleBasedRedirect();
 
@@ -102,7 +108,14 @@ export default function ForgotPassword() {
       const result = await submitNewPassword({
          signIn,
          password: data.password,
-         onNavigate: () => void roleBasedRedirect()
+         onNavigate: () => {
+            const sanitizedRedirectUrl = sanitizeRedirectUrl(redirectUrl);
+            if (sanitizedRedirectUrl) {
+               router.replace(sanitizedRedirectUrl);
+            } else {
+               void roleBasedRedirect();
+            }
+         }
       });
 
       if (!result.success) {

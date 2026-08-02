@@ -19,6 +19,11 @@ const isAuthRoute = createRouteMatcher([
    '/forgot-password(.*)',
 ]);
 
+const roleRouteMap = [
+   { matcher: createRouteMatcher(['/explore(.*)', '/interviewers(.*)']), allowedRole: 'INTERVIEWEE' },
+   { matcher: createRouteMatcher(['/dashboard(.*)']), allowedRole: 'INTERVIEWER' },
+] as const;
+
 const isOnboardingRoute = createRouteMatcher(['/onboarding(.*)']);
 
 export default clerkMiddleware(async (auth, req) => {
@@ -30,8 +35,12 @@ export default clerkMiddleware(async (auth, req) => {
    };
 
    // Protect all routes except public routes
-   if (!isPublicRoute(req)) {
-      await auth.protect();
+   if (!isPublicRoute(req) && !isAuthenticated) {
+      const signInUrl = new URL('/sign-in', req.url);
+      const currentPath = req.nextUrl.pathname + req.nextUrl.search;
+      signInUrl.searchParams.set('redirect_url', currentPath);
+
+      return NextResponse.redirect(signInUrl);
    }
 
    // Don't try to redirect users who are already on onboarding route
@@ -41,7 +50,23 @@ export default clerkMiddleware(async (auth, req) => {
 
    // Authenticated but onboarding is not complete
    if (isAuthenticated && !sessionClaims?.metadata?.onboardingComplete && !req.nextUrl.pathname.startsWith('/api')) {
-      return NextResponse.redirect(new URL('/onboarding', req.url));
+      const onboardingUrl = new URL('/onboarding', req.url);
+      const existingRedirect = req.nextUrl.searchParams.get("redirect_url") ?? req.nextUrl.pathname + req.nextUrl.search;
+      onboardingUrl.searchParams.set("redirect_url", existingRedirect);
+
+      return NextResponse.redirect(onboardingUrl);
+   }
+
+   // Role-based route authorization
+   if (isAuthenticated) {
+      const role = sessionClaims?.metadata?.role;
+
+      const matchedRule = roleRouteMap.find(({ matcher }) => matcher(req));
+
+      if (matchedRule && matchedRule.allowedRole !== role) {
+         const fallbackUrl = role === 'INTERVIEWER' ? '/dashboard' : '/explore';
+         return NextResponse.redirect(new URL(fallbackUrl, req.url));
+      }
    }
 });
 

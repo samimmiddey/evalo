@@ -18,9 +18,18 @@ import CustomSpinner from '@/components/common/custom-spinner';
 import { onboardUser } from './services/client/onboarding.client.service';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 import GradientWrapper from '@/components/wrappers/gradient-wrapper';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
+import { useSession } from '@clerk/nextjs';
 
 const Onboarding = () => {
    const { isPending, error, mutate: mutateOnboard } = useMutation(onboardUser);
+   const { session } = useSession();
+
+   const router = useRouter();
+   const searchParams = useSearchParams();
+   const redirectUrl = searchParams.get('redirect_url');
+
    const roleBasedRedirect = useRoleBasedRedirect();
 
    const methods = useForm<OnboardingSchemaTypes>({
@@ -34,7 +43,15 @@ const Onboarding = () => {
 
       if (result) {
          toast.success('Your profile has been set up successfully!');
-         void roleBasedRedirect();
+
+         await session?.reload();
+         const sanitizedUrl = sanitizeRedirectUrl(redirectUrl);
+
+         if (sanitizedUrl) {
+            router.replace(sanitizedUrl);
+         } else {
+            void roleBasedRedirect();
+         }
       }
    };
 

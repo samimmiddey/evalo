@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
 import { signInWithGoogle } from '../services/auth.service';
+import { useSearchParams } from 'next/navigation';
 
 interface GoogleButtonProps {
    // pass either signUp or signIn depending on which page renders this
@@ -15,10 +16,13 @@ interface GoogleButtonProps {
 const GoogleButton = ({ sso }: GoogleButtonProps) => {
    const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
+   const searchParams = useSearchParams();
+   const redirectUrl = searchParams.get('redirect_url');
+
    const handleGoogleSignIn = async () => {
       setIsRedirecting(true);
 
-      const result = await signInWithGoogle({ sso });
+      const result = await signInWithGoogle({ sso, redirectUrl });
 
       if (!result.success) {
          toast.error(result.message);

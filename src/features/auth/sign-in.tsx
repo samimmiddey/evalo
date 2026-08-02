@@ -21,10 +21,16 @@ import { signInWithPassword } from './services/auth.service';
 import ScreenLoader from '@/components/common/screen-loader';
 import InputError from '@/components/common/input-error';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
 
 const SignIn = () => {
    const { signIn, errors, fetchStatus } = useSignIn();
    const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
+
+   const router = useRouter();
+   const searchParams = useSearchParams();
+   const redirectUrl = searchParams.get('redirect_url');
 
    const roleBasedRedirect = useRoleBasedRedirect();
 
@@ -50,7 +56,14 @@ const SignIn = () => {
          emailAddress: data.email,
          password: data.password,
          errors,
-         onNavigate: () => void roleBasedRedirect()
+         onNavigate: () => {
+            const sanitizedRedirectUrl = sanitizeRedirectUrl(redirectUrl);
+            if (sanitizedRedirectUrl) {
+               router.replace(sanitizedRedirectUrl);
+            } else {
+               void roleBasedRedirect();
+            }
+         }
       });
 
       if (result.success) {
@@ -103,7 +116,14 @@ const SignIn = () => {
             <div className="flex flex-col gap-2 2xl:gap-2.5">
                <div className="flex items-center justify-between">
                   <Label htmlFor="password">{authData.signIn.form.password.label}</Label>
-                  <Link href="/forgot-password" className="text-xs font-medium text-violet-400 hover:text-violet-300 transition-colors">
+                  <Link
+                     href={
+                        redirectUrl
+                           ? `/forgot-password?redirect_url=${encodeURIComponent(redirectUrl)}`
+                           : '/forgot-password'
+                     }
+                     className="text-xs font-medium text-violet-400 hover:text-violet-300 transition-colors"
+                  >
                      Forgot password?
                   </Link>
                </div>

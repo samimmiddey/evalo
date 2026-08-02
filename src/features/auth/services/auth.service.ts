@@ -1,5 +1,6 @@
 import { getClerkErrorMessage } from "@/utils/clerk-error";
 import { SignupParams, AuthResult, VerifyCodeParams, ResendCodeParams, SignInParams, SendResetCodeParams, VerifyResetCodeParams, SubmitNewPasswordParams, GoogleSsoParams, ResetSignUpParams, SsoCallbackParams } from "../types/auth.types";
+import { sanitizeRedirectUrl } from "@/utils/redirect-url-sanitizer";
 
 // Sign up with password
 export const signupWithPassword = async ({
@@ -156,11 +157,14 @@ export const submitNewPassword = async ({
 };
 
 // Google OAuth sign-in/sign-up
-export const signInWithGoogle = async ({ sso }: GoogleSsoParams): Promise<AuthResult> => {
+export const signInWithGoogle = async ({ sso, redirectUrl }: GoogleSsoParams): Promise<AuthResult> => {
+   const sanitizedUrl = sanitizeRedirectUrl(redirectUrl);
+   const callbackUrl = sanitizedUrl ? `/sso-callback?redirect_url=${encodeURIComponent(sanitizedUrl)}` : '/sso-callback';
+   const finalUrl = sanitizedUrl || '/';
    const { error } = await sso({
       strategy: 'oauth_google',
-      redirectCallbackUrl: '/sso-callback',
-      redirectUrl: '/',
+      redirectCallbackUrl: callbackUrl,
+      redirectUrl: finalUrl
    });
 
    if (error) {
