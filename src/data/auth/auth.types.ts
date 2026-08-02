@@ -64,6 +64,49 @@ export interface StepThreeFormProps {
    button: string;
 }
 
+export interface BrandingProps {
+   header: {
+      titleNormal: string;
+      titleHighlight: string;
+      desc: string;
+   };
+   dashboard: {
+      title: string;
+      status: string;
+      candidate: {
+         name: string;
+         role: string;
+         score: string;
+         scoreLabel: string;
+      };
+      tabs: {
+         architecture: {
+            title: string;
+            checks: { label: string; score: string }[];
+            desc: string;
+         };
+         optimization: {
+            title: string;
+            checks: { label: string; score: string }[];
+            desc: string;
+         };
+         quality: {
+            title: string;
+            checks: { label: string; score: string }[];
+            desc: string;
+         };
+      };
+      aiRecommendation: {
+         label: string;
+         text: string;
+      };
+   };
+   footer: {
+      telemetry: string;
+      performance: string;
+   };
+}
+
 export interface AuthData {
    signIn: {
       header: HeaderProps;
@@ -92,5 +135,6 @@ export interface AuthData {
          header: HeaderProps;
          form: StepThreeFormProps;
       }
-   }
+   },
+   branding: BrandingProps;
 }

@@ -10,8 +10,11 @@ import {
    ArrowRight
 } from "lucide-react";
 
+import { authData } from "@/data/auth/auth.data";
+
 export default function AuthBranding() {
    const [activeTab, setActiveTab] = useState<"architecture" | "optimization" | "quality">("architecture");
+   const data = authData.branding;
 
    // Cycle through tabs to showcase the system dynamically
    useEffect(() => {
@@ -70,10 +73,10 @@ export default function AuthBranding() {
          <div className="z-10 relative space-y-5">
             <div className="space-y-3 2xl:space-y-3.5 max-w-xl">
                <h2 className="text-3xl 2xl:text-4xl font-bold tracking-tight text-white leading-tight font-heading">
-                  High-fidelity talent validation <span className="bg-linear-to-r from-violet-400 via-violet-400 to-violet-300 bg-clip-text text-transparent">engineered for scale.</span>
+                  {data.header.titleNormal}<span className="bg-linear-to-r from-violet-400 via-violet-400 to-violet-300 bg-clip-text text-transparent">{data.header.titleHighlight}</span>
                </h2>
                <p className="text-zinc-400 text-sm leading-relaxed max-w-lg">
-                  Say goodbye to arbitrary tech assessments. Evalo analyzes architecture logic, performance limits, and security posture automatically.
+                  {data.header.desc}
                </p>
             </div>
          </div>
@@ -92,10 +95,10 @@ export default function AuthBranding() {
                         <span className="size-2 rounded-full bg-zinc-700" />
                      </div>
                      <span className="h-4 w-px bg-[#1e293b]" />
-                     <span className="text-xs font-semibold text-zinc-300 tracking-wide">Candidate Assessment Report</span>
+                     <span className="text-xs font-semibold text-zinc-300 tracking-wide">{data.dashboard.title}</span>
                   </div>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold tracking-wide">
-                     READY TO HIRE
+                     {data.dashboard.status}
                   </span>
                </div>
 
@@ -111,13 +114,13 @@ export default function AuthBranding() {
                         <span className="absolute bottom-0 right-0 size-3 rounded-full bg-emerald-500 border-2 border-[#151926]" />
                      </div>
                      <div>
-                        <h4 className="text-sm font-bold text-white">Sarah Jenkins</h4>
-                        <p className="text-xs text-zinc-400">Lead Infrastructure Engineer</p>
+                        <h4 className="text-sm font-bold text-white">{data.dashboard.candidate.name}</h4>
+                        <p className="text-xs text-zinc-400">{data.dashboard.candidate.role}</p>
                      </div>
                   </div>
 
                   <div className="text-right">
-                     <div className="text-2xl font-black text-violet-400 leading-none">96<span className="text-xs text-zinc-500 font-medium">/100</span></div>
+                     <div className="text-2xl font-black text-violet-400 leading-none">{data.dashboard.candidate.score}<span className="text-xs text-zinc-500 font-medium">{data.dashboard.candidate.scoreLabel}</span></div>
                      <div className="text-[10px] text-zinc-400 font-medium mt-1">Evalo Score</div>
                   </div>
                </div>
@@ -128,19 +131,19 @@ export default function AuthBranding() {
                      onClick={() => setActiveTab("architecture")}
                      className={`pb-1 transition-all border-b-2 ${activeTab === "architecture" ? "border-violet-500 text-white" : "border-transparent text-zinc-400"}`}
                   >
-                     Architecture
+                     {data.dashboard.tabs.architecture.title}
                   </button>
                   <button
                      onClick={() => setActiveTab("optimization")}
                      className={`pb-1 transition-all border-b-2 ${activeTab === "optimization" ? "border-violet-500 text-white" : "border-transparent text-zinc-400"}`}
                   >
-                     Optimization
+                     {data.dashboard.tabs.optimization.title}
                   </button>
                   <button
                      onClick={() => setActiveTab("quality")}
                      className={`pb-1 transition-all border-b-2 ${activeTab === "quality" ? "border-violet-500 text-white" : "border-transparent text-zinc-400"}`}
                   >
-                     Code Quality
+                     {data.dashboard.tabs.quality.title}
                   </button>
                </div>
 
@@ -156,22 +159,17 @@ export default function AuthBranding() {
                            transition={{ duration: 0.2 }}
                            className="space-y-3.5"
                         >
-                           <div className="flex items-center justify-between">
-                              <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
-                                 <Check className="size-4 text-emerald-400" />
-                                 Decoupled State Management
-                              </span>
-                              <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">98%</span>
-                           </div>
-                           <div className="flex items-center justify-between">
-                              <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
-                                 <Check className="size-4 text-emerald-400" />
-                                 Database Normalization Standard
-                              </span>
-                              <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">94%</span>
-                           </div>
+                           {data.dashboard.tabs.architecture.checks.map((check, index) => (
+                              <div key={index} className="flex items-center justify-between">
+                                 <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
+                                    <Check className="size-4 text-emerald-400" />
+                                    {check.label}
+                                 </span>
+                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">{check.score}</span>
+                              </div>
+                           ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
-                              Candidate demonstrated deep knowledge of scalable caching strategies and optimized database constraints under load simulation.
+                              {data.dashboard.tabs.architecture.desc}
                            </p>
                         </motion.div>
                      )}
@@ -185,22 +183,17 @@ export default function AuthBranding() {
                            transition={{ duration: 0.2 }}
                            className="space-y-3.5"
                         >
-                           <div className="flex items-center justify-between">
-                              <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
-                                 <Check className="size-4 text-emerald-400" />
-                                 Time Complexity Analysis (O(N))
-                              </span>
-                              <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">100%</span>
-                           </div>
-                           <div className="flex items-center justify-between">
-                              <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
-                                 <Check className="size-4 text-emerald-400" />
-                                 Memory Allocation & Leaks
-                              </span>
-                              <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">90%</span>
-                           </div>
+                           {data.dashboard.tabs.optimization.checks.map((check, index) => (
+                              <div key={index} className="flex items-center justify-between">
+                                 <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
+                                    <Check className="size-4 text-emerald-400" />
+                                    {check.label}
+                                 </span>
+                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">{check.score}</span>
+                              </div>
+                           ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
-                              Memory leaks checked automatically against mock telemetry runs. Execution times fell within the top 2% of candidates globally.
+                              {data.dashboard.tabs.optimization.desc}
                            </p>
                         </motion.div>
                      )}
@@ -214,22 +207,17 @@ export default function AuthBranding() {
                            transition={{ duration: 0.2 }}
                            className="space-y-3.5"
                         >
-                           <div className="flex items-center justify-between">
-                              <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
-                                 <Check className="size-4 text-emerald-400" />
-                                 Type Definitions & Coverage
-                              </span>
-                              <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">96%</span>
-                           </div>
-                           <div className="flex items-center justify-between">
-                              <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
-                                 <Check className="size-4 text-emerald-400" />
-                                 Linter Compliance & Readability
-                              </span>
-                              <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">100%</span>
-                           </div>
+                           {data.dashboard.tabs.quality.checks.map((check, index) => (
+                              <div key={index} className="flex items-center justify-between">
+                                 <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
+                                    <Check className="size-4 text-emerald-400" />
+                                    {check.label}
+                                 </span>
+                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-white border border-zinc-700/50">{check.score}</span>
+                              </div>
+                           ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
-                              Candidate codebase contains rigorous type definitions, clean documentation, and follows standard object-oriented/functional paradigms.
+                              {data.dashboard.tabs.quality.desc}
                            </p>
                         </motion.div>
                      )}
@@ -247,9 +235,9 @@ export default function AuthBranding() {
                   <Sparkles className="size-4" />
                </div>
                <div>
-                  <div className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">AI RECOMMENDATION</div>
+                  <div className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">{data.dashboard.aiRecommendation.label}</div>
                   <div className="text-[11px] font-semibold flex items-center gap-1">
-                     Strong Hire (Top 1%) <ArrowRight className="size-3 text-violet-400" />
+                     {data.dashboard.aiRecommendation.text} <ArrowRight className="size-3 text-violet-400" />
                   </div>
                </div>
             </motion.div>
@@ -259,11 +247,11 @@ export default function AuthBranding() {
          <div className="z-10 pt-5 2xl:pt-6 border-t border-violet-400/20 flex items-center justify-between text-[11px] text-zinc-500 font-mono">
             <div className="flex items-center gap-1.5">
                <Activity className="size-3.5 text-zinc-500" />
-               TELEMETRY SYSTEMS ACTIVE
+               {data.footer.telemetry}
             </div>
             <div className="flex items-center gap-1.5">
                <TrendingUp className="size-3.5 text-zinc-500" />
-               REAL-TIME PERFORMANCE PROFILING
+               {data.footer.performance}
             </div>
          </div>
       </div>
