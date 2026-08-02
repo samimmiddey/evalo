@@ -10,7 +10,7 @@ interface Props {
 const AuthHeader = ({ title, desc }: Props) => {
    return (
       <div className="space-y-2 flex flex-col items-center text-center pb-4">
-         <Logo />
+         <Logo containerClassName='2xl:scale-110' />
          <PrimaryTitle
             text={title}
             className="text-[30px]! 2xl:text-[32px]! mt-1 2xl:mt-2"

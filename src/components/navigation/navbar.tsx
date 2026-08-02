@@ -46,14 +46,16 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                   }
                </div>
                <div className='flex items-center gap-2'>
-                  <Show when="signed-out">
-                     <Link href={authData.signUp.footer.linkUrl}>
-                        <Button variant="ghost" size="lg">Sign In</Button>
-                     </Link>
-                     <Link href={authData.signIn.footer.linkUrl}>
-                        <Button variant="white" size="lg">Get Started</Button>
-                     </Link>
-                  </Show>
+                  <div className="max-md:-mr-2">
+                     <Show when="signed-out">
+                        <Link href={authData.signUp.footer.linkUrl}>
+                           <Button variant="ghost" size="lg">Sign In</Button>
+                        </Link>
+                        <Link href={authData.signIn.footer.linkUrl}>
+                           <Button variant="white" size="lg">Get Started</Button>
+                        </Link>
+                     </Show>
+                  </div>
                   <div className="flex items-center gap-2 mr-1 lg:mr-2">
                      {
                         isUserLoading ? <div className="h-8 w-25 rounded-sm bg-zinc-800 animate-pulse" /> : (
