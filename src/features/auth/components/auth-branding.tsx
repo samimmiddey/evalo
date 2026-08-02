@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-   Sparkles,
+   BrainCircuit,
    Activity,
    TrendingUp,
    Check,
@@ -189,13 +189,11 @@ export default function AuthBranding() {
             </div>
 
             {/* Overlapping floating statistics chip */}
-            <motion.div
-               animate={{ y: [0, -6, 0] }}
-               transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-               className="absolute -bottom-4 right-6 bg-[#0e111a] text-zinc-100 rounded-xl py-3 px-4.5 border border-zinc-800 shadow-xl flex items-center gap-3"
+            <div
+               className="absolute -bottom-2 right-6 bg-[#0e111a] text-zinc-100 rounded-xl py-3 px-4.5 border border-zinc-800 shadow-xl flex items-center gap-3"
             >
                <div className="size-8 rounded-lg bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-400">
-                  <Sparkles className="size-4" />
+                  <BrainCircuit className="size-4" />
                </div>
                <div>
                   <div className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">{data.dashboard.aiRecommendation.label}</div>
@@ -203,7 +201,7 @@ export default function AuthBranding() {
                      {data.dashboard.aiRecommendation.text} <ArrowRight className="size-3 text-violet-400" />
                   </div>
                </div>
-            </motion.div>
+            </div>
          </div>
 
          {/* Bottom Footer Area */}
