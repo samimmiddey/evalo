@@ -1,10 +1,10 @@
 import { OnboardingSchemaTypes } from "@/features/onboarding/schemas/onboarding.schemas";
-import { ArrowRight, Briefcase, ShieldCheck, Sparkles, User, Zap } from "lucide-react";
+import { ArrowRight, Briefcase, ShieldCheck, Sparkles, User, Zap, Brain } from "lucide-react";
 import { DomainsData, OnboardingData, YearsOfExperienceData } from "./onboardiong.types";
 
 export const onboardingData: OnboardingData = {
    header: {
-      btnText: 'Profile',
+      btnText: 'Onboarding',
       btnIcon: User,
       title: 'Setup Your Profile',
       description: "We'd love to get to know you. Tell us a little about yourself so we can personalize your experience.",
@@ -32,7 +32,7 @@ export const onboardingData: OnboardingData = {
          description: 'Everything you need to practice and stand out',
          list: [
             {
-               icon: Sparkles,
+               icon: Brain,
                title: 'AI-powered interactive mock technical interviews',
             },
             {

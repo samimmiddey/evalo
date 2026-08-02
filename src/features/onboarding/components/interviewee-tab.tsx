@@ -44,7 +44,7 @@ const IntervieweeTab = () => {
                </div>
             </div>
 
-            <ul className="space-y-2 pt-2 border-t border-white/5">
+            <ul className="space-y-2 pt-2 border-t border-zinc-800/80">
                {
                   data.contextCard.list.map((item) => (
                      <li key={item.title} className="flex items-center gap-2 text-xs text-zinc-300">
