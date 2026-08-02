@@ -1,4 +1,4 @@
-import About from '@/features/about/about';
+import About from '@/features/static/about/about';
 
 const AboutPage = () => {
    return (

@@ -2,7 +2,7 @@
 
 import CustomSpinner from '@/components/common/custom-spinner';
 import NoDataCard from '@/components/common/no-data-card';
-import PricingCardContainer from '@/features/home/components/pricing-card-container';
+import PricingCardContainer from '@/features/static/home/components/pricing-card-container';
 import { usePlans } from '@clerk/nextjs/experimental';
 import ModalWrapper from '../../wrappers/modal-wrapper';
 

@@ -1,4 +1,4 @@
-import Contact from '@/features/contact';
+import Contact from '@/features/static/contact';
 
 const ContactPage = () => {
    return (
