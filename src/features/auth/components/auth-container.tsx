@@ -1,7 +1,9 @@
 "use client";
 
-import AuthBranding from "./auth-branding";
 import { ReactNode } from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import AuthBranding from "./auth-branding";
 
 interface Props {
    children: ReactNode;
@@ -9,19 +11,26 @@ interface Props {
 
 export default function AuthContainer({ children }: Props) {
    return (
-      <div className="w-full flex items-center justify-center bg-background 2xl:p-8">
-         <div className="w-full max-w-[1000px] h-full flex flex-col md:flex-row rounded-2xl md:rounded-3xl border border-border/40 shadow-2xl bg-card overflow-hidden">
+      <div className="relative min-h-screen w-full flex flex-col lg:grid lg:grid-cols-12 bg-background overflow-x-hidden">
+         {/* Circular Go Back Button */}
+         <Link
+            href="/"
+            className="absolute top-5 left-5 z-50 flex items-center justify-center size-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 backdrop-blur-md text-foreground transition-all duration-200 hover:scale-105 active:scale-95 shadow-md"
+            aria-label="Go back to home"
+         >
+            <ArrowLeft className="size-5" />
+         </Link>
 
-            {/* Left Column - Branding */}
+         {/* Left Side: Visual / Branding Area (~7fr -> lg:col-span-7) */}
+         <div className="hidden lg:flex lg:col-span-7 h-full">
             <AuthBranding />
+         </div>
 
-            {/* Right Column - Form */}
-            <div className="w-full md:w-1/2 max-sm:px-6 max-sm:py-7 sm:p-8 lg:p-10 2xl:p-12 flex flex-col justify-center relative">
-               <div className="w-full md:max-w-sm mx-auto space-y-6 md:space-y-8 relative z-10">
-                  {children}
-               </div>
+         {/* Right Side: Auth Form (~5fr -> lg:col-span-5) with no background color */}
+         <div className="w-full lg:col-span-5 min-h-screen flex items-center justify-center p-6 sm:p-8 lg:p-12 relative z-10 bg-transparent">
+            <div className="w-full max-w-md mx-auto space-y-6 md:space-y-8">
+               {children}
             </div>
-
          </div>
       </div>
    );
