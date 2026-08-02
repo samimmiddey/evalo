@@ -33,7 +33,7 @@ export default function AuthContainer({ children }: Props) {
          </div>
 
          {/* Right Side: Auth Form (~5fr -> lg:col-span-5) with no background color */}
-         <div className="w-full lg:col-span-5 min-h-screen flex items-center justify-center p-6 sm:p-8 lg:p-12 relative z-10 bg-transparent">
+         <div className="w-full lg:col-span-5 min-h-screen flex items-center justify-center p-6 sm:p-8 lg:p-12 relative z-10 bg-[#090b11]">
             <div className="w-full max-w-md mx-auto space-y-6 md:space-y-8">
                {children}
             </div>

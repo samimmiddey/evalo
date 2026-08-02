@@ -103,7 +103,7 @@ const SignIn = () => {
             <div className="flex flex-col gap-2 2xl:gap-2.5">
                <div className="flex items-center justify-between">
                   <Label htmlFor="password">{authData.signIn.form.password.label}</Label>
-                  <Link href="/forgot-password" className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">
+                  <Link href="/forgot-password" className="text-xs font-medium text-violet-400 hover:text-violet-300 transition-colors">
                      Forgot password?
                   </Link>
                </div>
