@@ -1,11 +1,11 @@
 import { ViewType } from '@/types/ui.types';
 import InterviwerCard from './interviewer-card';
 import { useInfiniteFetch } from '@/hooks/use-infinite-fetch';
-import { getInterviewers } from '../services/client/explore.client.service';
+import { getInterviewers } from '../services/client/list.client.service';
 import InterviewerCardSkeleton from './skeletons/interviewer-card-skeleton';
 import ErrorCard from '@/components/common/error-card';
 import NoDataCard from '@/components/common/no-data-card';
-import { FilterParams } from '../types/explore.type';
+import { FilterParams } from '../types/list.type';
 import useDebounce from '@/hooks/use-debounce';
 import { usePaginationTrigger } from '@/hooks/use-pagination-trigger';
 import ListEndMessage from '@/components/common/list-end-message';

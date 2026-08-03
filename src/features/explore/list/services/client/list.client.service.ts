@@ -3,7 +3,7 @@
 import { GET_INTERVIEWERS } from "@/config/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
-import { GetInterviewersParams, GetInterviewersResponse, InterviewersResponse } from "../../types/explore.type";
+import { GetInterviewersParams, GetInterviewersResponse, InterviewersResponse } from "../../types/list.type";
 
 export const getInterviewers = async (params: GetInterviewersParams = {}): Promise<GetInterviewersResponse> => {
    try {

@@ -1,7 +1,7 @@
 import PrimaryBody from '@/components/common/primary-body';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { FilterParams } from '../../types/explore.type';
+import { FilterParams } from '../../types/list.type';
 
 interface SearchBarProps {
    filterParams: FilterParams;

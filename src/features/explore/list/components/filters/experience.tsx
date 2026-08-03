@@ -1,6 +1,6 @@
 import PrimaryBody from "@/components/common/primary-body";
 import { Checkbox } from "@/components/ui/checkbox";
-import { FilterParams } from "../../types/explore.type";
+import { FilterParams } from "../../types/list.type";
 import { exploreData } from "@/data/explore/explore.data";
 
 interface ExperienceProps {

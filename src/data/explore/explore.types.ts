@@ -1,4 +1,4 @@
-import { Interviewer } from "@/features/explore/list/types/explore.type";
+import { Interviewer } from "@/features/explore/shared/explore.shared.types";
 import { LucideIcon } from "lucide-react";
 
 export type ExpertiseEnum = "FRONTEND" | "BACKEND" | "FULLSTACK" | "DEVOPS" | "DSA" | "SYSTEM_DESIGN" | "MOBILE" | "ML_AI" | "SECURITY" | "QA" | "CLOUD";

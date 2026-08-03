@@ -5,7 +5,7 @@ import FilterSidebar from './components/filters/filter-sidebar';
 import Header from './components/header';
 import InterviewerList from './components/interviewer-list';
 import useView from '@/hooks/use-view';
-import { FilterParams } from './types/explore.type';
+import { FilterParams } from './types/list.type';
 
 const InterviewerListing = () => {
    const [openSidebar, setOpenSidebar] = useState<boolean>(false);

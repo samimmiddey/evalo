@@ -1,14 +1,9 @@
 import CardLayout from '@/components/layouts/card-layout';
 import { interviewerDetailsData } from '@/data/explore/explore.data';
-import { DetailedInterviewer } from '@/data/explore/explore.types';
 import { Star } from 'lucide-react';
 import HeaderTitle from './header-title';
 
-interface UserTestimonialsProps {
-   interviewer: DetailedInterviewer;
-}
-
-const UserTestimonials = ({ interviewer }: UserTestimonialsProps) => {
+const UserTestimonials = () => {
    return (
       <CardLayout className='space-y-5 2xl:space-y-6'>
          <HeaderTitle
@@ -17,7 +12,7 @@ const UserTestimonials = ({ interviewer }: UserTestimonialsProps) => {
          />
 
          <div className="space-y-4">
-            {interviewer.testimonials.map((t) => (
+            {interviewerDetailsData.interviewers[2].testimonials.map((t) => (
                <div key={t.id} className="p-4 rounded-xl bg-zinc-900 border border-white/5 space-y-3">
                   <div className="flex items-center justify-between">
                      <div>

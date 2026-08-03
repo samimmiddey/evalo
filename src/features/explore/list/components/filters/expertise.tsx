@@ -1,7 +1,7 @@
 import PrimaryBody from "@/components/common/primary-body";
 import { Badge } from "@/components/ui/badge";
 import { exploreData } from "@/data/explore/explore.data";
-import { FilterParams } from "../../types/explore.type";
+import { FilterParams } from "../../types/list.type";
 
 interface ExpertiseProps {
    filterParams: FilterParams;

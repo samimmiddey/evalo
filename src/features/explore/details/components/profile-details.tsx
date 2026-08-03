@@ -4,12 +4,12 @@ import CardLayout from '@/components/layouts/card-layout';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { interviewerDetailsData } from '@/data/explore/explore.data';
-import { DetailedInterviewer } from '@/data/explore/explore.types';
 import { Star, Briefcase, Coins } from 'lucide-react';
 import HeaderTitle from './header-title';
+import { InterviewDetails } from '../types/details.types';
 
 interface InterviewerProps {
-   interviewer: DetailedInterviewer;
+   interviewer: InterviewDetails;
 };
 
 const ProfileDetails = ({ interviewer }: InterviewerProps) => {

@@ -7,7 +7,7 @@ import useMediaQuery from '@/hooks/use-media-query';
 import { ViewType } from '@/types/ui.types';
 import { Filter, Grid2x2, Rows3 } from 'lucide-react';
 import SearchBar from './filters/search-bar';
-import { FilterParams } from '../types/explore.type';
+import { FilterParams } from '../types/list.type';
 import { exploreData } from '@/data/explore/explore.data';
 
 interface HeaderProps {

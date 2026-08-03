@@ -10,13 +10,13 @@ import {
    CheckCircle2,
    ChevronRight
 } from 'lucide-react';
-import { DetailedInterviewer } from '@/data/explore/explore.types';
 import { interviewerDetailsData } from '@/data/explore/explore.data';
 import HeaderTitle from './header-title';
 import GradientWrapper from '@/components/wrappers/gradient-wrapper';
+import { InterviewDetails } from '../types/details.types';
 
 interface BookingFormProps {
-   interviewer: DetailedInterviewer;
+   interviewer: InterviewDetails;
 }
 
 const BookingForm = ({ interviewer }: BookingFormProps) => {

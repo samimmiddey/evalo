@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Briefcase, Building2, Star } from 'lucide-react';
-import { Interviewer } from '../types/explore.type';
+import { Interviewer } from '../../shared/explore.shared.types';
 import { getImage } from '@/utils/get-image';
 import Link from 'next/link';
 import CardLayout from '@/components/layouts/card-layout';

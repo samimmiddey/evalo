@@ -1,7 +1,7 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { UserRole, AvailabilityStatus, Prisma, InterviewExpertise } from "@/generated/prisma/client";
-import { GetInterviewersParams, GetInterviewersResponse } from "../../types/explore.type";
+import { GetInterviewersParams, GetInterviewersResponse } from "../../types/list.type";
 
 // Get interviewers
 export const getInterviewers = async (params: GetInterviewersParams = {}): Promise<GetInterviewersResponse> => {

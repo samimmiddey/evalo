@@ -6,7 +6,7 @@ import Expertise from './expertise';
 import Experience from './experience';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from '@/components/ui/drawer';
 import CustomTooltip from '@/components/common/custom-tooltip';
-import { FilterParams } from '../../types/explore.type';
+import { FilterParams } from '../../types/list.type';
 import { useEffect, useState } from 'react';
 
 interface FilterSidebarProps {

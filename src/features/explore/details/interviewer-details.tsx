@@ -1,29 +1,18 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { interviewerDetailsData } from '@/data/explore/explore.data';
 import ProfileDetails from './components/profile-details';
 import WhatToExpect from './components/what-to-expect';
 import UserTestimonials from './components/user-testimonials';
 import BookingForm from './components/booking-form';
+import { InterviewDetails } from './types/details.types';
+import NoDataCard from '@/components/common/no-data-card';
 
-const InterviewerDetails = () => {
-   const params = useParams();
-   const interviewerId = params?.id as string;
-
-   // Find interviewer by ID, fallback to first mock interviewer if not found or invalid
-   const interviewer = interviewerDetailsData.interviewers.find(i => i.id === interviewerId) ?? interviewerDetailsData.interviewers[2];
-
+const InterviewerDetails = ({ interviewer }: { interviewer: InterviewDetails; }) => {
    if (!interviewer) {
       return (
-         <div className="container py-12 text-center">
-            <h2 className="text-xl font-semibold text-zinc-200">Interviewer not found</h2>
-            <Link href="/explore" className="mt-4 inline-flex items-center gap-2 text-violet-400 hover:underline">
-               <interviewerDetailsData.backBtn.icon className="w-4 h-4" />
-               {interviewerDetailsData.backBtn.title}
-            </Link>
-         </div>
+         <NoDataCard text='No interviewer found' />
       );
    }
 
@@ -49,7 +38,7 @@ const InterviewerDetails = () => {
                <WhatToExpect />
 
                {/* Testimonials Section */}
-               <UserTestimonials interviewer={interviewer} />
+               <UserTestimonials />
             </div>
 
             {/* RIGHT COLUMN: Interactive Booking Form */}
