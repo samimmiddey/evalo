@@ -1,6 +1,6 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
-import { InterviewerDetails } from "../types/details.types";
+import { InterviewerDetails, InterviewerFeedback } from "../types/details.types";
 
 // Get interviwer details
 export const getInterviewerDetails = async (id: string): Promise<InterviewerDetails> => {
@@ -40,5 +40,45 @@ export const getInterviewerDetails = async (id: string): Promise<InterviewerDeta
       return interviewer;
    } catch (error: unknown) {
       return serverError(error, 'Failed to fetch interviewer details');
+   }
+};
+
+export const getFeedback = async (id: string): Promise<InterviewerFeedback> => {
+   try {
+      const feedback = await db.user.findUnique({
+         where: { id: id, role: 'INTERVIEWER' },
+         select: {
+            bookingsAsInterviewer: {
+               where: { status: "COMPLETED", feedback: { isNot: null } },
+               select: {
+                  id: true,
+                  interviewee: {
+                     select: {
+                        firstName: true,
+                        lastName: true,
+                        imageUrl: true,
+                        designation: true,
+                        createdAt: true,
+                        company: true
+                     }
+                  },
+                  feedback: {
+                     select: {
+                        sessionRating: true,
+                        sessionComment: true
+                     }
+                  }
+               }
+            }
+         }
+      });
+
+      if (!feedback) {
+         throw new Error('Feedback not found');
+      }
+
+      return feedback;
+   } catch (error: unknown) {
+      return serverError(error, 'Failed to fetch feedback');
    }
 };

@@ -1,15 +1,18 @@
-'use client';
-
 import Link from 'next/link';
 import { interviewerDetailsData } from '@/data/explore/explore.data';
-import ProfileDetails from './components/profile-details';
+import UserProfile from './components/user-profile';
 import WhatToExpect from './components/what-to-expect';
-import UserTestimonials from './components/user-testimonials';
+import UserFeedback from './components/user-feedback';
 import BookingForm from './components/booking-form';
-import { InterviewerDetails as TInterviewerDetails } from './types/details.types';
+import { InterviewerDetails as TInterviewerDetails, InterviewerFeedback } from './types/details.types';
 import ScreenNoData from '@/components/common/screen-no-data';
 
-const InterviewerDetails = ({ interviewer }: { interviewer: TInterviewerDetails; }) => {
+interface InterviewerDetailsProps {
+   interviewer: TInterviewerDetails;
+   feedback: InterviewerFeedback;
+}
+
+const InterviewerDetails = ({ interviewer, feedback }: InterviewerDetailsProps) => {
    if (!interviewer) {
       return (
          <ScreenNoData text='No interviewer found' />
@@ -32,13 +35,13 @@ const InterviewerDetails = ({ interviewer }: { interviewer: TInterviewerDetails;
             <div className="space-y-5 2xl:space-y-6">
 
                {/* Main Profile Header Card */}
-               <ProfileDetails interviewer={interviewer} />
+               <UserProfile interviewer={interviewer} />
 
                {/* What to Expect Section */}
                <WhatToExpect currentPlan={interviewer.currentPlan} />
 
                {/* Testimonials Section */}
-               <UserTestimonials />
+               <UserFeedback feedback={feedback} />
             </div>
 
             {/* RIGHT COLUMN: Interactive Booking Form */}

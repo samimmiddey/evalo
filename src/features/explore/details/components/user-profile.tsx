@@ -12,7 +12,7 @@ interface InterviewerProps {
    interviewer: InterviewerDetails;
 };
 
-const ProfileDetails = ({ interviewer }: InterviewerProps) => {
+const UserProfile = ({ interviewer }: InterviewerProps) => {
    return (
       <CardLayout>
          <div className="flex flex-col md:flex-row gap-5 2xl:gap-6 items-start relative z-10 mb-7 2xl:mb-10">
@@ -93,4 +93,4 @@ const ProfileDetails = ({ interviewer }: InterviewerProps) => {
    );
 };
 
-export default ProfileDetails;
+export default UserProfile;
