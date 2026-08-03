@@ -94,13 +94,7 @@ export const interviewerDetailsData: InterviewerDetails = {
       header: {
          title: 'What to expect',
          icon: Brain,
-      },
-      list: [
-         "Deep dive into component patterns & React state management",
-         "Detailed feedback on rendering performance & bundle optimization",
-         "Mock system design scenario for front-end applications",
-         "A tailored action plan with resources to address your knowledge gaps"
-      ]
+      }
    },
    interviewers: [
       {

@@ -40,7 +40,6 @@ export interface WhatToExpect {
       title: string;
       icon: LucideIcon;
    };
-   list: string[];
 }
 
 export interface DetailedInterviewer extends Omit<Interviewer, 'creditRate'> {

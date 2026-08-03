@@ -3,6 +3,7 @@ import { BadgeCheck } from 'lucide-react';
 import CardLayout from '@/components/layouts/card-layout';
 import { interviewerDetailsData } from '@/data/explore/explore.data';
 import HeaderTitle from './header-title';
+import { homeData } from '@/data/home/home.data';
 
 const WhatToExpect = () => {
    const data = interviewerDetailsData.whatToExpect;
@@ -16,7 +17,7 @@ const WhatToExpect = () => {
             />
 
             <ul className="space-y-3">
-               {data.list.map((item, index) => (
+               {homeData.pricing.plans[2].features.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                      <BadgeCheck className="mt-1 h-4 2xl:w-4.5 w-4 2xl:h-4.5 text-violet-400" />
                      <PrimaryBody
