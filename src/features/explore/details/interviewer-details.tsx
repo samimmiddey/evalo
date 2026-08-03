@@ -7,12 +7,12 @@ import WhatToExpect from './components/what-to-expect';
 import UserTestimonials from './components/user-testimonials';
 import BookingForm from './components/booking-form';
 import { InterviewerDetails as TInterviewerDetails } from './types/details.types';
-import NoDataCard from '@/components/common/no-data-card';
+import ScreenNoData from '@/components/common/screen-no-data';
 
 const InterviewerDetails = ({ interviewer }: { interviewer: TInterviewerDetails; }) => {
    if (!interviewer) {
       return (
-         <NoDataCard text='No interviewer found' />
+         <ScreenNoData text='No interviewer found' />
       );
    }
 
@@ -35,7 +35,7 @@ const InterviewerDetails = ({ interviewer }: { interviewer: TInterviewerDetails;
                <ProfileDetails interviewer={interviewer} />
 
                {/* What to Expect Section */}
-               <WhatToExpect />
+               <WhatToExpect currentPlan={interviewer.currentPlan} />
 
                {/* Testimonials Section */}
                <UserTestimonials />

@@ -7,4 +7,5 @@ export interface Booking {
 
 export interface InterviewerDetails extends Interviewer {
    bookingsAsInterviewer: Booking[];
+   currentPlan: string;
 }

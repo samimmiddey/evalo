@@ -5,19 +5,19 @@ import { interviewerDetailsData } from '@/data/explore/explore.data';
 import HeaderTitle from './header-title';
 import { homeData } from '@/data/home/home.data';
 
-const WhatToExpect = () => {
-   const data = interviewerDetailsData.whatToExpect;
+const WhatToExpect = ({ currentPlan }: { currentPlan: string; }) => {
+   const plan = homeData.pricing.plans.find(p => p.title.toLowerCase() === currentPlan);
 
    return (
       <CardLayout>
          <div className="space-y-4 2xl:space-y-5 relative z-10">
             <HeaderTitle
-               title={data.header.title}
-               icon={data.header.icon}
+               title={interviewerDetailsData.whatToExpect.header.title}
+               icon={interviewerDetailsData.whatToExpect.header.icon}
             />
 
             <ul className="space-y-3">
-               {homeData.pricing.plans[2].features.map((item, index) => (
+               {plan?.features.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                      <BadgeCheck className="mt-1 h-4 2xl:w-4.5 w-4 2xl:h-4.5 text-violet-400" />
                      <PrimaryBody

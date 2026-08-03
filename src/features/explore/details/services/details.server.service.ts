@@ -20,6 +20,7 @@ export const getInterviewerDetails = async (id: string): Promise<InterviewerDeta
             creditRate: true,
             averageRating: true,
             totalRatings: true,
+            currentPlan: true,
             availabilities: {
                where: { status: 'AVAILABLE' },
                select: { startTime: true, endTime: true },
