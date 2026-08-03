@@ -3,8 +3,8 @@
 import { ONBOARDING_USER } from "@/config/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
-import { Onboarding, OnboardingResponse } from "../../types/onboarding.types";
-import { OnboardingSchemaTypes } from "../../schemas/onboarding.schemas";
+import { Onboarding, OnboardingResponse } from "../types/onboarding.types";
+import { OnboardingSchemaTypes } from "../schemas/onboarding.schemas";
 
 export const onboardUser = async (data: OnboardingSchemaTypes): Promise<Onboarding> => {
    try {

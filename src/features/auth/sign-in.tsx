@@ -17,7 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
-import { signInWithPassword } from './services/auth.service';
+import { signInWithPassword } from './services/auth.client.service';
 import ScreenLoader from '@/components/common/screen-loader';
 import InputError from '@/components/common/input-error';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';

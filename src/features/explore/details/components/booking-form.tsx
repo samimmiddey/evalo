@@ -13,10 +13,10 @@ import {
 import { interviewerDetailsData } from '@/data/explore/explore.data';
 import HeaderTitle from './header-title';
 import GradientWrapper from '@/components/wrappers/gradient-wrapper';
-import { InterviewDetails } from '../types/details.types';
+import { InterviewerDetails } from '../types/details.types';
 
 interface BookingFormProps {
-   interviewer: InterviewDetails;
+   interviewer: InterviewerDetails;
 }
 
 const BookingForm = ({ interviewer }: BookingFormProps) => {

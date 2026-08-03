@@ -15,7 +15,7 @@ import { useMutation } from '@/hooks/use-mutation';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 import CustomSpinner from '@/components/common/custom-spinner';
-import { onboardUser } from './services/client/onboarding.client.service';
+import { onboardUser } from './services/onboarding.client.service';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 import GradientWrapper from '@/components/wrappers/gradient-wrapper';
 import { useRouter, useSearchParams } from 'next/navigation';

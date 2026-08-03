@@ -5,6 +5,6 @@ export interface Booking {
    endTime: Date | string;
 }
 
-export interface InterviewDetails extends Interviewer {
+export interface InterviewerDetails extends Interviewer {
    bookingsAsInterviewer: Booking[];
 }

@@ -1,5 +1,5 @@
 import { apiResponse } from "@/lib/api-response";
-import { getInterviewers } from "@/features/explore/list/services/server/list.server.service";
+import { getInterviewers } from "@/features/explore/list/services/list.server.service";
 import { NextRequest } from "next/server";
 
 const isDev = process.env.NODE_ENV === 'development';

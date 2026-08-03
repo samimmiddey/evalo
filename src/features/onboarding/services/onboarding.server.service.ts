@@ -2,7 +2,7 @@ import { onboardingSchema, OnboardingSchemaTypes } from "@/features/onboarding/s
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { CompleteSetupResponse } from "../../types/onboarding.types";
+import { CompleteSetupResponse } from "../types/onboarding.types";
 import { PLAN_CREDITS } from "@/types/user.types";
 
 // Complete onboarding setup

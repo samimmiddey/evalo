@@ -6,10 +6,10 @@ import ProfileDetails from './components/profile-details';
 import WhatToExpect from './components/what-to-expect';
 import UserTestimonials from './components/user-testimonials';
 import BookingForm from './components/booking-form';
-import { InterviewDetails } from './types/details.types';
+import { InterviewerDetails as TInterviewerDetails } from './types/details.types';
 import NoDataCard from '@/components/common/no-data-card';
 
-const InterviewerDetails = ({ interviewer }: { interviewer: InterviewDetails; }) => {
+const InterviewerDetails = ({ interviewer }: { interviewer: TInterviewerDetails; }) => {
    if (!interviewer) {
       return (
          <NoDataCard text='No interviewer found' />

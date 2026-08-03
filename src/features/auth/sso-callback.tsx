@@ -4,7 +4,7 @@ import ScreenLoader from '@/components/common/screen-loader';
 import { useClerk, useSignIn, useSignUp } from '@clerk/nextjs';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { ssoCallback } from './services/auth.service';
+import { ssoCallback } from './services/auth.client.service';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
 

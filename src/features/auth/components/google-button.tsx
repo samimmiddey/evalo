@@ -5,7 +5,7 @@ import { OAuthStrategy } from '@clerk/shared/types';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
-import { signInWithGoogle } from '../services/auth.service';
+import { signInWithGoogle } from '../services/auth.client.service';
 import { useSearchParams } from 'next/navigation';
 
 interface GoogleButtonProps {

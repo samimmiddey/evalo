@@ -14,7 +14,7 @@ import useAuthStore from '@/store/auth-store';
 import CustomSpinner from '@/components/common/custom-spinner';
 import { toast } from 'sonner';
 import { useSignUp } from '@clerk/nextjs';
-import { resetSignUp } from './services/auth.service';
+import { resetSignUp } from './services/auth.client.service';
 import InputError from '@/components/common/input-error';
 
 type SignUpType = ReturnType<typeof useSignUp>['signUp'];
@@ -124,7 +124,7 @@ const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
                {
                   formErrors.code && (
                      <InputError
-                        message={formErrors.code?.message as string}
+                        message={formErrors.code?.message}
                         className='-mt-0.5 2xl:-mt-1.5'
                      />
                   )

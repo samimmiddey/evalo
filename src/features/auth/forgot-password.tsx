@@ -14,7 +14,7 @@ import { forgotPasswordEmailSchema, ForgotPasswordSchemaEmailTypes } from './sch
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import ScreenLoader from '@/components/common/screen-loader';
-import { sendResetCode, submitNewPassword, verifyResetCode } from './services/auth.service';
+import { sendResetCode, submitNewPassword, verifyResetCode } from './services/auth.client.service';
 import InputError from '@/components/common/input-error';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 import { useRouter, useSearchParams } from 'next/navigation';

@@ -6,10 +6,10 @@ import { Separator } from '@/components/ui/separator';
 import { interviewerDetailsData } from '@/data/explore/explore.data';
 import { Star, Briefcase, Coins } from 'lucide-react';
 import HeaderTitle from './header-title';
-import { InterviewDetails } from '../types/details.types';
+import { InterviewerDetails } from '../types/details.types';
 
 interface InterviewerProps {
-   interviewer: InterviewDetails;
+   interviewer: InterviewerDetails;
 };
 
 const ProfileDetails = ({ interviewer }: InterviewerProps) => {

@@ -1,10 +1,11 @@
 import ScreenError from '@/components/common/screen-error';
+import { InterviewerDetails as TInterviewerDetails } from '@/features/explore/details/types/details.types';
 import InterviewerDetails from '@/features/explore/details/interviewer-details';
-import { getInterviewerDetails } from '@/features/explore/details/services/server/details.server.service';
+import { getInterviewerDetails } from '@/features/explore/details/services/details.server.service';
 
 const InterviewerDetailsPage = async ({ params }: { params: Promise<{ id: string; }>; }) => {
    const { id } = await params;
-   let interviewer;
+   let interviewer: TInterviewerDetails;
 
    try {
       interviewer = await getInterviewerDetails(id);

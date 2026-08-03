@@ -1,5 +1,5 @@
 import { apiResponse } from "@/lib/api-response";
-import { completeSetup } from "@/features/onboarding/services/server/onboarding.server.service";
+import { completeSetup } from "@/features/onboarding/services/onboarding.server.service";
 import { OnboardingSchemaTypes } from "@/features/onboarding/schemas/onboarding.schemas";
 
 const isDev = process.env.NODE_ENV === 'development';

@@ -1,9 +1,9 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
-import { InterviewDetails } from "../../types/details.types";
+import { InterviewerDetails } from "../types/details.types";
 
 // Get interviwer details
-export const getInterviewerDetails = async (id: string): Promise<InterviewDetails> => {
+export const getInterviewerDetails = async (id: string): Promise<InterviewerDetails> => {
    try {
       const interviewer = await db.user.findUnique({
          where: { id: id, role: 'INTERVIEWER' },
