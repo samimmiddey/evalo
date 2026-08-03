@@ -4,6 +4,7 @@ import { Star } from 'lucide-react';
 import HeaderTitle from './header-title';
 import { InterviewerFeedback } from '../types/details.types';
 import NoDataCard from '@/components/common/no-data-card';
+import { formatDate } from '@/utils/format-date';
 
 interface UserFeedbackProps {
    feedback: InterviewerFeedback;
@@ -42,7 +43,7 @@ const UserFeedback = ({ feedback }: UserFeedbackProps) => {
                         <p className="text-sm text-zinc-300 leading-relaxed font-light italic">
                            &ldquo;{item.feedback?.sessionComment ?? 'Unable to show comment'}&rdquo;
                         </p>
-                        <span className="text-[11px] text-zinc-500 block">{item.interviewee.createdAt.toDateString()}</span>
+                        <span className="text-[11px] text-zinc-500 block">{formatDate(item.interviewee.createdAt)}</span>
                      </div>
                   ))}
                </div>

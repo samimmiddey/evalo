@@ -20,7 +20,7 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
                {/* eslint-disable-next-line @next/next/no-img-element */}
                <img
                   src={interviewer.imageUrl || '/default-avatar.png'}
-                  alt={`${interviewer.firstName} ${interviewer.lastName}`}
+                  alt={`${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`}
                   className="h-full w-full object-cover"
                />
             </div>
@@ -30,7 +30,7 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
                   <div className="flex flex-wrap items-center gap-3">
                      <PrimaryTitle
                         className="text-2xl! 2xl:text-3xl! font-bold text-zinc-100"
-                        text={`${interviewer.firstName} ${interviewer.lastName}`}
+                        text={`${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`}
                      />
                      <Badge
                         variant="outline"
@@ -55,7 +55,7 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
                   </div>
                   <div className="flex items-center gap-1.5">
                      <Briefcase className="w-4 h-4 text-zinc-500" />
-                     <span>{interviewer.experience}+ Years Experience</span>
+                     <span>{interviewer.experience ?? '0'}+ Years Experience</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                      <Coins className="w-4 h-4 text-violet-400" />
