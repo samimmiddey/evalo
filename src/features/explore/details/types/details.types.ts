@@ -33,3 +33,9 @@ export interface FeedbackData {
 export interface InterviewerFeedback {
    bookingsAsInterviewer: FeedbackData[];
 }
+
+export interface BookSessionParams {
+   interviewerId: string;
+   startTime: string;
+   endTime: string;
+}

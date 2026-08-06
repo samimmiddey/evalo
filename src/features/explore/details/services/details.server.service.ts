@@ -1,6 +1,9 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
-import { InterviewerDetails, InterviewerFeedback } from "../types/details.types";
+import { BookSessionParams, InterviewerDetails, InterviewerFeedback } from "../types/details.types";
+import { currentUser } from "@clerk/nextjs/server";
+import { StreamClient } from "@stream-io/node-sdk";
+import { v4 as uuidv4 } from 'uuid';
 
 // Get interviwer details
 export const getInterviewerDetails = async (id: string): Promise<InterviewerDetails> => {
@@ -81,4 +84,169 @@ export const getFeedback = async (id: string): Promise<InterviewerFeedback> => {
    } catch (error: unknown) {
       return serverError(error, 'Failed to fetch feedback');
    }
+};
+
+// Book a call
+export const bookSession = async ({ interviewerId, startTime, endTime }: BookSessionParams) => {
+   const user = await currentUser();
+
+   if (!user) {
+      throw new Error('Unauthenticated user');
+   }
+
+   // Arcjet - rate limit
+
+   // Fetch user and interviewer
+   const [dbUser, interviewer] = await Promise.all([
+      db.user.findUnique({ where: { clerkUserId: user.id } }),
+      db.user.findUnique({ where: { id: interviewerId } })
+   ]);
+
+   // Check if interviewee exists
+   if (dbUser?.role !== 'INTERVIEWEE') {
+      throw new Error("Only interviewees can book sessions");
+   }
+
+   // Check if interviewer exists
+   if (interviewer?.role !== 'INTERVIEWER') {
+      throw new Error("Interviewer not found");
+   }
+
+   // Credit rate for the interviewer
+   const credits = interviewer.creditRate;
+
+   // Check if interviewee has sufficient credit in his account or not
+   if (dbUser.credits < credits) {
+      throw new Error('Insufficient credits. Please upgrade your plan.');
+   }
+
+   // Check if the slot is available
+   const conflict = await db.booking.findFirst({
+      where: {
+         interviewerId,
+         status: 'SCHEDULED',
+         startTime: { lt: new Date(startTime) },
+         endTime: { gt: new Date(endTime) }
+      }
+   });
+
+   if (conflict) {
+      throw new Error("This slot is already booked. Please pick another slot.");
+   }
+
+   let booking;
+   const streamCallId = uuidv4();
+
+   // Update database
+   try {
+      booking = await db.$transaction(async (tx) => {
+         const newBooking = await tx.booking.create({
+            data: {
+               intervieweeId: dbUser.id,
+               interviewerId,
+               startTime: new Date(startTime),
+               endTime: new Date(endTime),
+               status: 'SCHEDULED',
+               streamStatus: 'PENDING',
+               creditsCharged: credits,
+               streamCallId
+            }
+         });
+
+         await tx.creditTransaction.create({
+            data: {
+               userId: dbUser.id,
+               amount: -credits,
+               type: "BOOKING_DEDUCTION",
+               bookingId: newBooking.id
+            }
+         });
+
+         await tx.user.update({
+            where: { id: dbUser.id },
+            data: { credits: { decrement: credits } }
+         });
+
+         await tx.creditTransaction.create({
+            data: {
+               userId: interviewerId,
+               amount: +credits,
+               type: "BOOKING_EARNING",
+               bookingId: newBooking.id
+            }
+         });
+
+         await tx.user.update({
+            where: { id: interviewerId },
+            data: { credits: { increment: credits } }
+         });
+
+         return newBooking;
+      });
+   } catch (error: unknown) {
+      return serverError(error, 'Booking failed. Please try again later.');
+   }
+
+   // Create stream call
+   try {
+      const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
+      const secretKey = process.env.STREAM_SECRET_KEY;
+
+      if (!apiKey || !secretKey) {
+         throw new Error("Missing stream environment variables");
+      }
+
+      const streamClient = new StreamClient(apiKey, secretKey);
+
+      // Store users on stream
+      await streamClient.upsertUsers([
+         {
+            id: dbUser.clerkUserId,
+            name: dbUser.firstName && dbUser.lastName ? `${dbUser.firstName} ${dbUser.lastName}` : 'Interviewee',
+            image: dbUser.imageUrl ?? undefined,
+            role: 'user'
+         },
+         {
+            id: interviewer.clerkUserId,
+            name: interviewer.firstName && interviewer.lastName ? `${interviewer.firstName} ${interviewer.lastName}` : 'Interviewer',
+            image: interviewer.imageUrl ?? undefined,
+            role: 'user'
+         }
+      ]);
+
+      const call = streamClient.video.call("default", streamCallId);
+
+      // Create call
+      await call.getOrCreate({
+         data: {
+            created_by_id: dbUser.clerkUserId,
+            members: [
+               { user_id: dbUser.clerkUserId, role: 'host' },
+               { user_id: interviewer.clerkUserId, role: 'host' },
+            ],
+            settings_override: {
+               recording: { mode: 'available', quality: '1080p' },
+               screensharing: { enabled: true },
+               transcription: { mode: 'auto-on' }
+            }
+         }
+      });
+
+      // Update stream status on db
+      await db.booking.update({
+         where: { id: booking.id },
+         data: { streamStatus: 'READY' }
+      });
+   } catch {
+      await db.booking.update({
+         where: {
+            id: booking.id,
+         },
+         data: {
+            streamStatus: "FAILED"
+         },
+      });
+   }
+
+   return { success: true, booking: booking.id, streamCallId };
 };

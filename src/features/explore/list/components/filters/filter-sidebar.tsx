@@ -18,6 +18,8 @@ interface FilterSidebarProps {
 };
 
 const FilterSidebar = ({ open, onClose, filterParams, onFilterParams, onClear }: FilterSidebarProps) => {
+   const isFiltersEnabled = (filterParams?.search?.trim() !== '' || (filterParams?.expertise && filterParams?.expertise?.length > 0) || (filterParams?.experience && filterParams?.experience?.length > 0)) ?? false;
+
    return (
       <>
          {/* Desktop View */}
@@ -26,6 +28,7 @@ const FilterSidebar = ({ open, onClose, filterParams, onFilterParams, onClear }:
                filterParams={filterParams}
                onFilterParams={onFilterParams}
                onClear={onClear}
+               isFiltersEnabled={isFiltersEnabled}
             />
          </div>
 
@@ -37,6 +40,7 @@ const FilterSidebar = ({ open, onClose, filterParams, onFilterParams, onClear }:
                filterParams={filterParams}
                onFilterParams={onFilterParams}
                onClear={onClear}
+               isFiltersEnabled={isFiltersEnabled}
             />
          </div>
       </>
@@ -47,9 +51,10 @@ interface DesktopSidebarProps {
    filterParams: FilterParams;
    onFilterParams: React.Dispatch<React.SetStateAction<FilterParams>>;
    onClear: () => void;
+   isFiltersEnabled: boolean;
 }
 
-const DesktopSidebar = ({ filterParams, onFilterParams, onClear }: DesktopSidebarProps) => {
+const DesktopSidebar = ({ filterParams, onFilterParams, onClear, isFiltersEnabled }: DesktopSidebarProps) => {
    return (
       <div className="flex flex-col gap-4 h-full pb-6 lg:pb-8">
 
@@ -63,8 +68,9 @@ const DesktopSidebar = ({ filterParams, onFilterParams, onClear }: DesktopSideba
                   <Button
                      variant="ghost"
                      size="sm"
-                     className="text-xs! px-3"
+                     className={`text-xs! px-3 ${isFiltersEnabled ? 'text-violet-400!' : ''}`}
                      onClick={onClear}
+                     disabled={!isFiltersEnabled}
                   >
                      Clear
                   </Button>
@@ -109,9 +115,10 @@ interface MobileSidebarProps {
    filterParams: FilterParams;
    onFilterParams: React.Dispatch<React.SetStateAction<FilterParams>>;
    onClear: () => void;
+   isFiltersEnabled: boolean;
 }
 
-const MobileSidebar = ({ open, onClose, filterParams, onFilterParams, onClear }: MobileSidebarProps) => {
+const MobileSidebar = ({ open, onClose, filterParams, onFilterParams, onClear, isFiltersEnabled }: MobileSidebarProps) => {
    const [currentParams, setCurrentParams] = useState<FilterParams>(filterParams);
 
    useEffect(() => {
@@ -176,11 +183,7 @@ const MobileSidebar = ({ open, onClose, filterParams, onFilterParams, onClear }:
                   variant="destructive"
                   className="w-auto flex-1"
                   onClick={handleClear}
-                  disabled={
-                     currentParams?.expertise?.length === 0 &&
-                     currentParams?.experience?.length === 0 &&
-                     currentParams?.search === ""
-                  }
+                  disabled={!isFiltersEnabled}
                >
                   Clear
                </Button>

@@ -26,6 +26,12 @@ enum BookingStatus {
   CANCELLED
 }
 
+enum StreamStatus {
+  READY
+  PENDING
+  FAILED
+}
+
 enum AvailabilityStatus {
   AVAILABLE
   BOOKED
@@ -126,6 +132,7 @@ model Booking {
   startTime      DateTime
   endTime        DateTime
   status         BookingStatus       @default(SCHEDULED)
+  streamStatus   StreamStatus        @default(READY)
   creditsCharged Int
   streamCallId   String?             @unique
   recordingUrl   String?

@@ -92,9 +92,11 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
       setFocusArea('');
       setIsBooked(false);
    };
+
+   const wrapperClasses = 'min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.15)]';
    return (
       <GradientWrapper
-         className='min-h-auto h-auto relative rounded-2xl shadow-2xl'
+         className={`h-auto relative rounded-2xl shadow-2xl ${wrapperClasses}`}
          showGrid={false}
       >
          {/* Success State Overlay */}
@@ -107,7 +109,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   className="absolute inset-0 z-20"
                >
                   <GradientWrapper
-                     className='min-h-auto h-full w-full flex flex-col items-center justify-center p-6 2xl:p-8 text-center space-y-4'
+                     className={`h-full w-full flex flex-col items-center justify-center p-6 2xl:p-8 text-center space-y-4 ${wrapperClasses}`}
                      showGrid={false}
                   >
                      <motion.div
