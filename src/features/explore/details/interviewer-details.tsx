@@ -6,6 +6,8 @@ import UserFeedback from './components/user-feedback';
 import BookingForm from './components/booking-form';
 import { InterviewerDetails as TInterviewerDetails, InterviewerFeedback } from './types/details.types';
 import ScreenNoData from '@/components/common/screen-no-data';
+import GradientWrapper from '@/components/wrappers/gradient-wrapper';
+import NoDataCard from '@/components/common/no-data-card';
 
 interface InterviewerDetailsProps {
    interviewer: TInterviewerDetails;
@@ -46,7 +48,23 @@ const InterviewerDetails = ({ interviewer, feedback }: InterviewerDetailsProps) 
 
             {/* RIGHT COLUMN: Interactive Booking Form */}
             <div className="lg:sticky lg:top-22 space-y-6">
-               <BookingForm interviewer={interviewer} />
+               {
+                  interviewer.availabilities.length === 0 ? (
+                     <GradientWrapper
+                        className="h-auto relative rounded-2xl shadow-2xl min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.15)]"
+                        showGrid={false}
+                     >
+                        <div className="min-h-30 2xl:h-40 flex items-center justify-center">
+                           <NoDataCard
+                              text='No available slots'
+                              className='w-full bg-transparent border-transparent flex-col'
+                           />
+                        </div>
+                     </GradientWrapper>
+                  ) : (
+                     <BookingForm interviewer={interviewer} />
+                  )
+               }
             </div>
          </div>
       </div>

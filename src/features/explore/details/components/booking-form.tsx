@@ -203,7 +203,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
             </div>
 
             {/* Step Content */}
-            <div className="min-h-50 2xl:min-h-60">
+            <div className="min-h-55 2xl:min-h-60">
 
                {/* Date Slot */}
                {step === 1 && (
