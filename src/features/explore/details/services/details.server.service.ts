@@ -4,6 +4,8 @@ import { BookSessionParams, InterviewerDetails, InterviewerFeedback } from "../t
 import { currentUser } from "@clerk/nextjs/server";
 import { StreamClient } from "@stream-io/node-sdk";
 import { v4 as uuidv4 } from 'uuid';
+import { checkRateLimit, createRateLimiter } from "@/security/arcjet";
+import { request } from "@arcjet/next";
 
 // Get interviwer details
 export const getInterviewerDetails = async (id: string): Promise<InterviewerDetails> => {
@@ -86,6 +88,13 @@ export const getFeedback = async (id: string): Promise<InterviewerFeedback> => {
    }
 };
 
+// 5 bookings per hour
+export const bookingLimiter = createRateLimiter({
+   refillRate: 5,
+   interval: 3600000,
+   capacity: 5
+});
+
 // Book a call
 export const bookSession = async ({ interviewerId, startTime, endTime }: BookSessionParams) => {
    const user = await currentUser();
@@ -94,7 +103,13 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
       throw new Error('Unauthenticated user');
    }
 
-   // Arcjet - rate limit
+   // Arcjet - rate limiter
+   const req = await request();
+   const rateLimitError = await checkRateLimit(bookingLimiter, req, user.id);
+
+   if (rateLimitError) {
+      throw new Error(rateLimitError);
+   }
 
    // Fetch user and interviewer
    const [dbUser, interviewer] = await Promise.all([
