@@ -199,6 +199,21 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   title={interviewerDetailsData.booking.title}
                   icon={interviewerDetailsData.booking.icon}
                />
+               <Badge
+                  variant='outline'
+                  className='text-xs text-zinc-400 whitespace-nowrap p-3'>
+                  1 Credit/session
+               </Badge>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="flex items-center gap-4">
+               <div className="w-full bg-zinc-800 h-1 rounded-full overflow-hidden">
+                  <div
+                     className="bg-violet-500 h-full transition-all duration-300"
+                     style={{ width: `${(step / 3) * 100}%` }}
+                  />
+               </div>
                <div className="flex items-center gap-1 text-xs font-semibold text-zinc-400">
                   <span className={step === 1 ? 'text-violet-400' : ''}>Date</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -206,14 +221,6 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   <ChevronRight className="w-3.5 h-3.5" />
                   <span className={step === 3 ? 'text-violet-400' : ''}>Confirm</span>
                </div>
-            </div>
-
-            {/* Progress Bar */}
-            <div className="w-full bg-zinc-800 h-1 rounded-full overflow-hidden">
-               <div
-                  className="bg-violet-500 h-full transition-all duration-300"
-                  style={{ width: `${(step / 3) * 100}%` }}
-               />
             </div>
 
             {/* Step Content */}
@@ -241,7 +248,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                                     }`}
                               >
                                  <span className='text-[15px] 2xl:text-base font-bold'>Wednesday</span>
-                                 <span className='text-xs 2xl:text-sm'>{date.startDate}</span>
+                                 <span className='text-xs 2xl:text-sm text-zinc-400'>{date.startDate}</span>
                               </Button>
                            );
                         })}
