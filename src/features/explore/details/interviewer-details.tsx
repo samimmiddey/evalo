@@ -58,6 +58,7 @@ const InterviewerDetails = ({ interviewer, feedback }: InterviewerDetailsProps) 
                            <NoDataCard
                               text='No available slots'
                               className='w-full bg-transparent border-transparent flex-col'
+                              iconClassName='size-6'
                            />
                         </div>
                      </GradientWrapper>

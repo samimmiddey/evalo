@@ -20,9 +20,15 @@ import { handleBookSession } from '../services/details.client.service';
 import { useMutation } from '@/hooks/use-mutation';
 import CustomSpinner from '@/components/common/custom-spinner';
 import { Badge } from '@/components/ui/badge';
+import { useRouter } from 'next/navigation';
 
 interface BookingFormProps {
    interviewer: InterviewerDetails;
+}
+
+interface AvailableDates {
+   startDate: string;
+   label: string;
 }
 
 interface TimeSlot {
@@ -33,7 +39,7 @@ interface TimeSlot {
 }
 
 const BookingForm = ({ interviewer }: BookingFormProps) => {
-   const [availableDates, setAvailableDates] = useState<string[]>([]);
+   const [availableDates, setAvailableDates] = useState<AvailableDates[]>([]);
    const [availableTimes, setAvailableTimes] = useState<TimeSlot[]>([]);
    const [selectedDateSlot, setSelectedDateSlot] = useState<string>('');
    const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot>({
@@ -47,12 +53,18 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
 
    const { isPending, error, mutate: mutateBookSession } = useMutation(handleBookSession);
 
+   const router = useRouter();
+
    // Extract unique dates from availabilities
    useEffect(() => {
       const dates = interviewer.availabilities.map(date => {
          const startObj = new Date(date.startTime);
          const startDate = format(startObj, 'PP');
-         return startDate;
+         const label = format(startObj, 'EEEE');
+         return {
+            startDate,
+            label
+         };
       });
 
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -100,6 +112,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
       if (result) {
          toast.success("Your slot has been booked successfully!");
          setIsBooked(true);
+         router.push('/appointments');
       }
    };
 
@@ -171,6 +184,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                      <Button
                         className="w-full bg-violet-600 hover:bg-violet-700 text-zinc-100 mt-2"
                         size='lg'
+                        onClick={() => setStep(1)}
                      >
                         Book Another Session
                      </Button>
@@ -203,7 +217,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
             </div>
 
             {/* Step Content */}
-            <div className="min-h-55 2xl:min-h-60">
+            <div className="min-h-55 max-h-70 2xl:max-h-80 2xl:min-h-60 h-full overflow-auto">
 
                {/* Date Slot */}
                {step === 1 && (
@@ -213,20 +227,21 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                         Select available interview date:
                      </p>
 
-                     <div className="grid grid-cols-1 gap-2.5">
+                     <div className="grid grid-cols-2 xl:grid-cols-3 gap-2">
                         {availableDates.map(date => {
-                           const isSelected = selectedDateSlot === date;
+                           const isSelected = selectedDateSlot === date.startDate;
                            return (
                               <Button
-                                 key={date}
+                                 key={date.startDate}
                                  type="button"
-                                 onClick={() => setSelectedDateSlot(date)}
-                                 className={`px-3.5 h-12 rounded-xl border text-sm font-medium transition-all ${isSelected
+                                 onClick={() => setSelectedDateSlot(date.startDate)}
+                                 className={`flex gap-1 flex-col px-4 h-auto py-3! rounded-xl border font-medium transition-all ${isSelected
                                     ? 'bg-violet-500/20 border-violet-500 text-violet-300'
                                     : 'bg-white/5 border-white/5 hover:bg-white/10 text-zinc-300'
                                     }`}
                               >
-                                 {date}
+                                 <span className='text-[15px] 2xl:text-base font-bold'>Wednesday</span>
+                                 <span className='text-xs 2xl:text-sm'>{date.startDate}</span>
                               </Button>
                            );
                         })}
@@ -243,11 +258,11 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                      </p>
 
                      <div className="grid grid-cols-1 gap-2.5">
-                        {availableTimes.map((slot, index) => {
+                        {availableTimes.map(slot => {
                            const isSelected = selectedTimeSlot.startTime === slot.startTime;
                            return (
                               <Button
-                                 key={slot.startTime.toString() + index}
+                                 key={slot.startTime}
                                  type="button"
                                  onClick={() => setSelectedTimeSlot(slot)}
                                  disabled={checkExistingBookings(slot)}
