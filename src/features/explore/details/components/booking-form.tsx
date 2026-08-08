@@ -19,6 +19,7 @@ import { format } from 'date-fns';
 import { handleBookSession } from '../services/details.client.service';
 import { useMutation } from '@/hooks/use-mutation';
 import CustomSpinner from '@/components/common/custom-spinner';
+import { Badge } from '@/components/ui/badge';
 
 interface BookingFormProps {
    interviewer: InterviewerDetails;
@@ -107,6 +108,15 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
          toast.error(error);
       }
    }, [error]);
+
+   const checkExistingBookings = (slot: TimeSlot) => {
+      return interviewer.bookingsAsInterviewer.some((booking) => {
+         return (
+            new Date(booking.startTime) < new Date(slot.endTime) &&
+            new Date(booking.endTime) > new Date(slot.startTime)
+         );
+      });
+   };
 
    const wrapperClasses = 'min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.15)]';
    return (
@@ -207,17 +217,17 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                         {availableDates.map(date => {
                            const isSelected = selectedDateSlot === date;
                            return (
-                              <button
+                              <Button
                                  key={date}
                                  type="button"
                                  onClick={() => setSelectedDateSlot(date)}
-                                 className={`w-full cursor-pointer text-left p-3.5 rounded-xl border text-sm font-medium transition-all ${isSelected
+                                 className={`px-3.5 h-12 rounded-xl border text-sm font-medium transition-all ${isSelected
                                     ? 'bg-violet-500/20 border-violet-500 text-violet-300'
                                     : 'bg-white/5 border-white/5 hover:bg-white/10 text-zinc-300'
                                     }`}
                               >
                                  {date}
-                              </button>
+                              </Button>
                            );
                         })}
                      </div>
@@ -233,20 +243,28 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                      </p>
 
                      <div className="grid grid-cols-1 gap-2.5">
-                        {availableTimes.map(slot => {
+                        {availableTimes.map((slot, index) => {
                            const isSelected = selectedTimeSlot.startTime === slot.startTime;
                            return (
-                              <button
-                                 key={slot.startTime.toString()}
+                              <Button
+                                 key={slot.startTime.toString() + index}
                                  type="button"
                                  onClick={() => setSelectedTimeSlot(slot)}
-                                 className={`w-full cursor-pointer text-left p-3.5 rounded-xl border text-sm font-medium transition-all ${isSelected
+                                 disabled={checkExistingBookings(slot)}
+                                 className={`h-12 px-3.5 rounded-xl border text-sm font-medium transition-all ${isSelected
                                     ? 'bg-violet-500/20 border-violet-500 text-violet-300'
                                     : 'bg-white/5 border-white/5 hover:bg-white/10 text-zinc-300'
-                                    }`}
+                                    } ${checkExistingBookings(slot) ? 'bg-white/10!' : ''}`}
                               >
                                  {`${slot.displayStart} - ${slot.displayEnd}`}
-                              </button>
+                                 {
+                                    checkExistingBookings(slot) &&
+                                    <Badge
+                                       className='text-[11px]! px-2 pb-px! pt-0.5! ms-1 '>
+                                       Slot Booked
+                                    </Badge>
+                                 }
+                              </Button>
                            );
                         })}
                      </div>
