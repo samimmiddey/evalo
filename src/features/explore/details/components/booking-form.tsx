@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { motion, AnimatePresence } from 'motion/react';
 import {
    Coins,
@@ -17,6 +16,9 @@ import HeaderTitle from './header-title';
 import GradientWrapper from '@/components/wrappers/gradient-wrapper';
 import { InterviewerDetails } from '../types/details.types';
 import { format } from 'date-fns';
+import { handleBookSession } from '../services/details.client.service';
+import { useMutation } from '@/hooks/use-mutation';
+import CustomSpinner from '@/components/common/custom-spinner';
 
 interface BookingFormProps {
    interviewer: InterviewerDetails;
@@ -30,7 +32,6 @@ interface TimeSlot {
 }
 
 const BookingForm = ({ interviewer }: BookingFormProps) => {
-   const [focusArea, setFocusArea] = useState<string>('');
    const [availableDates, setAvailableDates] = useState<string[]>([]);
    const [availableTimes, setAvailableTimes] = useState<TimeSlot[]>([]);
    const [selectedDateSlot, setSelectedDateSlot] = useState<string>('');
@@ -42,6 +43,8 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
    });
    const [step, setStep] = useState<number>(1);
    const [isBooked, setIsBooked] = useState<boolean>(false);
+
+   const { isPending, error, mutate: mutateBookSession } = useMutation(handleBookSession);
 
    // Extract unique dates from availabilities
    useEffect(() => {
@@ -91,8 +94,19 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
          endTime: selectedTimeSlot.endTime
       };
 
-      setIsBooked(true);
+      const result = await mutateBookSession(params);
+
+      if (result) {
+         toast.success("Your slot has been booked successfully!");
+         setIsBooked(true);
+      }
    };
+
+   useEffect(() => {
+      if (error) {
+         toast.error(error);
+      }
+   }, [error]);
 
    const wrapperClasses = 'min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.15)]';
    return (
@@ -142,12 +156,6 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                               {`${selectedTimeSlot.displayStart} - ${selectedTimeSlot.displayEnd}`}
                            </span>
                         </div>
-                        {focusArea && (
-                           <div className="pt-1.5 border-t border-white/5">
-                              <span className="text-zinc-500 block mb-1">Focus Areas</span>
-                              <span className="text-zinc-400 block line-clamp-2">{focusArea}</span>
-                           </div>
-                        )}
                      </div>
 
                      <Button
@@ -162,7 +170,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
          </AnimatePresence>
 
          <div className="p-6 2xl:p-8 space-y-6 relative z-1">
-            <div className="flex max-sm:flex-col sm:items-center justify-between gap-2.5">
+            <div className="flex items-center justify-between gap-2.5 flex-wrap">
                <HeaderTitle
                   title={interviewerDetailsData.booking.title}
                   icon={interviewerDetailsData.booking.icon}
@@ -185,7 +193,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
             </div>
 
             {/* Step Content */}
-            <div className="min-h-55 2xl:min-h-60">
+            <div className="min-h-50 2xl:min-h-60">
 
                {/* Date Slot */}
                {step === 1 && (
@@ -271,19 +279,6 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                            </span>
                         </div>
                      </div>
-
-                     <div className="space-y-2">
-                        <label htmlFor="focus-area" className="text-xs text-zinc-400 block font-medium">
-                           What do you want to practice? (Optional)
-                        </label>
-                        <Textarea
-                           id="focus-area"
-                           placeholder="e.g. Frontend system design, React render optimization, mock coding feedback..."
-                           value={focusArea}
-                           onChange={(e) => setFocusArea(e.target.value)}
-                           className="resize-none text-sm"
-                        />
-                     </div>
                   </div>
                )}
             </div>
@@ -317,9 +312,12 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                      type="button"
                      size="lg"
                      className="bg-emerald-600 hover:bg-emerald-700 text-zinc-100 grow flex items-center justify-center gap-2"
-                     onClick={void handleSubmit}
+                     onClick={() => {
+                        void handleSubmit();
+                     }}
+                     disabled={isPending}
                   >
-                     Confirm Booking
+                     {isPending ? <CustomSpinner text='Booking slot...' /> : "Confirm Booking"}
                   </Button>
                )}
             </div>

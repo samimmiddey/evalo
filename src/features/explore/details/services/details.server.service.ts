@@ -162,8 +162,8 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
             where: {
                interviewerId,
                status: 'SCHEDULED',
-               startTime: { lt: new Date(startTime) },
-               endTime: { gt: new Date(endTime) }
+               startTime: { lt: new Date(endTime) },
+               endTime: { gt: new Date(startTime) }
             }
          });
 

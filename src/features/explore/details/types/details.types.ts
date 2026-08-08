@@ -1,3 +1,4 @@
+import { BaseResponse } from "@/types/api.types";
 import { Interviewer } from "../../shared/explore.shared.types";
 
 export interface Booking {
@@ -50,3 +51,6 @@ export interface BookSession {
 export type BookSessionSetupResponse =
    | BookSession
    | { success: false; message: string; };
+
+export type BookSessionData = Omit<BookSession, 'success'>;
+export type BookSessionResponse = BaseResponse<BookSessionData>;
