@@ -1,28 +1,35 @@
 import { NextResponse } from "next/server";
 
+const isDev = process.env.NODE_ENV === 'development';
+
 type ApiResponseOptions<T> =
    | {
       statusCode: number;
       data: T;
       error?: never;
+      message?: string;
    }
    | {
       statusCode: number;
-      error: string;
+      error?: unknown;
       data?: never;
+      message: string;
    };
 
 export const apiResponse = <T>({
    statusCode,
    data,
    error,
+   message
 }: ApiResponseOptions<T>) => {
+   const errorMessage = isDev && error instanceof Error ? error.message : message;
+
    return NextResponse.json(
       {
          success: statusCode >= 200 && statusCode < 300,
          statusCode,
          ...(data !== undefined && { data }),
-         ...(error !== undefined && { error }),
+         ...(errorMessage !== undefined && { error: errorMessage }),
       },
       {
          status: statusCode,

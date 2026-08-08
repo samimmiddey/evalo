@@ -1,8 +1,6 @@
 import { checkUser } from "@/services/server/user.server.service";
 import { apiResponse } from "@/lib/api-response";
 
-const isDev = process.env.NODE_ENV === 'development';
-
 export async function GET() {
    try {
       const user = await checkUser();
@@ -10,7 +8,7 @@ export async function GET() {
       if (!user) {
          return apiResponse({
             statusCode: 404,
-            error: "User not found"
+            message: "User not found"
          });
       }
 
@@ -21,7 +19,8 @@ export async function GET() {
    } catch (error: unknown) {
       return apiResponse({
          statusCode: 500,
-         error: isDev && error instanceof Error ? error.message : "Internal Server Error"
+         message: "Internal Server Error",
+         error
       });
    }
 }

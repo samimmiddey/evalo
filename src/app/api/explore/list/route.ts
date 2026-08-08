@@ -2,8 +2,6 @@ import { apiResponse } from "@/lib/api-response";
 import { getInterviewers } from "@/features/explore/list/services/list.server.service";
 import { NextRequest } from "next/server";
 
-const isDev = process.env.NODE_ENV === 'development';
-
 export async function GET(request: NextRequest) {
    try {
       const { searchParams } = new URL(request.url);
@@ -25,7 +23,7 @@ export async function GET(request: NextRequest) {
       if (!interviewers) {
          return apiResponse({
             statusCode: 404,
-            error: "Interviewers not found"
+            message: "Interviewers not found"
          });
       }
 
@@ -36,7 +34,8 @@ export async function GET(request: NextRequest) {
    } catch (error: unknown) {
       return apiResponse({
          statusCode: 500,
-         error: isDev && error instanceof Error ? error.message : "Internal Server Error"
+         message: "Internal Server Error",
+         error
       });
    }
 }

@@ -39,3 +39,14 @@ export interface BookSessionParams {
    startTime: string;
    endTime: string;
 }
+
+export interface BookSession {
+   success: true,
+   booking: string;
+   streamCallId: string;
+   streamStatus: string;
+}
+
+export type BookSessionSetupResponse =
+   | BookSession
+   | { success: false; message: string; };

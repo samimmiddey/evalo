@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,81 +16,82 @@ import { interviewerDetailsData } from '@/data/explore/explore.data';
 import HeaderTitle from './header-title';
 import GradientWrapper from '@/components/wrappers/gradient-wrapper';
 import { InterviewerDetails } from '../types/details.types';
+import { format } from 'date-fns';
 
 interface BookingFormProps {
    interviewer: InterviewerDetails;
 }
 
+interface TimeSlot {
+   startTime: string;
+   endTime: string;
+   displayStart: string;
+   displayEnd: string;
+}
+
 const BookingForm = ({ interviewer }: BookingFormProps) => {
    const [focusArea, setFocusArea] = useState<string>('');
-   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+   const [availableDates, setAvailableDates] = useState<string[]>([]);
+   const [availableTimes, setAvailableTimes] = useState<TimeSlot[]>([]);
+   const [selectedDateSlot, setSelectedDateSlot] = useState<string>('');
+   const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot>({
+      startTime: '',
+      endTime: '',
+      displayStart: '',
+      displayEnd: ''
+   });
+   const [step, setStep] = useState<number>(1);
    const [isBooked, setIsBooked] = useState<boolean>(false);
 
-   // Booking flow state
-   const [step, setStep] = useState<number>(1);
-   const [selectedDate, setSelectedDate] = useState<string>('');
-   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>('');
-
    // Extract unique dates from availabilities
-   const getAvailableDates = () => {
-      const dates = interviewer.availabilities.map(av => {
-         const d = new Date(av.startTime);
-         return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+   useEffect(() => {
+      const dates = interviewer.availabilities.map(date => {
+         const startObj = new Date(date.startTime);
+         const startDate = format(startObj, 'PP');
+         return startDate;
       });
-      return Array.from(new Set(dates));
-   };
 
-   const availableDates = getAvailableDates();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAvailableDates(dates);
+   }, [interviewer]);
 
-   // Get time slots for selected date
-   const getTimeSlotsForDate = (dateStr: string) => {
-      return interviewer.availabilities.filter(av => {
-         const d = new Date(av.startTime);
-         const formatted = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-         return formatted === dateStr;
-      }).map(av => {
-         const start = new Date(av.startTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-         const end = new Date(av.endTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-         return `${start} - ${end}`;
+   // Extract time slots for selected date
+   useEffect(() => {
+      const availableTimeSlots = interviewer.availabilities.filter(date => {
+         const startDate = format(new Date(date.startTime), 'PP');
+         return selectedDateSlot === startDate;
+      }).map(item => {
+         return {
+            startTime: item.startTime.toString(),
+            endTime: item.endTime.toString(),
+            displayStart: format(new Date(item.startTime), 'p'),
+            displayEnd: format(new Date(item.endTime), 'p')
+         };
       });
-   };
 
-   const handleDateSelect = (date: string) => {
-      setSelectedDate(date);
-      setSelectedTimeSlot(''); // Reset time slot when date changes
-   };
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAvailableTimes(availableTimeSlots);
+   }, [interviewer, selectedDateSlot]);
 
+   // Next step handler
    const handleNextStep = () => {
-      if (step === 1 && !selectedDate) {
-         toast.error('Please select a date to proceed.');
-         return;
-      }
-      if (step === 2 && !selectedTimeSlot) {
-         toast.error('Please select a time slot to proceed.');
-         return;
-      }
-      setStep(prev => prev + 1);
+      setStep(prevState => prevState + 1);
    };
 
+   // Previous state handler
    const handlePrevStep = () => {
       setStep(prev => prev - 1);
    };
 
-   const handleConfirmBooking = () => {
-      setIsSubmitting(true);
-      setTimeout(() => {
-         setIsSubmitting(false);
-         setIsBooked(true);
-         toast.success('Mock booking confirmed successfully! (UI Only)');
-      }, 1500);
-   };
+   // Submit form handler
+   const handleSubmit = async () => {
+      const params = {
+         interviewerId: interviewer.id,
+         startTime: selectedTimeSlot.startTime,
+         endTime: selectedTimeSlot.endTime
+      };
 
-   const resetBooking = () => {
-      setStep(1);
-      setSelectedDate('');
-      setSelectedTimeSlot('');
-      setFocusArea('');
-      setIsBooked(false);
+      setIsBooked(true);
    };
 
    const wrapperClasses = 'min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.15)]';
@@ -133,11 +134,13 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                         </div>
                         <div className="flex justify-between">
                            <span className="text-zinc-500">Date</span>
-                           <span className="font-semibold text-zinc-200">{selectedDate}</span>
+                           <span className="font-semibold text-zinc-200">{selectedDateSlot}</span>
                         </div>
                         <div className="flex justify-between">
                            <span className="text-zinc-500">Time</span>
-                           <span className="font-semibold text-zinc-200">{selectedTimeSlot}</span>
+                           <span className="font-semibold text-zinc-200">
+                              {`${selectedTimeSlot.displayStart} - ${selectedTimeSlot.displayEnd}`}
+                           </span>
                         </div>
                         {focusArea && (
                            <div className="pt-1.5 border-t border-white/5">
@@ -148,7 +151,6 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                      </div>
 
                      <Button
-                        onClick={resetBooking}
                         className="w-full bg-violet-600 hover:bg-violet-700 text-zinc-100 mt-2"
                         size='lg'
                      >
@@ -184,6 +186,8 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
 
             {/* Step Content */}
             <div className="min-h-55 2xl:min-h-60">
+
+               {/* Date Slot */}
                {step === 1 && (
                   <div className="space-y-4">
                      <p className="text-sm text-zinc-400 flex items-center gap-2">
@@ -193,12 +197,12 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
 
                      <div className="grid grid-cols-1 gap-2.5">
                         {availableDates.map(date => {
-                           const isSelected = selectedDate === date;
+                           const isSelected = selectedDateSlot === date;
                            return (
                               <button
                                  key={date}
                                  type="button"
-                                 onClick={() => handleDateSelect(date)}
+                                 onClick={() => setSelectedDateSlot(date)}
                                  className={`w-full cursor-pointer text-left p-3.5 rounded-xl border text-sm font-medium transition-all ${isSelected
                                     ? 'bg-violet-500/20 border-violet-500 text-violet-300'
                                     : 'bg-white/5 border-white/5 hover:bg-white/10 text-zinc-300'
@@ -212,19 +216,20 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   </div>
                )}
 
+               {/* Time Slot */}
                {step === 2 && (
                   <div className="space-y-4">
                      <p className="text-sm text-zinc-400 flex items-center gap-2">
                         <Clock className="w-4 h-4 text-violet-400" />
-                        Select a time slot for {selectedDate}:
+                        Select a time slot for {selectedDateSlot}:
                      </p>
 
                      <div className="grid grid-cols-1 gap-2.5">
-                        {getTimeSlotsForDate(selectedDate).map(slot => {
-                           const isSelected = selectedTimeSlot === slot;
+                        {availableTimes.map(slot => {
+                           const isSelected = selectedTimeSlot.startTime === slot.startTime;
                            return (
                               <button
-                                 key={slot}
+                                 key={slot.startTime.toString()}
                                  type="button"
                                  onClick={() => setSelectedTimeSlot(slot)}
                                  className={`w-full cursor-pointer text-left p-3.5 rounded-xl border text-sm font-medium transition-all ${isSelected
@@ -232,7 +237,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                                     : 'bg-white/5 border-white/5 hover:bg-white/10 text-zinc-300'
                                     }`}
                               >
-                                 {slot}
+                                 {`${slot.displayStart} - ${slot.displayEnd}`}
                               </button>
                            );
                         })}
@@ -240,6 +245,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   </div>
                )}
 
+               {/* Review final selection */}
                {step === 3 && (
                   <div className="space-y-4">
                      <p className="text-sm text-zinc-400">
@@ -249,11 +255,13 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                      <div className="rounded-xl border border-white/5 bg-white/5 p-4 space-y-3 text-sm">
                         <div className="flex justify-between">
                            <span className="text-zinc-500">Date</span>
-                           <span className="text-zinc-200 font-medium">{selectedDate}</span>
+                           <span className="text-zinc-200 font-medium">{selectedDateSlot}</span>
                         </div>
                         <div className="flex justify-between">
-                           <span className="text-zinc-500">Time</span>
-                           <span className="text-zinc-200 font-medium">{selectedTimeSlot}</span>
+                           <span className="text-zinc-500">Time Slot</span>
+                           <span className="text-zinc-200 font-medium">
+                              {`${selectedTimeSlot.displayStart} - ${selectedTimeSlot.displayEnd}`}
+                           </span>
                         </div>
                         <div className="flex justify-between">
                            <span className="text-zinc-500">Total Charged</span>
@@ -287,8 +295,8 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                      type="button"
                      variant="outline"
                      size="lg"
-                     onClick={handlePrevStep}
                      className="w-1/3"
+                     onClick={handlePrevStep}
                   >
                      Back
                   </Button>
@@ -298,8 +306,9 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   <Button
                      type="button"
                      size="lg"
-                     onClick={handleNextStep}
                      className="bg-violet-600 hover:bg-violet-700 text-zinc-100 grow"
+                     onClick={handleNextStep}
+                     disabled={(step === 1 && !selectedDateSlot) || (step === 2 && !selectedTimeSlot.startTime)}
                   >
                      Next Step
                   </Button>
@@ -307,11 +316,10 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   <Button
                      type="button"
                      size="lg"
-                     onClick={handleConfirmBooking}
-                     disabled={isSubmitting}
                      className="bg-emerald-600 hover:bg-emerald-700 text-zinc-100 grow flex items-center justify-center gap-2"
+                     onClick={void handleSubmit}
                   >
-                     {isSubmitting ? 'Scheduling...' : 'Confirm Booking'}
+                     Confirm Booking
                   </Button>
                )}
             </div>

@@ -1,6 +1,6 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
-import { BookSessionParams, InterviewerDetails, InterviewerFeedback } from "../types/details.types";
+import { BookSessionParams, BookSessionSetupResponse, InterviewerDetails, InterviewerFeedback } from "../types/details.types";
 import { currentUser } from "@clerk/nextjs/server";
 import { StreamClient } from "@stream-io/node-sdk";
 import { v4 as uuidv4 } from 'uuid';
@@ -96,11 +96,15 @@ export const bookingLimiter = createRateLimiter({
 });
 
 // Book a call
-export const bookSession = async ({ interviewerId, startTime, endTime }: BookSessionParams) => {
+export const bookSession = async ({ interviewerId, startTime, endTime }: BookSessionParams): Promise<BookSessionSetupResponse> => {
    const user = await currentUser();
 
+   // Check if user eixsts
    if (!user) {
-      throw new Error('Unauthenticated user');
+      return {
+         success: false,
+         message: "Unauthenticated user"
+      };
    }
 
    // Arcjet - rate limiter
@@ -108,7 +112,10 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
    const rateLimitError = await checkRateLimit(bookingLimiter, req, user.id);
 
    if (rateLimitError) {
-      throw new Error(rateLimitError);
+      return {
+         success: false,
+         message: rateLimitError
+      };
    }
 
    // Fetch user and interviewer
@@ -119,12 +126,18 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
 
    // Check if interviewee exists
    if (dbUser?.role !== 'INTERVIEWEE') {
-      throw new Error("Only interviewees can book sessions");
+      return {
+         success: false,
+         message: "Only interviewees can book sessions"
+      };
    }
 
    // Check if interviewer exists
    if (interviewer?.role !== 'INTERVIEWER') {
-      throw new Error("Interviewer not found");
+      return {
+         success: false,
+         message: "Interviewer not found"
+      };
    }
 
    // Credit rate for the interviewer
@@ -132,21 +145,10 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
 
    // Check if interviewee has sufficient credit in his account or not
    if (dbUser.credits < credits) {
-      throw new Error('Insufficient credits. Please upgrade your plan.');
-   }
-
-   // Check if the slot is available
-   const conflict = await db.booking.findFirst({
-      where: {
-         interviewerId,
-         status: 'SCHEDULED',
-         startTime: { lt: new Date(startTime) },
-         endTime: { gt: new Date(endTime) }
-      }
-   });
-
-   if (conflict) {
-      throw new Error("This slot is already booked. Please pick another slot.");
+      return {
+         success: false,
+         message: "Insufficient credits. Please upgrade your plan."
+      };
    }
 
    let booking;
@@ -155,6 +157,20 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
    // Update database
    try {
       booking = await db.$transaction(async (tx) => {
+         // Check if the slot is available
+         const conflict = await tx.booking.findFirst({
+            where: {
+               interviewerId,
+               status: 'SCHEDULED',
+               startTime: { lt: new Date(startTime) },
+               endTime: { gt: new Date(endTime) }
+            }
+         });
+
+         if (conflict) {
+            throw new Error("This slot is already booked. Please pick another slot.");
+         }
+
          const newBooking = await tx.booking.create({
             data: {
                intervieweeId: dbUser.id,
@@ -246,14 +262,8 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
             }
          }
       });
-
-      // Update stream status on db
-      await db.booking.update({
-         where: { id: booking.id },
-         data: { streamStatus: 'READY' }
-      });
    } catch {
-      await db.booking.update({
+      const updated = await db.booking.update({
          where: {
             id: booking.id,
          },
@@ -261,7 +271,33 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
             streamStatus: "FAILED"
          },
       });
+
+      booking = updated;
+
+      return {
+         success: true,
+         booking: booking.id,
+         streamCallId,
+         streamStatus: booking.streamStatus,
+      };
    }
 
-   return { success: true, booking: booking.id, streamCallId };
+   // Update stream status on db
+   try {
+      const updated = await db.booking.update({
+         where: { id: booking.id },
+         data: { streamStatus: 'READY' }
+      });
+
+      booking = updated;
+   } catch (error: unknown) {
+      return serverError(error, 'Booking failed. Please try again later.');
+   }
+
+   return {
+      success: true,
+      booking: booking.id,
+      streamCallId,
+      streamStatus: booking.streamStatus
+   };
 };
