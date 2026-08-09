@@ -1,4 +1,4 @@
-import { getInterviews } from "@/features/appointments/services/appointments.server.service";
+import { getAppointments } from "@/features/appointments/services/appointments.server.service";
 import { InterviewStatus } from "@/features/appointments/types/appointments.types";
 import { apiResponse } from "@/lib/api-response";
 import { NextRequest } from "next/server";
@@ -12,28 +12,28 @@ export async function GET(request: NextRequest) {
       const status = searchParams.get('status') as InterviewStatus || undefined;
       const search = searchParams.get('search') || undefined;
 
-      const interviews = await getInterviews({
+      const appointments = await getAppointments({
          page,
          pageSize,
          status,
          search
       });
 
-      if (!interviews.success) {
+      if (!appointments.success) {
          return apiResponse({
             statusCode: 404,
-            message: interviews.message ?? 'Failed to fetch interviews'
+            message: appointments.message ?? 'Failed to fetch appointments'
          });
       }
 
       return apiResponse({
          statusCode: 200,
-         data: interviews
+         data: appointments
       });
    } catch (error: unknown) {
       return apiResponse({
          statusCode: 500,
-         message: 'Failed to fetch interviews',
+         message: 'Failed to fetch appointments',
          error
       });
    }

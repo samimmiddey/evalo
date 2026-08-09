@@ -1,9 +1,10 @@
 import { Feedback } from "@/generated/prisma/client";
 import { InterviewExpertise, StreamStatus } from "@/generated/prisma/enums";
+import { BaseResponse } from "@/types/api.types";
 
 export type InterviewStatus = 'SCHEDULED' | 'COMPLETED' | 'CANCELLED';
 
-export interface GetInterviewsParams {
+export interface GetAppointmentsParams {
    page?: number;
    pageSize?: number;
    search?: string;
@@ -34,15 +35,19 @@ export interface Interviewer {
    totalRatings: number | null;
 }
 
-export type GetInterviewsResponse =
+export interface AppointmentsData {
+   success: true,
+   data: Interview[];
+   page: number;
+   pageSize: number;
+   totalCount: number;
+   totalPages: number;
+   hasNextPage: boolean;
+   hasPrevPage: boolean;
+}
+
+export type GetAppointmentsResponse =
    | { success: false, message: string; }
-   | {
-      success: true,
-      data: Interview[];
-      page: number;
-      pageSize: number;
-      totalCount: number;
-      totalPages: number;
-      hasNextPage: boolean;
-      hasPrevPage: boolean;
-   };
+   | AppointmentsData;
+
+export type GetAppointmentsClientResponse = BaseResponse<AppointmentsData>;

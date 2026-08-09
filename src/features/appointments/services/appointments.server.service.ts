@@ -1,10 +1,10 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
-import { GetInterviewsParams, GetInterviewsResponse } from "../types/appointments.types";
+import { GetAppointmentsParams, GetAppointmentsResponse } from "../types/appointments.types";
 import { Prisma } from "@/generated/prisma/client";
 
-export const getInterviews = async (params: GetInterviewsParams = {}): Promise<GetInterviewsResponse> => {
+export const getAppointments = async (params: GetAppointmentsParams = {}): Promise<GetAppointmentsResponse> => {
    const user = await currentUser();
 
    // Check if user is logged in
@@ -64,8 +64,8 @@ export const getInterviews = async (params: GetInterviewsParams = {}): Promise<G
 
       const where: Prisma.BookingWhereInput = { AND: andConditions };
 
-      // Get total count and interviews
-      const [totalCount, interviews] = await Promise.all([
+      // Get total count and appointments
+      const [totalCount, appointments] = await Promise.all([
          db.booking.count({ where }),
          db.booking.findMany({
             where,
@@ -97,7 +97,7 @@ export const getInterviews = async (params: GetInterviewsParams = {}): Promise<G
 
       return {
          success: true,
-         data: interviews,
+         data: appointments,
          page,
          pageSize,
          totalCount,
@@ -106,6 +106,6 @@ export const getInterviews = async (params: GetInterviewsParams = {}): Promise<G
          hasPrevPage: page > 1
       };
    } catch (error) {
-      return serverError(error, 'Failed to fetch interviews');
+      return serverError(error, 'Failed to fetch appointments');
    }
 };
