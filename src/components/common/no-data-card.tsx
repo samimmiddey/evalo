@@ -11,7 +11,7 @@ interface NoDataCardProps {
 
 const NoDataCard = ({ text, className, iconClassName, textClassName }: NoDataCardProps) => {
    return (
-      <div className={cn('flex items-center justify-center px-4 py-3 rounded-lg border border-zinc-500/20 bg-zinc-500/5 w-max gap-2 mx-auto', className)}>
+      <div className={cn('flex items-center justify-center px-4 py-3 rounded-lg bg-zinc-900/40 border border-dashed border-white/10 w-max gap-2 mx-auto', className)}>
          <Database className={cn('h-4 w-4 text-zinc-400', iconClassName)} />
          <PrimaryBody text={text} className={cn('text-center text-zinc-400 text-sm!', textClassName)} />
       </div>

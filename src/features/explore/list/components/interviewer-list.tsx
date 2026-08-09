@@ -4,11 +4,11 @@ import { useInfiniteFetch } from '@/hooks/use-infinite-fetch';
 import { getInterviewers } from '../services/list.client.service';
 import InterviewerCardSkeleton from './skeletons/interviewer-card-skeleton';
 import ErrorCard from '@/components/common/error-card';
-import NoDataCard from '@/components/common/no-data-card';
 import { FilterParams } from '../types/list.type';
 import useDebounce from '@/hooks/use-debounce';
 import { usePaginationTrigger } from '@/hooks/use-pagination-trigger';
 import ListEndMessage from '@/components/common/list-end-message';
+import EnhancedNoDataCard from '@/components/common/enhanced-no-data-card';
 
 interface InterviewerListProps {
    view: ViewType;
@@ -52,7 +52,10 @@ const InterviewerList = ({ view, filterParams }: InterviewerListProps) => {
 
    // No data state
    if (!data || data?.length === 0) {
-      return <NoDataCard text="No interviewers found." />;
+      return <EnhancedNoDataCard
+         title="No interviewers found"
+         body="We couldn't find any interviewers matching your filters. Try adjusting your search criteria or filters."
+      />;
    }
 
    return (

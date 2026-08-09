@@ -1,5 +1,7 @@
 import { cn } from '@/lib/utils';
 import { AlertCircle } from 'lucide-react';
+import SecondaryTitle from './secondary-title';
+import PrimaryBody from './primary-body';
 
 interface ErrorCardProps {
    text: string;
@@ -8,14 +10,25 @@ interface ErrorCardProps {
 
 const ErrorCard = ({ text, className }: ErrorCardProps) => {
    return (
-      <div className={cn("flex flex-col items-center justify-center p-8 bg-zinc-900/40 border border-red-500/10 rounded-2xl w-full", className)}>
+      <div className={cn("flex flex-col items-center justify-center py-8 2xl:py-10 px-6 bg-zinc-900/40 border border-dashed border-red-500/20 rounded-2xl w-full", className)}>
+
+         {/* Icon */}
          <div className="h-12 w-12 rounded-full bg-red-500/10 flex items-center justify-center mb-4">
-            <AlertCircle className="w-6 h-6 text-red-500" />
+            <AlertCircle className="w-6 h-6 text-red-400" />
          </div>
-         <h3 className="text-lg font-medium text-zinc-100 mb-2">Something went wrong</h3>
-         <p className="text-sm text-zinc-400 text-center max-w-md">
-            {text || "An unexpected error occurred. Please try again later."}
-         </p>
+
+         {/* Title */}
+         <SecondaryTitle
+            text="Something went wrong"
+            className='mb-2'
+         />
+
+         {/* Description */}
+         <PrimaryBody
+            text={text || "An unexpected error occurred. Please try again later."}
+            className='max-w-md text-sm! leading-relaxed text-center'
+         />
+
       </div>
    );
 };

@@ -9,6 +9,7 @@ import { Filter, Grid2x2, Rows3 } from 'lucide-react';
 import SearchBar from './filters/search-bar';
 import { FilterParams } from '../types/list.type';
 import { exploreData } from '@/data/explore/explore.data';
+import PageHeaderLayout from '@/components/layouts/page-header-layout';
 
 interface HeaderProps {
    onOpenSidebar: () => void;
@@ -24,7 +25,7 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView, filt
    const lgWidth = useMediaQuery(1024);
 
    return (
-      <div className="flex max-lg:flex-col lg:items-end lg:justify-between gap-4 mb-7 sm:mb-8 lg:mb-9 2xl:mb-10">
+      <PageHeaderLayout>
          <div className="max-w-2xl">
             <HeaderLayout className='gap-4! items-start text-start mb-0!'>
                <PrimaryTitle text={exploreData.header.title} />
@@ -84,7 +85,7 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView, filt
                }
             </div>
          </div>
-      </div>
+      </PageHeaderLayout>
    );
 };
 
