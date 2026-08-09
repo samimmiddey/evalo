@@ -1,7 +1,7 @@
 import { Feedback } from "@/generated/prisma/client";
 import { InterviewExpertise, StreamStatus } from "@/generated/prisma/enums";
 
-type InterviewStatus = 'SCHEDULED' | 'COMPLETED' | 'CANCELLED';
+export type InterviewStatus = 'SCHEDULED' | 'COMPLETED' | 'CANCELLED';
 
 export interface GetInterviewsParams {
    page?: number;
@@ -35,9 +35,9 @@ export interface Interviewer {
 }
 
 export type GetInterviewsResponse =
-   | { success: boolean, message: string; }
+   | { success: false, message: string; }
    | {
-      success: boolean,
+      success: true,
       data: Interview[];
       page: number;
       pageSize: number;
