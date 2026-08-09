@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import useMediaQuery from '@/hooks/use-media-query';
 import { ViewType } from '@/types/ui.types';
 import { Filter, Grid2x2, Rows3 } from 'lucide-react';
-import SearchBar from './filters/search-bar';
+import SearchBar from '../../../../components/common/search-bar';
 import { FilterParams } from '../types/list.type';
 import { exploreData } from '@/data/explore/explore.data';
 import PageHeaderLayout from '@/components/layouts/page-header-layout';
@@ -35,7 +35,11 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView, filt
 
          <div className="flex items-center max-lg:justify-between gap-2.5 2xl:gap-3">
             <div className='block lg:hidden w-full'>
-               <SearchBar filterParams={filterParams} onFilterParams={onFilterParams} />
+               <SearchBar
+                  value={filterParams?.search}
+                  setValue={e => onFilterParams(prevState => ({ ...prevState, search: e.target.value }))}
+                  placeholder="Search interviewers..."
+               />
             </div>
             <div className="flex items-center gap-2.5 2xl:gap-3">
                <CustomTooltip

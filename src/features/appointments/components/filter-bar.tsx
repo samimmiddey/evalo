@@ -1,9 +1,11 @@
+import SearchBar from '@/components/common/search-bar';
 import { Badge } from '@/components/ui/badge';
 import { appointsData } from '@/data/appointmens/appointments.data';
-import { Search } from 'lucide-react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 const FilterBar = () => {
+   const [searchValue, setSearchValue] = useState<string>('');
+
    // Statistics Calculations
    const stats = useMemo(() => {
       return {
@@ -39,15 +41,14 @@ const FilterBar = () => {
          </div>
 
          {/* Search & Simulation Controls */}
-         <div className="flex items-center gap-3.5 w-full lg:w-auto">
-            <div className="relative flex-1 lg:flex-initial">
-               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-               <input
-                  type="text"
-                  placeholder="Search interviewer or skill..."
-                  className="w-full lg:w-64 bg-zinc-950/60 text-zinc-200 pl-10 pr-4 py-2 text-sm rounded-xl border border-white/5 focus:outline-none focus:border-violet-500/50 transition-colors"
-               />
-            </div>
+         <div className="flex items-center gap-3.5 w-full lg:w-82 2xl:w-86">
+            <SearchBar
+               value={searchValue}
+               setValue={e => setSearchValue(e.target.value)}
+               showLabel={false}
+               placeholder='Search interviews...'
+               inputClassName='h-10!'
+            />
          </div>
       </div>
    );

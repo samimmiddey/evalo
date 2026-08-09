@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Filter } from 'lucide-react';
-import SearchBar from './search-bar';
+import SearchBar from '../../../../../components/common/search-bar';
 import Expertise from './expertise';
 import Experience from './experience';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from '@/components/ui/drawer';
@@ -68,7 +68,7 @@ const DesktopSidebar = ({ filterParams, onFilterParams, onClear, isFiltersEnable
                   <Button
                      variant="ghost"
                      size="sm"
-                     className={`text-xs! px-3 ${isFiltersEnabled ? 'text-violet-400!' : ''}`}
+                     className={`text-xs! px-3 ${isFiltersEnabled ? 'text-red-400!' : ''}`}
                      onClick={onClear}
                      disabled={!isFiltersEnabled}
                   >
@@ -85,8 +85,9 @@ const DesktopSidebar = ({ filterParams, onFilterParams, onClear, isFiltersEnable
 
          {/* Search Bar */}
          <SearchBar
-            filterParams={filterParams}
-            onFilterParams={onFilterParams}
+            value={filterParams?.search}
+            setValue={e => onFilterParams(prevState => ({ ...prevState, search: e.target.value }))}
+            placeholder="Search interviewers..."
          />
 
          <Separator className='my-2' />
