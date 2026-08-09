@@ -63,7 +63,7 @@ const AppointmentsList = ({ filterParams, view }: AppointmentsListProps) => {
 
    return (
       <div>
-         <div className={`space-y-5 2xl:space-y-6 relative z-10 ${view === 'grid' ? 'grid grid-cols-1 xl:grid-cols-2' : ''}`}>
+         <div className={`grid gap-5 2xl:gap-6 relative z-10 ${view === 'grid' ? 'grid-cols-1 xl:grid-cols-2' : 'grid-cols-1'}`}>
             {
                data.map((appointment) => (
                   <AppointmentCard
