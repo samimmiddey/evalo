@@ -51,3 +51,27 @@ export type GetAppointmentsServerResponse =
    | AppointmentsData;
 
 export type GetAppointmentsClientResponse = BaseResponse<AppointmentsData>;
+
+export interface AppointmentsFilterParams {
+   search?: string;
+   status?: InterviewStatus;
+}
+
+export interface AppointmentsStatsData {
+   totalCount: number;
+   completedCount: number;
+   scheduledCount: number;
+   cancelledCount: number;
+   successRate: number;
+}
+
+export interface AppointmentsStats {
+   success: true;
+   data: AppointmentsStatsData;
+}
+
+export type AppointmentsStatsServerResponse =
+   | { success: false, message: string; }
+   | AppointmentsStats;
+
+export type AppointmentsStatsClientResponse = BaseResponse<AppointmentsStatsData>;

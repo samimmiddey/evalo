@@ -1,41 +1,38 @@
-import { Appointment } from '@/data/appointmens/appointments.types';
 import CardLayout from '@/components/layouts/card-layout';
-import { Briefcase, Building2, Calendar, Clock, FileText, Hourglass, NotebookText, Play, Star, Video } from 'lucide-react';
+import { Briefcase, Building2, Calendar, Clock, FileText, Hourglass, Info, NotebookText, Play, Star, Video } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Interview } from '../types/appointments.types';
+import { differenceInMinutes, format } from 'date-fns';
+import { appointsData } from '@/data/appointmens/appointments.data';
+import { ViewType } from '@/types/ui.types';
 
 interface AppointmentCardProps {
-   appointment: Appointment;
+   appointment: Interview;
+   view: ViewType;
 }
 
-const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
-   const { interviewer, status, date, timeSlot, duration, aiFeedback } = appointment;
+const AppointmentCard = ({ appointment, view }: AppointmentCardProps) => {
+   const { interviewer, startTime, endTime, status, feedback } = appointment;
 
    // Status Badge Helper
-   const renderStatusBadge = (status: Appointment['status']) => {
+   const renderStatusBadge = (status: Interview['status']) => {
       switch (status) {
-         case 'upcoming':
+         case 'SCHEDULED':
             return (
                <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
                   <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-                  Upcoming
+                  Scheduled
                </span>
             );
-         case 'in-progress':
-            return (
-               <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-violet-500/15 text-violet-300 border border-violet-500/30 animate-pulse shadow-[0_0_12px_-3px_rgba(139,92,246,0.5)]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-ping" />
-                  In Progress
-               </span>
-            );
-         case 'completed':
+         case 'COMPLETED':
             return (
                <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                   Completed
                </span>
             );
-         case 'cancelled':
+         case 'CANCELLED':
             return (
                <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/10 text-red-400 border border-zinc-500/20">
                   <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
@@ -47,24 +44,38 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
 
    // Performance Color Helper
    const getPerformanceLevelColor = (level: string) => {
-      if (level === 'Outstanding') return 'text-violet-400 border-violet-500/30 bg-violet-500/10';
-      if (level === 'Excellent') return 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10';
-      return 'text-blue-400 border-blue-500/30 bg-blue-500/10';
+      if (level === 'Outstanding') {
+         return 'text-violet-400 border-violet-500/30 bg-violet-500/10';
+      }
+
+      if (level === 'Excellent') {
+         return 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10';
+      }
+
+      if (level === 'Average') {
+         return 'text-blue-400 border-blue-500/30 bg-blue-500/10';
+      }
+
+      if (level === 'Poor') {
+         return 'text-rose-400 border-rose-500/30 bg-rose-500/10';
+      }
+
+      return 'text-zinc-400 border-zinc-500/30 bg-zinc-500/10';
    };
 
    return (
       <CardLayout className='max-sm:p-0!'>
          {/* Horizontal Card for Desktop, Stacked for Mobile */}
-         <div className="flex flex-col lg:flex-row lg:items-stretch w-full">
+         <div className={`flex w-full ${view === 'grid' ? 'flex-col' : 'flex-col lg:flex-row lg:items-stretch'}`}>
 
             {/* Left Side: Interviewer Identity */}
-            <div className="flex-1 p-6 2xl:p-7 flex flex-col md:flex-row md:items-start gap-5 border-b lg:border-b-0 lg:border-r border-white/5">
-               <div className="relative shrink-0">
+            <div className={`flex-1 p-6 2xl:p-7 flex flex-col md:flex-row md:items-start gap-5 border-white/5 ${view === 'grid' ? 'border-b' : 'lg:border-r border-b lg:border-b-0'}`}>
+               <div className="w-16 md:w-20 relative shrink-0">
                   <div className="h-16 w-16 md:h-20 md:w-20 rounded-2xl overflow-hidden border border-white/10 group-hover:border-violet-500/25 transition-colors bg-zinc-900 shadow-xl">
                      {/* eslint-disable-next-line @next/next/no-img-element */}
                      <img
-                        src={interviewer.imageUrl}
-                        alt={`${interviewer.firstName} ${interviewer.lastName}`}
+                        src={interviewer.imageUrl ?? '/user.png'}
+                        alt={`${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`}
                         className="h-full w-full object-cover scale-100 group-hover:scale-105 transition-transform duration-500"
                      />
                   </div>
@@ -72,12 +83,12 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                   {/* Overall mini-rating badge */}
                   <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold rounded-md bg-zinc-950 border border-white/10 text-amber-400 shadow-md">
                      <Star className="w-2.5 h-2.5 fill-amber-500 text-amber-500" />
-                     <span>{interviewer.rating}</span>
+                     <span>{interviewer.averageRating ?? 0.0}</span>
                   </div>
                </div>
 
                <div className="space-y-2 grow">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
                      <div>
                         <h4 className="text-lg font-bold text-zinc-100 group-hover:text-violet-400 transition-colors font-outfit">
                            {interviewer.firstName} {interviewer.lastName}
@@ -97,7 +108,7 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                      </div>
 
                      {/* Status Badge (visible on mobile next to title) */}
-                     <div className="lg:hidden">
+                     <div className="md:hidden">
                         {renderStatusBadge(status)}
                      </div>
                   </div>
@@ -108,7 +119,7 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
 
                   {/* Expertise Badges */}
                   <div className="flex flex-wrap gap-1.5 pt-2">
-                     {interviewer.expertise.map((skill) => (
+                     {interviewer?.expertise?.map((skill) => (
                         <Badge
                            key={skill}
                            variant="outline"
@@ -125,7 +136,7 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
             <div className="flex-[1.25] flex flex-col justify-between">
 
                {/* Top Row of Right: Status & Schedule (hidden status on mobile as it is above) */}
-               <div className="p-6 2xl:p-7 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-zinc-900/10">
+               <div className="p-6 2xl:p-7 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between flex-wrap gap-4 bg-zinc-900/10">
 
                   {/* Schedule info */}
                   <div className="flex justify-between md:items-center flex-wrap max-md:gap-x-5 max-md:gap-y-4 md:gap-7 text-zinc-300">
@@ -133,7 +144,7 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                         <Calendar className="w-4 h-4 text-violet-400 shrink-0" />
                         <div className="text-center md:text-left">
                            <span className="block text-[10px] uppercase text-zinc-500 font-semibold tracking-wider md:hidden">Date</span>
-                           <span className="text-xs 2xl:text-sm font-semibold text-zinc-200">{date}</span>
+                           <span className="text-xs 2xl:text-sm font-semibold text-zinc-200">{format(new Date(startTime), 'MMM d, yyyy')}</span>
                         </div>
                      </div>
 
@@ -141,7 +152,11 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                         <Clock className="w-4 h-4 text-violet-400 shrink-0" />
                         <div className="text-center md:text-left">
                            <span className="block text-[10px] uppercase text-zinc-500 font-semibold tracking-wider md:hidden">Time</span>
-                           <span className="text-xs 2xl:text-sm font-medium text-zinc-300">{timeSlot}</span>
+                           <span className="text-xs 2xl:text-sm font-medium text-zinc-300">
+                              {format(new Date(startTime), 'h:mm a')}
+                              {' - '}
+                              {format(new Date(endTime), 'h:mm a')}
+                           </span>
                         </div>
                      </div>
 
@@ -149,19 +164,43 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                         <Hourglass className="w-4 h-4 text-violet-400 shrink-0" />
                         <div className="text-center md:text-left">
                            <span className="block text-[10px] uppercase text-zinc-500 font-semibold tracking-wider md:hidden">Duration</span>
-                           <span className="text-xs 2xl:text-sm font-semibold text-zinc-300">{duration}</span>
+                           <span className="text-xs 2xl:text-sm font-semibold text-zinc-300">{differenceInMinutes(
+                              new Date(endTime),
+                              new Date(startTime)
+                           )} mins</span>
                         </div>
                      </div>
                   </div>
 
                   {/* Status Badge (desktop) */}
-                  <div className="hidden lg:block">
+                  <div className="hidden md:block">
                      {renderStatusBadge(status)}
                   </div>
                </div>
 
+               {/* Guidelines */}
+               {
+                  status === 'SCHEDULED' && (
+                     <div className="p-6 2xl:p-7 border-b border-white/5">
+                        <div className="flex max-sm:flex-col items-start gap-3.5">
+                           <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 shadow-sm shrink-0 max-sm:mb-1">
+                              <Info className="w-4 h-4" />
+                           </div>
+                           <div>
+                              <span className="text-xs font-bold text-amber-100 uppercase tracking-widest">
+                                 {appointsData.helpfulTips.header}
+                              </span>
+                              <p className="text-sm text-amber-200/80 leading-relaxed mt-2">
+                                 {appointsData.helpfulTips.body}
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                  )
+               }
+
                {/* Bottom Row: AI Feedback summary (Only for COMPLETED) */}
-               {status === 'completed' && aiFeedback && (
+               {status === 'COMPLETED' && feedback && (
                   <div className="p-6 2xl:p-7 border-b border-white/5">
                      <div className="flex max-sm:flex-col items-start gap-3.5">
                         <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 shadow-sm shrink-0 max-sm:mb-1">
@@ -173,8 +212,8 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                               <span className="text-xs font-bold text-violet-300 uppercase tracking-widest">
                                  AI Feedback Evaluation
                               </span>
-                              <p className="text-sm text-zinc-300 leading-relaxed mt-2 font-medium">
-                                 {aiFeedback.summary}
+                              <p className="text-sm text-zinc-300 leading-relaxed mt-2">
+                                 {feedback.summary}
                               </p>
                            </div>
 
@@ -183,8 +222,8 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                               <div className="flex flex-wrap justify-between items-center gap-4 w-full">
                                  <div className="flex items-center gap-2">
                                     <span className="text-xs text-zinc-500">Performance:</span>
-                                    <span className={`text-xs px-2.5 py-0.5 rounded-full border font-bold ${getPerformanceLevelColor(aiFeedback.performanceLevel)}`}>
-                                       {aiFeedback.performanceLevel}
+                                    <span className={`text-xs px-2.5 py-0.5 rounded-full border font-bold ${getPerformanceLevelColor(feedback.overallRating)}`}>
+                                       {feedback.overallRating}
                                     </span>
                                  </div>
 
@@ -194,10 +233,10 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                                        <div className="h-2 w-20 bg-zinc-800 rounded-full overflow-hidden">
                                           <div
                                              className="h-full bg-linear-to-r from-violet-500 to-indigo-500 rounded-full"
-                                             style={{ width: `${aiFeedback.overallScore}%` }}
+                                             style={{ width: `${(Number(feedback.sessionRating) / 5) * 100}%` }}
                                           />
                                        </div>
-                                       <span className="text-xs font-bold text-zinc-200 font-outfit">{aiFeedback.overallScore}/100</span>
+                                       <span className="text-xs font-bold text-zinc-200 font-outfit">{(Number(feedback.sessionRating) / 5) * 100}/100</span>
                                     </div>
                                  </div>
                               </div>
@@ -210,7 +249,7 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                {/* Actions Area */}
                <div className="p-6 2xl:p-7 flex flex-wrap items-center justify-end gap-2.5 2xl:gap-3">
 
-                  {status === 'upcoming' && (
+                  {status === 'SCHEDULED' && (
                      <>
                         <Button variant="ghost" className="cursor-pointer text-zinc-400 hover:text-rose-400 hover:bg-rose-500/5 text-xs rounded-lg h-9">
                            Cancel Booking
@@ -222,19 +261,7 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                      </>
                   )}
 
-                  {status === 'in-progress' && (
-                     <>
-                        <Button variant="outline" className="cursor-pointer border-white/5 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 text-xs rounded-lg h-9">
-                           View Room Info
-                        </Button>
-                        <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg animate-pulse flex items-center gap-1.5">
-                           <Video className="w-3.5 h-3.5" />
-                           Enter Session
-                        </Button>
-                     </>
-                  )}
-
-                  {status === 'completed' && (
+                  {status === 'COMPLETED' && (
                      <>
                         <Button variant="outline" className="cursor-pointer border-white/5 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 text-xs rounded-lg h-9 flex items-center gap-1.5">
                            <Play className="w-3 h-3 text-violet-400 fill-violet-400" />
@@ -247,7 +274,7 @@ const AppointmentCard = ({ appointment }: AppointmentCardProps) => {
                      </>
                   )}
 
-                  {status === 'cancelled' && (
+                  {status === 'CANCELLED' && (
                      <>
                         <Button className="cursor-pointer bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5">
                            Book Again

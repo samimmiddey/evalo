@@ -1,53 +1,97 @@
+import CustomTooltip from '@/components/common/custom-tooltip';
 import SearchBar from '@/components/common/search-bar';
 import { Badge } from '@/components/ui/badge';
-import { appointsData } from '@/data/appointmens/appointments.data';
-import { useMemo, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Grid2x2, Rows3 } from 'lucide-react';
+import { useMemo } from 'react';
+import { ViewType } from '@/types/ui.types';
+import { AppointmentsFilterParams, AppointmentsStatsData, InterviewStatus } from '../types/appointments.types';
 
-const FilterBar = () => {
-   const [searchValue, setSearchValue] = useState<string>('');
+interface FilterBarProps {
+   view: ViewType;
+   setView: (view: ViewType) => void;
+   filterParams: AppointmentsFilterParams;
+   onFilterParams: React.Dispatch<React.SetStateAction<AppointmentsFilterParams>>;
+   data: AppointmentsStatsData | null;
+   isLoading: boolean;
+}
 
-   // Statistics Calculations
+const FilterBar = ({ view, setView, filterParams, onFilterParams, data, isLoading }: FilterBarProps) => {
    const stats = useMemo(() => {
-      return {
-         all: appointsData.appointments.length,
-         scheduled: appointsData.appointments.filter(a => a.status === 'scheduled' || a.status === 'in-progress').length,
-         completed: appointsData.appointments.filter(a => a.status === 'completed').length,
-         cancelled: appointsData.appointments.filter(a => a.status === 'cancelled').length,
+      if (!data) return {
+         all: 0,
+         scheduled: 0,
+         completed: 0,
+         cancelled: 0
       };
-   }, []);
+
+      return {
+         all: data?.totalCount,
+         scheduled: data?.scheduledCount,
+         completed: data?.completedCount,
+         cancelled: data?.cancelledCount
+      };
+   }, [data]);
 
    return (
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-2 bg-zinc-900/40 border border-white/5 rounded-xl mb-7 2xl:mb-8 relative z-10 backdrop-blur-xl">
          <div className="lg:flex lg:flex-wrap lg:items-center max-lg:grid max-lg:grid-cols-4 max-sm:grid-cols-2 gap-2">
             {(['all', 'scheduled', 'completed', 'cancelled'] as const).map((tab) => {
-               const isActive = 'all' === tab;
+               const isActive = new Set([filterParams.status?.toLowerCase() ?? 'all']).has(tab);
                const count = stats[tab];
                return (
                   <Badge
                      key={tab}
                      variant='outline'
+                     onClick={() => onFilterParams({ ...filterParams, status: tab === 'all' ? undefined : tab.toUpperCase() as InterviewStatus })}
                      className={`max-lg:w-full flex items-center gap-2 px-4! h-10 text-sm font-medium rounded-lg! transition-all duration-200 cursor-pointer ${isActive ? 'bg-violet-500/10 border-violet-500/30 hover:bg-violet-500/20 text-violet-300' : 'bg-zinc-900 border-white/10 text-zinc-400 hover:text-zinc-100 hover:border-white/20'}`}
                   >
                      <span className="capitalize">{tab}</span>
-                     <span
-                        className={`inline-flex items-center justify-center h-5 w-5 text-xs rounded-md ${isActive ? 'bg-violet-500/20 text-violet-300' : 'bg-zinc-800 text-zinc-400'
-                           }`}
-                     >
-                        {count}
-                     </span>
+                     {
+                        isLoading ? (
+                           <span className={`h-5 w-5 rounded-md animate-pulse ${isActive ? 'bg-violet-500/20' : 'bg-zinc-800'
+                              }`} />
+                        ) : (
+                           <span
+                              className={`inline-flex items-center justify-center h-5 w-5 text-xs rounded-md ${isActive ? 'bg-violet-500/20 text-violet-300' : 'bg-zinc-800 text-zinc-400'
+                                 }`}
+                           >
+                              {count}
+                           </span>
+
+                        )
+                     }
                   </Badge>
                );
             })}
          </div>
 
          {/* Search & Simulation Controls */}
-         <div className="flex items-center gap-3.5 w-full lg:w-82 2xl:w-86">
+         <div className="flex items-center gap-2.5 w-full lg:w-86 2xl:w-90">
             <SearchBar
-               value={searchValue}
-               setValue={e => setSearchValue(e.target.value)}
+               value={filterParams?.search || ''}
+               setValue={e => onFilterParams({ ...filterParams, search: e.target.value })}
                showLabel={false}
                placeholder='Search interviews...'
                inputClassName='h-10!'
+            />
+            <CustomTooltip
+               trigger={
+                  <Button
+                     onClick={() => setView(view === 'grid' ? 'list' : 'grid')}
+                     variant="outline"
+                     className="w-fit shrink-0 h-10! bg-zinc-900 hover:bg-zinc-800 border-white/10 text-zinc-100"
+                  >
+                     {
+                        view === 'list' ?
+                           <Rows3 className="w-4 h-4" /> :
+                           <Grid2x2 className="w-4 h-4" />
+                     }
+                  </Button>
+               }
+               content={
+                  <p>View {view === 'list' ? 'Grid' : 'List'} </p>
+               }
             />
          </div>
       </div>

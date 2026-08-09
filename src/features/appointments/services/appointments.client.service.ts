@@ -1,9 +1,9 @@
 "use client";
 
 import { apiError } from "@/lib/api-error";
-import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams } from "../types/appointments.types";
+import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams, AppointmentsStatsClientResponse, AppointmentsStatsData } from "../types/appointments.types";
 import { api } from "@/lib/api";
-import { GET_APPOINTMENTS } from "@/config/query-urls";
+import { GET_APPOINTMENT_STATS, GET_APPOINTMENTS } from "@/config/query-urls";
 
 export const getAppointments = async (params: GetAppointmentsParams): Promise<AppointmentsData> => {
    try {
@@ -17,6 +17,22 @@ export const getAppointments = async (params: GetAppointmentsParams): Promise<Ap
       if (status) searchParams.set('status', status.toString());
 
       const res = await api.get(`${GET_APPOINTMENTS}?${searchParams.toString()}`).json<GetAppointmentsClientResponse>();
+
+      if (!res.success) {
+         throw new Error(res.error);
+      }
+
+      return res.data;
+
+   } catch (error: unknown) {
+      return apiError(error, "Failed to get appointments");
+   }
+};
+
+export const getAppointmentsStats = async (): Promise<AppointmentsStatsData> => {
+   try {
+
+      const res = await api.get(GET_APPOINTMENT_STATS).json<AppointmentsStatsClientResponse>();
 
       if (!res.success) {
          throw new Error(res.error);

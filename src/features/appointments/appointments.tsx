@@ -1,48 +1,55 @@
 'use client';
 
-import { appointsData } from '@/data/appointmens/appointments.data';
-import AppointmentCard from './components/appointment-card';
-import HelpfulTips from './components/helpful-tips';
 import AppointmentsHeader from './components/appointments-header';
-import EnhancedNoDataCard from '@/components/common/enhanced-no-data-card';
 import FilterBar from './components/filter-bar';
+import { useEffect, useState } from 'react';
+import { AppointmentsFilterParams } from './types/appointments.types';
+import useView from '@/hooks/use-view';
+import AppointmentsList from './components/appointments-list';
+import { useFetch } from '@/hooks/use-fetch';
+import { getAppointmentsStats } from './services/appointments.client.service';
+import { toast } from 'sonner';
 
 const Appointments = () => {
+   const [filterParams, setFilterParams] = useState<AppointmentsFilterParams>({
+      search: "",
+      status: undefined
+   });
+
+   const { isLoading, data, error } = useFetch(() => getAppointmentsStats());
+
+   const { view, setView } = useView('list');
+
+   useEffect(() => {
+      if (error) {
+         toast.error(error);
+      }
+   }, [error]);
+
    return (
       <div className="container s-margin-t">
 
          {/* Page Header */}
-         <AppointmentsHeader data={appointsData.header} />
+         <AppointmentsHeader
+            data={data}
+            isLoading={isLoading}
+         />
 
          {/* Filter and Navigation Bar */}
-         <FilterBar />
+         <FilterBar
+            view={view}
+            setView={setView}
+            filterParams={filterParams}
+            onFilterParams={setFilterParams}
+            data={data}
+            isLoading={isLoading}
+         />
 
          {/* Appointment Listings */}
-         {appointsData.appointments.length === 0 ? (
-            /* Empty State */
-            <EnhancedNoDataCard
-               title="No appointments yet"
-               body="We couldn't find any appointments matching your filters. Book a time slot with our vetted professionals to start practicing."
-               showButton={true}
-               buttonText="Explore Interviewers"
-               buttonLink="/explore"
-            />
-         ) : (
-            /* Cards Container */
-            <div className="space-y-6 relative z-10">
-               {
-                  appointsData.appointments.map((appointment) => (
-                     <AppointmentCard
-                        key={appointment.id}
-                        appointment={appointment}
-                     />
-                  ))
-               }
-            </div>
-         )}
-
-         {/* Helpful tips / FAQ section */}
-         <HelpfulTips data={appointsData.helpfulTips} />
+         <AppointmentsList
+            filterParams={filterParams}
+            view={view}
+         />
 
       </div>
    );

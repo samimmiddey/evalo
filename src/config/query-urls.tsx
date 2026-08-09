@@ -9,4 +9,5 @@ export const GET_INTERVIEWERS = '/explore/list';
 export const BOOK_SESSION = '/explore/book-session';
 
 // Appointments
-export const GET_APPOINTMENTS = '/appointments';
+export const GET_APPOINTMENTS = '/appointments/list';
+export const GET_APPOINTMENT_STATS = '/appointments/stats';
