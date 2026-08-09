@@ -10,7 +10,7 @@ const FilterBar = () => {
    const stats = useMemo(() => {
       return {
          all: appointsData.appointments.length,
-         upcoming: appointsData.appointments.filter(a => a.status === 'upcoming' || a.status === 'in-progress').length,
+         scheduled: appointsData.appointments.filter(a => a.status === 'scheduled' || a.status === 'in-progress').length,
          completed: appointsData.appointments.filter(a => a.status === 'completed').length,
          cancelled: appointsData.appointments.filter(a => a.status === 'cancelled').length,
       };
@@ -19,7 +19,7 @@ const FilterBar = () => {
    return (
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-2 bg-zinc-900/40 border border-white/5 rounded-xl mb-7 2xl:mb-8 relative z-10 backdrop-blur-xl">
          <div className="lg:flex lg:flex-wrap lg:items-center max-lg:grid max-lg:grid-cols-4 max-sm:grid-cols-2 gap-2">
-            {(['all', 'upcoming', 'completed', 'cancelled'] as const).map((tab) => {
+            {(['all', 'scheduled', 'completed', 'cancelled'] as const).map((tab) => {
                const isActive = 'all' === tab;
                const count = stats[tab];
                return (

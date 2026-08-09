@@ -11,7 +11,7 @@ export interface Appointment {
       rating: number;
       reviewsCount: number;
    };
-   status: 'upcoming' | 'in-progress' | 'completed' | 'cancelled';
+   status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
    date: string;
    timeSlot: string;
    duration: string;

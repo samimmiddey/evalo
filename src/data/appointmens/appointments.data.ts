@@ -6,7 +6,7 @@ export const appointsData: AppointmentsData = {
       body: 'Manage your upcoming mock interviews, access session rooms, and review AI-powered evaluation summaries.',
       stats: [
          {
-            title: 'Upcoming',
+            title: 'scheduled',
             value: '2',
          },
          {
@@ -61,7 +61,7 @@ export const appointsData: AppointmentsData = {
             rating: 5.0,
             reviewsCount: 98
          },
-         status: 'upcoming',
+         status: 'scheduled',
          date: 'Aug 15, 2026',
          timeSlot: '02:00 PM - 03:00 PM',
          duration: '60 min'
