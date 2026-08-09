@@ -1,4 +1,3 @@
-import { Info } from "lucide-react";
 import { AppointmentsData } from "./appointments.types";
 
 export const appointsData: AppointmentsData = {
@@ -36,7 +35,7 @@ export const appointsData: AppointmentsData = {
          },
          status: 'completed',
          date: 'Aug 12, 2026',
-         timeSlot: '10:00 AM – 11:00 AM',
+         timeSlot: '10:00 AM - 11:00 AM',
          duration: '60 min',
          aiFeedback: {
             summary: 'Strong technical understanding with good problem-solving ability. Communication was clear and structured, although the candidate could improve the depth of system-design explanations.',
@@ -64,7 +63,7 @@ export const appointsData: AppointmentsData = {
          },
          status: 'upcoming',
          date: 'Aug 15, 2026',
-         timeSlot: '02:00 PM – 03:00 PM',
+         timeSlot: '02:00 PM - 03:00 PM',
          duration: '60 min'
       },
       {
@@ -82,7 +81,7 @@ export const appointsData: AppointmentsData = {
          },
          status: 'in-progress',
          date: 'Aug 09, 2026',
-         timeSlot: '12:00 PM – 01:00 PM',
+         timeSlot: '12:00 PM - 01:00 PM',
          duration: '60 min'
       },
       {
@@ -100,7 +99,7 @@ export const appointsData: AppointmentsData = {
          },
          status: 'completed',
          date: 'Aug 05, 2026',
-         timeSlot: '04:00 PM – 05:00 PM',
+         timeSlot: '04:00 PM - 05:00 PM',
          duration: '60 min',
          aiFeedback: {
             summary: 'Demonstrated exceptional engineering leadership and architectural planning. Excelled at scaling strategies. Minor adjustments suggested for concrete database choice justifications under heavy write loads.',
@@ -128,12 +127,11 @@ export const appointsData: AppointmentsData = {
          },
          status: 'cancelled',
          date: 'Jul 28, 2026',
-         timeSlot: '09:00 AM – 10:00 AM',
+         timeSlot: '09:00 AM - 10:00 AM',
          duration: '60 min'
       }
    ],
    helpfulTips: {
-      icon: Info,
       header: "Preparation Guidelines",
       body: "All mock interviews are conducted using Evalo's integrated room with compiler and collaborative audio/video features. Make sure to join the session at least 5 minutes early to test your audio, video, and connection. AI feedback reports are generated within 10 minutes of completing a session."
    }

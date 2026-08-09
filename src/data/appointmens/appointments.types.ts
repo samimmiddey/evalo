@@ -1,5 +1,3 @@
-import { LucideIcon } from "lucide-react";
-
 export interface Appointment {
    id: string;
    interviewer: {
@@ -30,7 +28,6 @@ export interface Appointment {
 }
 
 export interface HelpfulTips {
-   icon: LucideIcon;
    header: string;
    body: string;
 }
