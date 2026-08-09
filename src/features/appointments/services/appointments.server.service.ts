@@ -1,10 +1,10 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
-import { GetAppointmentsParams, GetAppointmentsResponse } from "../types/appointments.types";
+import { GetAppointmentsParams, GetAppointmentsServerResponse } from "../types/appointments.types";
 import { Prisma } from "@/generated/prisma/client";
 
-export const getAppointments = async (params: GetAppointmentsParams = {}): Promise<GetAppointmentsResponse> => {
+export const getAppointments = async (params: GetAppointmentsParams = {}): Promise<GetAppointmentsServerResponse> => {
    const user = await currentUser();
 
    // Check if user is logged in

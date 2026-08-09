@@ -11,16 +11,6 @@ export interface GetAppointmentsParams {
    status?: InterviewStatus;
 }
 
-export interface Interview {
-   id: string;
-   startTime: string | Date;
-   endTime: string | Date;
-   status: InterviewStatus;
-   streamStatus: StreamStatus;
-   interviewer: Interviewer;
-   feedback: Feedback | null;
-}
-
 export interface Interviewer {
    firstName: string | null;
    lastName: string | null;
@@ -35,6 +25,16 @@ export interface Interviewer {
    totalRatings: number | null;
 }
 
+export interface Interview {
+   id: string;
+   startTime: string | Date;
+   endTime: string | Date;
+   status: InterviewStatus;
+   streamStatus: StreamStatus;
+   interviewer: Interviewer;
+   feedback: Feedback | null;
+}
+
 export interface AppointmentsData {
    success: true,
    data: Interview[];
@@ -46,7 +46,7 @@ export interface AppointmentsData {
    hasPrevPage: boolean;
 }
 
-export type GetAppointmentsResponse =
+export type GetAppointmentsServerResponse =
    | { success: false, message: string; }
    | AppointmentsData;
 
