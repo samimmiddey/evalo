@@ -1,7 +1,7 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
-import { GetAppointmentsParams, GetAppointmentsServerResponse, AppointmentsStatsServerResponse, RetryBookSessionServerResponse } from "../types/appointments.types";
+import { GetAppointmentsParams, GetAppointmentsServerResponse, AppointmentsStatsServerResponse, RetryBookSessionServerResponse, CancelBookingServerResponse } from "../types/appointments.types";
 import { Prisma } from "@/generated/prisma/client";
 import { StreamClient } from "@stream-io/node-sdk";
 
@@ -282,7 +282,7 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
    }
 };
 
-export const cancelBooking = async (bookingId: string) => {
+export const cancelBooking = async (bookingId: string): Promise<CancelBookingServerResponse> => {
    const user = await currentUser();
 
    if (!user) {

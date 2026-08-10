@@ -101,3 +101,8 @@ export interface RetryBookSession {
 export type RetryBookSessionServerResponse =
    | RetryBookSession
    | { success: false; message: string; };
+
+export interface CancelBookingServerResponse {
+   success: boolean;
+   message: string;
+}
