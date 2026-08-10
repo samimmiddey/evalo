@@ -15,7 +15,7 @@ const ModalWrapper = ({ open, onClose, title, description, children }: ModalWrap
       <Dialog open={open} onOpenChange={onClose}>
          <DialogContent
             showCloseButton={false}
-            className="flex flex-col gap-0 p-0 w-full max-w-6xl max-h-[90vh]
+            className="flex flex-col gap-0 p-0 w-[calc(100%-2rem)] max-w-6xl max-h-[90vh]
                rounded-2xl border border-white/8 bg-[#0f0f12] shadow-2xl shadow-black/60
                sm:max-w-6xl overflow-hidden z-9999"
          >

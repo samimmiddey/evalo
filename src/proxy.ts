@@ -21,7 +21,7 @@ const isAuthRoute = createRouteMatcher([
 ]);
 
 const roleRouteMap = [
-   { matcher: createRouteMatcher(['/explore(.*)']), allowedRole: 'INTERVIEWEE' },
+   { matcher: createRouteMatcher(['/explore(.*)', '/appointments(.*)']), allowedRole: 'INTERVIEWEE' },
    { matcher: createRouteMatcher(['/dashboard(.*)']), allowedRole: 'INTERVIEWER' },
 ] as const;
 

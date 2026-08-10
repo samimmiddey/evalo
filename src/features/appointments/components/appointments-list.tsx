@@ -3,7 +3,7 @@ import ErrorCard from '@/components/common/error-card';
 import { useInfiniteFetch } from '@/hooks/use-infinite-fetch';
 import { usePaginationTrigger } from '@/hooks/use-pagination-trigger';
 import { getAppointments } from '../services/appointments.client.service';
-import { AppointmentsFilterParams } from '../types/appointments.types';
+import { AppointmentsFilterParams, Feedback } from '../types/appointments.types';
 import useDebounce from '@/hooks/use-debounce';
 import ListEndMessage from '@/components/common/list-end-message';
 import AppointmentCard from './appointment-card';
@@ -13,9 +13,10 @@ import { ViewType } from '@/types/ui.types';
 interface AppointmentsListProps {
    filterParams: AppointmentsFilterParams;
    view: ViewType;
+   onViewFeedback?: (feedbackId: string, feedback: Feedback) => void;
 }
 
-const AppointmentsList = ({ filterParams, view }: AppointmentsListProps) => {
+const AppointmentsList = ({ filterParams, view, onViewFeedback }: AppointmentsListProps) => {
    const debouncedParams = useDebounce(filterParams, 500);
 
    const params = {
@@ -70,6 +71,7 @@ const AppointmentsList = ({ filterParams, view }: AppointmentsListProps) => {
                      key={appointment.id}
                      appointment={appointment}
                      view={view}
+                     onViewFeedback={onViewFeedback}
                   />
                ))
             }

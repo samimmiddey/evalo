@@ -1,4 +1,3 @@
-import { Feedback } from "@/generated/prisma/client";
 import { InterviewExpertise, StreamStatus } from "@/generated/prisma/enums";
 import { BaseResponse } from "@/types/api.types";
 
@@ -24,6 +23,22 @@ export interface Interviewer {
    averageRating: number | null;
    totalRatings: number | null;
 }
+
+export interface Feedback {
+   id: string;
+   bookingId: string;
+   summary: string;
+   technical: string;
+   communication: string;
+   problemSolving: string;
+   recommendation: string;
+   strengths: string[];
+   improvements: string[];
+   overallRating: 'EXCELLENT' | 'GOOD' | 'AVERAGE' | 'POOR';
+   sessionRating: number;
+   sessionComment: string;
+   createdAt: string;
+};
 
 export interface Interview {
    id: string;

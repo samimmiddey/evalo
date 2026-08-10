@@ -2,7 +2,7 @@ import CardLayout from '@/components/layouts/card-layout';
 import { Briefcase, Building2, Calendar, Clock, FileText, Hourglass, Info, NotebookText, Play, Star, Video } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Interview } from '../types/appointments.types';
+import { Feedback, Interview } from '../types/appointments.types';
 import { differenceInMinutes, format } from 'date-fns';
 import { appointsData } from '@/data/appointmens/appointments.data';
 import { ViewType } from '@/types/ui.types';
@@ -10,9 +10,10 @@ import { ViewType } from '@/types/ui.types';
 interface AppointmentCardProps {
    appointment: Interview;
    view: ViewType;
+   onViewFeedback?: (feedbackId: string, feedback: Feedback) => void;
 }
 
-const AppointmentCard = ({ appointment, view }: AppointmentCardProps) => {
+const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardProps) => {
    const { interviewer, startTime, endTime, status, feedback } = appointment;
 
    // Status Badge Helper
@@ -267,7 +268,14 @@ const AppointmentCard = ({ appointment, view }: AppointmentCardProps) => {
                            <Play className="w-3 h-3 text-violet-400 fill-violet-400" />
                            View Recording
                         </Button>
-                        <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5">
+                        <Button
+                           onClick={() => {
+                              if (feedback) {
+                                 onViewFeedback?.(feedback.id, feedback);
+                              }
+                           }}
+                           className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5"
+                        >
                            <FileText className="w-3.5 h-3.5 text-violet-200" />
                            View Full Feedback
                         </Button>
