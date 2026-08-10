@@ -7,6 +7,11 @@ import { differenceInMinutes, format } from 'date-fns';
 import { appointsData } from '@/data/appointments/appointments.data';
 import { ViewType } from '@/types/ui.types';
 import Link from 'next/link';
+import { useMutation } from '@/hooks/use-mutation';
+import { cancelBooking, retryStreamCall } from '../services/appointments.client.service';
+import { toast } from 'sonner';
+import { useEffect } from 'react';
+import CustomSpinner from '@/components/common/custom-spinner';
 
 interface AppointmentCardProps {
    appointment: Interview;
@@ -16,6 +21,52 @@ interface AppointmentCardProps {
 
 const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardProps) => {
    const { interviewer, startTime, endTime, status, feedback, streamCallId } = appointment;
+
+   // Retry Stream Call
+   const {
+      isPending: isRetryPending,
+      error: retryError,
+      mutate: retryMutation
+   } = useMutation(() =>
+      retryStreamCall(streamCallId!)
+   );
+
+   // Cancel Stream Call
+   const {
+      isPending: isCancelPending,
+      error: cancelError,
+      mutate: cancelMutation } =
+      useMutation(() =>
+         cancelBooking(streamCallId!)
+      );
+
+   // Handle retry call
+   const handleRetryStreamCall = async () => {
+      const res = await retryMutation();
+
+      if (res?.success) {
+         toast.success('Booking prepared successfully');
+      }
+   };
+
+   // Handle cancel call
+   const handleCancelBooking = async () => {
+      const res = await cancelMutation();
+
+      if (res?.success) {
+         toast.success("Booking cancelled successfully");
+      }
+   };
+
+   // Handle mutation errors
+   useEffect(() => {
+      if (retryError) {
+         toast.error(retryError);
+      }
+      if (cancelError) {
+         toast.error(cancelError);
+      }
+   }, [retryError, cancelError]);
 
    // Status Badge Helper
    const renderStatusBadge = (status: Interview['status']) => {
@@ -253,8 +304,13 @@ const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardP
 
                   {status === 'SCHEDULED' && (
                      <>
-                        <Button variant="ghost" className="cursor-pointer text-zinc-400 hover:text-rose-400 hover:bg-rose-500/5 text-xs rounded-lg h-9">
-                           Cancel Booking
+                        <Button
+                           variant="ghost"
+                           className="cursor-pointer text-zinc-400 hover:text-rose-400 hover:bg-rose-500/5 text-xs rounded-lg h-9"
+                           onClick={() => void handleCancelBooking()}
+                           disabled={isCancelPending}
+                        >
+                           {isCancelPending ? <CustomSpinner text="Cancelling..." /> : "Cancel Booking"}
                         </Button>
 
                         {appointment.streamStatus === 'READY' && (
@@ -278,8 +334,10 @@ const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardP
                         {appointment.streamStatus === 'FAILED' && (
                            <Button
                               className="cursor-pointer bg-amber-600 hover:bg-amber-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold"
+                              onClick={() => void handleRetryStreamCall()}
+                              disabled={isRetryPending}
                            >
-                              Retry Meeting Setup
+                              {isCancelPending ? <CustomSpinner text="Retrying Setup..." /> : "Retry Meeting Setup"}
                            </Button>
                         )}
                      </>

@@ -1,7 +1,7 @@
 "use client";
 
 import { apiError } from "@/lib/api-error";
-import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams, AppointmentsStatsClientResponse, AppointmentsStatsData, CancelBookingClientResponse, RetryBookSessionClientResponse } from "../types/appointments.types";
+import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams, AppointmentsStatsClientResponse, AppointmentsStatsData, CancelBookingClientResponse, RetryBookSessionClientResponse, RetryBookSession, CancelBooking } from "../types/appointments.types";
 import { api } from "@/lib/api";
 import { CANCEL_BOOKING, GET_APPOINTMENT_STATS, GET_APPOINTMENTS, RETRY_BOOKING } from "@/config/query-urls";
 
@@ -48,26 +48,40 @@ export const getAppointmentsStats = async (): Promise<AppointmentsStatsData> => 
 };
 
 // Cancel booking
-export const cancelBooking = async (bookingId: string): Promise<void> => {
+export const cancelBooking = async (bookingId: string): Promise<CancelBooking> => {
    try {
+      if (!bookingId) {
+         throw new Error("Booking ID is required");
+      }
+
       const res = await api.post(CANCEL_BOOKING, { json: { bookingId } }).json<CancelBookingClientResponse>();
 
       if (!res.success) {
          throw new Error(res.error);
       }
+
+      return {
+         success: res.data.success
+      };
    } catch (error: unknown) {
       return apiError(error, "Failed to cancel booking");
    }
 };
 
 // Retry booking
-export const retryStreamCall = async (bookingId: string): Promise<void> => {
+export const retryStreamCall = async (bookingId: string): Promise<RetryBookSession> => {
    try {
+      if (!bookingId) {
+         throw new Error("Booking ID is required");
+      }
+
       const res = await api.post(RETRY_BOOKING, { json: { bookingId } }).json<RetryBookSessionClientResponse>();
 
       if (!res.success) {
          throw new Error(res.error);
       }
+
+      return res.data;
    } catch (error: unknown) {
       return apiError(error, "We couldn't prepare the meeting room. Please try again.");
    }

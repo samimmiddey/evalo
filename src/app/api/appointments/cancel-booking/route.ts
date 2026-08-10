@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
       return apiResponse({
          statusCode: 200,
          data: {
-            message: result.message ?? 'Booking cancelled successfully'
+            success: true
          }
       });
    } catch (error: unknown) {
