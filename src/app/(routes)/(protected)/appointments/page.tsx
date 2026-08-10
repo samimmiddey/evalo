@@ -1,4 +1,4 @@
-import Appointments from '@/features/appointments/appointments';
+import Appointments from '@/features/interviews/appointments/appointments';
 
 const AppointmentsPage = () => {
    return (

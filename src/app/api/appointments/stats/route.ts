@@ -1,4 +1,4 @@
-import { getAppointmentStats } from "@/features/appointments/services/appointments.server.service";
+import { getAppointmentStats } from "@/features/interviews/appointments/services/appointments.server.service";
 import { apiResponse } from "@/lib/api-response";
 
 export async function GET() {

@@ -1,5 +1,5 @@
-import { getAppointments } from "@/features/appointments/services/appointments.server.service";
-import { InterviewStatus } from "@/features/appointments/types/appointments.types";
+import { getAppointments } from "@/features/interviews/appointments/services/appointments.server.service";
+import { InterviewStatus } from "@/features/interviews/appointments/types/appointments.types";
 import { apiResponse } from "@/lib/api-response";
 import { NextRequest } from "next/server";
 

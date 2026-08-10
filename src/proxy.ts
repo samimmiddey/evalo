@@ -21,7 +21,7 @@ const isAuthRoute = createRouteMatcher([
 ]);
 
 const roleRouteMap = [
-   { matcher: createRouteMatcher(['/explore(.*)', '/appointments(.*)']), allowedRole: 'INTERVIEWEE' },
+   { matcher: createRouteMatcher(['/interviewers(.*)', '/appointments(.*)']), allowedRole: 'INTERVIEWEE' },
    { matcher: createRouteMatcher(['/dashboard(.*)']), allowedRole: 'INTERVIEWER' },
 ] as const;
 
@@ -86,7 +86,7 @@ export default clerkMiddleware(async (auth, req) => {
       const matchedRule = roleRouteMap.find(({ matcher }) => matcher(req));
 
       if (matchedRule && matchedRule.allowedRole !== role) {
-         const fallbackUrl = role === 'INTERVIEWER' ? '/dashboard' : '/explore';
+         const fallbackUrl = role === 'INTERVIEWER' ? '/dashboard' : '/interviewers';
          return NextResponse.redirect(new URL(fallbackUrl, req.url));
       }
    }

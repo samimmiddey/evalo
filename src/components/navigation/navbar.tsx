@@ -73,7 +73,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                               {
                                  user?.role === 'INTERVIEWEE' && (
                                     <>
-                                       <Link href='/explore'>
+                                       <Link href='/interviewers'>
                                           <Button variant="ghost" size="lg">
                                              <Users className='icon-size' />
                                              <span className="max-lg:hidden">Explore</span>
