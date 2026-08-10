@@ -28,7 +28,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardP
       error: retryError,
       mutate: retryMutation
    } = useMutation(() =>
-      retryStreamCall(streamCallId!)
+      retryStreamCall(appointment.id)
    );
 
    // Cancel Stream Call
@@ -37,7 +37,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardP
       error: cancelError,
       mutate: cancelMutation } =
       useMutation(() =>
-         cancelBooking(streamCallId!)
+         cancelBooking(appointment.id)
       );
 
    // Handle retry call
@@ -337,7 +337,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardP
                               onClick={() => void handleRetryStreamCall()}
                               disabled={isRetryPending}
                            >
-                              {isCancelPending ? <CustomSpinner text="Retrying Setup..." /> : "Retry Meeting Setup"}
+                              {isRetryPending ? <CustomSpinner text="Retrying Setup..." /> : "Retry Meeting Setup"}
                            </Button>
                         )}
                      </>
