@@ -6,6 +6,7 @@ import { Feedback, Interview } from '../types/appointments.types';
 import { differenceInMinutes, format } from 'date-fns';
 import { appointsData } from '@/data/appointmens/appointments.data';
 import { ViewType } from '@/types/ui.types';
+import Link from 'next/link';
 
 interface AppointmentCardProps {
    appointment: Interview;
@@ -14,7 +15,7 @@ interface AppointmentCardProps {
 }
 
 const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardProps) => {
-   const { interviewer, startTime, endTime, status, feedback } = appointment;
+   const { interviewer, startTime, endTime, status, feedback, streamCallId } = appointment;
 
    // Status Badge Helper
    const renderStatusBadge = (status: Interview['status']) => {
@@ -255,10 +256,32 @@ const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardP
                         <Button variant="ghost" className="cursor-pointer text-zinc-400 hover:text-rose-400 hover:bg-rose-500/5 text-xs rounded-lg h-9">
                            Cancel Booking
                         </Button>
-                        <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5">
-                           <Video className="w-3.5 h-3.5" />
-                           Join Interview
-                        </Button>
+
+                        {appointment.streamStatus === 'READY' && (
+                           <Link href={`/session/${streamCallId}`}>
+                              <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5">
+                                 <Video className="w-3.5 h-3.5" />
+                                 Join Interview
+                              </Button>
+                           </Link>
+                        )}
+
+                        {appointment.streamStatus === 'PENDING' && (
+                           <Button
+                              disabled
+                              className="text-zinc-500 text-xs rounded-lg h-9"
+                           >
+                              Preparing Meeting...
+                           </Button>
+                        )}
+
+                        {appointment.streamStatus === 'FAILED' && (
+                           <Button
+                              className="cursor-pointer bg-amber-600 hover:bg-amber-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold"
+                           >
+                              Retry Meeting Setup
+                           </Button>
+                        )}
                      </>
                   )}
 

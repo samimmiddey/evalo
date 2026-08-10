@@ -35,9 +35,9 @@ export interface Feedback {
    strengths: string[];
    improvements: string[];
    overallRating: 'EXCELLENT' | 'GOOD' | 'AVERAGE' | 'POOR';
-   sessionRating: number;
-   sessionComment: string;
-   createdAt: string;
+   sessionRating: number | null;
+   sessionComment: string | null;
+   createdAt: Date;
 };
 
 export interface Interview {
@@ -45,6 +45,7 @@ export interface Interview {
    startTime: string | Date;
    endTime: string | Date;
    status: InterviewStatus;
+   streamCallId: string | null;
    streamStatus: StreamStatus;
    interviewer: Interviewer;
    feedback: Feedback | null;
@@ -90,3 +91,13 @@ export type AppointmentsStatsServerResponse =
    | AppointmentsStats;
 
 export type AppointmentsStatsClientResponse = BaseResponse<AppointmentsStatsData>;
+
+export interface RetryBookSession {
+   success: true;
+   streamCallId: string | null;
+   streamStatus: StreamStatus;
+}
+
+export type RetryBookSessionServerResponse =
+   | RetryBookSession
+   | { success: false; message: string; };

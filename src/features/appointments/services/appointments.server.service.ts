@@ -1,8 +1,9 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
-import { GetAppointmentsParams, GetAppointmentsServerResponse, AppointmentsStatsServerResponse } from "../types/appointments.types";
+import { GetAppointmentsParams, GetAppointmentsServerResponse, AppointmentsStatsServerResponse, RetryBookSessionServerResponse } from "../types/appointments.types";
 import { Prisma } from "@/generated/prisma/client";
+import { StreamClient } from "@stream-io/node-sdk";
 
 export const getAppointments = async (params: GetAppointmentsParams = {}): Promise<GetAppointmentsServerResponse> => {
    const user = await currentUser();
@@ -174,4 +175,241 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
    } catch (error) {
       return serverError(error, "Failed to fetch appointment stats");
    }
+};
+
+export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessionServerResponse> => {
+   const user = await currentUser();
+
+   // Check if the user exists
+   if (!user) {
+      return {
+         success: false,
+         message: "Unauthenticated user"
+      };
+   }
+
+   // Fetch booking + verify if the current user is allowed to retry it
+   const booking = await db.booking.findUnique({
+      where: {
+         id: bookingId
+      },
+      include: {
+         interviewee: true,
+         interviewer: true
+      }
+   });
+
+   if (!booking) {
+      return {
+         success: false,
+         message: "Booking not found"
+      };
+   }
+
+   // Make sure the booking belongs to the current user
+   if (booking.interviewee.clerkUserId !== user.id &&
+      booking.interviewer.clerkUserId !== user.id) {
+      return {
+         success: false,
+         message: "Unauthorized user"
+      };
+   }
+
+   // Only retry failed stream calls
+   if (booking.streamStatus !== 'FAILED') {
+      return {
+         success: false,
+         message: "This meeting does not require a retry"
+      };
+   }
+
+   try {
+      const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
+      const secretKey = process.env.STREAM_SECRET_KEY;
+
+      if (!apiKey || !secretKey) {
+         throw new Error("Missing Stream environment variables");
+      }
+
+      const streamClient = new StreamClient(apiKey, secretKey);
+
+      // Store users on stream
+      await streamClient.upsertUsers([
+         {
+            id: booking.interviewee.clerkUserId,
+            name: booking.interviewee.firstName && booking.interviewee.lastName ? `${booking.interviewee.firstName} ${booking.interviewee.lastName}` : 'Interviewee',
+            image: booking.interviewee.imageUrl ?? undefined,
+            role: 'user'
+         },
+         {
+            id: booking.interviewer.clerkUserId,
+            name: booking.interviewer.firstName && booking.interviewer.lastName ? `${booking.interviewer.firstName} ${booking.interviewer.lastName}` : 'Interviewer',
+            image: booking.interviewer.imageUrl ?? undefined,
+            role: 'user'
+         }
+      ]);
+
+      const call = streamClient.video.call("default", booking.streamCallId!);
+
+      // Create call
+      await call.getOrCreate({
+         data: {
+            created_by_id: booking.interviewee.clerkUserId,
+            members: [
+               { user_id: booking.interviewee.clerkUserId, role: 'host' },
+               { user_id: booking.interviewer.clerkUserId, role: 'host' },
+            ],
+            settings_override: {
+               recording: { mode: 'available', quality: '1080p' },
+               screensharing: { enabled: true },
+               transcription: { mode: 'auto-on' }
+            }
+         }
+      });
+
+      const updated = await db.booking.update({
+         where: { id: booking.id },
+         data: { streamStatus: 'READY' }
+      });
+
+      return {
+         success: true,
+         streamCallId: booking.streamCallId,
+         streamStatus: updated.streamStatus
+      };
+   } catch (error: unknown) {
+      return serverError(error, "We couldn't prepare the meeting room. Please try again.");
+   }
+};
+
+export const cancelBooking = async (bookingId: string) => {
+   const user = await currentUser();
+
+   if (!user) {
+      return {
+         success: false,
+         message: "Unauthenticated user",
+      };
+   }
+
+   const booking = await db.booking.findUnique({
+      where: {
+         id: bookingId,
+      },
+      include: {
+         interviewee: true,
+         interviewer: true,
+      },
+   });
+
+   if (!booking) {
+      return {
+         success: false,
+         message: "Booking not found",
+      };
+   }
+
+   // Make sure the current user is part of this booking
+   if (
+      booking.interviewee.clerkUserId !== user.id &&
+      booking.interviewer.clerkUserId !== user.id
+   ) {
+      return {
+         success: false,
+         message: "Unauthorized user",
+      };
+   }
+
+   // Only scheduled bookings can be cancelled
+   if (booking.status !== "SCHEDULED") {
+      return {
+         success: false,
+         message: "This booking cannot be cancelled",
+      };
+   }
+
+   try {
+      await db.$transaction(async (tx) => {
+         await tx.booking.update({
+            where: {
+               id: booking.id,
+            },
+            data: {
+               status: "CANCELLED",
+            },
+         });
+
+         // Refund interviewee
+         await tx.creditTransaction.create({
+            data: {
+               userId: booking.intervieweeId,
+               amount: booking.creditsCharged,
+               type: "BOOKING_REFUND",
+               bookingId: booking.id,
+            },
+         });
+
+         await tx.user.update({
+            where: {
+               id: booking.intervieweeId,
+            },
+            data: {
+               credits: {
+                  increment: booking.creditsCharged,
+               },
+            },
+         });
+
+         // Reverse interviewer earning
+         await tx.creditTransaction.create({
+            data: {
+               userId: booking.interviewerId,
+               amount: -booking.creditsCharged,
+               type: "BOOKING_REVERSAL",
+               bookingId: booking.id,
+            },
+         });
+
+         await tx.user.update({
+            where: {
+               id: booking.interviewerId,
+            },
+            data: {
+               credits: {
+                  decrement: booking.creditsCharged,
+               },
+            },
+         });
+      });
+   } catch (error) {
+      return serverError(error, "Failed to cancel booking. Please try again later.");
+   }
+
+   // Stream cleanup is separate from the database transaction
+   if (booking.streamStatus === "READY" && booking.streamCallId) {
+      try {
+         const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
+         const secretKey = process.env.STREAM_SECRET_KEY;
+
+         if (!apiKey || !secretKey) {
+            throw new Error("Missing Stream environment variables");
+         }
+
+         const streamClient = new StreamClient(apiKey, secretKey);
+
+         const call = streamClient.video.call(
+            "default",
+            booking.streamCallId
+         );
+
+         await call.delete();
+      } catch (error) {
+         return serverError(error, "Failed to delete stream call. Please try again later.");
+      }
+   }
+
+   return {
+      success: true,
+      message: "Booking cancelled successfully.",
+   };
 };
