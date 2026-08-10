@@ -6,6 +6,7 @@ import { Grid2x2, Rows3 } from 'lucide-react';
 import { useMemo } from 'react';
 import { ViewType } from '@/types/ui.types';
 import { AppointmentsFilterParams, AppointmentsStatsData, InterviewStatus } from '../types/appointments.types';
+import useMediaQuery from '@/hooks/use-media-query';
 
 interface FilterBarProps {
    view: ViewType;
@@ -32,6 +33,8 @@ const FilterBar = ({ view, setView, filterParams, onFilterParams, data, isLoadin
          cancelled: data?.cancelledCount
       };
    }, [data]);
+
+   const lgWidth = useMediaQuery(1024);
 
    return (
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-2 bg-zinc-900/40 border border-white/5 rounded-xl mb-7 2xl:mb-8 relative z-10 backdrop-blur-xl">
@@ -75,24 +78,27 @@ const FilterBar = ({ view, setView, filterParams, onFilterParams, data, isLoadin
                placeholder='Search interviews...'
                inputClassName='h-10!'
             />
-            <CustomTooltip
-               trigger={
-                  <Button
-                     onClick={() => setView(view === 'grid' ? 'list' : 'grid')}
-                     variant="outline"
-                     className="w-fit shrink-0 h-10! bg-zinc-900 hover:bg-zinc-800 border-white/10 text-zinc-100"
-                  >
-                     {
-                        view === 'list' ?
-                           <Rows3 className="w-4 h-4" /> :
-                           <Grid2x2 className="w-4 h-4" />
-                     }
-                  </Button>
-               }
-               content={
-                  <p>View {view === 'list' ? 'Grid' : 'List'} </p>
-               }
-            />
+            {
+               !lgWidth &&
+               <CustomTooltip
+                  trigger={
+                     <Button
+                        onClick={() => setView(view === 'grid' ? 'list' : 'grid')}
+                        variant="outline"
+                        className="w-fit shrink-0 h-10! bg-zinc-900 hover:bg-zinc-800 border-white/10 text-zinc-100"
+                     >
+                        {
+                           view === 'list' ?
+                              <Rows3 className="w-4 h-4" /> :
+                              <Grid2x2 className="w-4 h-4" />
+                        }
+                     </Button>
+                  }
+                  content={
+                     <p>View {view === 'list' ? 'Grid' : 'List'} </p>
+                  }
+               />
+            }
          </div>
       </div>
    );
