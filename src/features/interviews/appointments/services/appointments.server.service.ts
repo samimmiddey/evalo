@@ -177,6 +177,7 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
    }
 };
 
+// Retry booking stream call
 export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessionServerResponse> => {
    const user = await currentUser();
 
@@ -282,9 +283,11 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
    }
 };
 
+// Cancel interview booking
 export const cancelBooking = async (bookingId: string): Promise<CancelBookingServerResponse> => {
    const user = await currentUser();
 
+   // Check if user is logged in
    if (!user) {
       return {
          success: false,
@@ -292,6 +295,7 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBookingSer
       };
    }
 
+   // Fetch booking + verify if the current user is allowed to cancel it
    const booking = await db.booking.findUnique({
       where: {
          id: bookingId,
@@ -328,6 +332,7 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBookingSer
       };
    }
 
+   // Cancel booking and refund credits
    try {
       await db.$transaction(async (tx) => {
          await tx.booking.update({
@@ -339,7 +344,7 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBookingSer
             },
          });
 
-         // Refund interviewee
+         // Record transaction as refund
          await tx.creditTransaction.create({
             data: {
                userId: booking.intervieweeId,
@@ -349,6 +354,7 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBookingSer
             },
          });
 
+         // Add credits back to interviewee's balance
          await tx.user.update({
             where: {
                id: booking.intervieweeId,
@@ -360,7 +366,7 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBookingSer
             },
          });
 
-         // Reverse interviewer earning
+         // Record transaction as reversal
          await tx.creditTransaction.create({
             data: {
                userId: booking.interviewerId,
@@ -370,6 +376,7 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBookingSer
             },
          });
 
+         // Remove credits from interviewer's balance
          await tx.user.update({
             where: {
                id: booking.interviewerId,
