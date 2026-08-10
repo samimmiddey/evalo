@@ -17,9 +17,10 @@ interface AppointmentCardProps {
    appointment: Interview;
    view: ViewType;
    onViewFeedback?: (feedbackId: string, feedback: Feedback) => void;
+   refetchInterviewList: () => void;
 }
 
-const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardProps) => {
+const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewList }: AppointmentCardProps) => {
    const { interviewer, startTime, endTime, status, feedback, streamCallId } = appointment;
 
    // Retry Stream Call
@@ -46,6 +47,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardP
 
       if (res?.success) {
          toast.success('Booking prepared successfully');
+         refetchInterviewList();
       }
    };
 
@@ -55,6 +57,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback }: AppointmentCardP
 
       if (res?.success) {
          toast.success("Booking cancelled successfully");
+         refetchInterviewList();
       }
    };
 

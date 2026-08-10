@@ -26,7 +26,7 @@ const AppointmentsList = ({ filterParams, view, onViewFeedback }: AppointmentsLi
       status: debouncedParams.status
    };
 
-   const { isLoading, data, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteFetch(
+   const { isLoading, data, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch: refetchInterviewList } = useInfiniteFetch(
       (page) => getAppointments({ ...params, page }),
       [debouncedParams]
    );
@@ -72,6 +72,7 @@ const AppointmentsList = ({ filterParams, view, onViewFeedback }: AppointmentsLi
                      appointment={appointment}
                      view={view}
                      onViewFeedback={onViewFeedback}
+                     refetchInterviewList={refetchInterviewList}
                   />
                ))
             }
