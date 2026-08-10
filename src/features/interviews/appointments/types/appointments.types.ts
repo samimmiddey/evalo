@@ -106,3 +106,6 @@ export interface CancelBookingServerResponse {
    success: boolean;
    message: string;
 }
+
+export type CancelBookingClientResponse = BaseResponse<CancelBookingServerResponse>;
+export type RetryBookSessionClientResponse = BaseResponse<RetryBookSession>;
