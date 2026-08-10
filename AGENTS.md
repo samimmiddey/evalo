@@ -40,11 +40,17 @@ src/
 │   │   │   ├── layout.tsx    # Wraps children in OnboardingProtection > UserGate
 │   │   │   ├── user-gate.tsx # Server component: fetches DB user, enforces role gates
 │   │   │   ├── onboarding-protection.tsx
-│   │   │   ├── explore/      # Interviewee: browse & book interviewers
+│   │   │   ├── interviewers/ # Interviewee: browse interviewers list + detail page ([id]/)
+│   │   │   ├── appointments/ # Interviewee: view booked appointments
 │   │   │   └── dashboard/    # Interviewer: manage availability, bookings, payouts
 │   │   └── (public)/         # Public marketing pages (home, about, pricing, contact)
 │   ├── api/                  # Route handlers (Next.js API routes)
-│   │   ├── interviewee/      # Interviewee-specific API endpoints
+│   │   ├── interviewers/     # Interviewer-related endpoints
+│   │   │   ├── list/         # GET paginated interviewer list
+│   │   │   └── book-session/ # POST book a session with an interviewer
+│   │   ├── appointments/     # Appointment-related endpoints
+│   │   │   ├── list/         # GET paginated appointments list
+│   │   │   └── stats/        # GET appointment stats
 │   │   ├── onboarding/       # Onboarding mutation endpoint
 │   │   ├── user/             # User data endpoint
 │   │   └── webhooks/
@@ -55,8 +61,11 @@ src/
 │
 ├── features/                 # Domain logic — primary location for business code
 │   ├── auth/                 # Sign-in, sign-up, OTP, SSO callback, forgot-password components
-│   ├── interviewee/
-│   │   └── explore/          # Explore page: components, client services, server services, types
+│   ├── interviews/           # All interview-related domain features
+│   │   ├── interviewer-list/ # Browse & filter interviewers: components, services, types
+│   │   ├── interviewer-details/ # Individual interviewer profile & booking: components, services, types
+│   │   ├── appointments/     # Booked appointments view: components, services, types
+│   │   └── shared/           # Shared types used across interview sub-features
 │   ├── onboarding/           # Onboarding form, tabs, schemas, services
 │   ├── special/              # Error / not-found / special UI screens
 │   └── static/               # Static marketing page feature modules
@@ -83,6 +92,8 @@ src/
 │   ├── server-error.ts       # Server-side error normaliser (Prisma errors → user-safe messages)
 │   └── utils.ts              # cn() and other generic utils
 ├── proxy.ts                  # Next.js middleware (Clerk auth, RBAC, onboarding redirect)
+├── security/                 # Security utilities
+│   └── arcjet.ts             # Arcjet rate-limiting / bot-detection client
 ├── services/                 # Top-level cross-feature services
 │   └── server/               # Server-only service files
 ├── store/                    # Zustand stores
@@ -212,7 +223,7 @@ All must be present in `.env.local`. Missing any will cause runtime failures:
 ### RBAC Route Map
 | Role | Allowed routes | Fallback |
 |---|---|---|
-| `INTERVIEWEE` | `/explore(.*)`, `/interviewers(.*)` | `/explore` |
+| `INTERVIEWEE` | `/interviewers(.*)`, `/appointments(.*)` | `/interviewers` |
 | `INTERVIEWER` | `/dashboard(.*)` | `/dashboard` |
 
 Adding new role-gated routes requires updating the `roleRouteMap` array in `src/proxy.ts`.
