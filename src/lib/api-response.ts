@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { AppError } from "./app-error";
 
 type ApiResponseOptions<T> =
    | {
@@ -33,4 +34,21 @@ export const apiResponse = <T>({
          status: statusCode,
       }
    );
+};
+
+// Handle AppError and return apiResponse
+export const apiErrorResponse = ({ error }: { error: unknown; }) => {
+   if (error instanceof AppError) {
+      return apiResponse({
+         statusCode: error.statusCode,
+         message: error.message,
+         error
+      });
+   }
+
+   return apiResponse({
+      statusCode: 500,
+      message: "Internal Server Error",
+      error
+   });
 };
