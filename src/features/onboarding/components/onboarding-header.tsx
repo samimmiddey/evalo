@@ -11,7 +11,7 @@ const OnboardingHeader = () => {
          {/* Step Indicator & Brand */}
          <div className="flex items-center justify-between">
             <Logo containerClassName='scale-110 2xl:scale-120' />
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-500/10 border border-zinc-500/25 text-zinc-300 text-xs font-medium backdrop-blur-md">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-500/10 border border-white/10 text-zinc-300 text-xs font-medium backdrop-blur-md">
                <data.btnIcon className="w-3.5 h-3.5 text-zinc-400 animate-pulse" />
                <span>{data.btnText}</span>
             </div>

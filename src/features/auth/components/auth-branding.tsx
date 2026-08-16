@@ -12,6 +12,7 @@ import {
 
 import { authData } from "@/data/auth/auth.data";
 import GradientWrapper from "@/components/wrappers/gradient-wrapper";
+import Image from "next/image";
 
 export default function AuthBranding() {
    const [activeTab, setActiveTab] = useState<"architecture" | "optimization" | "quality">("architecture");
@@ -30,7 +31,7 @@ export default function AuthBranding() {
    }, []);
 
    return (
-      <GradientWrapper className="w-full h-full p-8 lg:p-16 2xl:p-20 flex flex-col justify-between select-none border-r border-zinc-800/80">
+      <GradientWrapper className="w-full h-full p-8 lg:p-16 2xl:p-20 flex flex-col justify-between select-none border-r border-white/5">
 
          {/* Header Branding Area */}
          <div className="z-10 relative space-y-5">
@@ -48,9 +49,9 @@ export default function AuthBranding() {
          <div className="z-10 mt-2 2xl:mt-4 mb-12 py-8 relative w-full max-w-xl mx-auto flex flex-col items-center">
 
             {/* Outer Mockup Shell */}
-            <div className="w-full bg-[#151926]/90 rounded-2xl border border-zinc-800/80 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.3)] overflow-hidden">
+            <div className="w-full bg-[#151926]/90 rounded-2xl border border-white/5 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.3)] overflow-hidden">
                {/* Dashboard Title Bar */}
-               <div className="flex items-center justify-between px-5 py-3.5 border-b border-zinc-800/50 bg-[#121520]/80">
+               <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-[#121520]/80">
                   <div className="flex items-center gap-3">
                      <div className="flex items-center gap-1.5">
                         <span className="size-2 rounded-full bg-zinc-700" />
@@ -66,13 +67,16 @@ export default function AuthBranding() {
                </div>
 
                {/* Profile Snapshot */}
-               <div className="p-5 border-b border-zinc-800/50 flex items-center justify-between">
+               <div className="p-5 border-b border-white/5 flex items-center justify-between">
                   <div className="flex items-center gap-3.5">
                      <div className="relative">
-                        <img
-                           src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+                        <Image
+                           src="/avatar/img-1.jpg"
                            alt="Candidate Profile"
-                           className="size-11 rounded-full object-cover border border-zinc-700"
+                           width={44}
+                           height={44}
+                           className="size-11 rounded-full object-cover border border-white/10"
+                           unoptimized
                         />
                         <span className="absolute bottom-0 right-0 size-3 rounded-full bg-emerald-500 border-2 border-[#151926]" />
                      </div>
@@ -89,7 +93,7 @@ export default function AuthBranding() {
                </div>
 
                {/* Simulated Tabs */}
-               <div className="px-5 py-2.5 bg-[#121520]/50 border-b border-zinc-800/50 flex items-center gap-4 text-xs font-semibold">
+               <div className="px-5 py-2.5 bg-[#121520]/50 border-b border-white/5 flex items-center gap-4 text-xs font-semibold">
                   <button
                      onClick={() => setActiveTab("architecture")}
                      className={`pb-1 transition-all border-b-2 ${activeTab === "architecture" ? "border-violet-500 text-zinc-100" : "border-transparent text-zinc-400"}`}
@@ -128,7 +132,7 @@ export default function AuthBranding() {
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-zinc-700/50">{check.score}</span>
+                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -152,7 +156,7 @@ export default function AuthBranding() {
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-zinc-700/50">{check.score}</span>
+                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -176,7 +180,7 @@ export default function AuthBranding() {
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-zinc-700/50">{check.score}</span>
+                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -190,7 +194,7 @@ export default function AuthBranding() {
 
             {/* Overlapping floating statistics chip */}
             <div
-               className="absolute -bottom-2 right-6 bg-[#0e111a] text-zinc-100 rounded-xl py-3 px-4.5 border border-zinc-800 shadow-xl flex items-center gap-3"
+               className="absolute -bottom-2 right-6 bg-[#0e111a] text-zinc-100 rounded-xl py-3 px-4.5 border border-white/10 shadow-xl flex items-center gap-3"
             >
                <div className="size-8 rounded-lg bg-violet-500/20 border border-violet-500/30 flex items-center justify-center text-violet-400">
                   <BrainCircuit className="size-4" />

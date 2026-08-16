@@ -35,7 +35,7 @@ export const FeedbackModal = ({ open, onClose, feedback }: FeedbackModalProps) =
          case 'POOR':
             return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
          default:
-            return 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20';
+            return 'bg-zinc-500/10 text-zinc-400 border-white/5';
       }
    };
 
@@ -75,8 +75,8 @@ export const FeedbackModal = ({ open, onClose, feedback }: FeedbackModalProps) =
                            <Star
                               key={i}
                               className={`w-5 h-5 ${i < (sessionRating ?? 0)
-                                    ? 'fill-amber-500 text-amber-500'
-                                    : 'text-zinc-700'
+                                 ? 'fill-amber-500 text-amber-500'
+                                 : 'text-zinc-700'
                                  }`}
                            />
                         ))}

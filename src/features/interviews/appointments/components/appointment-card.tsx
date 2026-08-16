@@ -12,6 +12,7 @@ import { cancelBooking, retryStreamCall } from '../services/appointments.client.
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
+import Image from 'next/image';
 
 interface AppointmentCardProps {
    appointment: Interview;
@@ -90,7 +91,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
             );
          case 'CANCELLED':
             return (
-               <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/10 text-red-400 border border-zinc-500/20">
+               <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/10 text-red-400 border border-white/10">
                   <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
                   Cancelled
                </span>
@@ -116,7 +117,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
          return 'text-rose-400 border-rose-500/30 bg-rose-500/10';
       }
 
-      return 'text-zinc-400 border-zinc-500/30 bg-zinc-500/10';
+      return 'text-zinc-400 border-white/10 bg-zinc-500/10';
    };
 
    return (
@@ -127,12 +128,13 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
             {/* Left Side: Interviewer Identity */}
             <div className={`flex-1 p-6 2xl:p-7 flex flex-col md:flex-row md:items-start gap-5 border-white/5 ${view === 'grid' ? 'border-b' : 'lg:border-r border-b lg:border-b-0'}`}>
                <div className="w-16 md:w-20 relative shrink-0">
-                  <div className="h-16 w-16 md:h-20 md:w-20 rounded-2xl overflow-hidden border border-white/10 group-hover:border-violet-500/25 transition-colors bg-zinc-900 shadow-xl">
-                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                     <img
+                  <div className="relative h-16 w-16 md:h-20 md:w-20 rounded-2xl overflow-hidden border border-white/10 group-hover:border-violet-500/25 transition-colors bg-zinc-900 shadow-xl">
+                     <Image
                         src={interviewer.imageUrl ?? '/user.png'}
                         alt={`${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`}
-                        className="h-full w-full object-cover scale-100 group-hover:scale-105 transition-transform duration-500"
+                        fill
+                        className="object-cover scale-100 group-hover:scale-105 transition-transform duration-500"
+                        unoptimized
                      />
                   </div>
 

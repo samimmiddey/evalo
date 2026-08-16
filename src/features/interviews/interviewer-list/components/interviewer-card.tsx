@@ -7,6 +7,7 @@ import { Interviewer } from '../../shared/interviewers.shared.types';
 import { getImage } from '@/utils/get-image';
 import Link from 'next/link';
 import CardLayout from '@/components/layouts/card-layout';
+import Image from 'next/image';
 
 interface InterviewerCardProps {
    interviewer: Interviewer;
@@ -21,11 +22,12 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
          <div className="flex items-start justify-between mb-4 relative z-10">
             <div className="flex items-center gap-4">
                <div className="relative h-14 w-14 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-violet-500/30 transition-colors bg-zinc-800">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                      src={getImage(interviewer.imageUrl)}
                      alt={`${interviewer.firstName} ${interviewer.lastName}`}
-                     className="h-full w-full object-cover"
+                     fill
+                     quality={100}
+                     className="object-cover"
                   />
                </div>
                <div>

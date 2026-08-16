@@ -7,6 +7,7 @@ import { interviewerDetailsData } from '@/data/interviews/interviews.data';
 import { Star, Briefcase, Coins } from 'lucide-react';
 import HeaderTitle from './header-title';
 import { InterviewerDetails } from '../types/details.types';
+import Image from 'next/image';
 
 interface InterviewerProps {
    interviewer: InterviewerDetails;
@@ -16,12 +17,14 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
    return (
       <CardLayout>
          <div className="flex flex-col md:flex-row gap-5 2xl:gap-6 items-start relative z-10 mb-7 2xl:mb-10">
-            <div className="relative h-24 lg:h-30 w-24 lg:w-30 2xl:h-36 2xl:w-36 rounded-2xl overflow-hidden border-2 border-zinc-300 shrink-0">
-               {/* eslint-disable-next-line @next/next/no-img-element */}
-               <img
+            <div className="relative h-24 lg:h-30 w-24 lg:w-30 2xl:h-36 2xl:w-36 rounded-2xl overflow-hidden border-2 border-white/90 shrink-0">
+               <Image
                   src={interviewer.imageUrl || '/default-avatar.png'}
                   alt={`${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`}
-                  className="h-full w-full object-cover"
+                  fill
+                  quality={100}
+                  sizes="(max-width: 1024px) 96px, (max-width: 1536px) 120px, 144px"
+                  className="object-cover"
                />
             </div>
 
