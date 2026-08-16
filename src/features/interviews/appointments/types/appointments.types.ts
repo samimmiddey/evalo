@@ -11,6 +11,7 @@ export interface GetAppointmentsParams {
 }
 
 export interface Interviewer {
+   id: string;
    firstName: string | null;
    lastName: string | null;
    email: string;
