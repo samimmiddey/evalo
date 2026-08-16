@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-const isDev = process.env.NODE_ENV === 'development';
-
 type ApiResponseOptions<T> =
    | {
       statusCode: number;
@@ -22,7 +20,7 @@ export const apiResponse = <T>({
    error,
    message
 }: ApiResponseOptions<T>) => {
-   const errorMessage = isDev && error instanceof Error ? error.message : message;
+   const errorMessage = error instanceof Error ? error.message : message;
 
    return NextResponse.json(
       {
