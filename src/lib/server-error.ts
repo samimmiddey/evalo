@@ -1,4 +1,5 @@
 import { Prisma } from "@/generated/prisma/client";
+import { AppError, ConflictError, NotFoundError, ValidationError } from "./app-error";
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -8,26 +9,30 @@ interface ServerErrorProps {
 }
 
 export const serverError = ({ error, fallbackMessage = "Something went wrong" }: ServerErrorProps): never => {
+   if (error instanceof AppError) {
+      throw error;
+   }
+
    if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
          case 'P2025':
-            throw new Error("We couldn't find the requested record");
+            throw new NotFoundError("We couldn't find the requested record");
          case 'P2002':
-            throw new Error("A record with this value already exists");
+            throw new ConflictError("A record with this value already exists");
          case 'P2003':
-            throw new Error("This action references a record that doesn't exist");
+            throw new ValidationError("This action references a record that doesn't exist");
          default:
-            throw new Error(fallbackMessage);
+            throw new AppError(fallbackMessage, 500);
       }
    }
 
    if (error instanceof Prisma.PrismaClientValidationError) {
-      throw new Error("Invalid data provided");
+      throw new ValidationError("Invalid data provided");
    }
 
    if (error instanceof Error) {
-      throw new Error(isDev ? error.message : fallbackMessage);
+      throw new AppError(isDev ? error.message : fallbackMessage, 500);
    }
 
-   throw new Error(fallbackMessage);
+   throw new AppError(fallbackMessage, 500);
 };
