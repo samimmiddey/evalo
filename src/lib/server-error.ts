@@ -2,7 +2,12 @@ import { Prisma } from "@/generated/prisma/client";
 
 const isDev = process.env.NODE_ENV === 'development';
 
-export const serverError = (error: unknown, fallbackMessage = "Something went wrong"): never => {
+interface ServerErrorProps {
+   error: unknown;
+   fallbackMessage?: string;
+}
+
+export const serverError = ({ error, fallbackMessage = "Something went wrong" }: ServerErrorProps): never => {
    if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
          case 'P2025':

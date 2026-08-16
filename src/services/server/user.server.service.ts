@@ -22,6 +22,9 @@ export const checkUser = async (): Promise<UserServer | null> => {
 
       return loggedInUser;
    } catch (error: unknown) {
-      return serverError(error, 'Failed to fetch user');
+      return serverError({
+         error,
+         fallbackMessage: 'Failed to fetch user'
+      });
    };
 };

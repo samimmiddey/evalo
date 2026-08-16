@@ -106,8 +106,11 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
          hasNextPage: page * pageSize < totalCount,
          hasPrevPage: page > 1
       };
-   } catch (error) {
-      return serverError(error, 'Failed to fetch appointments');
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: 'Failed to fetch appointments'
+      });
    }
 };
 
@@ -172,8 +175,11 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
             successRate,
          },
       };
-   } catch (error) {
-      return serverError(error, "Failed to fetch appointment stats");
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: 'Failed to fetch appointment stats'
+      });
    }
 };
 
@@ -279,7 +285,10 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
          streamStatus: updated.streamStatus
       };
    } catch (error: unknown) {
-      return serverError(error, "We couldn't prepare the meeting room. Please try again.");
+      return serverError({
+         error,
+         fallbackMessage: "We couldn't prepare the meeting room. Please try again."
+      });
    }
 };
 
@@ -388,8 +397,11 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBookingSer
             },
          });
       });
-   } catch (error) {
-      return serverError(error, "Failed to cancel booking. Please try again later.");
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: "Failed to cancel booking. Please try again later."
+      });
    }
 
    // Stream cleanup is separate from the database transaction
@@ -410,8 +422,11 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBookingSer
          );
 
          await call.delete();
-      } catch (error) {
-         return serverError(error, "Failed to delete stream call. Please try again later.");
+      } catch (error: unknown) {
+         return serverError({
+            error,
+            fallbackMessage: "Failed to delete stream call. Please try again later."
+         });
       }
    }
 

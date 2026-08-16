@@ -44,7 +44,10 @@ export const getInterviewerDetails = async (id: string): Promise<InterviewerDeta
 
       return interviewer;
    } catch (error: unknown) {
-      return serverError(error, 'Failed to fetch interviewer details');
+      return serverError({
+         error,
+         fallbackMessage: 'Failed to fetch interviewer details'
+      });
    }
 };
 
@@ -84,7 +87,10 @@ export const getFeedback = async (id: string): Promise<InterviewerFeedback> => {
 
       return feedback;
    } catch (error: unknown) {
-      return serverError(error, 'Failed to fetch feedback');
+      return serverError({
+         error,
+         fallbackMessage: 'Failed to fetch feedback'
+      });
    }
 };
 
@@ -215,7 +221,10 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
          return newBooking;
       });
    } catch (error: unknown) {
-      return serverError(error, 'Booking failed. Please try again later.');
+      return serverError({
+         error,
+         fallbackMessage: 'Booking failed. Please try again later.'
+      });
    }
 
    // Create stream call
@@ -291,7 +300,10 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
 
       booking = updated;
    } catch (error: unknown) {
-      return serverError(error, 'Booking failed. Please try again later.');
+      return serverError({
+         error,
+         fallbackMessage: 'Booking failed. Please try again later.'
+      });
    }
 
    return {

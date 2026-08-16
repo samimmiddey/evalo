@@ -69,6 +69,9 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
 
       return { success: true, role: updatedUser.role };
    } catch (error: unknown) {
-      return serverError(error, 'Failed to complete onboarding');
+      return serverError({
+         error,
+         fallbackMessage: 'Failed to complete onboarding'
+      });
    }
 };

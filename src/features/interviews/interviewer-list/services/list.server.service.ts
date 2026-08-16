@@ -93,6 +93,9 @@ export const getInterviewers = async (params: GetInterviewersParams = {}): Promi
          hasPrevPage: page > 1,
       };
    } catch (error: unknown) {
-      return serverError(error, "Failed to get interviewers");
+      return serverError({
+         error,
+         fallbackMessage: 'Failed to get interviewers'
+      });
    };
 };
