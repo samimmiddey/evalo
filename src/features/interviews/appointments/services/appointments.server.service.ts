@@ -1,19 +1,17 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
-import { GetAppointmentsParams, GetAppointmentsServerResponse, AppointmentsStatsServerResponse, RetryBookSessionServerResponse, CancelBookingServerResponse } from "../types/appointments.types";
+import { GetAppointmentsParams, GetAppointmentsServerResponse, AppointmentsStatsServerResponse, RetryBookSessionServerResponse } from "../types/appointments.types";
 import { Prisma } from "@/generated/prisma/client";
 import { StreamClient } from "@stream-io/node-sdk";
+import { ForbiddenError, NotFoundError, UnauthorizedError } from "@/lib/app-error";
 
 export const getAppointments = async (params: GetAppointmentsParams = {}): Promise<GetAppointmentsServerResponse> => {
    const user = await currentUser();
 
    // Check if user is logged in
    if (!user) {
-      return {
-         success: false,
-         message: "User not logged in"
-      };
+      throw new UnauthorizedError('User not logged in');
    }
 
    try {
@@ -25,10 +23,7 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
 
       // Return error if user not found
       if (!dbUser) {
-         return {
-            success: false,
-            message: "User not found"
-         };
+         throw new NotFoundError('User not found');
       }
 
       const {
@@ -97,7 +92,6 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
       ]);
 
       return {
-         success: true,
          data: appointments,
          page,
          pageSize,
@@ -119,10 +113,7 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
    const user = await currentUser();
 
    if (!user) {
-      return {
-         success: false,
-         message: "User not logged in",
-      };
+      throw new UnauthorizedError('User not logged in');
    }
 
    try {
@@ -132,10 +123,7 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
       });
 
       if (!dbUser) {
-         return {
-            success: false,
-            message: "User not found",
-         };
+         throw new NotFoundError('User not found');
       }
 
       const stats = await db.booking.groupBy({
@@ -166,14 +154,11 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
             : 0;
 
       return {
-         success: true,
-         data: {
-            totalCount,
-            completedCount,
-            scheduledCount,
-            cancelledCount,
-            successRate,
-         },
+         totalCount,
+         completedCount,
+         scheduledCount,
+         cancelledCount,
+         successRate,
       };
    } catch (error: unknown) {
       return serverError({
@@ -189,10 +174,7 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
 
    // Check if the user exists
    if (!user) {
-      return {
-         success: false,
-         message: "Unauthenticated user"
-      };
+      throw new UnauthorizedError('Unauthenticated user');
    }
 
    // Fetch booking + verify if the current user is allowed to retry it
@@ -207,27 +189,18 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
    });
 
    if (!booking) {
-      return {
-         success: false,
-         message: "Booking not found"
-      };
+      throw new NotFoundError('Booking not found');
    }
 
    // Make sure the booking belongs to the current user
    if (booking.interviewee.clerkUserId !== user.id &&
       booking.interviewer.clerkUserId !== user.id) {
-      return {
-         success: false,
-         message: "Unauthorized user"
-      };
+      throw new UnauthorizedError('Unauthorized user');
    }
 
    // Only retry failed stream calls
    if (booking.streamStatus !== 'FAILED') {
-      return {
-         success: false,
-         message: "This meeting does not require a retry"
-      };
+      throw new ForbiddenError("This meeting does not require a retry");
    }
 
    try {
@@ -280,7 +253,6 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
       });
 
       return {
-         success: true,
          streamCallId: booking.streamCallId,
          streamStatus: updated.streamStatus
       };
@@ -292,57 +264,53 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
    }
 };
 
+type BookingWithParties = Prisma.BookingGetPayload<{
+   include: { interviewee: true; interviewer: true; };
+}>;
+
 // Cancel interview booking
-export const cancelBooking = async (bookingId: string): Promise<CancelBookingServerResponse> => {
+export const cancelBooking = async (bookingId: string): Promise<void> => {
    const user = await currentUser();
 
    // Check if user is logged in
    if (!user) {
-      return {
-         success: false,
-         message: "Unauthenticated user",
-      };
+      throw new UnauthorizedError('Unauthenticated user');
    }
 
-   // Fetch booking + verify if the current user is allowed to cancel it
-   const booking = await db.booking.findUnique({
-      where: {
-         id: bookingId,
-      },
-      include: {
-         interviewee: true,
-         interviewer: true,
-      },
-   });
-
-   if (!booking) {
-      return {
-         success: false,
-         message: "Booking not found",
-      };
-   }
-
-   // Make sure the current user is part of this booking
-   if (
-      booking.interviewee.clerkUserId !== user.id &&
-      booking.interviewer.clerkUserId !== user.id
-   ) {
-      return {
-         success: false,
-         message: "Unauthorized user",
-      };
-   }
-
-   // Only scheduled bookings can be cancelled
-   if (booking.status !== "SCHEDULED") {
-      return {
-         success: false,
-         message: "This booking cannot be cancelled",
-      };
-   }
+   let booking: BookingWithParties;
 
    // Cancel booking and refund credits
    try {
+      // Fetch booking + verify if the current user is allowed to cancel it
+      const found = await db.booking.findUnique({
+         where: {
+            id: bookingId,
+         },
+         include: {
+            interviewee: true,
+            interviewer: true,
+         },
+      });
+
+      if (!found) {
+         throw new NotFoundError("Booking not found");
+      }
+
+      booking = found;
+
+      // Make sure the current user is part of this booking
+      if (
+         booking.interviewee.clerkUserId !== user.id &&
+         booking.interviewer.clerkUserId !== user.id
+      ) {
+         throw new UnauthorizedError("Unauthorized user");
+      }
+
+      // Only scheduled bookings can be cancelled
+      if (booking.status !== "SCHEDULED") {
+         throw new ForbiddenError("This booking cannot be cancelled");
+      }
+
       await db.$transaction(async (tx) => {
          await tx.booking.update({
             where: {
@@ -422,16 +390,9 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBookingSer
          );
 
          await call.delete();
-      } catch (error: unknown) {
-         return serverError({
-            error,
-            fallbackMessage: "Failed to delete stream call. Please try again later."
-         });
+      } catch {
+         // Booking is already cancelled in the DB. Stream cleanup failing
+         // doesn't affect the outcome for the user — nothing to do here.
       }
    }
-
-   return {
-      success: true,
-      message: "Booking cancelled successfully.",
-   };
 };

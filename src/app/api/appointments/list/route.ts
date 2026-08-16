@@ -1,6 +1,6 @@
 import { getAppointments } from "@/features/interviews/appointments/services/appointments.server.service";
 import { InterviewStatus } from "@/features/interviews/appointments/types/appointments.types";
-import { apiResponse } from "@/lib/api-response";
+import { apiErrorResponse, apiResponse } from "@/lib/api-response";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -19,22 +19,11 @@ export async function GET(request: NextRequest) {
          search
       });
 
-      if (!appointments.success) {
-         return apiResponse({
-            statusCode: 404,
-            message: appointments.message ?? 'Failed to fetch appointments'
-         });
-      }
-
       return apiResponse({
          statusCode: 200,
          data: appointments
       });
    } catch (error: unknown) {
-      return apiResponse({
-         statusCode: 500,
-         message: 'Failed to fetch appointments',
-         error
-      });
+      return apiErrorResponse({ error });
    }
 }

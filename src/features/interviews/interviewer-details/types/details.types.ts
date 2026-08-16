@@ -42,15 +42,11 @@ export interface BookSessionParams {
 }
 
 export interface BookSession {
-   success: true,
    booking: string;
    streamCallId: string;
    streamStatus: string;
 }
 
-export type BookSessionSetupResponse =
-   | BookSession
-   | { success: false; message: string; };
+export type BookSessionSetupResponse = BookSession;
 
-export type BookSessionData = Omit<BookSession, 'success'>;
-export type BookSessionResponse = BaseResponse<BookSessionData>;
+export type BookSessionResponse = BaseResponse<BookSession>;

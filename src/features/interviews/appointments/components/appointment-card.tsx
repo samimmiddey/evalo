@@ -45,7 +45,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
    const handleRetryStreamCall = async () => {
       const res = await retryMutation();
 
-      if (res?.success) {
+      if (res) {
          toast.success('Booking prepared successfully');
          refetchInterviewList();
       }

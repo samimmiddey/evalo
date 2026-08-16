@@ -52,7 +52,6 @@ export interface Interview {
 }
 
 export interface AppointmentsData {
-   success: true,
    data: Interview[];
    page: number;
    pageSize: number;
@@ -62,9 +61,7 @@ export interface AppointmentsData {
    hasPrevPage: boolean;
 }
 
-export type GetAppointmentsServerResponse =
-   | { success: false, message: string; }
-   | AppointmentsData;
+export type GetAppointmentsServerResponse = AppointmentsData;
 
 export type GetAppointmentsClientResponse = BaseResponse<AppointmentsData>;
 
@@ -81,35 +78,19 @@ export interface AppointmentsStatsData {
    successRate: number;
 }
 
-export interface AppointmentsStats {
-   success: true;
-   data: AppointmentsStatsData;
-}
-
-export type AppointmentsStatsServerResponse =
-   | { success: false, message: string; }
-   | AppointmentsStats;
+export type AppointmentsStatsServerResponse = AppointmentsStatsData;
 
 export type AppointmentsStatsClientResponse = BaseResponse<AppointmentsStatsData>;
 
 export interface RetryBookSession {
-   success: true;
    streamCallId: string | null;
    streamStatus: StreamStatus;
 }
 
-export type RetryBookSessionServerResponse =
-   | RetryBookSession
-   | { success: false; message: string; };
-
-export interface CancelBookingServerResponse {
-   success: boolean;
-   message: string;
-}
-
-export interface CancelBooking {
-   success: boolean;
-}
-
-export type CancelBookingClientResponse = BaseResponse<CancelBookingServerResponse>;
+export type RetryBookSessionServerResponse = RetryBookSession;
 export type RetryBookSessionClientResponse = BaseResponse<RetryBookSession>;
+
+export interface CancelBookingData {
+   success: true;
+}
+export type CancelBookingClientResponse = BaseResponse<null>;

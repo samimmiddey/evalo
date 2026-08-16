@@ -1,7 +1,7 @@
 "use client";
 
 import { apiError } from "@/lib/api-error";
-import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams, AppointmentsStatsClientResponse, AppointmentsStatsData, CancelBookingClientResponse, RetryBookSessionClientResponse, RetryBookSession, CancelBooking } from "../types/appointments.types";
+import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams, AppointmentsStatsClientResponse, AppointmentsStatsData, CancelBookingClientResponse, RetryBookSessionClientResponse, RetryBookSession, CancelBookingData } from "../types/appointments.types";
 import { api } from "@/lib/api";
 import { CANCEL_BOOKING, GET_APPOINTMENT_STATS, GET_APPOINTMENTS, RETRY_BOOKING } from "@/config/query-urls";
 
@@ -54,7 +54,7 @@ export const getAppointmentsStats = async (): Promise<AppointmentsStatsData> => 
 };
 
 // Cancel booking
-export const cancelBooking = async (bookingId: string): Promise<CancelBooking> => {
+export const cancelBooking = async (bookingId: string): Promise<CancelBookingData> => {
    try {
       if (!bookingId) {
          throw new Error("Booking ID is required");
@@ -67,7 +67,7 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBooking> =
       }
 
       return {
-         success: res.data.success
+         success: true
       };
    } catch (error: unknown) {
       return apiError({

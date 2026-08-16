@@ -6,6 +6,7 @@ import { StreamClient } from "@stream-io/node-sdk";
 import { v4 as uuidv4 } from 'uuid';
 import { checkRateLimit, createRateLimiter } from "@/security/arcjet";
 import { request } from "@arcjet/next";
+import { ConflictError, ForbiddenError, NotFoundError, RateLimitError, UnauthorizedError, ValidationError } from "@/lib/app-error";
 
 // Get interviwer details
 export const getInterviewerDetails = async (id: string): Promise<InterviewerDetails> => {
@@ -39,7 +40,7 @@ export const getInterviewerDetails = async (id: string): Promise<InterviewerDeta
       });
 
       if (!interviewer) {
-         throw new Error('Interviewer not found');
+         throw new NotFoundError('Interviewer not found');
       }
 
       return interviewer;
@@ -82,7 +83,7 @@ export const getFeedback = async (id: string): Promise<InterviewerFeedback> => {
       });
 
       if (!feedback) {
-         throw new Error('Feedback not found');
+         throw new NotFoundError('Feedback not found');
       }
 
       return feedback;
@@ -107,21 +108,16 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
 
    // Check if user eixsts
    if (!user) {
-      return {
-         success: false,
-         message: "Unauthenticated user"
-      };
+      throw new UnauthorizedError("Unauthenticated user");
    }
 
    // Arcjet - rate limiter
    const req = await request();
    const rateLimitError = await checkRateLimit(bookingLimiter, req, user.id);
 
+   // Check rate limit
    if (rateLimitError) {
-      return {
-         success: false,
-         message: rateLimitError
-      };
+      throw new RateLimitError(rateLimitError);
    }
 
    // Fetch user and interviewer
@@ -132,18 +128,12 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
 
    // Check if interviewee exists
    if (dbUser?.role !== 'INTERVIEWEE') {
-      return {
-         success: false,
-         message: "Only interviewees can book sessions"
-      };
+      throw new ForbiddenError("Only interviewees can book sessions");
    }
 
    // Check if interviewer exists
    if (interviewer?.role !== 'INTERVIEWER') {
-      return {
-         success: false,
-         message: "Interviewer not found"
-      };
+      throw new NotFoundError("Interviewer not found");
    }
 
    // Credit rate for the interviewer
@@ -151,10 +141,7 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
 
    // Check if interviewee has sufficient credit in his account or not
    if (dbUser.credits < credits) {
-      return {
-         success: false,
-         message: "Insufficient credits. Please upgrade your plan."
-      };
+      throw new ValidationError("Insufficient credits. Please upgrade your plan.");
    }
 
    let booking;
@@ -174,7 +161,7 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
          });
 
          if (conflict) {
-            throw new Error("This slot is already booked. Please pick another slot.");
+            throw new ConflictError("This slot is already booked. Please pick another slot.");
          }
 
          const newBooking = await tx.booking.create({
@@ -284,7 +271,6 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
       booking = updated;
 
       return {
-         success: true,
          booking: booking.id,
          streamCallId,
          streamStatus: booking.streamStatus,
@@ -307,7 +293,6 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
    }
 
    return {
-      success: true,
       booking: booking.id,
       streamCallId,
       streamStatus: booking.streamStatus

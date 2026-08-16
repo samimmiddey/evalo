@@ -4,13 +4,14 @@ import { serverError } from "@/lib/server-error";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { CompleteSetupResponse } from "../types/onboarding.types";
 import { PLAN_CREDITS } from "@/types/user.types";
+import { UnauthorizedError, ValidationError } from "@/lib/app-error";
 
 // Complete onboarding setup
 export const completeSetup = async (data: OnboardingSchemaTypes): Promise<CompleteSetupResponse> => {
    const { isAuthenticated, userId } = await auth();
 
    if (!isAuthenticated) {
-      return { success: false, message: 'No signed-in user' };
+      throw new UnauthorizedError('No signed-in user');
    }
 
    const client = await clerkClient();
@@ -22,7 +23,7 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
       const email = clerkUser.emailAddresses[0]?.emailAddress;
 
       if (!email) {
-         return { success: false, message: 'No email on Clerk user' };
+         throw new ValidationError('No email on Clerk user');
       }
 
       const interviewerFields = role === 'INTERVIEWER'
@@ -67,7 +68,7 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
          }
       });
 
-      return { success: true, role: updatedUser.role };
+      return updatedUser.role;
    } catch (error: unknown) {
       return serverError({
          error,

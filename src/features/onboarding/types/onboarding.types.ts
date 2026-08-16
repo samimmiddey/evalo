@@ -5,8 +5,6 @@ export interface Onboarding {
    role: UserRole;
 }
 
-export type CompleteSetupResponse =
-   | { success: true; role: UserRole; }
-   | { success: false; message: string; };
+export type CompleteSetupResponse = UserRole;
 
 export type OnboardingResponse = BaseResponse<Onboarding>;
