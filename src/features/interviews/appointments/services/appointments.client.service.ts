@@ -26,7 +26,10 @@ export const getAppointments = async (params: GetAppointmentsParams): Promise<Ap
       return res.data;
 
    } catch (error: unknown) {
-      return apiError(error, "Failed to get appointments");
+      return apiError({
+         error,
+         fallbackMessage: "Failed to get appointments"
+      });
    }
 };
 
@@ -43,7 +46,10 @@ export const getAppointmentsStats = async (): Promise<AppointmentsStatsData> => 
       return res.data;
 
    } catch (error: unknown) {
-      return apiError(error, "Failed to get appointments");
+      return apiError({
+         error,
+         fallbackMessage: "Failed to get appointment stats"
+      });
    }
 };
 
@@ -64,7 +70,10 @@ export const cancelBooking = async (bookingId: string): Promise<CancelBooking> =
          success: res.data.success
       };
    } catch (error: unknown) {
-      return apiError(error, "Failed to cancel booking");
+      return apiError({
+         error,
+         fallbackMessage: "Failed to cancel booking"
+      });
    }
 };
 
@@ -83,6 +92,9 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
 
       return res.data;
    } catch (error: unknown) {
-      return apiError(error, "We couldn't prepare the meeting room. Please try again.");
+      return apiError({
+         error,
+         fallbackMessage: "We couldn't prepare the meeting room. Please try again."
+      });
    }
 };

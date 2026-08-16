@@ -15,6 +15,9 @@ export const getUser = async (): Promise<UserClient> => {
 
       return res.data;
    } catch (error: unknown) {
-      return apiError(error, "Failed to fetch user");
+      return apiError({
+         error,
+         fallbackMessage: "Failed to fetch user"
+      });
    }
 };

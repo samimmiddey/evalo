@@ -16,6 +16,9 @@ export const onboardUser = async (data: OnboardingSchemaTypes): Promise<Onboardi
 
       return res.data;
    } catch (error: unknown) {
-      return apiError(error, "Failed to onboard user");
+      return apiError({
+         error,
+         fallbackMessage: "Failed to onboard user"
+      });
    }
 };

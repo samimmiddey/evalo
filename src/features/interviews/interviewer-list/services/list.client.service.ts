@@ -30,6 +30,9 @@ export const getInterviewers = async (params: GetInterviewersParams = {}): Promi
 
       return res.data;
    } catch (error: unknown) {
-      return apiError(error, "Failed to get interviewers");
+      return apiError({
+         error,
+         fallbackMessage: "Failed to fetch interviewers"
+      });
    }
 };

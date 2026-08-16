@@ -13,6 +13,9 @@ export const handleBookSession = async ({ interviewerId, startTime, endTime }: B
 
       return res.data;
    } catch (error: unknown) {
-      return apiError(error, "Failed to onboard user");
+      return apiError({
+         error,
+         fallbackMessage: "Failed to book session"
+      });
    }
 };
