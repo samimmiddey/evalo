@@ -21,8 +21,10 @@ Evalo is a two-sided platform that lets interviewees book mock technical intervi
 - **State**: Zustand v5 (with `persist` middleware for localStorage)
 - **Toasts**: Sonner
 - **Carousels**: Embla Carousel
-- **Security**: Arcjet (`@arcjet/next`)
+- **Video/Chat**: Stream (`@stream-io/video-react-sdk` + `@stream-io/node-sdk` for server, `stream-chat` + `stream-chat-react` for in-call chat)
+- **Security**: Arcjet (`@arcjet/next`) — installed but currently **commented out** in `src/proxy.ts`
 - **Webhooks**: Svix (Clerk webhook verification)
+- **Utilities**: `date-fns` (date formatting), `uuid` (ID generation), `react-canvas-confetti` (celebration animations)
 - **Fonts**: Outfit (primary), Inter, MuseoModerno, Lobster Two — all via `next/font/google`
 - **Linting**: ESLint 9 + `typescript-eslint`
 - **Git hooks**: Husky 9 + lint-staged + commitlint (conventional commits enforced)
@@ -42,6 +44,7 @@ src/
 │   │   │   ├── onboarding-protection.tsx
 │   │   │   ├── interviewers/ # Interviewee: browse interviewers list + detail page ([id]/)
 │   │   │   ├── appointments/ # Interviewee: view booked appointments
+│   │   │   ├── call/         # Live interview call room ([id]/) — accessible to both roles
 │   │   │   └── dashboard/    # Interviewer: manage availability, bookings, payouts
 │   │   └── (public)/         # Public marketing pages (home, about, pricing, contact)
 │   ├── api/                  # Route handlers (Next.js API routes)
@@ -50,11 +53,13 @@ src/
 │   │   │   └── book-session/ # POST book a session with an interviewer
 │   │   ├── appointments/     # Appointment-related endpoints
 │   │   │   ├── list/         # GET paginated appointments list
-│   │   │   └── stats/        # GET appointment stats
+│   │   │   ├── stats/        # GET appointment stats
+│   │   │   ├── cancel-booking/ # POST cancel a booked appointment
+│   │   │   └── retry-booking/  # POST retry a failed booking
 │   │   ├── onboarding/       # Onboarding mutation endpoint
 │   │   ├── user/             # User data endpoint
 │   │   └── webhooks/
-│   │       ├── billing/      # Stripe/billing webhook
+│   │       ├── billing/      # Billing/payment webhook
 │   │       └── clerk/        # Clerk user lifecycle webhook
 │   ├── onboarding/           # Onboarding page (outside protected layout)
 │   └── css/                  # Global CSS files (globals.css, responsive.css, external.css)
@@ -65,6 +70,7 @@ src/
 │   │   ├── interviewer-list/ # Browse & filter interviewers: components, services, types
 │   │   ├── interviewer-details/ # Individual interviewer profile & booking: components, services, types
 │   │   ├── appointments/     # Booked appointments view: components, services, types
+│   │   ├── call/             # Live call room: call-room.tsx (client), components/, services/, types/
 │   │   └── shared/           # Shared types used across interview sub-features
 │   ├── onboarding/           # Onboarding form, tabs, schemas, services
 │   ├── special/              # Error / not-found / special UI screens
@@ -83,11 +89,23 @@ src/
 │
 ├── data/                     # Static/seed data objects (e.g. onboarding form defaults)
 ├── generated/                # Prisma generated client — DO NOT edit manually
-├── hooks/                    # Custom React hooks (use-fetch, use-mutation, use-infinite-fetch, etc.)
+├── hooks/                    # Custom React hooks
+│   ├── use-fetch.ts          # Paginated data fetching
+│   ├── use-infinite-fetch.ts # Infinite scroll data fetching
+│   ├── use-mutation.ts       # Write operations (POST/PUT/DELETE)
+│   ├── use-db-user.ts        # Fetch current DB user record
+│   ├── use-debounce.ts       # Debounced value hook
+│   ├── use-media-query.ts    # Responsive breakpoint detection
+│   ├── use-pagination-trigger.ts # Intersection observer for pagination
+│   ├── use-role-based-redirect.ts # RBAC-aware navigation redirect
+│   ├── use-scroll-to-top.ts  # Scroll restoration on route change
+│   └── use-view.ts           # Toggle between view modes (list/grid)
 ├── lib/                      # Shared server/client utilities
 │   ├── api.ts                # Configured ky instance (prefix="api", 10s timeout, 0 retries)
 │   ├── api-error.ts          # Client-side error normaliser (ky HTTPError → thrown Error)
 │   ├── api-response.ts       # Server: standard NextResponse.json shape { success, statusCode, data|error }
+│   ├── app-error.ts          # Typed error classes: AppError, UnauthorizedError, ForbiddenError,
+│   │                         #   NotFoundError, ValidationError, ConflictError, RateLimitError
 │   ├── prisma.ts             # Singleton Prisma client with pg connection pool
 │   ├── server-error.ts       # Server-side error normaliser (Prisma errors → user-safe messages)
 │   └── utils.ts              # cn() and other generic utils
@@ -207,7 +225,12 @@ All must be present in `.env.local`. Missing any will cause runtime failures:
 | `CLERK_SECRET_KEY` | Clerk middleware and server SDK |
 | `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | Clerk routing |
 | `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | Clerk routing |
-| `CLERK_WEBHOOK_SECRET` | Webhooks: `src/app/api/webhooks/clerk/` |
+| `CLERK_WEBHOOK_USER_SECRET` | Clerk user lifecycle webhook: `src/app/api/webhooks/clerk/` |
+| `CLERK_WEBHOOK_BILLING_SECRET` | Billing webhook: `src/app/api/webhooks/billing/` |
+| `NEXT_PUBLIC_STREAM_API_KEY` | Stream Video/Chat client SDK (browser) |
+| `STREAM_SECRET_KEY` | Stream server SDK — token generation in `call.server.service.ts` |
+| `ARCJET_KEY` | Arcjet rate-limiting client (currently commented out) |
+| `ARCJET_ENV` | Arcjet environment (`development` / `production`) |
 
 > Clerk stores `onboardingComplete` and `role` in `sessionClaims.metadata`. The middleware reads these from the JWT — stale claims will cause redirect loops. After onboarding, call `session.reload()` immediately.
 
@@ -223,8 +246,10 @@ All must be present in `.env.local`. Missing any will cause runtime failures:
 ### RBAC Route Map
 | Role | Allowed routes | Fallback |
 |---|---|---|
-| `INTERVIEWEE` | `/interviewers(.*)`, `/appointments(.*)` | `/interviewers` |
-| `INTERVIEWER` | `/dashboard(.*)` | `/dashboard` |
+| `INTERVIEWEE` | `/interviewers(.*)`, `/appointments(.*)`, `call(.*)` | `/interviewers` |
+| `INTERVIEWER` | `/dashboard(.*)`, `call(.*)` | `/dashboard` |
+
+> `/call(.*)` is intentionally shared between both roles — both interviewers and interviewees enter the same live call room.
 
 Adding new role-gated routes requires updating the `roleRouteMap` array in `src/proxy.ts`.
 
@@ -235,7 +260,19 @@ Adding new role-gated routes requires updating the `roleRouteMap` array in `src/
 - `prisma.config.ts` loads `.env.local` via `dotenv` — required because Next.js env loading does not apply to the Prisma CLI.
 
 ### Arcjet
-- `@arcjet/next` is installed but the extent of its integration should be verified before adding new API routes — it may apply rate limiting or bot detection globally.
+- `@arcjet/next` is installed but **currently commented out** in `src/proxy.ts`. Bot-detection and rate-limiting rules are defined but disabled — re-enable by uncommenting the `aj` client and the `aj.protect(req)` call.
+- Do not remove the commented code; it is intentionally preserved for easy re-activation.
+
+### Structured Error Classes (`src/lib/app-error.ts`)
+- Server services should throw typed errors instead of generic `Error` when the failure has a well-known HTTP semantics:
+  - `UnauthorizedError` → 401
+  - `ForbiddenError` → 403
+  - `NotFoundError` → 404
+  - `ValidationError` → 400
+  - `ConflictError` → 409
+  - `RateLimitError` → 429
+- `serverError()` in `src/lib/server-error.ts` re-throws these as-is so the API route handler can map them to the correct status code.
+- Do **not** use plain `throw new Error("...")` for expected domain failures — use the typed subclass.
 
 ### Svix / Webhooks
 - Clerk webhook events hit `src/app/api/webhooks/clerk/`. Svix signature verification must not be removed — removing it opens the endpoint to spoofed events.

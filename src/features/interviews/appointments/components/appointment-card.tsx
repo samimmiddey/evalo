@@ -319,7 +319,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                         </Button>
 
                         {appointment.streamStatus === 'READY' && (
-                           <Link href={`/session/${streamCallId}`}>
+                           <Link href={`/call/${streamCallId}`}>
                               <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5">
                                  <Video className="w-3.5 h-3.5" />
                                  Join Interview

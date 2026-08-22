@@ -233,3 +233,160 @@
   height: 20px;
   width: 20px;
 }
+
+/* Evalo Custom Stream Chat Theme */
+.evalo-chat-container {
+  --str-chat__primary-color: #8b5cf6;
+  --str-chat__active-primary-color: #7c3aed;
+  --str-chat__surface-color: transparent;
+  --str-chat__secondary-surface-color: #18181b;
+  --str-chat__primary-surface-color: rgba(139, 92, 246, 0.15);
+  --str-chat__text-color: #f4f4f5;
+  --str-chat__text-low-emphasis-color: #71717a;
+  --str-chat__border-color: rgba(255, 255, 255, 0.08);
+}
+
+.evalo-chat-container .str-chat {
+  background: transparent !important;
+  color: #f4f4f5 !important;
+  font-family: inherit !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.evalo-chat-container .str-chat__channel {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: transparent !important;
+}
+
+.evalo-chat-container .str-chat__container,
+.evalo-chat-container .str-chat__main-panel {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.evalo-chat-container .str-chat__list {
+  background: transparent !important;
+  padding: 1rem !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.evalo-chat-container .str-chat__message-list {
+  background: transparent !important;
+  padding: 0.5rem !important;
+}
+
+/* Custom Message Bubbles */
+.evalo-chat-container .str-chat__message-simple-text-inner {
+  background: rgba(39, 39, 42, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #f4f4f5 !important;
+  border-radius: 16px 16px 16px 4px !important;
+  padding: 10px 14px !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.evalo-chat-container .str-chat__message-simple--me .str-chat__message-simple-text-inner {
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  border-radius: 16px 16px 4px 16px !important;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3) !important;
+}
+
+/* Sender & Timestamp */
+.evalo-chat-container .str-chat__message-simple-name {
+  color: #a1a1aa !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  margin-bottom: 2px !important;
+}
+
+.evalo-chat-container .str-chat__message-simple-timestamp {
+  color: #71717a !important;
+  font-size: 10px !important;
+  margin-top: 4px !important;
+}
+
+/* Date separator */
+.evalo-chat-container .str-chat__date-separator-line {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.evalo-chat-container .str-chat__date-separator-date {
+  background: rgba(24, 24, 27, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #a1a1aa !important;
+  font-size: 10px !important;
+  padding: 2px 10px !important;
+  border-radius: 9999px !important;
+}
+
+/* Message Composer / Input */
+.evalo-chat-container .str-chat__message-composer {
+  background: rgba(9, 9, 11, 0.7) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 12px 16px !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.evalo-chat-container .str-chat__message-input {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.evalo-chat-container .str-chat__message-textarea-container {
+  background: rgba(24, 24, 27, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  transition: all 0.15s ease !important;
+}
+
+.evalo-chat-container .str-chat__message-textarea-container:focus-within {
+  border-color: rgba(139, 92, 246, 0.6) !important;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+}
+
+.evalo-chat-container .str-chat__textarea textarea {
+  color: #f4f4f5 !important;
+  font-size: 13px !important;
+  padding: 10px 14px !important;
+}
+
+.evalo-chat-container .str-chat__textarea textarea::placeholder {
+  color: #71717a !important;
+}
+
+.evalo-chat-container .str-chat__send-button {
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%) !important;
+  border-radius: 10px !important;
+  width: 34px !important;
+  height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: opacity 0.15s ease !important;
+}
+
+.evalo-chat-container .str-chat__send-button svg {
+  fill: #ffffff !important;
+}
+
+.evalo-chat-container .str-chat__send-button:hover {
+  opacity: 0.9 !important;
+}
+
+.evalo-chat-container .str-chat__avatar {
+  border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 9999px !important;
+}
