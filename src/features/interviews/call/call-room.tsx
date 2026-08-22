@@ -10,7 +10,6 @@ import { Call, CallingState, StreamCall, StreamVideo, StreamVideoClient } from '
 import ScreenError from '@/components/common/screen-error';
 import CallInterface from './components/call-interface';
 import CallSetup from './components/call-setup';
-import { toast } from 'sonner';
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 
@@ -52,17 +51,18 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
             },
             token,
             options: {
-               logger: (logLevel, message) => {
+               logger: (_logLevel, message) => {
                   if (
                      typeof message === 'string' &&
-                     (message.includes('[devices]') || message.includes('getUserMedia'))
+                     (
+                        message.includes('[devices]') ||
+                        message.includes('[audio manager]') ||
+                        message.includes('speaking while muted') ||
+                        message.includes('getUserMedia') ||
+                        message.includes('device')
+                     )
                   ) {
                      return;
-                  }
-                  if (logLevel === 'error') {
-                     toast.error(message);
-                  } else if (logLevel === 'warn') {
-                     toast.error(message);
                   }
                }
             }
