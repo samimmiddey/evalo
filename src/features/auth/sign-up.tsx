@@ -17,9 +17,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import OTP from './otp';
 import { useState } from 'react';
+import {
+   resendVerificationCode,
+   resetSignUp,
+   signupWithPassword,
+   verifyCode,
+} from './services/auth.client.service';
 import CustomSpinner from '@/components/common/custom-spinner';
 import ScreenLoader from '@/components/common/screen-loader';
-import { resendVerificationCode, signupWithPassword, verifyCode } from './services/auth.client.service';
 import InputError from '@/components/common/input-error';
 import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
 
@@ -98,6 +103,15 @@ const SignUp = () => {
       }
    };
 
+   // Reset OTP flow to go back to sign up page
+   const onBack = async () => {
+      const result = await resetSignUp({ signUp });
+
+      if (!result.success) {
+         toast.error(result.message);
+      }
+   };
+
    // Show loader if clerk isn't loaded
    if (!signUp) {
       return <ScreenLoader text="Loading..." />;
@@ -120,14 +134,12 @@ const SignUp = () => {
       signUp.missingFields.length === 0
    ) {
       return (
-         <>
-            <OTP
-               handleVerify={handleVerify}
-               fetchStatus={fetchStatus}
-               resendCode={resendCode}
-               signUp={signUp}
-            />
-         </>
+         <OTP
+            handleVerify={handleVerify}
+            fetchStatus={fetchStatus}
+            resendCode={resendCode}
+            onBack={onBack}
+         />
       );
    }
 

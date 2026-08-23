@@ -1,5 +1,20 @@
 import { getClerkErrorMessage } from "@/utils/clerk-error";
-import { SignupParams, AuthResult, VerifyCodeParams, ResendCodeParams, SignInParams, SendResetCodeParams, VerifyResetCodeParams, SubmitNewPasswordParams, GoogleSsoParams, ResetSignUpParams, SsoCallbackParams } from "../types/auth.types";
+import {
+   SignupParams,
+   AuthResult,
+   VerifyCodeParams,
+   ResendCodeParams,
+   SignInParams,
+   VerifySignInCodeParams,
+   ResendSignInCodeParams,
+   ResetSignInParams,
+   SendResetCodeParams,
+   VerifyResetCodeParams,
+   SubmitNewPasswordParams,
+   GoogleSsoParams,
+   ResetSignUpParams,
+   SsoCallbackParams,
+} from "../types/auth.types";
 import { sanitizeRedirectUrl } from "@/utils/redirect-url-sanitizer";
 
 // Sign up with password
@@ -81,17 +96,75 @@ export const signInWithPassword = async ({
 
    if (error) {
       return { success: false, message: getClerkErrorMessage(error) };
-   };
+   }
 
    if (signIn.status === "complete") {
       await signIn.finalize({ navigate: onNavigate });
       return { success: true };
-   };
+   }
+
+   if (signIn.status === "needs_second_factor") {
+      const { error: sendCodeError } = await signIn.mfa.sendEmailCode();
+      if (sendCodeError) {
+         return { success: false, message: getClerkErrorMessage(sendCodeError) };
+      }
+      return { success: true };
+   }
 
    return {
       success: false,
-      message: errors.global?.[0]?.message ?? "Failed to sign in"
+      message: errors.global?.[0]?.message ?? "Failed to sign in",
    };
+};
+
+// Verify sign-in 2FA OTP
+export const verifySignInCode = async ({
+   signIn,
+   code,
+   errors,
+   onNavigate,
+}: VerifySignInCodeParams): Promise<AuthResult> => {
+   const { error } = await signIn.mfa.verifyEmailCode({ code });
+
+   if (error) {
+      return { success: false, message: getClerkErrorMessage(error) };
+   }
+
+   if (signIn.status === "complete") {
+      await signIn.finalize({ navigate: onNavigate });
+      return { success: true };
+   }
+
+   return {
+      success: false,
+      message: errors.global?.[0]?.message ?? "Failed to sign in",
+   };
+};
+
+// Resend sign-in 2FA OTP
+export const resendSignInVerificationCode = async ({
+   signIn,
+}: ResendSignInCodeParams): Promise<AuthResult> => {
+   const { error } = await signIn.mfa.sendEmailCode();
+
+   if (error) {
+      return { success: false, message: getClerkErrorMessage(error) };
+   }
+
+   return { success: true };
+};
+
+// Reset sign-in flow (go back to sign-in form)
+export const resetSignIn = async ({
+   signIn,
+}: ResetSignInParams): Promise<AuthResult> => {
+   const { error } = await signIn.reset();
+
+   if (error) {
+      return { success: false, message: getClerkErrorMessage(error) };
+   }
+
+   return { success: true };
 };
 
 // Step 1: Send password reset code

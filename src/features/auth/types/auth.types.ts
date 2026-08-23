@@ -40,6 +40,21 @@ export interface SignInParams {
    onNavigate: () => void;
 }
 
+export interface VerifySignInCodeParams {
+   signIn: SignInResource;
+   code: string;
+   errors: SignInErrors;
+   onNavigate: () => void;
+}
+
+export interface ResendSignInCodeParams {
+   signIn: SignInResource;
+}
+
+export interface ResetSignInParams {
+   signIn: SignInResource;
+}
+
 export interface SendResetCodeParams {
    signIn: SignInResource;
    email: string;

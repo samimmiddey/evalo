@@ -9,24 +9,19 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { otpSchema, OtpSchemaTypes } from './schemas/auth.schema';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import useAuthStore from '@/store/auth-store';
 import CustomSpinner from '@/components/common/custom-spinner';
-import { toast } from 'sonner';
-import { useSignUp } from '@clerk/nextjs';
-import { resetSignUp } from './services/auth.client.service';
 import InputError from '@/components/common/input-error';
-
-type SignUpType = ReturnType<typeof useSignUp>['signUp'];
 
 interface OTPProps {
    handleVerify: (data: OtpSchemaTypes) => Promise<boolean>;
    fetchStatus: string;
    resendCode: () => Promise<unknown> | void;
-   signUp: SignUpType;
+   onBack: () => Promise<unknown> | void;
 }
 
-const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
+const OTP = ({ handleVerify, fetchStatus, resendCode, onBack }: OTPProps) => {
    const { otpExpiresAt, setOtpExpiresAt, hasRequestedResend, setHasRequestedResend } = useAuthStore();
    const [now, setNow] = useState(() => Date.now());
    const [isOtpVerifying, setIsOtpVerifying] = useState<boolean>(false);
@@ -83,17 +78,9 @@ const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
       };
    }, [otpExpiresAt, setOtpExpiresAt]);
 
-   // Reset OTP flow to go back to sign up page
-   const onBack = async () => {
-      if (!signUp) return;
-
-      const result = await resetSignUp({ signUp });
-
-      if (!result.success) {
-         toast.error(result.message);
-         return;
-      }
-
+   // Reset OTP flow to go back to previous auth page
+   const handleBack = async () => {
+      await onBack();
       setOtpExpiresAt(null);
       setHasRequestedResend(false);
    };
@@ -173,7 +160,7 @@ const OTP = ({ handleVerify, fetchStatus, resendCode, signUp }: OTPProps) => {
             <Button
                variant='secondary'
                className='flex items-center gap-3 text-zinc-300'
-               onClick={() => void onBack()}
+               onClick={() => void handleBack()}
                type='button'
             >
                Use a different email

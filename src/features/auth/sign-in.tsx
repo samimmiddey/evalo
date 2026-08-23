@@ -10,14 +10,20 @@ import ContinueDivider from './components/continue-divider';
 import AuthHeader from './components/auth-header';
 import AuthFooter from './components/auth-footer';
 import { authData } from '@/data/auth/auth.data';
-import { useSignIn } from '@clerk/nextjs';
+import { useAuth, useSignIn } from '@clerk/nextjs';
 import { useForm } from 'react-hook-form';
-import { authSchema, AuthSchemaTypes } from './schemas/auth.schema';
+import { authSchema, AuthSchemaTypes, OtpSchemaTypes } from './schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
+import OTP from './otp';
 import { useState } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
-import { signInWithPassword } from './services/auth.client.service';
+import {
+   resendSignInVerificationCode,
+   resetSignIn,
+   signInWithPassword,
+   verifySignInCode,
+} from './services/auth.client.service';
 import ScreenLoader from '@/components/common/screen-loader';
 import InputError from '@/components/common/input-error';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
@@ -26,6 +32,7 @@ import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
 
 const SignIn = () => {
    const { signIn, errors, fetchStatus } = useSignIn();
+   const { isSignedIn } = useAuth();
    const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
 
    const router = useRouter();
@@ -47,6 +54,15 @@ const SignIn = () => {
       }
    });
 
+   const onNavigate = () => {
+      const sanitizedRedirectUrl = sanitizeRedirectUrl(redirectUrl);
+      if (sanitizedRedirectUrl) {
+         router.replace(sanitizedRedirectUrl);
+      } else {
+         void roleBasedRedirect();
+      }
+   };
+
    // Sign in with email and password
    const onSubmit = async (data: AuthSchemaTypes) => {
       setIsSigningIn(true);
@@ -56,29 +72,84 @@ const SignIn = () => {
          emailAddress: data.email,
          password: data.password,
          errors,
-         onNavigate: () => {
-            const sanitizedRedirectUrl = sanitizeRedirectUrl(redirectUrl);
-            if (sanitizedRedirectUrl) {
-               router.replace(sanitizedRedirectUrl);
-            } else {
-               void roleBasedRedirect();
-            }
+         onNavigate,
+      });
+
+      if (result.success) {
+         if (signIn.status === 'complete') {
+            toast.success('Signed in successfully');
+            reset();
          }
+      } else {
+         toast.error(result.message);
+      }
+
+      setIsSigningIn(false);
+   };
+
+   // Verify OTP
+   const handleVerify = async (data: OtpSchemaTypes) => {
+      const result = await verifySignInCode({
+         signIn,
+         code: data.code,
+         errors,
+         onNavigate,
       });
 
       if (result.success) {
          toast.success('Signed in successfully');
-         reset();
       } else {
          toast.error(result.message);
-      };
+      }
 
-      setIsSigningIn(false);
+      return result.success;
+   };
+
+   // Resend OTP
+   const resendCode = async () => {
+      const result = await resendSignInVerificationCode({ signIn });
+
+      if (result.success) {
+         toast.success('A new code has been sent');
+      } else {
+         toast.error(result.message);
+      }
+   };
+
+   // Reset OTP flow to go back to sign in page
+   const onBack = async () => {
+      const result = await resetSignIn({ signIn });
+
+      if (!result.success) {
+         toast.error(result.message);
+      }
    };
 
    // Show loader if clerk isn't loaded
    if (!signIn) {
       return <ScreenLoader text="Loading..." />;
+   }
+
+   // Show loader if sign in is complete or user is already signed in
+   if (signIn.status === 'complete' || isSignedIn) {
+      return (
+         <ScreenLoader
+            text="Redirecting..."
+            className="min-h-screen fixed inset-0 z-99999 overflow-hidden bg-zinc-950"
+         />
+      );
+   }
+
+   // Show OTP form when second factor is needed
+   if (signIn.status === 'needs_second_factor') {
+      return (
+         <OTP
+            handleVerify={handleVerify}
+            fetchStatus={fetchStatus}
+            resendCode={resendCode}
+            onBack={onBack}
+         />
+      );
    }
 
    return (
