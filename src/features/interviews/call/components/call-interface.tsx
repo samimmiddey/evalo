@@ -157,11 +157,7 @@ const CallInterface = ({
 
    return (
       <div className="flex flex-col h-dvh overflow-hidden bg-zinc-950 text-zinc-100">
-         <CallHeader
-            booking={booking}
-            isInterviewer={isInterviewer}
-            onLeave={() => { void handleEndCall(); }}
-         />
+         <CallHeader booking={booking} />
 
          {/* Mobile tab switcher */}
          <div className="lg:hidden">

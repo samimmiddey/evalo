@@ -2,16 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
-import { Clock, PhoneOff, Video, ArrowLeftRight } from 'lucide-react';
+import { Clock, Video, ArrowLeftRight } from 'lucide-react';
 import { Booking } from '@/features/interviews/call/types/call.types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 
 interface CallHeaderProps {
    booking: Booking;
-   isInterviewer: boolean;
-   onLeave: () => void;
 }
 
 const formatDuration = (totalSeconds: number): string => {
@@ -30,7 +27,7 @@ const getInitials = (name: string) =>
       .map((w) => w[0].toUpperCase())
       .join('');
 
-const CallHeader = ({ booking, isInterviewer, onLeave }: CallHeaderProps) => {
+const CallHeader = ({ booking }: CallHeaderProps) => {
    const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
    useEffect(() => {
@@ -112,16 +109,6 @@ const CallHeader = ({ booking, isInterviewer, onLeave }: CallHeaderProps) => {
                <Clock className="size-3.5 text-violet-400" />
                {formatDuration(elapsedSeconds)}
             </Badge>
-
-            <Button
-               variant="outline"
-               size="sm"
-               onClick={onLeave}
-               className="h-9 px-3.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 border-red-500/30 text-red-300 hover:text-red-200 text-xs transition-colors gap-1.5 cursor-pointer shadow-sm"
-            >
-               <PhoneOff className="size-3.5" />
-               <span className="hidden sm:inline">{isInterviewer ? 'End Interview' : 'Leave'}</span>
-            </Button>
          </div>
       </header>
    );

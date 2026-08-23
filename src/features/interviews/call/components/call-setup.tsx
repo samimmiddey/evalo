@@ -276,8 +276,8 @@ export const CallSetup = ({
             </header>
 
             {/* Main content grid */}
-            <main className="flex-1 flex items-center justify-center px-4 py-5 lg:py-6 2xl:py-8">
-               <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 2xl:gap-8 items-start">
+            <main className="flex-1 flex items-center justify-center p-4 lg:py-6 2xl:py-8">
+               <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 2xl:gap-8 items-start">
 
                   {/* Left Column: Video Preview & Quick Controls (7 cols on lg) */}
                   <div className="lg:col-span-7 flex flex-col gap-4">
@@ -393,7 +393,7 @@ export const CallSetup = ({
                   </div>
 
                   {/* Right Column: Device Selectors & Meeting Card (5 cols on lg) */}
-                  <div className="lg:col-span-5 flex flex-col gap-5">
+                  <div className="lg:col-span-5 flex flex-col gap-4 lg:gap-5">
 
                      {/* Interview Summary Card */}
                      <div className="p-5 rounded-2xl bg-zinc-900/70 border border-white/10 backdrop-blur-md flex flex-col gap-3.5 shadow-xl">
