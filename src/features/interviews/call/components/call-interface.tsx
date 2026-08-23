@@ -14,6 +14,8 @@ import VideoPanel from './video-panel';
 import ChatPanel from './chat-panel';
 import TabSwitcher from './tab-switcher';
 import CardLayout from '@/components/layouts/card-layout';
+import SecondaryTitle from '@/components/common/secondary-title';
+import PrimaryBody from '@/components/common/primary-body';
 
 interface CallInterfaceProps {
    callId: string;
@@ -128,12 +130,14 @@ const CallInterface = ({
                   Session Completed
                </Badge>
 
-               <h2 className="text-lg font-semibold text-zinc-100">
-                  Technical Mock Interview
-               </h2>
-               <p className="text-xs text-zinc-400 max-w-xs leading-relaxed">
-                  The interview call has ended. Feedback and performance notes will be updated in your dashboard.
-               </p>
+               <SecondaryTitle
+                  text="Technical Mock Interview"
+                  className="text-lg! 2xl:text-lg! font-semibold! text-zinc-100!"
+               />
+               <PrimaryBody
+                  text="The interview call has ended. Feedback and performance notes will be updated in your dashboard."
+                  className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400! max-w-xs leading-relaxed"
+               />
 
                {/* Action Button */}
                <Button
@@ -181,14 +185,27 @@ const CallInterface = ({
             ].join(' ')}>
                {chatError ? (
                   <div className="flex flex-col items-center justify-center h-full p-6 text-center text-zinc-400 bg-zinc-900/50 rounded-2xl border border-white/10 m-2 sm:m-3 lg:m-4 lg:ml-0">
-                     <p className="text-xs font-medium text-zinc-200">Chat Unavailable</p>
-                     <p className="text-[11px] text-zinc-400 mt-1">{chatError}</p>
+                     <SecondaryTitle
+                        text="Chat Unavailable"
+                        className="text-xs! 2xl:text-xs! font-medium! text-zinc-200!"
+                     />
+                     <PrimaryBody
+                        text={chatError}
+                        className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-zinc-400! mt-1"
+                     />
                   </div>
                ) : chatChannel ? (
-                  <ChatPanel chatClient={chatClient} chatChannel={chatChannel} />
+                  <ChatPanel
+                     chatClient={chatClient}
+                     chatChannel={chatChannel}
+                     isInterviewer={isInterviewer}
+                  />
                ) : (
                   <div className="flex flex-col items-center justify-center h-full p-6 text-center text-zinc-400 bg-zinc-900/50 rounded-2xl border border-white/10 m-2 sm:m-3 lg:m-4 lg:ml-0">
-                     <p className="text-xs text-zinc-400">Connecting to interview chat...</p>
+                     <PrimaryBody
+                        text="Connecting to interview chat..."
+                        className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400!"
+                     />
                   </div>
                )}
             </div>

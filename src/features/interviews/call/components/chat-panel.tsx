@@ -13,14 +13,17 @@ import {
    ComponentProvider,
 } from 'stream-chat-react';
 import { format } from 'date-fns';
-import { MessageSquare, Send, Paperclip, X, FileText, Download, Loader2 } from 'lucide-react';
+import { MessageSquare, Send, Paperclip, X, FileText, Download, Loader2, ScrollText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import SecondaryTitle from '@/components/common/secondary-title';
+import PrimaryBody from '@/components/common/primary-body';
 
 interface ChatPanelProps {
    chatClient: StreamChat;
    chatChannel: StreamChannel;
+   isInterviewer?: boolean;
 }
 
 const EMOJI_MAP: Record<string, string> = {
@@ -120,7 +123,10 @@ const CustomMessageUI = () => {
                   }`}
             >
                {message.text && (
-                  <p className="whitespace-pre-wrap select-text">{message.text}</p>
+                  <PrimaryBody
+                     text={message.text}
+                     className="whitespace-pre-wrap select-text text-[13px]! lg:text-[13px]! 2xl:text-[13px]! text-inherit!"
+                  />
                )}
 
                {/* Attachments rendering */}
@@ -156,8 +162,8 @@ const CustomMessageUI = () => {
                               rel="noopener noreferrer"
                               download={att.title || 'attachment'}
                               className={`flex items-center gap-2.5 p-2 rounded-xl border transition-colors ${isMe
-                                    ? 'bg-violet-700/60 border-violet-400/20 hover:bg-violet-700/80 text-white'
-                                    : 'bg-zinc-900/90 border-white/10 hover:bg-zinc-900 text-zinc-200'
+                                 ? 'bg-violet-700/60 border-violet-400/20 hover:bg-violet-700/80 text-white'
+                                 : 'bg-zinc-900/90 border-white/10 hover:bg-zinc-900 text-zinc-200'
                                  }`}
                            >
                               <div className="flex items-center justify-center size-7 rounded-lg bg-white/10 shrink-0">
@@ -224,10 +230,14 @@ const EmptyChatState = () => (
             <MessageSquare className="size-5" />
          </div>
       </div>
-      <p className="text-xs font-semibold text-zinc-200">No Messages Yet</p>
-      <p className="text-[11px] text-zinc-400 mt-1 max-w-55 leading-relaxed">
-         Send a message to share links, notes, or questions during your interview.
-      </p>
+      <SecondaryTitle
+         text="No Messages Yet"
+         className="text-xs! 2xl:text-xs! font-semibold! text-zinc-200!"
+      />
+      <PrimaryBody
+         text="Send a message to share links, notes, or questions during your interview."
+         className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-zinc-400! mt-1 max-w-55 leading-relaxed"
+      />
    </div>
 );
 
@@ -359,23 +369,56 @@ const CustomChatInput = ({ chatChannel }: { chatChannel: StreamChannel; }) => {
    );
 };
 
-const ChatPanel = ({ chatClient, chatChannel }: ChatPanelProps) => {
+const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false }: ChatPanelProps) => {
+   const [activeTab, setActiveTab] = useState<'chat' | 'ai-questions'>('chat');
+
    return (
       <div className="flex flex-col h-full w-full p-2 sm:p-3 lg:p-4 lg:pl-0 bg-zinc-950">
          <div className="relative flex-1 rounded-2xl overflow-hidden bg-zinc-900/90 border border-white/10 shadow-2xl shadow-violet-950/20 flex flex-col min-h-0">
-            {/* Header */}
+            {/* Header / Tabs */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0 bg-zinc-950/70 backdrop-blur-md">
-               <div className="flex items-center gap-2.5">
-                  <div className="flex items-center justify-center size-8 rounded-lg bg-violet-600/20 border border-violet-500/30 text-violet-400">
-                     <MessageSquare className="size-4" />
+               {isInterviewer ? (
+                  <div className="flex items-center gap-1 p-1 bg-zinc-900/90 border border-white/10 rounded-xl">
+                     <button
+                        type="button"
+                        onClick={() => setActiveTab('chat')}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${activeTab === 'chat'
+                           ? 'bg-violet-600 text-white shadow-sm'
+                           : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
+                           }`}
+                     >
+                        <MessageSquare className="size-3.5" />
+                        <span>Chat</span>
+                     </button>
+                     <button
+                        type="button"
+                        onClick={() => setActiveTab('ai-questions')}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${activeTab === 'ai-questions'
+                           ? 'bg-violet-600 text-white shadow-sm'
+                           : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
+                           }`}
+                     >
+                        <ScrollText className="size-3.5" />
+                        <span>AI Questions</span>
+                     </button>
                   </div>
-                  <div>
-                     <h3 className="text-xs font-semibold text-zinc-100 flex items-center gap-1.5">
-                        Interview Chat
-                     </h3>
-                     <p className="text-[10px] text-zinc-400">Live in-call messaging</p>
+               ) : (
+                  <div className="flex items-center gap-2.5">
+                     <div className="flex items-center justify-center size-8 rounded-lg bg-violet-600/20 border border-violet-500/30 text-violet-400">
+                        <MessageSquare className="size-4" />
+                     </div>
+                     <div>
+                        <SecondaryTitle
+                           text="Interview Chat"
+                           className="text-xs! 2xl:text-xs! font-semibold! text-zinc-100! flex items-center gap-1.5"
+                        />
+                        <PrimaryBody
+                           text="Live in-call messaging"
+                           className="text-[10px]! lg:text-[10px]! 2xl:text-[10px]! text-zinc-400!"
+                        />
+                     </div>
                   </div>
-               </div>
+               )}
 
                <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px] px-2.5 py-0.5 font-normal flex items-center gap-1.5">
                   <span className="size-1.5 rounded-full bg-emerald-400 inline-block animate-pulse" />
@@ -383,27 +426,45 @@ const ChatPanel = ({ chatClient, chatChannel }: ChatPanelProps) => {
                </Badge>
             </div>
 
-            {/* Chat Area */}
-            <div className="flex-1 min-h-0 flex flex-col overflow-hidden evalo-chat-container str-chat__theme-dark">
-               <Chat client={chatClient}>
-                  <Channel
-                     channel={chatChannel}
-                     initializeOnMount={false}
-                     EmptyPlaceholder={<EmptyChatState />}
-                  >
-                     <div className="flex flex-col flex-1 min-h-0">
-                        <div className="flex-1 min-h-0 overflow-hidden">
-                           <Window>
-                              <ComponentProvider value={{ MessageUI: CustomMessageUI }}>
-                                 <MessageList disableDateSeparator={false} />
-                              </ComponentProvider>
-                           </Window>
+            {/* Content Area */}
+            {activeTab === 'chat' ? (
+               <div className="flex-1 min-h-0 flex flex-col overflow-hidden evalo-chat-container str-chat__theme-dark">
+                  <Chat client={chatClient}>
+                     <Channel
+                        channel={chatChannel}
+                        initializeOnMount={false}
+                        EmptyPlaceholder={<EmptyChatState />}
+                     >
+                        <div className="flex flex-col flex-1 min-h-0">
+                           <div className="flex-1 min-h-0 overflow-hidden">
+                              <Window>
+                                 <ComponentProvider value={{ MessageUI: CustomMessageUI }}>
+                                    <MessageList disableDateSeparator={false} />
+                                 </ComponentProvider>
+                              </Window>
+                           </div>
+                           <CustomChatInput chatChannel={chatChannel} />
                         </div>
-                        <CustomChatInput chatChannel={chatChannel} />
+                     </Channel>
+                  </Chat>
+               </div>
+            ) : (
+               <div className="flex-1 min-h-0 flex flex-col items-center justify-center p-6 text-center text-zinc-400">
+                  <div className="relative mb-3">
+                     <div className="relative flex items-center justify-center size-12 rounded-xl bg-violet-600/10 border border-violet-500/30 text-violet-400">
+                        <ScrollText className="size-5" />
                      </div>
-                  </Channel>
-               </Chat>
-            </div>
+                  </div>
+                  <SecondaryTitle
+                     text="AI Question Generator"
+                     className="text-sm! 2xl:text-[15px]! font-semibold! text-zinc-200!"
+                  />
+                  <PrimaryBody
+                     text="AI-powered technical questions and evaluation prompts for interviewers."
+                     className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-400! mt-1 max-w-60"
+                  />
+               </div>
+            )}
          </div>
       </div>
    );

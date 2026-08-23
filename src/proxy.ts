@@ -21,8 +21,8 @@ const isAuthRoute = createRouteMatcher([
 ]);
 
 const roleRouteMap = [
-   { matcher: createRouteMatcher(['/interviewers(.*)', '/appointments(.*)', '/call(.*)']), allowedRole: 'INTERVIEWEE' },
-   { matcher: createRouteMatcher(['/dashboard(.*)', 'call(.*)']), allowedRole: 'INTERVIEWER' },
+   { matcher: createRouteMatcher(['/interviewers(.*)', '/appointments(.*)']), allowedRole: 'INTERVIEWEE' },
+   { matcher: createRouteMatcher(['/dashboard(.*)']), allowedRole: 'INTERVIEWER' },
 ] as const;
 
 const isOnboardingRoute = createRouteMatcher(['/onboarding(.*)']);

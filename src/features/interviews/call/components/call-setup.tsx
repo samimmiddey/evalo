@@ -35,6 +35,8 @@ import {
 import { TooltipProvider } from '@/components/ui/tooltip';
 import CustomTooltip from '@/components/common/custom-tooltip';
 import { toast } from 'sonner';
+import SecondaryTitle from '@/components/common/secondary-title';
+import PrimaryBody from '@/components/common/primary-body';
 
 interface CallSetupProps {
    booking: Booking;
@@ -254,13 +256,19 @@ export const CallSetup = ({
                      <Video className="size-5" />
                   </div>
                   <div>
-                     <h1 className="text-sm font-semibold text-zinc-100 flex items-center gap-2">
-                        Pre-Call Device Setup
+                     <div className="flex items-center gap-2">
+                        <SecondaryTitle
+                           text="Pre-Call Device Setup"
+                           className="text-sm! 2xl:text-sm! font-semibold! text-zinc-100!"
+                        />
                         <Badge variant="outline" className="bg-violet-500/10 text-violet-300 border-violet-500/20 text-[10px] font-normal px-2">
                            {isRejoining ? 'Rejoining' : 'Lobby'}
                         </Badge>
-                     </h1>
-                     <p className="text-xs mt-0.5 text-zinc-400">Adjust your microphone and camera before entering the room</p>
+                     </div>
+                     <PrimaryBody
+                        text="Adjust your microphone and camera before entering the room"
+                        className="text-xs! lg:text-xs! 2xl:text-xs! mt-0.5! text-zinc-400!"
+                     />
                   </div>
                </div>
 
@@ -298,7 +306,10 @@ export const CallSetup = ({
                                     </AvatarFallback>
                                  </Avatar>
                               </div>
-                              <p className="text-sm font-medium text-zinc-200">{currentUserName}</p>
+                              <PrimaryBody
+                                 text={currentUserName}
+                                 className="text-sm! lg:text-sm! 2xl:text-sm! font-medium! text-zinc-200!"
+                              />
                               <div className="flex items-center gap-1.5 mt-1.5 px-3 py-1 rounded-full bg-zinc-800/80 border border-white/10 text-xs text-zinc-400">
                                  <CameraOff className="size-3.5 text-zinc-500" />
                                  <span>Camera is turned off</span>
@@ -416,11 +427,18 @@ export const CallSetup = ({
                               </AvatarFallback>
                            </Avatar>
                            <div className="min-w-0 flex-1">
-                              <p className="text-xs text-zinc-400 leading-none">Meeting with</p>
-                              <p className="text-sm font-medium text-zinc-100 truncate mt-1">{counterPartyName}</p>
-                              <p className="text-[11px] text-violet-400/90 leading-none mt-0.5">
-                                 {counterPartyRole}
-                              </p>
+                              <PrimaryBody
+                                 text="Meeting with"
+                                 className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400! leading-none!"
+                              />
+                              <PrimaryBody
+                                 text={counterPartyName}
+                                 className="text-sm! lg:text-sm! 2xl:text-sm! font-medium! text-zinc-100! truncate mt-1"
+                              />
+                              <PrimaryBody
+                                 text={counterPartyRole}
+                                 className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-violet-400/90! leading-none! mt-0.5"
+                              />
                            </div>
                         </div>
 
@@ -433,10 +451,13 @@ export const CallSetup = ({
                      {/* Hardware Settings Card */}
                      <div className="p-5 rounded-2xl bg-zinc-900/70 border border-white/10 backdrop-blur-md flex flex-col gap-4 shadow-xl">
                         <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
-                           <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-300 flex items-center gap-2">
+                           <div className="flex items-center gap-2">
                               <Camera className="size-4 text-violet-400" />
-                              Device Settings
-                           </h3>
+                              <SecondaryTitle
+                                 text="Device Settings"
+                                 className="text-xs! 2xl:text-xs! font-semibold! uppercase tracking-wider text-zinc-300!"
+                              />
+                           </div>
                            <span className="text-[11px] text-zinc-500">Auto-detected</span>
                         </div>
 

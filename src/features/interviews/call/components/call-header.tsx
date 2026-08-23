@@ -6,6 +6,8 @@ import { Clock, Video, ArrowLeftRight } from 'lucide-react';
 import { Booking } from '@/features/interviews/call/types/call.types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import SecondaryTitle from '@/components/common/secondary-title';
+import PrimaryBody from '@/components/common/primary-body';
 
 interface CallHeaderProps {
    booking: Booking;
@@ -52,9 +54,10 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
 
             <div className="min-w-0">
                <div className="flex items-center gap-2">
-                  <h1 className="text-sm font-semibold text-zinc-100 truncate">
-                     Technical Mock Interview
-                  </h1>
+                  <SecondaryTitle
+                     text="Technical Mock Interview"
+                     className="text-sm! 2xl:text-sm! font-semibold! text-zinc-100! truncate"
+                  />
                   <Badge variant="outline" className="hidden sm:inline-flex items-center gap-1.5 bg-red-500/10 text-red-300 border-red-500/20 text-[10px] font-medium px-2 py-0.5">
                      <span className="relative flex size-1.5">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
@@ -63,9 +66,10 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
                      Live
                   </Badge>
                </div>
-               <p className="text-xs mt-0.5 text-zinc-400 truncate max-w-xs sm:max-w-md">
-                  <span className="text-zinc-500">{scheduledStart} - {scheduledEnd}</span>
-               </p>
+               <PrimaryBody
+                  text={`${scheduledStart} - ${scheduledEnd}`}
+                  className="text-xs! lg:text-xs! 2xl:text-xs! mt-0.5! text-zinc-500! truncate max-w-xs sm:max-w-md"
+               />
             </div>
          </div>
 
@@ -79,8 +83,14 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
                   </AvatarFallback>
                </Avatar>
                <div className="text-left">
-                  <p className="text-xs font-medium text-zinc-200 leading-none">{intervieweeName}</p>
-                  <p className="text-[10px] text-zinc-500 mt-0.5">Candidate</p>
+                  <PrimaryBody
+                     text={intervieweeName}
+                     className="text-xs! lg:text-xs! 2xl:text-xs! font-medium! text-zinc-200! leading-none!"
+                  />
+                  <PrimaryBody
+                     text="Candidate"
+                     className="text-[10px]! lg:text-[10px]! 2xl:text-[10px]! text-zinc-500! mt-0.5"
+                  />
                </div>
             </div>
 
@@ -94,8 +104,14 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
                   </AvatarFallback>
                </Avatar>
                <div className="text-left">
-                  <p className="text-xs font-medium text-zinc-200 leading-none">{interviewerName}</p>
-                  <p className="text-[10px] text-violet-400 mt-0.5">Interviewer</p>
+                  <PrimaryBody
+                     text={interviewerName}
+                     className="text-xs! lg:text-xs! 2xl:text-xs! font-medium! text-zinc-200! leading-none!"
+                  />
+                  <PrimaryBody
+                     text="Interviewer"
+                     className="text-[10px]! lg:text-[10px]! 2xl:text-[10px]! text-violet-400! mt-0.5"
+                  />
                </div>
             </div>
          </div>
