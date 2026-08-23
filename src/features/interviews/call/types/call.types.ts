@@ -1,4 +1,5 @@
 import { InterviewExpertise } from "@/generated/prisma/enums";
+import { BaseResponse } from "@/types/api.types";
 
 export interface CallParticipant {
    id: string;
@@ -40,3 +41,14 @@ export interface CallData {
 }
 
 export type GetCallDataServerResponse = CallData;
+
+export interface GeneratedQuestion {
+   id: string;
+   title: string;
+   question: string;
+   difficulty: "EASY" | "MEDIUM" | "HARD";
+   expectedAnswer: string;
+   followUpQuestion?: string;
+}
+
+export type GenerateQuestionsResponse = BaseResponse<GeneratedQuestion[]>

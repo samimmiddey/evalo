@@ -199,6 +199,7 @@ const CallInterface = ({
                      chatClient={chatClient}
                      chatChannel={chatChannel}
                      isInterviewer={isInterviewer}
+                     expertise={booking.interviewer.expertise}
                   />
                ) : (
                   <div className="flex flex-col items-center justify-center h-full p-6 text-center text-zinc-400 bg-zinc-900/50 rounded-2xl border border-white/10 m-2 sm:m-3 lg:m-4 lg:ml-0">

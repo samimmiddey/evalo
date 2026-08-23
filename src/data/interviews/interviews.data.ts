@@ -1,5 +1,6 @@
 import { ArrowLeft, BookCheck, Brain, MessageSquare, User } from "lucide-react";
 import { InterviewsData, InterviewerDetails } from "./interviews.types";
+import { InterviewExpertise } from "@/generated/prisma/enums";
 
 export const interviewsData: InterviewsData = {
    header: {
@@ -193,4 +194,18 @@ export const interviewerDetailsData: InterviewerDetails = {
          ]
       }
    ]
+};
+
+export const EXPERTISE_PROMPTS: Record<InterviewExpertise, string> = {
+   FRONTEND: "React.js, Next.js, JavaScript (ES6+), TypeScript, HTML5, CSS3, Tailwind CSS, State Management (Redux, Zustand, React Query), Web Performance, Core Web Vitals, SSR, ISR, SSG, DOM Manipulation, Browser APIs, Client-side Caching, Component Lifecycle, Accessibility (a11y), Responsive Design, Micro-frontends",
+   BACKEND: "Node.js, Express, NestJS, Python (Django/FastAPI), Go, Java (Spring Boot), RESTful APIs, GraphQL, gRPC, Microservices Architecture, Relational Databases (PostgreSQL, MySQL), NoSQL (MongoDB, Redis), ORMs (Prisma, TypeORM), Authentication & Authorization (JWT, OAuth2, RBAC), Caching Strategies, Message Queues (Kafka, RabbitMQ), API Rate Limiting, Concurrency, WebSockets",
+   FULLSTACK: "End-to-End Web Architecture, Frontend Frameworks (React, Next.js), Backend Runtimes (Node.js, Python), REST & GraphQL API Design, Database Design & Query Optimization (SQL & NoSQL), State Management, SSR & Static Site Generation, Authentication Flows, CI/CD Integration, Fullstack Testing, Performance Tuning, Security Best Practices",
+   DEVOPS: "Docker Containerization, Kubernetes Orchestration, Helm, CI/CD Pipelines (GitHub Actions, GitLab CI), Infrastructure as Code (Terraform, CloudFormation), Monitoring & Observability (Prometheus, Grafana, Datadog), Linux System Administration, Nginx/Reverse Proxies, Cloud Networking, Security Automation, Zero-downtime Deployments",
+   DSA: "Data Structures (Arrays, Linked Lists, Stacks, Queues, Hash Tables, Trees, BSTs, Heaps, Graphs, Tries), Algorithmic Techniques (Two Pointers, Sliding Window, Binary Search, Divide & Conquer, Dynamic Programming, Greedy, Backtracking, BFS/DFS, Topological Sort), Time & Space Complexity Analysis (Big-O), Recursion, Sorting & Searching Algorithms",
+   SYSTEM_DESIGN: "High-Level System Architecture, Horizontal vs Vertical Scaling, Load Balancing, Caching Layers (CDN, Distributed Cache), Database Sharding & Replication, CAP Theorem, Event-Driven Architecture, Message Brokers (Kafka, RabbitMQ), Microservices vs Monolith, Distributed Transactions, Fault Tolerance, Rate Limiting, High Availability, Disaster Recovery",
+   MOBILE: "React Native, Flutter, iOS (Swift, SwiftUI, UIKit), Android (Kotlin, Jetpack Compose), Cross-Platform Architecture, Mobile Performance Optimization, Offline Storage & Sync (SQLite, Realm, WatermelonDB), Push Notifications, Native Modules & Bridges, Memory Management, Mobile Security, App Store & Play Store Release Pipelines",
+   ML_AI: "Machine Learning Fundamentals, Deep Learning (PyTorch, TensorFlow), Large Language Models (LLMs), Prompt Engineering, Retrieval-Augmented Generation (RAG), Vector Databases (Pinecone, Chroma, pgvector), Embeddings, Fine-Tuning, NLP, Computer Vision, MLOps, Model Evaluation & Metrics, AI Agents & Tool Calling",
+   SECURITY: "OWASP Top 10 Vulnerabilities (XSS, CSRF, SQLi, SSRF), Authentication & Authorization (OAuth2, OIDC, SAML, JWT), Cryptography & Encryption (AES, RSA, TLS/HTTPS), Public Key Infrastructure (PKI), Zero-Trust Architecture, Threat Modeling, Secure Code Review, Network Security, API Security, IAM & Role-Based Access Control, Penetration Testing",
+   QA: "Test Automation Frameworks (Playwright, Cypress, Selenium), Unit & Integration Testing (Jest, Vitest, React Testing Library), Test-Driven Development (TDD), End-to-End (E2E) Testing, Performance & Load Testing (k6, JMeter), API Testing (Postman, Supertest), CI/CD Automated Test Suites, Bug Triage & Reporting, Test Coverage & Quality Gates",
+   CLOUD: "Cloud Computing Platforms (AWS, GCP, Azure), Cloud Architecture Patterns, Serverless Computing (AWS Lambda, Cloud Functions), Cloud Storage (S3, Cloud Storage), Cloud Networking (VPC, Subnets, Gateways, Route Tables, CloudFront/CDN), Identity and Access Management (IAM), Cloud Security & Compliance, Auto-Scaling, Cost Optimization, Multi-Region Redundancy",
 };

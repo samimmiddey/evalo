@@ -1,9 +1,12 @@
-import { ForbiddenError, NotFoundError, UnauthorizedError } from "@/lib/app-error";
+import { ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "@/lib/app-error";
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
 import { StreamClient } from "@stream-io/node-sdk";
-import { GetCallDataServerResponse } from "../types/call.types";
+import { GeneratedQuestion, GetCallDataServerResponse } from "../types/call.types";
+import { EXPERTISE_PROMPTS } from "@/data/interviews/interviews.data";
+import { InterviewExpertise } from "@/generated/prisma/enums";
+import { GoogleGenerativeAI, ResponseSchema, SchemaType } from '@google/generative-ai';
 
 export const getCallData = async (callId: string): Promise<GetCallDataServerResponse> => {
    const user = await currentUser();
@@ -99,5 +102,97 @@ export const getCallData = async (callId: string): Promise<GetCallDataServerResp
          fallbackMessage: 'Failed to fetch call data'
       });
    }
+};
 
+const questionSchema: ResponseSchema = {
+   type: SchemaType.ARRAY,
+   description: "List of exactly 3 concise technical interview questions",
+   items: {
+      type: SchemaType.OBJECT,
+      properties: {
+         id: {
+            type: SchemaType.STRING,
+            description: "Identifier e.g. q1, q2, q3"
+         },
+         title: {
+            type: SchemaType.STRING,
+            description: "Short concept title (2-4 words)"
+         },
+         question: {
+            type: SchemaType.STRING,
+            description: "Clear, direct technical question"
+         },
+         difficulty: {
+            type: SchemaType.STRING,
+            format: "enum",
+            enum: ["EASY", "MEDIUM", "HARD"],
+            description: "Difficulty level of the question"
+         },
+         expectedAnswer: {
+            type: SchemaType.STRING,
+            description: "Brief 1-2 sentence model answer for evaluation"
+         },
+         followUpQuestion: {
+            type: SchemaType.STRING,
+            description: "1 concise follow-up probe"
+         }
+      },
+      required: ["id", "title", "question", "difficulty", "expectedAnswer"]
+   }
+};
+
+// Generate AI interview questions
+export const generateInterviewQuestions = async (expertise: string): Promise<GeneratedQuestion[]> => {
+   const user = await currentUser();
+
+   // Check if user exists
+   if (!user) {
+      throw new UnauthorizedError('Unauthenticated user');
+   }
+
+   const promptTopics = EXPERTISE_PROMPTS[expertise as InterviewExpertise];
+   if (!promptTopics) {
+      throw new ValidationError('Invalid expertise domain');
+   }
+
+   const apiKey = process.env.GEMINI_API_KEY;
+   if (!apiKey) {
+      throw new Error("Missing Gemini API key in environment variables");
+   }
+
+   const genAI = new GoogleGenerativeAI(apiKey);
+   const model = genAI.getGenerativeModel({
+      model: "gemini-3.6-flash",
+      generationConfig: {
+         responseMimeType: "application/json",
+         responseSchema: questionSchema,
+         temperature: 0.7,
+      }
+   });
+
+   const prompt = `
+   You are a Senior Technical Interviewer in ${expertise}. Focus topics: ${promptTopics}.
+
+   Generate exactly 3 concise, practical interview questions (1 Easy, 1 Medium, 1 Hard).
+   - Keep "title" under 4 words.
+   - Keep "question" clear and direct.
+   - Keep "expectedAnswer" strictly under 2 concise sentences.
+   - Keep "followUpQuestion" to 1 direct sentence.
+   `;
+
+   try {
+      const result = await model.generateContent(prompt);
+      const text = result.response.text();
+      if (!text) {
+         throw new Error("No response received from Gemini");
+      }
+
+      const questions = JSON.parse(text) as GeneratedQuestion[];
+      return questions;
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: 'Failed to generate interview questions'
+      });
+   }
 };

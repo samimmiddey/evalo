@@ -13,3 +13,6 @@ export const GET_APPOINTMENTS = '/appointments/list';
 export const GET_APPOINTMENT_STATS = '/appointments/stats';
 export const CANCEL_BOOKING = '/appointments/cancel-booking';
 export const RETRY_BOOKING = '/appointments/retry-booking';
+
+// Call
+export const GENERATE_QUESTIONS = '/call/generate-questions';

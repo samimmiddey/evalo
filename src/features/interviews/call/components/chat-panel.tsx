@@ -19,11 +19,13 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import SecondaryTitle from '@/components/common/secondary-title';
 import PrimaryBody from '@/components/common/primary-body';
+import QuestionGenerator from './question-generator/question-generator';
 
 interface ChatPanelProps {
    chatClient: StreamChat;
    chatChannel: StreamChannel;
    isInterviewer?: boolean;
+   expertise: string[];
 }
 
 const EMOJI_MAP: Record<string, string> = {
@@ -369,7 +371,7 @@ const CustomChatInput = ({ chatChannel }: { chatChannel: StreamChannel; }) => {
    );
 };
 
-const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false }: ChatPanelProps) => {
+const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }: ChatPanelProps) => {
    const [activeTab, setActiveTab] = useState<'chat' | 'ai-questions'>('chat');
 
    return (
@@ -427,42 +429,30 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false }: ChatPanel
             </div>
 
             {/* Content Area */}
-            {activeTab === 'chat' ? (
-               <div className="flex-1 min-h-0 flex flex-col overflow-hidden evalo-chat-container str-chat__theme-dark">
-                  <Chat client={chatClient}>
-                     <Channel
-                        channel={chatChannel}
-                        initializeOnMount={false}
-                        EmptyPlaceholder={<EmptyChatState />}
-                     >
-                        <div className="flex flex-col flex-1 min-h-0">
-                           <div className="flex-1 min-h-0 overflow-hidden">
-                              <Window>
-                                 <ComponentProvider value={{ MessageUI: CustomMessageUI }}>
-                                    <MessageList disableDateSeparator={false} />
-                                 </ComponentProvider>
-                              </Window>
-                           </div>
-                           <CustomChatInput chatChannel={chatChannel} />
+            <div className={`flex-1 min-h-0 flex-col overflow-hidden evalo-chat-container str-chat__theme-dark ${activeTab === 'chat' ? 'flex' : 'hidden'}`}>
+               <Chat client={chatClient}>
+                  <Channel
+                     channel={chatChannel}
+                     initializeOnMount={false}
+                     EmptyPlaceholder={<EmptyChatState />}
+                  >
+                     <div className="flex flex-col flex-1 min-h-0">
+                        <div className="flex-1 min-h-0 overflow-hidden">
+                           <Window>
+                              <ComponentProvider value={{ MessageUI: CustomMessageUI }}>
+                                 <MessageList disableDateSeparator={false} />
+                              </ComponentProvider>
+                           </Window>
                         </div>
-                     </Channel>
-                  </Chat>
-               </div>
-            ) : (
-               <div className="flex-1 min-h-0 flex flex-col items-center justify-center p-6 text-center text-zinc-400">
-                  <div className="relative mb-3">
-                     <div className="relative flex items-center justify-center size-12 rounded-xl bg-violet-600/10 border border-violet-500/30 text-violet-400">
-                        <ScrollText className="size-5" />
+                        <CustomChatInput chatChannel={chatChannel} />
                      </div>
-                  </div>
-                  <SecondaryTitle
-                     text="AI Question Generator"
-                     className="text-sm! 2xl:text-[15px]! font-semibold! text-zinc-200!"
-                  />
-                  <PrimaryBody
-                     text="AI-powered technical questions and evaluation prompts for interviewers."
-                     className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-400! mt-1 max-w-60"
-                  />
+                  </Channel>
+               </Chat>
+            </div>
+
+            {isInterviewer && (
+               <div className={`flex-1 min-h-0 flex-col overflow-hidden ${activeTab === 'ai-questions' ? 'flex' : 'hidden'}`}>
+                  <QuestionGenerator expertise={expertise} />
                </div>
             )}
          </div>
