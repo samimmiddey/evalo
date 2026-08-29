@@ -57,18 +57,23 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
 
    // Extract unique dates from availabilities
    useEffect(() => {
-      const dates = interviewer.availabilities.map(date => {
+      const uniqueDatesMap = new Map<string, AvailableDates>();
+
+      interviewer.availabilities.forEach(date => {
          const startObj = new Date(date.startTime);
          const startDate = format(startObj, 'PP');
          const label = format(startObj, 'EEEE');
-         return {
-            startDate,
-            label
-         };
+
+         if (!uniqueDatesMap.has(startDate)) {
+            uniqueDatesMap.set(startDate, {
+               startDate,
+               label
+            });
+         }
       });
 
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setAvailableDates(dates);
+      setAvailableDates(Array.from(uniqueDatesMap.values()));
    }, [interviewer]);
 
    // Extract time slots for selected date
@@ -87,6 +92,9 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
 
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setAvailableTimes(availableTimeSlots);
+      // Reset selected time slot when date changes
+       
+      setSelectedTimeSlot({ startTime: '', endTime: '', displayStart: '', displayEnd: '' });
    }, [interviewer, selectedDateSlot]);
 
    // Next step handler
@@ -97,6 +105,9 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
    // Previous state handler
    const handlePrevStep = () => {
       setStep(prev => prev - 1);
+      if (step === 2) {
+         setSelectedTimeSlot({ startTime: '', endTime: '', displayStart: '', displayEnd: '' });
+      }
    };
 
    // Submit form handler
@@ -121,15 +132,6 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
          toast.error(error);
       }
    }, [error]);
-
-   const checkExistingBookings = (slot: TimeSlot) => {
-      return interviewer.bookingsAsInterviewer.some((booking) => {
-         return (
-            new Date(booking.startTime) < new Date(slot.endTime) &&
-            new Date(booking.endTime) > new Date(slot.startTime)
-         );
-      });
-   };
 
    const wrapperClasses = 'min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.15)]';
    return (
@@ -202,7 +204,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                <Badge
                   variant='outline'
                   className='text-xs text-zinc-400 whitespace-nowrap p-3'>
-                  1 Credit/session
+                  {interviewer.creditRate} Credit/session
                </Badge>
             </div>
 
@@ -247,7 +249,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                                     : 'bg-white/5 border-white/5 hover:bg-white/10 text-zinc-300'
                                     }`}
                               >
-                                 <span className='text-[15px] 2xl:text-base font-bold'>Wednesday</span>
+                                 <span className='text-[15px] 2xl:text-base font-bold'>{date.label}</span>
                                  <span className='text-xs 2xl:text-sm text-zinc-400'>{date.startDate}</span>
                               </Button>
                            );
@@ -272,20 +274,12 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                                  key={slot.startTime}
                                  type="button"
                                  onClick={() => setSelectedTimeSlot(slot)}
-                                 disabled={checkExistingBookings(slot)}
                                  className={`h-12 px-3.5 rounded-xl border text-sm font-medium transition-all ${isSelected
                                     ? 'bg-violet-500/20 border-violet-500 text-violet-300'
                                     : 'bg-white/5 border-white/5 hover:bg-white/10 text-zinc-300'
-                                    } ${checkExistingBookings(slot) ? 'bg-white/10!' : ''}`}
+                                    }`}
                               >
                                  {`${slot.displayStart} - ${slot.displayEnd}`}
-                                 {
-                                    checkExistingBookings(slot) &&
-                                    <Badge
-                                       className='text-[11px]! px-2 pb-px! pt-0.5! ms-1 '>
-                                       Slot Booked
-                                    </Badge>
-                                 }
                               </Button>
                            );
                         })}
@@ -315,7 +309,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                            <span className="text-zinc-500">Total Charged</span>
                            <span className="text-violet-400 font-semibold flex items-center gap-1">
                               <Coins className="w-3.5 h-3.5" />
-                              {interviewerDetailsData.creditRate} Credit
+                              {interviewer.creditRate} Credit
                            </span>
                         </div>
                      </div>

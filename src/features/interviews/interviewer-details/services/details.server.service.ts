@@ -28,12 +28,18 @@ export const getInterviewerDetails = async (id: string): Promise<InterviewerDeta
             totalRatings: true,
             currentPlan: true,
             availabilities: {
-               where: { status: 'AVAILABLE' },
+               where: {
+                  status: 'AVAILABLE',
+                  startTime: { gte: new Date() }
+               },
                select: { startTime: true, endTime: true },
-               take: 1
+               orderBy: { startTime: 'asc' }
             },
             bookingsAsInterviewer: {
-               where: { status: "SCHEDULED" },
+               where: {
+                  status: "SCHEDULED",
+                  endTime: { gte: new Date() }
+               },
                select: { startTime: true, endTime: true }
             }
          }
@@ -111,6 +117,22 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
       throw new UnauthorizedError("Unauthenticated user");
    }
 
+   // Validate Time Window & Past Dates
+   const startDate = new Date(startTime);
+   const endDate = new Date(endTime);
+
+   if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      throw new ValidationError("Invalid date or time provided");
+   }
+
+   if (startDate < new Date()) {
+      throw new ValidationError("Cannot book a session in the past");
+   }
+
+   if (endDate <= startDate) {
+      throw new ValidationError("Session end time must be after start time");
+   }
+
    // Arcjet - rate limiter
    const req = await request();
    const rateLimitError = await checkRateLimit(bookingLimiter, req, user.id);
@@ -136,6 +158,11 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
       throw new NotFoundError("Interviewer not found");
    }
 
+   // Prevent Self-Booking
+   if (dbUser.id === interviewer.id) {
+      throw new ForbiddenError("You cannot book an interview session with yourself");
+   }
+
    // Credit rate for the interviewer
    const credits = interviewer.creditRate;
 
@@ -155,8 +182,8 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
             where: {
                interviewerId,
                status: 'SCHEDULED',
-               startTime: { lt: new Date(endTime) },
-               endTime: { gt: new Date(startTime) }
+               startTime: { lt: endDate },
+               endTime: { gt: startDate }
             }
          });
 
@@ -164,12 +191,31 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
             throw new ConflictError("This slot is already booked. Please pick another slot.");
          }
 
+         // Verify and update the matching availability slot
+         const availability = await tx.availability.findFirst({
+            where: {
+               interviewerId,
+               status: 'AVAILABLE',
+               startTime: startDate,
+               endTime: endDate
+            }
+         });
+
+         if (!availability) {
+            throw new NotFoundError("This time slot is no longer available. Please select another slot.");
+         }
+
+         await tx.availability.update({
+            where: { id: availability.id },
+            data: { status: 'BOOKED' }
+         });
+
          const newBooking = await tx.booking.create({
             data: {
                intervieweeId: dbUser.id,
                interviewerId,
-               startTime: new Date(startTime),
-               endTime: new Date(endTime),
+               startTime: startDate,
+               endTime: endDate,
                status: 'SCHEDULED',
                streamStatus: 'PENDING',
                creditsCharged: credits,
