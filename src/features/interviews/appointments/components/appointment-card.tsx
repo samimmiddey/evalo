@@ -72,8 +72,19 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
       }
    }, [retryError, cancelError]);
 
+   const isExpired = status === 'SCHEDULED' && new Date() > new Date(endTime);
+
    // Status Badge Helper
    const renderStatusBadge = (status: Interview['status']) => {
+      if (status === 'SCHEDULED' && isExpired) {
+         return (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/10 text-zinc-400 border border-white/10">
+               <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+               Expired
+            </span>
+         );
+      }
+
       switch (status) {
          case 'SCHEDULED':
             return (
@@ -238,7 +249,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
 
                {/* Guidelines */}
                {
-                  status === 'SCHEDULED' && (
+                  status === 'SCHEDULED' && !isExpired && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 shadow-sm shrink-0 max-sm:mb-1">
@@ -307,7 +318,23 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                {/* Actions Area */}
                <div className="p-6 2xl:p-7 flex flex-wrap items-center justify-end gap-2.5 2xl:gap-3">
 
-                  {status === 'SCHEDULED' && (
+                  {status === 'SCHEDULED' && isExpired && (
+                     <>
+                        <Button
+                           disabled
+                           className="text-zinc-500 text-xs rounded-lg h-9 bg-zinc-900/50 border border-white/5"
+                        >
+                           Session Expired
+                        </Button>
+                        <Link href={`/interviewers/${appointment.interviewer.id}`}>
+                           <Button className="cursor-pointer bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5">
+                              Book Again
+                           </Button>
+                        </Link>
+                     </>
+                  )}
+
+                  {status === 'SCHEDULED' && !isExpired && (
                      <>
                         <Button
                            variant="ghost"

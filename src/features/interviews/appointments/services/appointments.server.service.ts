@@ -52,7 +52,12 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
       }
 
       // If status is present, add status condition
-      if (status) {
+      if (status === 'SCHEDULED') {
+         andConditions.push({
+            status: 'SCHEDULED',
+            endTime: { gte: new Date() }
+         });
+      } else if (status) {
          andConditions.push({
             status
          });
@@ -127,24 +132,29 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
          throw new NotFoundError('User not found');
       }
 
-      const stats = await db.booking.groupBy({
-         by: ["status"],
-         where: {
-            intervieweeId: dbUser.id,
-         },
-         _count: {
-            _all: true,
-         },
-      });
+      const now = new Date();
 
-      const completedCount =
-         stats.find((item) => item.status === "COMPLETED")?._count._all ?? 0;
-
-      const scheduledCount =
-         stats.find((item) => item.status === "SCHEDULED")?._count._all ?? 0;
-
-      const cancelledCount =
-         stats.find((item) => item.status === "CANCELLED")?._count._all ?? 0;
+      const [completedCount, scheduledCount, cancelledCount] = await Promise.all([
+         db.booking.count({
+            where: {
+               intervieweeId: dbUser.id,
+               status: "COMPLETED",
+            },
+         }),
+         db.booking.count({
+            where: {
+               intervieweeId: dbUser.id,
+               status: "SCHEDULED",
+               endTime: { gte: now },
+            },
+         }),
+         db.booking.count({
+            where: {
+               intervieweeId: dbUser.id,
+               status: "CANCELLED",
+            },
+         }),
+      ]);
 
       const totalCount =
          completedCount + scheduledCount + cancelledCount;

@@ -10,6 +10,8 @@ import { Call, CallingState, StreamCall, StreamVideo, StreamVideoClient } from '
 import ScreenError from '@/components/common/screen-error';
 import CallInterface from './components/call-interface';
 import CallSetup from './components/call-setup';
+import CallCountdown from './components/call-countdown';
+import CallExpired from './components/call-expired';
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 
@@ -19,17 +21,38 @@ interface CallRoomProps {
 }
 
 const CallRoom = ({ callData, callId }: CallRoomProps) => {
+   const { isInterviewer, token, currentUser, booking } = callData;
+   const router = useRouter();
+
+   const startTimeMs = new Date(booking.startTime).getTime();
+   const endTimeMs = new Date(booking.endTime).getTime();
+   const earlyWindowMs = startTimeMs - 10 * 60 * 1000; // 10 minutes before start
+   const lateWindowMs = endTimeMs + 15 * 60 * 1000; // 15 minutes after end
+
+   const getInitialWindowStatus = (): 'early' | 'active' | 'expired' => {
+      if (booking.status === 'COMPLETED' || booking.status === 'CANCELLED') {
+         return 'expired';
+      }
+      const now = Date.now();
+      if (now < earlyWindowMs) {
+         return 'early';
+      }
+      if (now > lateWindowMs) {
+         return 'expired';
+      }
+      return 'active';
+   };
+
+   const [windowStatus, setWindowStatus] = useState<'early' | 'active' | 'expired'>(getInitialWindowStatus);
    const [videoClient, setVideoClient] = useState<StreamVideoClient | null>(null);
    const [call, setCall] = useState<Call | null>(null);
    const [isJoined, setIsJoined] = useState(false);
    const [error, setError] = useState<string | null>(null);
 
-   const { isInterviewer, token, currentUser, booking } = callData;
-
-   const router = useRouter();
-
-   // Initialize Stream Video Client
+   // Initialize Stream Video Client only when call window is active
    useEffect(() => {
+      if (windowStatus !== 'active') return;
+
       let cancelled = false;
 
       if (!apiKey) {
@@ -100,7 +123,7 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
 
       // Only re-run when the call identity or auth actually changes.
       // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [callId, token, currentUser.id]);
+   }, [callId, token, currentUser.id, windowStatus]);
 
    // Join the call
    const handleJoin = useCallback(async () => {
@@ -125,6 +148,29 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
       }
       router.push(isInterviewer ? '/dashboard' : '/appointments');
    }, [isInterviewer, router, booking.id]);
+
+   // Early countdown screen
+   if (windowStatus === 'early') {
+      return (
+         <CallCountdown
+            booking={booking}
+            isInterviewer={isInterviewer}
+            onWindowOpen={() => setWindowStatus('active')}
+            onCancel={handleRedirect}
+         />
+      );
+   }
+
+   // Expired or already finished session screen
+   if (windowStatus === 'expired') {
+      return (
+         <CallExpired
+            isInterviewer={isInterviewer}
+            onNavigateOut={handleRedirect}
+            status={booking.status}
+         />
+      );
+   }
 
    // Error
    if (error) {

@@ -24,6 +24,7 @@ export interface Booking {
    designation: string | null;
    startTime: string;
    endTime: string;
+   status: "SCHEDULED" | "COMPLETED" | "CANCELLED";
 }
 
 export interface CallCurrentUser {
@@ -42,6 +43,17 @@ export interface CallData {
 
 export type GetCallDataServerResponse = CallData;
 
+export interface CompleteCallParams {
+   callId: string;
+}
+
+export interface CompleteCallData {
+   bookingId: string;
+   status: "COMPLETED";
+}
+
+export type CompleteCallResponse = BaseResponse<CompleteCallData>;
+
 export interface GeneratedQuestion {
    id: string;
    title: string;
@@ -51,4 +63,4 @@ export interface GeneratedQuestion {
    followUpQuestion?: string;
 }
 
-export type GenerateQuestionsResponse = BaseResponse<GeneratedQuestion[]>
+export type GenerateQuestionsResponse = BaseResponse<GeneratedQuestion[]>;

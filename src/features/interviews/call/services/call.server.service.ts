@@ -3,7 +3,7 @@ import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
 import { StreamClient } from "@stream-io/node-sdk";
-import { GeneratedQuestion, GetCallDataServerResponse } from "../types/call.types";
+import { CompleteCallData, GeneratedQuestion, GetCallDataServerResponse } from "../types/call.types";
 import { EXPERTISE_PROMPTS } from "@/data/interviews/interviews.data";
 import { InterviewExpertise } from "@/generated/prisma/enums";
 import { GoogleGenerativeAI, ResponseSchema, SchemaType } from '@google/generative-ai';
@@ -93,13 +93,65 @@ export const getCallData = async (callId: string): Promise<GetCallDataServerResp
             experience: booking.interviewer.experience,
             designation: booking.interviewer.designation,
             startTime: booking.startTime.toISOString(),
-            endTime: booking.endTime.toISOString()
+            endTime: booking.endTime.toISOString(),
+            status: booking.status
          }
       };
    } catch (error: unknown) {
       return serverError({
          error,
          fallbackMessage: 'Failed to fetch call data'
+      });
+   }
+};
+
+// Complete call session (host only)
+export const completeCall = async (callId: string): Promise<CompleteCallData> => {
+   const user = await currentUser();
+
+   if (!user) {
+      throw new UnauthorizedError('Unauthenticated user');
+   }
+
+   try {
+      const booking = await db.booking.findUnique({
+         where: {
+            streamCallId: callId
+         },
+         include: {
+            interviewer: {
+               select: {
+                  clerkUserId: true
+               }
+            }
+         }
+      });
+
+      if (!booking) {
+         throw new NotFoundError('Call not found');
+      }
+
+      const isInterviewer = booking.interviewer.clerkUserId === user.id;
+
+      if (!isInterviewer) {
+         throw new ForbiddenError('Only the host can mark the call as completed');
+      }
+
+      if (booking.status !== 'COMPLETED') {
+         await db.booking.update({
+            where: { id: booking.id },
+            data: { status: 'COMPLETED' }
+         });
+      }
+
+      return {
+         bookingId: booking.id,
+         status: 'COMPLETED'
+      };
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: 'Failed to complete call'
       });
    }
 };

@@ -16,6 +16,7 @@ import TabSwitcher from './tab-switcher';
 import CardLayout from '@/components/layouts/card-layout';
 import SecondaryTitle from '@/components/common/secondary-title';
 import PrimaryBody from '@/components/common/primary-body';
+import { handleCompleteCall } from '../services/call.client.service';
 
 interface CallInterfaceProps {
    callId: string;
@@ -112,8 +113,11 @@ const CallInterface = ({
       if (call?.state?.recording) {
          await call.stopRecording().catch(() => { /* no-op */ });
       }
+      if (isInterviewer) {
+         await handleCompleteCall({ callId }).catch(() => { /* no-op */ });
+      }
       onEndCall();
-   }, [call, onEndCall]);
+   }, [call, callId, isInterviewer, onEndCall]);
 
    // Session ended full-screen view (hides header, tabs, and chat sidebar)
    if (callingState === CallingState.LEFT || callingState === CallingState.IDLE) {

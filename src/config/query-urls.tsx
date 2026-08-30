@@ -16,3 +16,4 @@ export const RETRY_BOOKING = '/appointments/retry-booking';
 
 // Call
 export const GENERATE_QUESTIONS = '/call/generate-questions';
+export const COMPLETE_CALL = '/call/complete';
