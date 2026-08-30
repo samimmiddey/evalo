@@ -375,6 +375,23 @@ export const cancelBooking = async (bookingId: string): Promise<void> => {
                },
             },
          });
+
+         // If future availability slot exists, restore it to AVAILABLE
+         const availability = await tx.availability.findFirst({
+            where: {
+               interviewerId: booking.interviewerId,
+               startTime: booking.startTime,
+               endTime: booking.endTime,
+               status: 'BOOKED',
+            },
+         });
+
+         if (availability && availability.startTime > new Date()) {
+            await tx.availability.update({
+               where: { id: availability.id },
+               data: { status: 'AVAILABLE' },
+            });
+         }
       });
    } catch (error: unknown) {
       return serverError({

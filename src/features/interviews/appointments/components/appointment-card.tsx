@@ -52,12 +52,16 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
       }
    };
 
-   // Handle cancel call
-   const handleCancelBooking = async () => {
+   // Handle cancel / refund call
+   const handleCancelBooking = async (isRefund = false) => {
       const res = await cancelMutation();
 
       if (res?.success) {
-         toast.success("Booking cancelled successfully");
+         toast.success(
+            isRefund
+               ? 'Session refunded successfully. Credits returned to your account.'
+               : 'Booking cancelled successfully'
+         );
          refetchInterviewList();
       }
    };
@@ -321,10 +325,12 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                   {status === 'SCHEDULED' && isExpired && (
                      <>
                         <Button
-                           disabled
-                           className="text-zinc-500 text-xs rounded-lg h-9 bg-zinc-900/50 border border-white/5"
+                           variant="ghost"
+                           className="cursor-pointer text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 text-xs rounded-lg h-9"
+                           onClick={() => void handleCancelBooking(true)}
+                           disabled={isCancelPending}
                         >
-                           Session Expired
+                           {isCancelPending ? <CustomSpinner text="Refunding..." /> : "Claim Refund"}
                         </Button>
                         <Link href={`/interviewers/${appointment.interviewer.id}`}>
                            <Button className="cursor-pointer bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5">
