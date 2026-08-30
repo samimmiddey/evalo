@@ -5,6 +5,7 @@ import { Coins } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import UpgradeModal from './upgrade-modal';
+import useMediaQuery from '@/hooks/use-media-query';
 
 interface CreditButtonProps {
    role?: string;
@@ -24,6 +25,8 @@ const CreditButton = ({ role, credits }: CreditButtonProps) => {
       }
    };
 
+   const lgWidth = useMediaQuery(1024);
+
    return (
       <>
          <Button
@@ -33,7 +36,9 @@ const CreditButton = ({ role, credits }: CreditButtonProps) => {
             onClick={handleButton}
          >
             <Coins className='icon-size' />
-            <span className='max-lg:hidden'>{credits} {role === 'INTERVIEWER' ? 'Earned' : 'Credits'}</span>
+            <span>
+               {credits} {!lgWidth && (role === 'INTERVIEWER' ? 'Earned' : 'Credits')}
+            </span>
          </Button>
          <UpgradeModal open={openModal} onClose={() => setOpenModal(prev => !prev)} />
       </>
