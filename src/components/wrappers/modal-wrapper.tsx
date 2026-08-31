@@ -29,11 +29,11 @@ const ModalWrapper = ({ open, onClose, title, description, children, headerIcon 
                            headerIcon ? headerIcon : <Sparkles className="w-4 h-4 text-violet-400" />
                         }
                      </div>
-                     <span className="text-xs font-bold uppercase tracking-widest text-violet-400">
+                     <span className="text-xs font-bold uppercase tracking-widest text-zinc-100">
                         {title}
                      </span>
                   </div>
-                  <p className="text-sm text-zinc-400 font-inter max-w-xl leading-relaxed">
+                  <p className="text-xs 2xl:text-sm text-zinc-400 font-inter max-w-xl leading-relaxed">
                      {description}
                   </p>
                </div>
@@ -52,7 +52,7 @@ const ModalWrapper = ({ open, onClose, title, description, children, headerIcon 
 
             {/* Scrollable body */}
             <div className="relative z-10 flex-1 min-h-0 overflow-y-auto px-5 sm:px-6 lg:px-7
-               [scrollbar-width:thin] [scrollbar-color:rgba(124,58,237,0.3)_transparent]">
+               [scrollbar-width:thin] [scrollbar-color:rgba(113,113,122,0.3)_transparent]">
                {children}
             </div>
          </DialogContent>

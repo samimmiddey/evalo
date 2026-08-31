@@ -1,17 +1,18 @@
 "use client";
 
 import {
-   Star,
    CheckCircle2,
    AlertCircle,
-   Sparkles,
+   FileText,
    MessageSquare,
    Brain,
    Code,
-   Quote
+   Target,
+   Award
 } from "lucide-react";
 import ModalWrapper from "@/components/wrappers/modal-wrapper";
 import PrimaryBody from "@/components/common/primary-body";
+import SecondaryTitle from "@/components/common/secondary-title";
 
 export interface SharedFeedback {
    id?: string;
@@ -52,13 +53,11 @@ export const FeedbackModal = ({
       recommendation,
       strengths,
       improvements,
-      overallRating,
-      sessionRating,
-      sessionComment
+      overallRating
    } = feedback;
 
    const getOverallRatingStyle = (rating: string) => {
-      switch (rating) {
+      switch (rating?.toUpperCase()) {
          case "EXCELLENT":
             return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
          case "GOOD":
@@ -72,6 +71,20 @@ export const FeedbackModal = ({
       }
    };
 
+   const getRecommendationStyle = (rec: string) => {
+      const upper = rec?.toUpperCase() || "";
+      if (upper.includes("HIRE") && !upper.includes("NO")) {
+         return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+      }
+      if (upper.includes("CONSIDER")) {
+         return "bg-amber-500/10 text-amber-400 border-amber-500/20";
+      }
+      if (upper.includes("NO") || upper.includes("REJECT")) {
+         return "bg-rose-500/10 text-rose-400 border-rose-500/20";
+      }
+      return "bg-violet-500/10 text-violet-300 border-violet-500/20";
+   };
+
    const modalTitle =
       title ||
       (candidateName
@@ -81,8 +94,8 @@ export const FeedbackModal = ({
    const modalDescription =
       description ||
       (candidateName
-         ? "Review the AI-assisted performance breakdown, candidate review, and session assessment."
-         : "Complete feedback and performance analysis from your mock interview session.");
+         ? "Review the AI-assisted performance breakdown, rubric scoring, and outcome recommendation."
+         : "Complete performance breakdown and analysis from your interview session.");
 
    return (
       <ModalWrapper
@@ -90,195 +103,186 @@ export const FeedbackModal = ({
          onClose={onClose}
          title={modalTitle}
          description={modalDescription}
+         headerIcon={<FileText className="w-4 h-4 text-violet-400" />}
       >
-         <div className="py-5 space-y-6 text-zinc-100 font-inter">
-            {/* Top Overview Cards: Rating, Score, Recommendation */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-               {/* Overall Performance Card */}
+         <div className="py-5 space-y-4 text-zinc-100 font-inter">
+            {/* Top Overview Cards (2 Columns) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+               {/* Overall Performance */}
                <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/50 flex flex-col justify-between gap-3">
                   <div>
-                     <span className="text-xs text-zinc-500 font-semibold uppercase tracking-wider block mb-1">
-                        Overall Performance
-                     </span>
+                     <div className="flex items-center gap-2 mb-2">
+                        <Award className="w-4 h-4 text-violet-400 shrink-0" />
+                        <SecondaryTitle
+                           text="Overall Performance"
+                           className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-zinc-400"
+                        />
+                     </div>
                      <span
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-full border ${getOverallRatingStyle(
+                        className={`inline-flex items-center px-3 py-1 text-xs font-bold rounded-full border ${getOverallRatingStyle(
                            overallRating
                         )}`}
                      >
-                        {overallRating}
+                        {overallRating || "N/A"}
                      </span>
                   </div>
                   <PrimaryBody
-                     text="Determined based on comprehensive interview execution."
-                     className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400!"
+                     text="Automated evaluation status recorded for this mock interview session."
+                     className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-300! leading-relaxed"
                   />
                </div>
 
-               {/* Session Rating Card */}
+               {/* Hiring Recommendation */}
                <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/50 flex flex-col justify-between gap-3">
                   <div>
-                     <span className="text-xs text-zinc-500 font-semibold uppercase tracking-wider block mb-1">
-                        {candidateName ? "Candidate Rating" : "Session Rating"}
-                     </span>
-                     <div className="flex items-center gap-1 mt-1">
-                        {sessionRating ? (
-                           <>
-                              {Array.from({ length: 5 }).map((_, i) => (
-                                 <Star
-                                    key={i}
-                                    className={`w-4 h-4 ${i < sessionRating
-                                          ? "text-amber-400 fill-amber-400"
-                                          : "text-zinc-700"
-                                       }`}
-                                 />
-                              ))}
-                              <span className="ml-2 text-sm font-bold text-zinc-200">
-                                 {sessionRating}/5
-                              </span>
-                           </>
-                        ) : (
-                           <span className="text-xs text-zinc-500 italic">
-                              No rating given
-                           </span>
-                        )}
+                     <div className="flex items-center gap-2 mb-2">
+                        <Target className="w-4 h-4 text-violet-400 shrink-0" />
+                        <SecondaryTitle
+                           text="Hiring Recommendation"
+                           className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-zinc-400"
+                        />
                      </div>
-                  </div>
-                  <PrimaryBody
-                     text={
-                        candidateName
-                           ? "Score provided by candidate."
-                           : "Based on core rubrics and interview metrics."
-                     }
-                     className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400!"
-                  />
-               </div>
-
-               {/* Recommendation Card */}
-               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/50 flex flex-col justify-between gap-3">
-                  <div>
-                     <span className="text-xs text-zinc-500 font-semibold uppercase tracking-wider block mb-1">
-                        Recommendation
-                     </span>
-                     <span className="text-sm font-semibold text-zinc-200">
+                     <span
+                        className={`inline-flex items-center px-2 py-1.5 text-xs font-bold rounded-lg border ${getRecommendationStyle(
+                           recommendation
+                        )}`}
+                     >
                         {recommendation || "Standard Evaluation"}
                      </span>
                   </div>
                   <PrimaryBody
-                     text="Outcome recommendation based on assessment."
-                     className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400!"
+                     text="Outcome decision derived from holistic session competencies."
+                     className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-300! leading-relaxed"
                   />
                </div>
             </div>
 
             {/* Executive Summary */}
-            <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/40 space-y-2">
-               <h5 className="text-xs font-bold text-zinc-200 uppercase tracking-wider mb-1 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-violet-400" />
-                  Executive Summary
-               </h5>
+            <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/40 space-y-2.5">
+               <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-violet-400 shrink-0" />
+                  <SecondaryTitle
+                     text="Executive Summary"
+                     className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-zinc-300"
+                  />
+               </div>
                <PrimaryBody
-                  text={summary}
-                  className="text-sm! lg:text-sm! 2xl:text-sm! text-zinc-300! leading-relaxed"
+                  text={summary || "No executive summary available for this session."}
+                  className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-300! leading-relaxed"
                />
             </div>
 
-            {/* Candidate / Interviewer Review Comment if any */}
-            {sessionComment && (
-               <div className="p-5 rounded-xl border border-violet-500/20 bg-violet-950/10 space-y-2">
-                  <div className="flex items-center gap-2 text-violet-400 text-xs font-semibold uppercase tracking-wider">
-                     <Quote className="w-3.5 h-3.5" />
-                     {candidateName ? "Candidate Review Comment" : "Interviewer Comment"}
-                  </div>
-                  <PrimaryBody
-                     text={`“${sessionComment}”`}
-                     className="text-sm! lg:text-sm! 2xl:text-sm! text-zinc-300! italic"
-                  />
-               </div>
-            )}
-
-            {/* Competency Breakdown Grid */}
+            {/* Core Competencies Grid (3 Columns) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-               {/* Technical Feedback */}
-               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/40 space-y-2.5">
-                  <div className="flex items-center gap-2 text-xs font-bold text-sky-400 uppercase tracking-wider">
-                     <Code className="w-4 h-4" /> Technical Competency
+               {/* Technical Competency */}
+               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/40 space-y-2.5 flex flex-col">
+                  <div className="flex items-center gap-2">
+                     <Code className="w-4 h-4 text-sky-400 shrink-0" />
+                     <SecondaryTitle
+                        text="Technical Competency"
+                        className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-sky-400"
+                     />
                   </div>
                   <PrimaryBody
-                     text={technical}
-                     className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-300! leading-relaxed"
+                     text={technical || "No technical assessment documented."}
+                     className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-300! leading-relaxed mt-1 flex-1"
                   />
                </div>
 
                {/* Problem Solving */}
-               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/40 space-y-2.5">
-                  <div className="flex items-center gap-2 text-xs font-bold text-pink-400 uppercase tracking-wider">
-                     <Brain className="w-4 h-4" /> Problem Solving
+               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/40 space-y-2.5 flex flex-col">
+                  <div className="flex items-center gap-2">
+                     <Brain className="w-4 h-4 text-pink-400 shrink-0" />
+                     <SecondaryTitle
+                        text="Problem Solving"
+                        className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-pink-400"
+                     />
                   </div>
                   <PrimaryBody
-                     text={problemSolving}
-                     className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-300! leading-relaxed"
+                     text={problemSolving || "No problem solving assessment documented."}
+                     className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-300! leading-relaxed mt-1 flex-1"
                   />
                </div>
 
                {/* Communication */}
-               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/40 space-y-2.5">
-                  <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wider">
-                     <MessageSquare className="w-4 h-4" /> Communication
+               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/40 space-y-2.5 flex flex-col">
+                  <div className="flex items-center gap-2">
+                     <MessageSquare className="w-4 h-4 text-emerald-400 shrink-0" />
+                     <SecondaryTitle
+                        text="Communication & Clarity"
+                        className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-emerald-400"
+                     />
                   </div>
                   <PrimaryBody
-                     text={communication}
-                     className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-300! leading-relaxed"
+                     text={communication || "No communication assessment documented."}
+                     className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-300! leading-relaxed mt-1 flex-1"
                   />
                </div>
             </div>
 
-            {/* Strengths & Improvements */}
+            {/* Strengths & Improvements Grid (2 Columns) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               {/* Strengths */}
-               <div className="p-5 rounded-xl border border-emerald-500/10 bg-emerald-500/5 space-y-3">
-                  <span className="text-xs text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                     <CheckCircle2 className="w-4 h-4" /> Key Strengths
-                  </span>
+               {/* Key Strengths */}
+               <div className="p-5 rounded-xl border border-emerald-500/15 bg-emerald-950/10 space-y-3">
+                  <div className="flex items-center gap-2">
+                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                     <SecondaryTitle
+                        text="Key Strengths"
+                        className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-emerald-400"
+                     />
+                  </div>
                   {strengths && strengths.length > 0 ? (
-                     <ul className="space-y-2">
+                     <ul className="space-y-2.5">
                         {strengths.map((item, idx) => (
                            <li
                               key={idx}
-                              className="flex items-start gap-2 text-xs text-zinc-300"
+                              className="flex items-start gap-2.5"
                            >
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
-                              <span>{item}</span>
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.75 2xl:mt-2 shrink-0" />
+                              <PrimaryBody
+                                 text={item}
+                                 className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-300! leading-relaxed"
+                              />
                            </li>
                         ))}
                      </ul>
                   ) : (
-                     <p className="text-xs text-zinc-400 italic">
-                        No key strengths documented.
-                     </p>
+                     <PrimaryBody
+                        text="No key strengths documented."
+                        className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-400! italic"
+                     />
                   )}
                </div>
 
-               {/* Improvements */}
-               <div className="p-5 rounded-xl border border-amber-500/10 bg-amber-500/5 space-y-3">
-                  <span className="text-xs text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                     <AlertCircle className="w-4 h-4" /> Areas for Improvement
-                  </span>
+               {/* Areas for Improvement */}
+               <div className="p-5 rounded-xl border border-amber-500/15 bg-amber-950/10 space-y-3">
+                  <div className="flex items-center gap-2">
+                     <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                     <SecondaryTitle
+                        text="Areas for Improvement"
+                        className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-amber-400"
+                     />
+                  </div>
                   {improvements && improvements.length > 0 ? (
-                     <ul className="space-y-2">
+                     <ul className="space-y-2.5">
                         {improvements.map((item, idx) => (
                            <li
                               key={idx}
-                              className="flex items-start gap-2 text-xs text-zinc-300"
+                              className="flex items-start gap-2.5"
                            >
-                              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
-                              <span>{item}</span>
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.75 2xl:mt-2 shrink-0" />
+                              <PrimaryBody
+                                 text={item}
+                                 className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-300! leading-relaxed"
+                              />
                            </li>
                         ))}
                      </ul>
                   ) : (
-                     <p className="text-xs text-zinc-400 italic">
-                        No improvements documented.
-                     </p>
+                     <PrimaryBody
+                        text="No improvements documented."
+                        className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-400! italic"
+                     />
                   )}
                </div>
             </div>
