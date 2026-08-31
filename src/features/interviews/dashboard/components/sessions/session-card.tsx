@@ -69,8 +69,8 @@ export const SessionCard = ({
    const durationMins = differenceInMinutes(endDate, startDate);
 
    // Status Badge Helper matching appointment-card
-   const renderStatusBadge = () => {
-      if (status === "SCHEDULED" && isExpired) {
+   const renderStatusBadge = (sessionStatus: DashboardSession["status"]) => {
+      if (sessionStatus === "SCHEDULED" && isExpired) {
          return (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/10 text-zinc-400 border border-white/10">
                <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
@@ -79,7 +79,7 @@ export const SessionCard = ({
          );
       }
 
-      switch (status) {
+      switch (sessionStatus) {
          case "SCHEDULED":
             return (
                <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
@@ -108,16 +108,17 @@ export const SessionCard = ({
 
    // Performance Level Color Helper matching appointment-card
    const getPerformanceLevelColor = (level: string) => {
-      if (level === "EXCELLENT" || level === "Outstanding" || level === "Excellent") {
+      const upper = level?.toUpperCase() || "";
+      if (upper === "OUTSTANDING" || upper === "EXCELLENT") {
          return "text-emerald-400 border-emerald-500/30 bg-emerald-500/10";
       }
-      if (level === "GOOD") {
+      if (upper === "GOOD") {
          return "text-blue-400 border-blue-500/30 bg-blue-500/10";
       }
-      if (level === "AVERAGE") {
+      if (upper === "AVERAGE") {
          return "text-amber-400 border-amber-500/30 bg-amber-500/10";
       }
-      if (level === "POOR") {
+      if (upper === "POOR") {
          return "text-rose-400 border-rose-500/30 bg-rose-500/10";
       }
       return "text-zinc-400 border-white/10 bg-zinc-500/10";
@@ -202,7 +203,7 @@ export const SessionCard = ({
                      </div>
 
                      {/* Status Badge (visible on mobile next to title) */}
-                     <div className="md:hidden">{renderStatusBadge()}</div>
+                     <div className="md:hidden">{renderStatusBadge(status)}</div>
                   </div>
 
                   <div className="flex items-center gap-2 pt-1">
@@ -261,7 +262,7 @@ export const SessionCard = ({
                   </div>
 
                   {/* Status Badge (desktop) */}
-                  <div className="hidden md:block">{renderStatusBadge()}</div>
+                  <div className="hidden md:block">{renderStatusBadge(status)}</div>
                </div>
 
                {/* Middle Row: Guideline if SCHEDULED / Feedback summary if COMPLETED */}
@@ -303,7 +304,7 @@ export const SessionCard = ({
                            </div>
 
                            {/* Performance and Overall Score indicators */}
-                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-white/5">
+                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3.5 border-t border-white/5">
                               <div className="flex flex-wrap justify-between items-center gap-4 w-full">
                                  <div className="flex items-center gap-2">
                                     <span className="text-xs text-zinc-500">Performance:</span>
@@ -342,28 +343,45 @@ export const SessionCard = ({
                )}
 
                {/* Bottom Actions Area */}
-               <div className="p-6 2xl:p-7 flex flex-wrap items-center justify-between gap-3">
+               <div className="p-6 2xl:p-7 flex max-sm:flex-col sm:flex-wrap sm:items-center sm:justify-between gap-5 2xl:gap-6">
                   {/* Left: Credits Tag */}
-                  <div>{getCreditsChargedBadge()}</div>
+                  <div className="max-sm:w-full flex max-sm:justify-start">
+                     {getCreditsChargedBadge()}
+                  </div>
 
-                  {/* Right: Actions */}
-                  <div className="flex items-center gap-2.5">
+                  {/* Right: Action Buttons */}
+                  <div className="flex max-sm:flex-col sm:flex-wrap sm:items-center sm:justify-end gap-2.5 2xl:gap-3 max-sm:w-full">
                      {/* Join call button for scheduled */}
                      {canJoinCall && (
-                        <Link href={`/call/${streamCallId}`}>
-                           <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5">
+                        <Link href={`/call/${streamCallId}`} className="max-sm:w-full">
+                           <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5 max-sm:w-full">
                               <Video className="w-3.5 h-3.5" />
                               Join Interview
                            </Button>
                         </Link>
                      )}
 
+                     {/* Preparing state */}
+                     {status === "SCHEDULED" && streamStatus === "PENDING" && !isExpired && (
+                        <Button
+                           disabled
+                           className="text-zinc-500 text-xs rounded-lg h-9 max-sm:w-full"
+                        >
+                           Preparing Meeting...
+                        </Button>
+                     )}
+
                      {/* Recording URL if present */}
                      {status === "COMPLETED" && recordingUrl && (
-                        <a href={recordingUrl} target="_blank" rel="noopener noreferrer">
+                        <a
+                           href={recordingUrl}
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="max-sm:w-full"
+                        >
                            <Button
                               variant="outline"
-                              className="cursor-pointer border-white/5 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 text-xs rounded-lg h-9 flex items-center gap-1.5"
+                              className="cursor-pointer border-white/5 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 text-xs rounded-lg h-9 flex items-center gap-1.5 max-sm:w-full"
                            >
                               <Play className="w-3 h-3 text-violet-400 fill-violet-400" />
                               View Recording
@@ -375,7 +393,7 @@ export const SessionCard = ({
                      {status === "COMPLETED" && feedback && (
                         <Button
                            onClick={() => onViewFeedback(feedback, candidateFullName)}
-                           className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5"
+                           className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5 max-sm:w-full"
                         >
                            <FileText className="w-3.5 h-3.5 text-violet-200" />
                            View Full Feedback

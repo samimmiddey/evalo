@@ -116,22 +116,19 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
 
    // Performance Color Helper
    const getPerformanceLevelColor = (level: string) => {
-      if (level === 'Outstanding') {
-         return 'text-violet-400 border-violet-500/30 bg-violet-500/10';
-      }
-
-      if (level === 'Excellent') {
+      const upper = level?.toUpperCase() || '';
+      if (upper === 'OUTSTANDING' || upper === 'EXCELLENT') {
          return 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10';
       }
-
-      if (level === 'Average') {
+      if (upper === 'GOOD') {
          return 'text-blue-400 border-blue-500/30 bg-blue-500/10';
       }
-
-      if (level === 'Poor') {
+      if (upper === 'AVERAGE') {
+         return 'text-amber-400 border-amber-500/30 bg-amber-500/10';
+      }
+      if (upper === 'POOR') {
          return 'text-rose-400 border-rose-500/30 bg-rose-500/10';
       }
-
       return 'text-zinc-400 border-white/10 bg-zinc-500/10';
    };
 
@@ -320,20 +317,20 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                )}
 
                {/* Actions Area */}
-               <div className="p-6 2xl:p-7 flex flex-wrap items-center justify-end gap-2.5 2xl:gap-3">
+               <div className="p-6 2xl:p-7 flex max-sm:flex-col sm:flex-wrap sm:items-center sm:justify-end gap-2.5 2xl:gap-3">
 
                   {status === 'SCHEDULED' && isExpired && (
                      <>
                         <Button
                            variant="ghost"
-                           className="cursor-pointer text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 text-xs rounded-lg h-9"
+                           className="cursor-pointer text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 text-xs rounded-lg h-9 max-sm:w-full"
                            onClick={() => void handleCancelBooking(true)}
                            disabled={isCancelPending}
                         >
                            {isCancelPending ? <CustomSpinner text="Refunding..." /> : "Claim Refund"}
                         </Button>
                         <Link href={`/interviewers/${appointment.interviewer.id}`}>
-                           <Button className="cursor-pointer bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5">
+                           <Button className="cursor-pointer bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                               Book Again
                            </Button>
                         </Link>
@@ -344,7 +341,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      <>
                         <Button
                            variant="ghost"
-                           className="cursor-pointer text-zinc-400 hover:text-rose-400 hover:bg-rose-500/5 text-xs rounded-lg h-9"
+                           className="cursor-pointer text-zinc-400 hover:text-rose-400 hover:bg-rose-500/5 text-xs rounded-lg h-9 max-sm:w-full"
                            onClick={() => void handleCancelBooking()}
                            disabled={isCancelPending}
                         >
@@ -353,7 +350,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
 
                         {appointment.streamStatus === 'READY' && (
                            <Link href={`/call/${streamCallId}`}>
-                              <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5">
+                              <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5 max-sm:w-full">
                                  <Video className="w-3.5 h-3.5" />
                                  Join Interview
                               </Button>
@@ -363,7 +360,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                         {appointment.streamStatus === 'PENDING' && (
                            <Button
                               disabled
-                              className="text-zinc-500 text-xs rounded-lg h-9"
+                              className="text-zinc-500 text-xs rounded-lg h-9 max-sm:w-full"
                            >
                               Preparing Meeting...
                            </Button>
@@ -371,7 +368,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
 
                         {appointment.streamStatus === 'FAILED' && (
                            <Button
-                              className="cursor-pointer bg-amber-600 hover:bg-amber-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold"
+                              className="cursor-pointer bg-amber-600 hover:bg-amber-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold max-sm:w-full"
                               onClick={() => void handleRetryStreamCall()}
                               disabled={isRetryPending}
                            >
@@ -383,7 +380,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
 
                   {status === "COMPLETED" && recordingUrl && (
                      <a href={recordingUrl} target="_blank" rel="noopener noreferrer">
-                        <Button variant="outline" className="cursor-pointer border-white/5 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 text-xs rounded-lg h-9 flex items-center gap-1.5">
+                        <Button variant="outline" className="cursor-pointer border-white/5 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 text-xs rounded-lg h-9 flex items-center gap-1.5 max-sm:w-full">
                            <Play className="w-3 h-3 text-violet-400 fill-violet-400" />
                            View Recording
                         </Button>
@@ -397,7 +394,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                               onViewFeedback?.(feedback.id, feedback);
                            }
                         }}
-                        className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5"
+                        className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5 max-sm:w-full"
                      >
                         <FileText className="w-3.5 h-3.5 text-violet-200" />
                         View Full Feedback
@@ -406,7 +403,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
 
                   {status === 'CANCELLED' && (
                      <Link href={`/interviewers/${appointment.interviewer.id}`}>
-                        <Button className="cursor-pointer bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5">
+                        <Button className="cursor-pointer bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                            Book Again
                         </Button>
                      </Link>
