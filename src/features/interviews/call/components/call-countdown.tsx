@@ -95,7 +95,7 @@ const CallCountdown = ({
             </div>
 
             {/* Live Countdown Clock */}
-            <div className="grid grid-cols-4 gap-2.5 w-full my-2">
+            <div className="grid grid-cols-4 gap-2 sm:gap-2.5 w-full my-2">
                {[
                   { label: 'Days', value: days },
                   { label: 'Hours', value: hours },
@@ -109,7 +109,7 @@ const CallCountdown = ({
                      <span className="text-xl sm:text-2xl font-bold font-mono text-zinc-100 tabular-nums">
                         {String(value).padStart(2, '0')}
                      </span>
-                     <span className="text-[10px] uppercase font-semibold text-zinc-500 tracking-wider mt-0.5">
+                     <span className="text-[9px] sm:text-[10px] uppercase font-semibold text-zinc-500 tracking-wider mt-0.5">
                         {label}
                      </span>
                   </div>
@@ -129,7 +129,7 @@ const CallCountdown = ({
             </div>
 
             {/* Participants Pill */}
-            <div className="flex items-center justify-center gap-3 w-full py-2.5 px-4 rounded-xl bg-zinc-900/30 border border-white/5">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 w-full py-2.5 px-3.5 rounded-xl bg-zinc-900/30 border border-white/5">
                <div className="flex items-center gap-2">
                   <Avatar className="size-6 border border-white/20">
                      <AvatarImage src={interviewee.imageUrl ?? undefined} alt={intervieweeName} />
