@@ -158,7 +158,7 @@ const CallCountdown = ({
                type="button"
                size="lg"
                onClick={onCancel}
-               className="mt-2 w-full h-11 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-zinc-200 font-medium transition-all gap-2 group"
+               className="mt-2 w-full h-11 rounded-lg bg-violet-600 hover:bg-violet-700 text-zinc-100 border-0 font-medium transition-all gap-2 group"
             >
                <span>{isInterviewer ? 'Return to Dashboard' : 'View Your Appointments'}</span>
                <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />

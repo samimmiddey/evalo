@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  allowedDevOrigins: ['valiant-payback-desecrate.ngrok-free.dev']
 };
 
 export default nextConfig;

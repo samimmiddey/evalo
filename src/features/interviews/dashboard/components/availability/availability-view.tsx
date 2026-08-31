@@ -13,7 +13,7 @@ import AddSlotModal from "./add-slot-modal";
 import { AvailabilitySkeleton } from "../skeletons/availability-skeleton";
 import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 import { Button } from "@/components/ui/button";
-import { format, isToday, isTomorrow, parseISO } from "date-fns";
+import { format, isToday, isTomorrow, parse } from "date-fns";
 import { Calendar, Plus } from "lucide-react";
 import { toast } from "sonner";
 import CardLayout from "@/components/layouts/card-layout";
@@ -48,7 +48,7 @@ export const AvailabilityView = () => {
       const groups: Record<string, AvailabilitySlot[]> = {};
 
       slots.forEach((slot) => {
-         const dateKey = slot.startTime.split("T")[0];
+         const dateKey = format(new Date(slot.startTime), "yyyy-MM-dd");
          if (!groups[dateKey]) {
             groups[dateKey] = [];
          }
@@ -56,7 +56,7 @@ export const AvailabilityView = () => {
       });
 
       return Object.entries(groups).map(([dateStr, daySlots]) => {
-         const parsedDate = parseISO(dateStr);
+         const parsedDate = parse(dateStr, "yyyy-MM-dd", new Date());
 
          let dayName = format(parsedDate, "EEEE");
          if (isToday(parsedDate)) dayName = "Today";
