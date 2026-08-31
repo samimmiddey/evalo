@@ -24,6 +24,7 @@ import {
    ScreenShareOff,
    Smile,
    Disc,
+   Pause,
    PhoneOff,
 } from 'lucide-react';
 
@@ -44,7 +45,12 @@ const EMOJI_REACTIONS = [
 
 const CustomCallControls = ({ onLeave }: { onLeave: () => void; }) => {
    const call = useCall();
-   const { useCameraState, useMicrophoneState, useScreenShareState } = useCallStateHooks();
+   const {
+      useCameraState,
+      useMicrophoneState,
+      useScreenShareState,
+      useIsCallRecordingInProgress
+   } = useCallStateHooks();
 
    const {
       camera,
@@ -59,8 +65,8 @@ const CustomCallControls = ({ onLeave }: { onLeave: () => void; }) => {
    } = useMicrophoneState();
 
    const { screenShare, isMute: isScreenShareMute } = useScreenShareState();
+   const isCallRecordingInProgress = useIsCallRecordingInProgress();
 
-   const [isRecording, setIsRecording] = useState(false);
    const [isReactionOpen, setIsReactionOpen] = useState(false);
 
    const handleToggleCamera = useCallback(async () => {
@@ -123,21 +129,17 @@ const CustomCallControls = ({ onLeave }: { onLeave: () => void; }) => {
    const handleToggleRecording = useCallback(async () => {
       if (!call) return;
       try {
-         if (isRecording || call.state?.recording) {
+         if (isCallRecordingInProgress) {
             await call.stopRecording();
-            setIsRecording(false);
             toast.success('Call recording stopped');
          } else {
             await call.startRecording();
-            setIsRecording(true);
             toast.success('Call recording started');
          }
       } catch {
          toast.error('Failed to toggle recording');
       }
-   }, [call, isRecording]);
-
-   const activeRecording = isRecording || Boolean(call?.state?.recording);
+   }, [call, isCallRecordingInProgress]);
 
    return (
       <div className="flex items-center justify-center gap-2 sm:gap-2.5 py-1.5 px-3">
@@ -262,15 +264,19 @@ const CustomCallControls = ({ onLeave }: { onLeave: () => void; }) => {
                   type="button"
                   size="icon"
                   onClick={() => { void handleToggleRecording(); }}
-                  className={`size-10 sm:size-11 rounded-xl transition-all cursor-pointer ${activeRecording
+                  className={`size-10 sm:size-11 rounded-xl transition-all cursor-pointer ${isCallRecordingInProgress
                      ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 shadow-lg shadow-red-500/20'
                      : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-100 border border-white/10'
                      }`}
                >
-                  <Disc className={`size-4 sm:size-5 ${activeRecording ? 'animate-spin text-red-400' : ''}`} />
+                  {isCallRecordingInProgress ? (
+                     <Pause className="size-4 sm:size-5 text-red-400 fill-current" />
+                  ) : (
+                     <Disc className="size-4 sm:size-5" />
+                  )}
                </Button>
             }
-            content={activeRecording ? 'Stop recording' : 'Record session'}
+            content={isCallRecordingInProgress ? 'Stop recording' : 'Record session'}
          />
 
          {/* Leave call */}
