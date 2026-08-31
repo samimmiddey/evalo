@@ -202,28 +202,37 @@ export async function POST(request: NextRequest) {
          });
 
          // Fallback safety net: if session was not already completed in UI, settle it now
-         if (booking.status !== 'COMPLETED') {
-            await db.$transaction([
-               db.booking.update({
-                  where: { id: booking.id },
-                  data: { status: 'COMPLETED' }
-               }),
-               db.user.update({
-                  where: { id: booking.interviewer.id },
-                  data: {
-                     creditBalance: { increment: booking.creditsCharged }
-                  }
-               }),
-               db.creditTransaction.create({
-                  data: {
-                     userId: booking.interviewer.id,
-                     amount: booking.creditsCharged,
-                     type: 'BOOKING_EARNING',
-                     bookingId: booking.id
-                  }
-               })
-            ]);
-         }
+         await db.$transaction(async (tx) => {
+            const current = await tx.booking.findUnique({
+               where: { id: booking.id },
+               select: { status: true }
+            });
+
+            if (current?.status === 'COMPLETED') {
+               return;
+            }
+
+            await tx.booking.update({
+               where: { id: booking.id },
+               data: { status: 'COMPLETED' }
+            });
+
+            await tx.user.update({
+               where: { id: booking.interviewer.id },
+               data: {
+                  creditBalance: { increment: booking.creditsCharged }
+               }
+            });
+
+            await tx.creditTransaction.create({
+               data: {
+                  userId: booking.interviewer.id,
+                  amount: booking.creditsCharged,
+                  type: 'BOOKING_EARNING',
+                  bookingId: booking.id
+               }
+            });
+         });
 
          return new Response("Feedback & Session Settled", { status: 200 });
       }

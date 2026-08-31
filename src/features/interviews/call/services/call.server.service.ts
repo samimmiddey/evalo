@@ -138,33 +138,42 @@ export const completeCall = async (callId: string): Promise<CompleteCallData> =>
          throw new ForbiddenError('Only the host can mark the call as completed');
       }
 
-      if (booking.status !== 'COMPLETED') {
-         await db.$transaction([
-            // 1. Mark booking as completed
-            db.booking.update({
-               where: { id: booking.id },
-               data: { status: 'COMPLETED' }
-            }),
-            // 2. Increment interviewer credit balance
-            db.user.update({
-               where: { id: booking.interviewer.id },
-               data: {
-                  creditBalance: {
-                     increment: booking.creditsCharged
-                  }
+      await db.$transaction(async (tx) => {
+         const current = await tx.booking.findUnique({
+            where: { id: booking.id },
+            select: { status: true }
+         });
+
+         if (current?.status === 'COMPLETED') {
+            return;
+         }
+
+         // 1. Mark booking as completed
+         await tx.booking.update({
+            where: { id: booking.id },
+            data: { status: 'COMPLETED' }
+         });
+
+         // 2. Increment interviewer credit balance
+         await tx.user.update({
+            where: { id: booking.interviewer.id },
+            data: {
+               creditBalance: {
+                  increment: booking.creditsCharged
                }
-            }),
-            // 3. Create credit transaction record for interviewer earnings
-            db.creditTransaction.create({
-               data: {
-                  userId: booking.interviewer.id,
-                  amount: booking.creditsCharged,
-                  type: 'BOOKING_EARNING',
-                  bookingId: booking.id
-               }
-            })
-         ]);
-      }
+            }
+         });
+
+         // 3. Create credit transaction record for interviewer earnings
+         await tx.creditTransaction.create({
+            data: {
+               userId: booking.interviewer.id,
+               amount: booking.creditsCharged,
+               type: 'BOOKING_EARNING',
+               bookingId: booking.id
+            }
+         });
+      });
 
       return {
          bookingId: booking.id,

@@ -354,28 +354,6 @@ export const cancelBooking = async (bookingId: string): Promise<void> => {
             },
          });
 
-         // Record transaction as reversal
-         await tx.creditTransaction.create({
-            data: {
-               userId: booking.interviewerId,
-               amount: -booking.creditsCharged,
-               type: "BOOKING_REVERSAL",
-               bookingId: booking.id,
-            },
-         });
-
-         // Remove credits from interviewer's balance
-         await tx.user.update({
-            where: {
-               id: booking.interviewerId,
-            },
-            data: {
-               credits: {
-                  decrement: booking.creditsCharged,
-               },
-            },
-         });
-
          // If future availability slot exists, restore it to AVAILABLE
          const availability = await tx.availability.findFirst({
             where: {

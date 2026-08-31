@@ -237,20 +237,6 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
             data: { credits: { decrement: credits } }
          });
 
-         await tx.creditTransaction.create({
-            data: {
-               userId: interviewerId,
-               amount: +credits,
-               type: "BOOKING_EARNING",
-               bookingId: newBooking.id
-            }
-         });
-
-         await tx.user.update({
-            where: { id: interviewerId },
-            data: { credits: { increment: credits } }
-         });
-
          return newBooking;
       });
    } catch (error: unknown) {
