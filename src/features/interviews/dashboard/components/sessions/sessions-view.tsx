@@ -13,7 +13,7 @@ import {
    SessionsFilterParams
 } from "../../types/dashboard.types";
 import SessionCard from "./session-card";
-import SessionFeedbackModal from "./session-feedback-modal";
+import { FeedbackModal } from "@/features/interviews/shared/modal/feedback-modal";
 import { DashboardContentSkeleton } from "../skeletons/dashboard-content-skeleton";
 import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 import SearchBar from "@/components/common/search-bar";
@@ -179,7 +179,7 @@ export const SessionsView = () => {
 
          {/* Feedback Viewer Modal */}
          {selectedFeedback && (
-            <SessionFeedbackModal
+            <FeedbackModal
                open={selectedFeedback !== null}
                onClose={() => setSelectedFeedback(null)}
                feedback={selectedFeedback.feedback}

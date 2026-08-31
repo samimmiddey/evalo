@@ -50,6 +50,7 @@ export interface Interview {
    streamStatus: StreamStatus;
    interviewer: Interviewer;
    feedback: Feedback | null;
+   recordingUrl: string | null;
 }
 
 export interface AppointmentsData {

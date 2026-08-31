@@ -9,7 +9,7 @@ import AppointmentsList from './components/appointments-list';
 import { useFetch } from '@/hooks/use-fetch';
 import { getAppointmentsStats } from './services/appointments.client.service';
 import { toast } from 'sonner';
-import { FeedbackModal } from './components/feedback-modal';
+import { FeedbackModal } from '@/features/interviews/shared/modal/feedback-modal';
 
 const Appointments = () => {
    const [filterParams, setFilterParams] = useState<AppointmentsFilterParams>({

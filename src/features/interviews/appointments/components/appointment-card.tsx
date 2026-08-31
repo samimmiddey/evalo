@@ -22,7 +22,7 @@ interface AppointmentCardProps {
 }
 
 const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewList }: AppointmentCardProps) => {
-   const { interviewer, startTime, endTime, status, feedback, streamCallId } = appointment;
+   const { interviewer, startTime, endTime, status, feedback, streamCallId, recordingUrl } = appointment;
 
    // Retry Stream Call
    const {
@@ -381,24 +381,27 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      </>
                   )}
 
-                  {status === 'COMPLETED' && (
-                     <>
+                  {status === "COMPLETED" && recordingUrl && (
+                     <a href={recordingUrl} target="_blank" rel="noopener noreferrer">
                         <Button variant="outline" className="cursor-pointer border-white/5 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 text-xs rounded-lg h-9 flex items-center gap-1.5">
                            <Play className="w-3 h-3 text-violet-400 fill-violet-400" />
                            View Recording
                         </Button>
-                        <Button
-                           onClick={() => {
-                              if (feedback) {
-                                 onViewFeedback?.(feedback.id, feedback);
-                              }
-                           }}
-                           className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5"
-                        >
-                           <FileText className="w-3.5 h-3.5 text-violet-200" />
-                           View Full Feedback
-                        </Button>
-                     </>
+                     </a>
+                  )}
+
+                  {status === "COMPLETED" && feedback && (
+                     <Button
+                        onClick={() => {
+                           if (feedback) {
+                              onViewFeedback?.(feedback.id, feedback);
+                           }
+                        }}
+                        className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5"
+                     >
+                        <FileText className="w-3.5 h-3.5 text-violet-200" />
+                        View Full Feedback
+                     </Button>
                   )}
 
                   {status === 'CANCELLED' && (
