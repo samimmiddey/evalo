@@ -1,9 +1,7 @@
-import React from 'react'
+import Dashboard from "@/features/interviews/dashboard/dashboard";
 
 const DashboardPage = () => {
-   return (
-      <div>DashboardPage</div>
-   )
-}
+   return <Dashboard />;
+};
 
-export default DashboardPage
+export default DashboardPage;

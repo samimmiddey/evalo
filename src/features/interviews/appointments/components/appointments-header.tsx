@@ -24,7 +24,7 @@ const AppointmentsHeader = ({ data, isLoading }: AppointmentsHeaderProps) => {
          {/* Quick Mini Stats Grid */}
          <div className="grid grid-cols-3 gap-2.5 w-full md:w-auto min-w-70">
             <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
-               <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold mb-1">Completed</p>
+               <p className="text-[10px] uppercase tracking-wider text-violet-400 font-semibold mb-1">Completed</p>
                {
                   isLoading ?
                      <span className='inline-flex h-5.5 w-5.5 rounded-md animate-pulse bg-zinc-700' /> :
@@ -32,19 +32,19 @@ const AppointmentsHeader = ({ data, isLoading }: AppointmentsHeaderProps) => {
                }
             </div>
             <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
-               <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold mb-1">Scheduled</p>
+               <p className="text-[10px] uppercase tracking-wider text-blue-400 font-semibold mb-1">Scheduled</p>
                {
                   isLoading ?
                      <span className='inline-flex h-5.5 w-5.5 rounded-md animate-pulse bg-zinc-700' /> :
-                     <p className="text-lg font-bold text-violet-400">{data?.scheduledCount}</p>
+                     <p className="text-lg font-bold text-blue-400">{data?.scheduledCount}</p>
                }
             </div>
             <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-3 text-center">
-               <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold mb-1">Success Rate</p>
+               <p className="text-[10px] uppercase tracking-wider text-amber-400 font-semibold mb-1">Success Rate</p>
                {
                   isLoading ?
                      <span className='inline-flex h-5.5 w-5.5 rounded-md animate-pulse bg-zinc-700' /> :
-                     <p className="text-lg font-bold text-violet-400">{data?.successRate}%</p>
+                     <p className="text-lg font-bold text-amber-400">{data?.successRate}%</p>
                }
             </div>
          </div>

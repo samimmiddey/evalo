@@ -12,7 +12,7 @@ const CustomTooltip = ({ trigger, content }: CustomTooltipProps) => {
          <TooltipTrigger asChild>
             {trigger}
          </TooltipTrigger>
-         <TooltipContent className='font-medium'>
+         <TooltipContent className='font-medium z-99999'>
             {content}
          </TooltipContent>
       </Tooltip>

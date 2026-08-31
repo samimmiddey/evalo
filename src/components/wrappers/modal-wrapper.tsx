@@ -8,9 +8,10 @@ interface ModalWrapperProps {
    title: string;
    description: string;
    children: ReactNode;
+   headerIcon?: React.ReactNode;
 }
 
-const ModalWrapper = ({ open, onClose, title, description, children }: ModalWrapperProps) => {
+const ModalWrapper = ({ open, onClose, title, description, children, headerIcon }: ModalWrapperProps) => {
    return (
       <Dialog open={open} onOpenChange={onClose}>
          <DialogContent
@@ -19,16 +20,14 @@ const ModalWrapper = ({ open, onClose, title, description, children }: ModalWrap
                rounded-2xl border border-white/8 bg-[#0f0f12] shadow-2xl shadow-black/60
                sm:max-w-6xl overflow-hidden z-9999"
          >
-            {/* Ambient gradient top */}
-            <div className="absolute top-0 inset-x-0 h-48 bg-linear-to-b from-violet-600/12 via-violet-600/4 to-transparent pointer-events-none" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-60 rounded-full blur-[100px] bg-violet-500/15 pointer-events-none" />
-
             {/* Header */}
             <DialogTitle className="relative z-10 shrink-0 flex items-start justify-between gap-4 px-6 pt-6 pb-5 sm:px-7 sm:pt-7 border-b border-white/5">
                <div className="flex flex-col gap-1.5">
                   <div className="flex items-center gap-2.5 mb-1">
                      <div className="flex items-center justify-center w-7 h-7 2xl:w-8 2xl:h-8 rounded-lg bg-violet-500/20 border border-violet-500/30">
-                        <Sparkles className="w-4 h-4 text-violet-400" />
+                        {
+                           headerIcon ? headerIcon : <Sparkles className="w-4 h-4 text-violet-400" />
+                        }
                      </div>
                      <span className="text-xs font-bold uppercase tracking-widest text-violet-400">
                         {title}

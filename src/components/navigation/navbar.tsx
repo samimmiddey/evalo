@@ -92,7 +92,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                               {/* Credits Button */}
                               <CreditButton
                                  role={user?.role}
-                                 credits={user?.credits}
+                                 credits={user?.role === 'INTERVIEWER' ? user?.creditBalance : user?.credits}
                               />
 
                            </Show>

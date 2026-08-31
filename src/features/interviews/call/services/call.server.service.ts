@@ -121,6 +121,7 @@ export const completeCall = async (callId: string): Promise<CompleteCallData> =>
          include: {
             interviewer: {
                select: {
+                  id: true,
                   clerkUserId: true
                }
             }
@@ -138,10 +139,31 @@ export const completeCall = async (callId: string): Promise<CompleteCallData> =>
       }
 
       if (booking.status !== 'COMPLETED') {
-         await db.booking.update({
-            where: { id: booking.id },
-            data: { status: 'COMPLETED' }
-         });
+         await db.$transaction([
+            // 1. Mark booking as completed
+            db.booking.update({
+               where: { id: booking.id },
+               data: { status: 'COMPLETED' }
+            }),
+            // 2. Increment interviewer credit balance
+            db.user.update({
+               where: { id: booking.interviewer.id },
+               data: {
+                  creditBalance: {
+                     increment: booking.creditsCharged
+                  }
+               }
+            }),
+            // 3. Create credit transaction record for interviewer earnings
+            db.creditTransaction.create({
+               data: {
+                  userId: booking.interviewer.id,
+                  amount: booking.creditsCharged,
+                  type: 'BOOKING_EARNING',
+                  bookingId: booking.id
+               }
+            })
+         ]);
       }
 
       return {

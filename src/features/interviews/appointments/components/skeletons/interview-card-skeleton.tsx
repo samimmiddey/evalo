@@ -16,8 +16,6 @@ const InterviewCardSkeleton = ({ view = 'list' }: InterviewCardSkeletonProps) =>
                {/* Avatar Bone */}
                <div className="w-16 md:w-20 relative shrink-0">
                   <div className="h-16 w-16 md:h-20 md:w-20 rounded-2xl bg-zinc-800 border border-white/5 shadow-xl animate-pulse" />
-                  {/* Rating Badge Bone */}
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-4 w-8 md:w-10 rounded-md bg-zinc-900 border border-white/10 animate-pulse" />
                </div>
 
                {/* Bio/Expertise Bone */}

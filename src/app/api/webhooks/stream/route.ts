@@ -176,58 +176,56 @@ export async function POST(request: NextRequest) {
 
          const feedbackData = JSON.parse(raw) as FeedbackGeneratedData;
 
-         await db.$transaction([
-            db.feedback.upsert({
-               where: { bookingId: booking.id },
-               create: {
-                  bookingId: booking.id,
-                  summary: feedbackData.summary,
-                  technical: feedbackData.technical,
-                  communication: feedbackData.communication,
-                  problemSolving: feedbackData.problemSolving,
-                  recommendation: feedbackData.recommendation,
-                  strengths: feedbackData.strengths,
-                  improvements: feedbackData.improvements,
-                  overallRating: feedbackData.overallRating,
-               },
-               update: {
-                  summary: feedbackData.summary,
-                  technical: feedbackData.technical,
-                  communication: feedbackData.communication,
-                  problemSolving: feedbackData.problemSolving,
-                  recommendation: feedbackData.recommendation,
-                  strengths: feedbackData.strengths,
-                  improvements: feedbackData.improvements,
-                  overallRating: feedbackData.overallRating,
-               }
-            }),
-            db.booking.update({
-               where: { id: booking.id },
-               data: {
-                  status: 'COMPLETED',
-               }
-            })
-         ]);
-
-         const earnExists = await db.creditTransaction.findFirst({
-            where: {
+         await db.feedback.upsert({
+            where: { bookingId: booking.id },
+            create: {
                bookingId: booking.id,
-               type: "BOOKING_EARNING"
+               summary: feedbackData.summary,
+               technical: feedbackData.technical,
+               communication: feedbackData.communication,
+               problemSolving: feedbackData.problemSolving,
+               recommendation: feedbackData.recommendation,
+               strengths: feedbackData.strengths,
+               improvements: feedbackData.improvements,
+               overallRating: feedbackData.overallRating,
+            },
+            update: {
+               summary: feedbackData.summary,
+               technical: feedbackData.technical,
+               communication: feedbackData.communication,
+               problemSolving: feedbackData.problemSolving,
+               recommendation: feedbackData.recommendation,
+               strengths: feedbackData.strengths,
+               improvements: feedbackData.improvements,
+               overallRating: feedbackData.overallRating,
             }
          });
 
-         if (!earnExists) {
-            await db.creditTransaction.create({
-               data: {
-                  userId: booking.interviewer.id,
-                  amount: booking.creditsCharged,
-                  type: "BOOKING_EARNING",
-                  bookingId: booking.id
-               }
-            });
+         // Fallback safety net: if session was not already completed in UI, settle it now
+         if (booking.status !== 'COMPLETED') {
+            await db.$transaction([
+               db.booking.update({
+                  where: { id: booking.id },
+                  data: { status: 'COMPLETED' }
+               }),
+               db.user.update({
+                  where: { id: booking.interviewer.id },
+                  data: {
+                     creditBalance: { increment: booking.creditsCharged }
+                  }
+               }),
+               db.creditTransaction.create({
+                  data: {
+                     userId: booking.interviewer.id,
+                     amount: booking.creditsCharged,
+                     type: 'BOOKING_EARNING',
+                     bookingId: booking.id
+                  }
+               })
+            ]);
          }
 
-         return new Response("Feedback & Credit Added", { status: 200 });
+         return new Response("Feedback & Session Settled", { status: 200 });
       }
    } catch {
       return new Response("Internal Server Error", { status: 500 });
