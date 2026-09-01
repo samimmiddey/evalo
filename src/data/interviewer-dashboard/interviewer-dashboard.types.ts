@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { DashboardTabType } from "@/features/interviews/dashboard/types/dashboard.types";
+import { DashboardTabType } from "@/features/interviews/interviewer-dashboard/types/dashboard.types";
 
 export interface DashboardHeaderData {
    title: string;
@@ -31,7 +31,7 @@ export interface SlotPreset {
    end: string;
 }
 
-export interface DashboardData {
+export interface InterviewerDashboardData {
    header: DashboardHeaderData;
    tabs: DashboardTabData[];
    payout: DashboardPayoutConfig;

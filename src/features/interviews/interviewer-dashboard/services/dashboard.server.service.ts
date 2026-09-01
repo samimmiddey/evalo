@@ -19,7 +19,7 @@ import {
    requestPayoutSchema,
    updateInterviewerProfileSchema
 } from "../schemas/dashboard.schemas";
-import { dashboardData } from "@/data/dashboard/dashboard.data";
+import { interviewerDashboardData } from "@/data/interviewer-dashboard/interviewer-dashboard.data";
 import { Prisma } from "@/generated/prisma/client";
 
 // Helper to authenticate and verify interviewer role
@@ -425,8 +425,8 @@ export const getPayoutsAndTransactions = async (): Promise<DashboardPayoutsData>
 
       return {
          creditBalance: interviewer.creditBalance,
-         ratePerCredit: dashboardData.payout.ratePerCredit,
-         platformFeePercent: dashboardData.payout.platformFeePercent,
+         ratePerCredit: interviewerDashboardData.payout.ratePerCredit,
+         platformFeePercent: interviewerDashboardData.payout.platformFeePercent,
          payouts: payouts.map((p) => ({
             id: p.id,
             credits: p.credits,
@@ -469,8 +469,8 @@ export const requestPayout = async (
          );
       }
 
-      const grossAmount = credits * dashboardData.payout.ratePerCredit;
-      const platformFee = grossAmount * (dashboardData.payout.platformFeePercent / 100);
+      const grossAmount = credits * interviewerDashboardData.payout.ratePerCredit;
+      const platformFee = grossAmount * (interviewerDashboardData.payout.platformFeePercent / 100);
       const netAmount = grossAmount - platformFee;
 
       const payout = await db.$transaction(async (tx) => {

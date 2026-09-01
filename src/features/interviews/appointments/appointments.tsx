@@ -31,7 +31,7 @@ const Appointments = () => {
    }, [error]);
 
    return (
-      <div className="container s-margin-t">
+      <div className="container s-margin">
 
          {/* Page Header */}
          <AppointmentsHeader

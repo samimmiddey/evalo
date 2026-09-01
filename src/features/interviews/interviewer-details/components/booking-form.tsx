@@ -93,7 +93,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setAvailableTimes(availableTimeSlots);
       // Reset selected time slot when date changes
-       
+
       setSelectedTimeSlot({ startTime: '', endTime: '', displayStart: '', displayEnd: '' });
    }, [interviewer, selectedDateSlot]);
 
@@ -123,7 +123,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
       if (result) {
          toast.success("Your slot has been booked successfully!");
          setIsBooked(true);
-         router.push('/appointments');
+         router.push('/dashboard/appointments');
       }
    };
 

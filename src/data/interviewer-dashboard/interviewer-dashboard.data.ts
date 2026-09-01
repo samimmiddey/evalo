@@ -4,9 +4,9 @@ import {
    Video,
    Wallet
 } from "lucide-react";
-import { DashboardData } from "./dashboard.types";
+import { InterviewerDashboardData } from "./interviewer-dashboard.types";
 
-export const dashboardData: DashboardData = {
+export const interviewerDashboardData: InterviewerDashboardData = {
    header: {
       title: "Dashboard",
       description: "Manage your upcoming mock sessions, set your availability slots, track credit earnings, and request payouts."

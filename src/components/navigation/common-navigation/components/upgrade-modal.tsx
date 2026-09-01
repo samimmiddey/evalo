@@ -4,7 +4,7 @@ import CustomSpinner from '@/components/common/custom-spinner';
 import NoDataCard from '@/components/common/no-data-card';
 import PricingCardContainer from '@/features/static/home/components/pricing-card-container';
 import { usePlans } from '@clerk/nextjs/experimental';
-import ModalWrapper from '../../wrappers/modal-wrapper';
+import ModalWrapper from '../../../wrappers/modal-wrapper';
 
 interface UpgradeModalProps {
    open: boolean;

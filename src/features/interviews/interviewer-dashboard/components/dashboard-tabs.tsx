@@ -1,6 +1,6 @@
 "use client";
 
-import { dashboardData } from "@/data/dashboard/dashboard.data";
+import { interviewerDashboardData } from "@/data/interviewer-dashboard/interviewer-dashboard.data";
 import { cn } from "@/lib/utils";
 import { DashboardTabType } from "../types/dashboard.types";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +19,7 @@ export const DashboardTabs = ({
    return (
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-2 bg-zinc-900/40 border border-white/5 rounded-xl mb-7 2xl:mb-8 relative z-10 backdrop-blur-xl">
          <div className="grid md:grid-cols-4 grid-cols-2 gap-2 w-full">
-            {dashboardData.tabs.map((tab) => {
+            {interviewerDashboardData.tabs.map((tab) => {
                const isActive = activeTab === tab.id;
                const Icon = tab.icon;
 

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { footerData } from '@/data/navigation/navigation.data';
-import Logo from '../common/logo';
+import Logo from '../../common/logo';
 
 const Footer = () => {
    const SocialIcon = ({ type }: { type: string; }) => {

@@ -3,14 +3,13 @@
 import { Button } from '@/components/ui/button';
 import { navigationData } from '@/data/navigation/navigation.data';
 import { Show, UserButton, useUser } from '@clerk/nextjs';
-import { CalendarDays, Menu, Users } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import useMediaQuery from '@/hooks/use-media-query';
 import { authData } from '@/data/auth/auth.data';
 import { useDbUser } from '@/hooks/use-db-user';
-import CreditButton from './components/credit-button';
-import Logo from '../common/logo';
+import Logo from '../../common/logo';
 
 interface NavbarProps {
    onMenuClick: () => void;
@@ -18,7 +17,7 @@ interface NavbarProps {
 
 const Navbar = ({ onMenuClick }: NavbarProps) => {
    const { isLoaded } = useUser();
-   const { isLoading: isUserLoading, user } = useDbUser();
+   const { isLoading: isUserLoading } = useDbUser();
 
    const pathname = usePathname();
    const mdWidth = useMediaQuery(767);
@@ -60,41 +59,9 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                      {
                         isUserLoading ? <div className="h-8 w-25 rounded-sm bg-zinc-800 animate-pulse" /> : (
                            <Show when='signed-in'>
-                              {/* Dashboard Button */}
-                              {
-                                 user?.role === 'INTERVIEWER' && (
-                                    <Link href='/dashboard'>
-                                       <Button variant="ghost" size="lg">Dashboard</Button>
-                                    </Link>
-                                 )
-                              }
-
-                              {/* Appointments and Explore Buttons */}
-                              {
-                                 user?.role === 'INTERVIEWEE' && (
-                                    <>
-                                       <Link href='/interviewers'>
-                                          <Button variant="ghost" size="lg">
-                                             <Users className='icon-size' />
-                                             <span className="max-lg:hidden">Explore</span>
-                                          </Button>
-                                       </Link>
-                                       <Link href='/appointments'>
-                                          <Button variant="white" size="lg">
-                                             <CalendarDays className='icon-size' />
-                                             <span className="max-lg:hidden">Appointments</span>
-                                          </Button>
-                                       </Link>
-                                    </>
-                                 )
-                              }
-
-                              {/* Credits Button */}
-                              <CreditButton
-                                 role={user?.role}
-                                 credits={user?.role === 'INTERVIEWER' ? user?.creditBalance : user?.credits}
-                              />
-
+                              <Link href='/dashboard'>
+                                 <Button variant="ghost" size="lg">Dashboard</Button>
+                              </Link>
                            </Show>
                         )
                      }

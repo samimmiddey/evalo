@@ -22,10 +22,10 @@ const InterviewerDetails = ({ interviewer, feedback }: InterviewerDetailsProps) 
    }
 
    return (
-      <div className="container s-margin-t px-4 md:px-6 max-w-7xl mx-auto">
+      <div className="container s-margin px-4 md:px-6 max-w-7xl mx-auto">
          {/* Navigation Link */}
          <Link
-            href="/interviewers"
+            href="/dashboard/interviewers"
             className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-100 transition-colors mb-6 group"
          >
             <interviewerDetailsData.backBtn.icon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />

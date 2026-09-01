@@ -4,7 +4,7 @@ import SecondaryTitle from "@/components/common/secondary-title";
 import HeaderLayout from "@/components/layouts/header-layout";
 import PageHeaderLayout from "@/components/layouts/page-header-layout";
 import { DashboardStats } from "../types/dashboard.types";
-import { dashboardData } from "@/data/dashboard/dashboard.data";
+import { interviewerDashboardData } from "@/data/interviewer-dashboard/interviewer-dashboard.data";
 import { Calendar, Coins, Star, Video } from "lucide-react";
 import { DashboardHeaderSkeleton } from "./skeletons/dashboard-header-skeleton";
 
@@ -21,9 +21,9 @@ export const DashboardHeader = ({ data, isLoading }: DashboardHeaderProps) => {
    return (
       <PageHeaderLayout>
          <HeaderLayout className="gap-4! items-start text-start mb-0! mx-0!">
-            <PrimaryTitle text={dashboardData.header.title} className="tracking-tight" />
+            <PrimaryTitle text={interviewerDashboardData.header.title} className="tracking-tight" />
             <PrimaryBody
-               text={dashboardData.header.description}
+               text={interviewerDashboardData.header.description}
                className="max-w-2xl text-zinc-400 text-sm md:text-base leading-relaxed"
             />
          </HeaderLayout>

@@ -339,7 +339,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                         >
                            {isCancelPending ? <CustomSpinner text="Refunding..." /> : "Claim Refund"}
                         </Button>
-                        <Link href={`/interviewers/${appointment.interviewer.id}`}>
+                        <Link href={`/dashboard/interviewers/${appointment.interviewer.id}`}>
                            <Button className="cursor-pointer bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                               Book Again
                            </Button>
@@ -412,7 +412,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                   )}
 
                   {status === 'CANCELLED' && (
-                     <Link href={`/interviewers/${appointment.interviewer.id}`}>
+                     <Link href={`/dashboard/interviewers/${appointment.interviewer.id}`}>
                         <Button className="cursor-pointer bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                            Book Again
                         </Button>

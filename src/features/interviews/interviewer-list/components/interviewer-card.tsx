@@ -27,6 +27,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
                      alt={`${interviewer.firstName} ${interviewer.lastName}`}
                      fill
                      quality={100}
+                     sizes="56px"
                      className="object-cover"
                   />
                </div>
@@ -75,7 +76,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
 
          <Separator className="mb-4.5 2xl:mb-5 bg-white/5" />
 
-         <Link href={`/interviewers/${interviewer.id}`}>
+         <Link href={`/dashboard/interviewers/${interviewer.id}`}>
             <Button
                variant='default'
                size='lg'

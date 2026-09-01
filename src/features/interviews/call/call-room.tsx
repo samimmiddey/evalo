@@ -150,7 +150,7 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
       if (typeof window !== 'undefined') {
          sessionStorage.removeItem(`evalo_joined_${booking.id}`);
       }
-      router.push(isInterviewer ? '/dashboard' : '/appointments');
+      router.push(isInterviewer ? '/dashboard' : '/dashboard/appointments');
    }, [isInterviewer, router, booking.id]);
 
    // Early countdown screen

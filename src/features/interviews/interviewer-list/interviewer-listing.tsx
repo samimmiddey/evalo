@@ -27,7 +27,7 @@ const InterviewerListing = () => {
    };
 
    return (
-      <div className="container s-margin-t">
+      <div className="container s-margin">
 
          {/* Header */}
          <Header

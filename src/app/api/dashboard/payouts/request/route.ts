@@ -1,5 +1,5 @@
-import { RequestPayoutSchemaTypes } from "@/features/interviews/dashboard/schemas/dashboard.schemas";
-import { requestPayout } from "@/features/interviews/dashboard/services/dashboard.server.service";
+import { RequestPayoutSchemaTypes } from "@/features/interviews/interviewer-dashboard/schemas/dashboard.schemas";
+import { requestPayout } from "@/features/interviews/interviewer-dashboard/services/dashboard.server.service";
 import { apiErrorResponse, apiResponse } from "@/lib/api-response";
 import { NextRequest } from "next/server";
 

@@ -57,7 +57,7 @@ const AppointmentsList = ({ filterParams, view, onViewFeedback }: AppointmentsLi
             body="We couldn't find any appointments matching your filters. Book a time slot with our vetted professionals to start practicing."
             showButton={true}
             buttonText="Explore Interviewers"
-            buttonLink="/interviewers"
+            buttonLink="/dashboard/interviewers"
          />
       );
    }

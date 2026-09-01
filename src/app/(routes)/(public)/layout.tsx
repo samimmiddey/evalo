@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigation from '@/components/navigation/navigation';
+import Navigation from '@/components/navigation/common-navigation/navigation';
 
 const RouteLayout = ({ children }: { children: React.ReactNode; }) => {
    return (

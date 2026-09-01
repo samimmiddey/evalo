@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import { Coins } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import UpgradeModal from './upgrade-modal';
 import useMediaQuery from '@/hooks/use-media-query';
@@ -15,12 +14,8 @@ interface CreditButtonProps {
 const CreditButton = ({ role, credits }: CreditButtonProps) => {
    const [openModal, setOpenModal] = useState<boolean>(false);
 
-   const router = useRouter();
-
    const handleButton = () => {
-      if (role === 'INTERVIEWER') {
-         router.push('/dashboard');
-      } else {
+      if (role === 'INTERVIEWEE') {
          setOpenModal(true);
       }
    };
@@ -30,9 +25,8 @@ const CreditButton = ({ role, credits }: CreditButtonProps) => {
    return (
       <>
          <Button
-            variant='outline'
-            className='bg-violet-500/15 hover:bg-violet-500/20 transition-colors'
-            size='lg'
+            variant='white'
+            className='rounded-md'
             onClick={handleButton}
          >
             <Coins className='icon-size' />

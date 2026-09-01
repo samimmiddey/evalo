@@ -12,7 +12,7 @@ import PayoutsView from "./components/payouts/payouts-view";
 import ProfileSettingsForm from "./components/settings/profile-settings-form";
 import { toast } from "sonner";
 
-export const Dashboard = () => {
+export const InterviewerDashboard = () => {
    const [activeTab, setActiveTab] = useState<DashboardTabType>("sessions");
 
    const {
@@ -29,7 +29,7 @@ export const Dashboard = () => {
    }, [error]);
 
    return (
-      <div className="container s-margin-t">
+      <div className="container s-margin">
          {/* Top Header with KPI Metrics */}
          <DashboardHeader data={stats} isLoading={isLoading} />
 
@@ -63,4 +63,4 @@ export const Dashboard = () => {
    );
 };
 
-export default Dashboard;
+export default InterviewerDashboard;

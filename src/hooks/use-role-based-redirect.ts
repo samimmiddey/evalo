@@ -7,7 +7,6 @@ export const useRoleBasedRedirect = () => {
 
    return async () => {
       await session?.reload();
-      const role = session?.user?.publicMetadata?.role;
-      router.replace(role === 'INTERVIEWER' ? '/dashboard' : '/interviewers');
+      router.replace('/dashboard');
    };
 };
