@@ -236,7 +236,8 @@ export async function POST(request: NextRequest) {
 
          return new Response("Feedback & Session Settled", { status: 200 });
       }
-   } catch {
+   } catch (error) {
+      console.error('Failed to handle user.created:', error);
       return new Response("Internal Server Error", { status: 500 });
    }
 
