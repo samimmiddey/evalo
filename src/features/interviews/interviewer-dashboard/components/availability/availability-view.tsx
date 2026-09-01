@@ -86,7 +86,7 @@ export const AvailabilityView = () => {
    return (
       <div className="space-y-6">
          {/* Top Action Bar */}
-         <div className="flex items-center justify-between gap-4 pb-2 border-b border-white/5">
+         <div className="flex items-center justify-between gap-4 p-2 sm:px-4 bg-zinc-900/40 border border-white/5 rounded-xl mb-7 2xl:mb-8 relative z-10 backdrop-blur-xl">
             <div>
                <SecondaryTitle
                   text="Configured Slots"

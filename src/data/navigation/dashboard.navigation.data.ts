@@ -1,4 +1,12 @@
-import { UserStar, LayoutDashboard, CalendarDays } from 'lucide-react';
+import {
+   UserStar,
+   LayoutDashboard,
+   CalendarDays,
+   Video,
+   Clock,
+   Wallet,
+   SlidersHorizontal,
+} from 'lucide-react';
 import { NavigationItem } from "./navigation.types";
 
 export const intervieweeNavigationData: NavigationItem[] = [
@@ -28,6 +36,21 @@ export const interviewerNavigationData: NavigationItem[] = [
    {
       name: 'Sessions',
       href: '/dashboard/sessions',
-      icon: UserStar
+      icon: Video
+   },
+   {
+      name: 'Availability',
+      href: '/dashboard/availability',
+      icon: Clock
+   },
+   {
+      name: 'Earnings & Payouts',
+      href: '/dashboard/payouts',
+      icon: Wallet
+   },
+   {
+      name: 'Profile Settings',
+      href: '/dashboard/settings',
+      icon: SlidersHorizontal
    }
 ];

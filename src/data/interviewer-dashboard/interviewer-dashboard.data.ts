@@ -1,42 +1,22 @@
-import {
-   Clock,
-   SlidersHorizontal,
-   Video,
-   Wallet
-} from "lucide-react";
 import { InterviewerDashboardData } from "./interviewer-dashboard.types";
 
 export const interviewerDashboardData: InterviewerDashboardData = {
-   header: {
-      title: "Dashboard",
-      description: "Manage your upcoming mock sessions, set your availability slots, track credit earnings, and request payouts."
+   sessions: {
+      title: "Sessions",
+      description: "Manage and review your upcoming mock interviews and review completed session feedback."
    },
-   tabs: [
-      {
-         id: "sessions",
-         label: "Sessions",
-         icon: Video,
-         description: "Upcoming and past interview sessions"
-      },
-      {
-         id: "availability",
-         label: "Availability",
-         icon: Clock,
-         description: "Configure available slots for bookings"
-      },
-      {
-         id: "payouts",
-         label: "Earnings & Payouts",
-         icon: Wallet,
-         description: "Credit wallet, transactions, and withdrawals"
-      },
-      {
-         id: "settings",
-         label: "Profile",
-         icon: SlidersHorizontal,
-         description: "Bio, expertise domains, and session rate"
-      }
-   ],
+   availability: {
+      title: "Availability",
+      description: "Set your weekly recurring time slots so candidates can book mock interview sessions with you."
+   },
+   payouts: {
+      title: "Earnings & Payouts",
+      description: "Track your earned credit balance, view transaction history, and submit withdrawal requests."
+   },
+   settings: {
+      title: "Profile Settings",
+      description: "Update your bio, current company, designation, years of experience, and interview domains."
+   },
    payout: {
       ratePerCredit: 25, // $25 per credit
       platformFeePercent: 10, // 10% platform fee

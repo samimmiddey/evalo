@@ -1,15 +1,5 @@
-import { LucideIcon } from "lucide-react";
-import { DashboardTabType } from "@/features/interviews/interviewer-dashboard/types/dashboard.types";
-
-export interface DashboardHeaderData {
+export interface DashboardSectionHeader {
    title: string;
-   description: string;
-}
-
-export interface DashboardTabData {
-   id: DashboardTabType;
-   label: string;
-   icon: LucideIcon;
    description: string;
 }
 
@@ -32,8 +22,10 @@ export interface SlotPreset {
 }
 
 export interface InterviewerDashboardData {
-   header: DashboardHeaderData;
-   tabs: DashboardTabData[];
+   sessions: DashboardSectionHeader;
+   availability: DashboardSectionHeader;
+   payouts: DashboardSectionHeader;
+   settings: DashboardSectionHeader;
    payout: DashboardPayoutConfig;
    slotPresets: SlotPreset[];
 }

@@ -83,7 +83,7 @@ export const SessionsView = () => {
    return (
       <div>
          {/* Filter and Search Bar */}
-         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 2xl:mb-7 mb-6">
+         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 lg:gap-3 2xl:gap-4 p-2 bg-zinc-900/40 border border-white/5 rounded-xl mb-7 2xl:mb-8 relative z-10 backdrop-blur-xl">
             {/* Status Filter Dropdown */}
             <Select
                value={statusFilter}

@@ -8,6 +8,7 @@ import {
    SidebarMenu,
    SidebarMenuButton,
    SidebarMenuItem,
+   useSidebar,
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -25,6 +26,7 @@ interface DashboardSidebarMenuProps {
 
 export function DashboardSidebarMenu({ items }: DashboardSidebarMenuProps) {
    const pathname = usePathname();
+   const { isMobile, setOpenMobile } = useSidebar();
 
    return (
       <SidebarGroup className="px-2 py-0">
@@ -52,6 +54,9 @@ export function DashboardSidebarMenu({ items }: DashboardSidebarMenuProps) {
                         >
                            <Link
                               href={item.href}
+                              onClick={() => {
+                                 if (isMobile) setOpenMobile(false);
+                              }}
                               className="flex items-center gap-3 w-full"
                            >
                               {Icon && (
