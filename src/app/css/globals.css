@@ -390,3 +390,9 @@
   border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
   border-radius: 9999px !important;
 }
+
+/* Mobile sidebar subtle border */
+[data-slot="sidebar"][data-mobile="true"],
+[data-sidebar="sidebar"][data-mobile="true"] {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
