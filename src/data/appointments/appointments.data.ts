@@ -133,6 +133,6 @@ export const appointsData: AppointmentsData = {
    ],
    helpfulTips: {
       header: "Preparation Guidelines",
-      body: "All mock interviews are conducted using Evalo's integrated room with compiler and collaborative audio/video features. Make sure to join the session at least 5 minutes early to test your audio, video, and connection. AI feedback reports are generated within 10 minutes of completing a session."
+      body: "All mock interviews are conducted using Evalo's integrated room with compiler and collaborative audio/video features. Make sure to join the session at least 10 minutes early to test your audio, video, and connection. AI feedback reports are generated within 10 minutes of completing a session."
    }
 };

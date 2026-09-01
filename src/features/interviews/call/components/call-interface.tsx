@@ -51,6 +51,7 @@ const CallInterface = ({
    const [activeTab, setActiveTab] = useState<'chat' | 'video'>('video');
    const [chatChannel, setChatChannel] = useState<Channel | null>(null);
    const [chatError, setChatError] = useState<string | null>(null);
+   const [isCallEndedByHost, setIsCallEndedByHost] = useState<boolean>(false);
 
    const currentUserName = `${currentUser.firstName ?? ''} ${currentUser.lastName ?? ''}`.trim() || 'User';
 
@@ -109,18 +110,62 @@ const CallInterface = ({
       };
    }, [chatClient, callId, intervieweeId, interviewerId]);
 
+   // Listen for call.ended event emitted when host ends the call
+   useEffect(() => {
+      if (!call) return;
+      const unsubscribe = call.on('call.ended', () => {
+         setIsCallEndedByHost(true);
+      });
+      return () => {
+         unsubscribe();
+      };
+   }, [call]);
+
    const handleEndCall = useCallback(async () => {
       if (call?.state?.recording) {
          await call.stopRecording().catch(() => { /* no-op */ });
       }
       if (isInterviewer) {
          await handleCompleteCall({ callId }).catch(() => { /* no-op */ });
+         await call?.endCall().catch(() => { /* no-op */ });
+      } else {
+         await call?.leave().catch(() => { /* no-op */ });
       }
       onEndCall();
    }, [call, callId, isInterviewer, onEndCall]);
 
+   // Helper to determine exact card content across all exit scenarios
+   const getEndSessionContent = () => {
+      if (isInterviewer) {
+         return {
+            badge: 'Session Completed',
+            title: 'Interview Concluded',
+            description: 'You have successfully completed this mock interview session. Your session credits have been settled to your account.',
+            buttonText: 'Return to Dashboard',
+         };
+      }
+
+      if (isCallEndedByHost) {
+         return {
+            badge: 'Interview Concluded',
+            title: 'Interview Ended by Host',
+            description: 'The interviewer has concluded this mock technical interview. Your recording and AI feedback evaluation will be available on your appointments page.',
+            buttonText: 'View Your Appointments',
+         };
+      }
+
+      return {
+         badge: 'Left Session',
+         title: 'You Left the Interview',
+         description: 'You have left the interview room. You can review your session status, recording, and feedback on your appointments page.',
+         buttonText: 'View Your Appointments',
+      };
+   };
+
    // Session ended full-screen view (hides header, tabs, and chat sidebar)
-   if (callingState === CallingState.LEFT || callingState === CallingState.IDLE) {
+   if (isCallEndedByHost || callingState === CallingState.LEFT || callingState === CallingState.IDLE) {
+      const { badge, title, description, buttonText } = getEndSessionContent();
+
       return (
          <div className="flex flex-col items-center justify-center min-h-dvh w-full p-4 sm:p-6 bg-zinc-950 text-zinc-100 selection:bg-violet-500/30">
             <CardLayout className='flex flex-col items-center text-center gap-2 max-w-125 w-full'>
@@ -131,15 +176,15 @@ const CallInterface = ({
 
                {/* Badge & Title */}
                <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-xs px-2.5 py-0.5 font-normal mb-1">
-                  Session Completed
+                  {badge}
                </Badge>
 
                <SecondaryTitle
-                  text="Technical Mock Interview"
+                  text={title}
                   className="text-lg! 2xl:text-lg! font-semibold! text-zinc-100!"
                />
                <PrimaryBody
-                  text="The interview call has ended. Feedback and performance notes will be updated in your dashboard."
+                  text={description}
                   className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400! max-w-xs leading-relaxed"
                />
 
@@ -148,9 +193,9 @@ const CallInterface = ({
                   type="button"
                   size="lg"
                   onClick={onNavigateOut}
-                  className="mt-4 w-full h-11 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-medium transition-all gap-2 group"
+                  className="mt-4 w-full h-11 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-medium transition-all gap-2 group cursor-pointer"
                >
-                  <span>{isInterviewer ? 'Return to Dashboard' : 'View Your Appointments'}</span>
+                  <span>{buttonText}</span>
                   <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
                </Button>
             </CardLayout>

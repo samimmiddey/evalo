@@ -316,6 +316,16 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                   </div>
                )}
 
+               {/* Notice if COMPLETED without feedback */}
+               {status === 'COMPLETED' && !feedback && (
+                  <div className="p-6 2xl:p-7 border-b border-white/5">
+                     <div className="flex items-center gap-3 text-zinc-400 text-xs">
+                        <Info className="w-4 h-4 text-zinc-500 shrink-0" />
+                        <span>AI performance evaluation is unavailable for this session.</span>
+                     </div>
+                  </div>
+               )}
+
                {/* Actions Area */}
                <div className="p-6 2xl:p-7 flex max-sm:flex-col sm:flex-wrap sm:items-center sm:justify-end gap-2.5 2xl:gap-3">
 

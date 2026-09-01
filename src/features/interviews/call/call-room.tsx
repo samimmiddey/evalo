@@ -135,11 +135,15 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
    // End the active call session without redirecting immediately
    const handleEndCall = useCallback(async () => {
       if (call) {
-         if (call.state.callingState !== CallingState.LEFT && call.state.callingState !== CallingState.IDLE) {
-            await call.leave().catch(() => { /* no-op */ });
+         if (isInterviewer) {
+            await call.endCall().catch(() => { /* no-op */ });
+         } else {
+            if (call.state.callingState !== CallingState.LEFT && call.state.callingState !== CallingState.IDLE) {
+               await call.leave().catch(() => { /* no-op */ });
+            }
          }
       }
-   }, [call]);
+   }, [call, isInterviewer]);
 
    // Navigate user back to role dashboard / appointments
    const handleRedirect = useCallback(() => {
