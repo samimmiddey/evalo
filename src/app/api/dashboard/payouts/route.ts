@@ -1,4 +1,4 @@
-import { getPayoutsAndTransactions } from "@/features/interviews/interviewer-dashboard/services/dashboard.server.service";
+import { getPayoutsAndTransactions } from "@/features/interviews/payouts/services/payout.server.service";
 import { apiErrorResponse, apiResponse } from "@/lib/api-response";
 
 export async function GET() {

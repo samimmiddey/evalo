@@ -3,22 +3,22 @@
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
 import {
-   GET_DASHBOARD_PAYOUTS,
-   REQUEST_DASHBOARD_PAYOUT
+   GET_PAYOUTS,
+   REQUEST_PAYOUT
 } from "@/config/query-urls";
 import {
-   DashboardPayoutsData,
-   DashboardPayoutsResponse
-} from "../types/dashboard.types";
+   PayoutsData,
+   PayoutsResponse
+} from "../types/payout.types";
 import {
    RequestPayoutSchemaTypes
-} from "../schemas/dashboard.schemas";
+} from "../schemas/payout.schemas";
 import { BaseResponse } from "@/types/api.types";
 
 // Get Payouts & Transactions
-export const getPayoutsData = async (): Promise<DashboardPayoutsData> => {
+export const getPayoutsData = async (): Promise<PayoutsData> => {
    try {
-      const res = await api.get(GET_DASHBOARD_PAYOUTS).json<DashboardPayoutsResponse>();
+      const res = await api.get(GET_PAYOUTS).json<PayoutsResponse>();
 
       if (!res.success) {
          throw new Error(res.error);
@@ -39,7 +39,7 @@ export const requestPayout = async (
 ): Promise<{ success: boolean; payoutId: string; }> => {
    try {
       const res = await api
-         .post(REQUEST_DASHBOARD_PAYOUT, { json: data })
+         .post(REQUEST_PAYOUT, { json: data })
          .json<BaseResponse<{ success: boolean; payoutId: string; }>>();
 
       if (!res.success) {

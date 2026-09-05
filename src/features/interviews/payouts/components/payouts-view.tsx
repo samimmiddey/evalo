@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useFetch } from "@/hooks/use-fetch";
-import { getPayoutsData } from "../../services/dashboard.client.service";
-import { DashboardPayoutsData } from "../../types/dashboard.types";
+import { getPayoutsData } from "../services/payout.client.service";
+import { PayoutsData } from "../types/payout.types";
 import { PayoutHistoryList } from "./payout-history-list";
 import { TransactionsHistory } from "./transactions-history";
 import { RequestPayoutModal } from "./request-payout-modal";
-import { PayoutsSkeleton } from "../skeletons/payouts-skeleton";
+import { PayoutsSkeleton } from "./skeletons/payouts-skeleton";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Coins, History, Layers, Wallet } from "lucide-react";
@@ -30,7 +30,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
       data,
       error,
       refetch
-   } = useFetch<DashboardPayoutsData>(() => getPayoutsData());
+   } = useFetch<PayoutsData>(() => getPayoutsData());
 
    useEffect(() => {
       if (error) {

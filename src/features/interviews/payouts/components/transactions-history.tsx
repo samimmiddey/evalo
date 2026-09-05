@@ -1,4 +1,4 @@
-import { CreditTransactionRecord } from "../../types/dashboard.types";
+import { CreditTransactionRecord } from "../types/payout.types";
 import { format, parseISO } from "date-fns";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";

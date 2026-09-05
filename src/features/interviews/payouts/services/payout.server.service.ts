@@ -2,17 +2,17 @@ import { ValidationError } from "@/lib/app-error";
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import {
-   DashboardPayoutsData,
-} from "../types/dashboard.types";
+   PayoutsData,
+} from "../types/payout.types";
 import {
    RequestPayoutSchemaTypes,
    requestPayoutSchema
-} from "../schemas/dashboard.schemas";
+} from "../schemas/payout.schemas";
 import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
 import { getAuthenticatedInterviewer } from "@/features/interviews/shared/services/shared.server.service";
 
 // Get Payouts & Credit Transactions
-export const getPayoutsAndTransactions = async (): Promise<DashboardPayoutsData> => {
+export const getPayoutsAndTransactions = async (): Promise<PayoutsData> => {
    try {
       const interviewer = await getAuthenticatedInterviewer();
 

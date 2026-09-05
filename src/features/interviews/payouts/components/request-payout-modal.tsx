@@ -16,11 +16,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
 import { useMutation } from "@/hooks/use-mutation";
-import { requestPayout } from "../../services/dashboard.client.service";
+import { requestPayout } from "../services/payout.client.service";
 import {
    RequestPayoutSchemaTypes,
    requestPayoutSchema
-} from "../../schemas/dashboard.schemas";
+} from "../schemas/payout.schemas";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { DollarSign, Wallet } from "lucide-react";

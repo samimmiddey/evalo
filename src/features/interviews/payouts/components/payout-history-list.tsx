@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { PayoutRecord } from "../../types/dashboard.types";
+import { PayoutRecord } from "../types/payout.types";
 import { format, parseISO } from "date-fns";
 import { CheckCircle2, Clock } from "lucide-react";
 import PrimaryBody from "@/components/common/primary-body";

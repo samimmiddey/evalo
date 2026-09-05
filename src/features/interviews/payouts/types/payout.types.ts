@@ -1,8 +1,6 @@
 import { PayoutStatus, TransactionType } from "@/generated/prisma/enums";
 import { BaseResponse } from "@/types/api.types";
 
-export type DashboardTabType = 'sessions' | 'availability' | 'payouts' | 'settings';
-
 export interface PayoutRecord {
    id: string;
    credits: number;
@@ -24,7 +22,7 @@ export interface CreditTransactionRecord {
    createdAt: string;
 }
 
-export interface DashboardPayoutsData {
+export interface PayoutsData {
    creditBalance: number;
    ratePerCredit: number;
    platformFeePercent: number;
@@ -32,4 +30,4 @@ export interface DashboardPayoutsData {
    transactions: CreditTransactionRecord[];
 }
 
-export type DashboardPayoutsResponse = BaseResponse<DashboardPayoutsData>;
+export type PayoutsResponse = BaseResponse<PayoutsData>;

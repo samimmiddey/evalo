@@ -1,4 +1,4 @@
-import Payouts from "@/features/interviews/interviewer-dashboard/payouts";
+import Payouts from "@/features/interviews/payouts/payouts";
 
 const PayoutsPage = () => {
    return <Payouts />;
