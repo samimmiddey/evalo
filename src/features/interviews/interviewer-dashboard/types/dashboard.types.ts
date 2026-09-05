@@ -1,4 +1,4 @@
-import { AvailabilityStatus, BookingStatus, PayoutStatus, TransactionType } from "@/generated/prisma/enums";
+import { BookingStatus, PayoutStatus, TransactionType } from "@/generated/prisma/enums";
 import { BaseResponse } from "@/types/api.types";
 import { DashboardSession } from "../../shared/types/shared.types";
 
@@ -19,20 +19,6 @@ export interface DashboardSessionsData {
    totalPages: number;
    hasNextPage: boolean;
    hasPrevPage: boolean;
-}
-
-export interface AvailabilitySlot {
-   id: string;
-   startTime: string;
-   endTime: string;
-   status: AvailabilityStatus;
-}
-
-export interface AvailabilityDateGroup {
-   date: string;
-   displayDate: string;
-   dayName: string;
-   slots: AvailabilitySlot[];
 }
 
 export interface PayoutRecord {
@@ -73,6 +59,5 @@ export interface InterviewerProfileData {
 }
 
 export type DashboardSessionsResponse = BaseResponse<DashboardSessionsData>;
-export type DashboardAvailabilityResponse = BaseResponse<AvailabilitySlot[]>;
 export type DashboardPayoutsResponse = BaseResponse<DashboardPayoutsData>;
 export type DashboardProfileResponse = BaseResponse<InterviewerProfileData>;

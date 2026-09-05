@@ -1,9 +1,9 @@
-import { CreateAvailabilitySlotsSchemaTypes } from "@/features/interviews/interviewer-dashboard/schemas/dashboard.schemas";
+import { CreateAvailabilitySlotsSchemaTypes } from "@/features/interviews/availability/schemas/availability.schema";
 import {
    createAvailabilitySlots,
    deleteAvailabilitySlot,
    getAvailabilitySlots
-} from "@/features/interviews/interviewer-dashboard/services/dashboard.server.service";
+} from "@/features/interviews/availability/services/availability.server.service";
 import { apiErrorResponse, apiResponse } from "@/lib/api-response";
 import { NextRequest } from "next/server";
 

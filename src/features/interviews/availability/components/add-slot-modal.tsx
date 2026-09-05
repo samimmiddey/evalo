@@ -9,13 +9,13 @@ import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
 import { addDays, addMinutes, format, parse } from "date-fns";
 import { Plus, ClockFading } from "lucide-react";
 import { useMutation } from "@/hooks/use-mutation";
-import { createAvailabilitySlots } from "../../services/dashboard.client.service";
+import { createAvailabilitySlots } from "../services/availability.client.service";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
-import { AvailabilitySlot } from "../../types/dashboard.types";
+import { AvailabilitySlot } from "../types/availability.types";
 import CustomTooltip from "@/components/common/custom-tooltip";
 
 interface AddSlotModalProps {

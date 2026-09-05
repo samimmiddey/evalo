@@ -1,7 +1,7 @@
-import DashboardOverview from "@/features/interviews/dashboard/dashboard-overview";
+import Dashboard from "@/features/interviews/dashboard/dashboard";
 
 const DashboardPage = () => {
-   return <DashboardOverview />;
+   return <Dashboard />;
 };
 
 export default DashboardPage;

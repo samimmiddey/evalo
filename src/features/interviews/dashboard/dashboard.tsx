@@ -5,7 +5,7 @@ import IntervieweeOverview from "./interviewee-overview";
 import InterviewerOverview from "./interviewer-overview";
 import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview-skeleton";
 
-export const DashboardOverview = () => {
+export const Dashboard = () => {
    const { user, isLoading } = useDbUser();
 
    if (isLoading) {
@@ -19,4 +19,4 @@ export const DashboardOverview = () => {
    return <IntervieweeOverview />;
 };
 
-export default DashboardOverview;
+export default Dashboard;

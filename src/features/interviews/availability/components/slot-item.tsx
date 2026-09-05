@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AvailabilitySlot } from "../../types/dashboard.types";
+import { AvailabilitySlot } from "../types/availability.types";
 import { format } from "date-fns";
 import { Clock, Trash2 } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";

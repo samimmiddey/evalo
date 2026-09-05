@@ -5,7 +5,7 @@ import PageHeaderLayout from "@/components/layouts/page-header-layout";
 import PrimaryTitle from "@/components/common/primary-title";
 import PrimaryBody from "@/components/common/primary-body";
 import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
-import AvailabilityView from "./components/availability/availability-view";
+import AvailabilityView from "./components/availability-view";
 
 const Availability = () => {
    return (

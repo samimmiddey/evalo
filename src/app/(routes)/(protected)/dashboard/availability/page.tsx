@@ -1,4 +1,4 @@
-import Availability from "@/features/interviews/interviewer-dashboard/availability";
+import Availability from "@/features/interviews/availability/availability";
 
 const AvailabilityPage = () => {
    return <Availability />;

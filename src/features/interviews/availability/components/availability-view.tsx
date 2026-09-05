@@ -6,11 +6,11 @@ import { useMutation } from "@/hooks/use-mutation";
 import {
    deleteAvailabilitySlot,
    getAvailabilitySlots
-} from "../../services/dashboard.client.service";
-import { AvailabilitySlot } from "../../types/dashboard.types";
+} from "../services/availability.client.service";
+import { AvailabilitySlot } from "../types/availability.types";
 import SlotItem from "./slot-item";
 import AddSlotModal from "./add-slot-modal";
-import { AvailabilitySkeleton } from "../skeletons/availability-skeleton";
+import { AvailabilitySkeleton } from "./skeletons/availability-skeleton";
 import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 import { Button } from "@/components/ui/button";
 import { format, isToday, isTomorrow, parse } from "date-fns";
