@@ -6,7 +6,7 @@ export const EmptyCard = () => {
    return (
       <div className="flex flex-col items-center justify-center p-6 text-center my-auto w-full">
          <div className="relative mb-3">
-            <div className="relative flex items-center justify-center size-12 rounded-xl bg-violet-600/10 border border-violet-500/30 text-violet-400">
+            <div className="relative flex items-center justify-center size-12 rounded-xl bg-zinc-600/10 border border-zinc-500/30 text-zinc-400">
                <ScrollText className="size-5" />
             </div>
          </div>

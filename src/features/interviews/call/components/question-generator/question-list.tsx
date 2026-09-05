@@ -78,7 +78,7 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
          {/* Card Top Row */}
          <div className="flex items-center justify-between gap-2 mb-2">
             <div className="flex items-center gap-2 min-w-0">
-               <span className="flex items-center justify-center size-5 rounded-md bg-violet-600/20 text-violet-300 text-[11px] font-mono font-bold shrink-0">
+               <span className="flex items-center justify-center size-5 rounded-md bg-zinc-600/30 text-zinc-100 text-[11px] font-mono font-bold shrink-0">
                   {index}
                </span>
                <SecondaryTitle
@@ -119,7 +119,7 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
          {/* Evaluation Accordion using shadcn/ui */}
          <Accordion type="single" collapsible className="w-full mt-2">
             <AccordionItem value="evaluation" className="border-none not-last:border-none">
-               <AccordionTrigger className="py-1 text-xs font-medium text-violet-400 hover:text-violet-300 hover:no-underline cursor-pointer">
+               <AccordionTrigger className="py-1 text-xs font-medium text-violet-300 hover:underline cursor-pointer">
                   <span className="flex items-center gap-1.5">
                      <CheckCircle2 className="size-3" />
                      <span>Evaluation & Model Answer</span>
@@ -139,7 +139,7 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
 
                      {question.followUpQuestion && (
                         <div className="pt-2 border-t border-white/5">
-                           <span className="text-[11px] uppercase font-semibold text-violet-400/90 tracking-wider flex items-center gap-1">
+                           <span className="text-[11px] uppercase font-semibold text-zinc-400 tracking-wider flex items-center gap-1">
                               <HelpCircle className="size-3" />
                               Follow-Up Probe
                            </span>

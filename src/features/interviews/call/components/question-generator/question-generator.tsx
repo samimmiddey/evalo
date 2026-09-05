@@ -36,7 +36,7 @@ const QuestionGenerator = ({ expertise }: QuestionGeneratorProps) => {
             <div className="flex items-center justify-between mb-2 px-0.5">
                <span className="text-xs font-medium text-zinc-400">Select Domain</span>
                {selectedExpertise && (
-                  <span className="text-[11px] text-violet-400 font-mono">
+                  <span className="text-[11px] text-emerald-400 font-mono">
                      {selectedExpertise.replace(/_/g, ' ')}
                   </span>
                )}

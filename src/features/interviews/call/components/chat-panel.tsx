@@ -14,7 +14,6 @@ import {
 } from 'stream-chat-react';
 import { format } from 'date-fns';
 import { MessageSquare, Send, Paperclip, X, FileText, Download, Loader2, ScrollText } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import SecondaryTitle from '@/components/common/secondary-title';
@@ -226,19 +225,18 @@ const CustomMessageUI = () => {
 
 const EmptyChatState = () => (
    <div className="flex flex-col items-center justify-center h-full p-6 text-center text-zinc-400">
-      <div className="relative mb-3">
-         <div className="absolute -inset-1 rounded-2xl bg-violet-600/20 blur-sm" />
-         <div className="relative flex items-center justify-center size-12 rounded-2xl bg-zinc-800/90 border border-violet-500/30 text-violet-400 shadow-lg">
+      <div className="relative mb-4">
+         <div className="relative flex items-center justify-center size-12 rounded-xl bg-zinc-800/90 border border-zinc-500/30 text-zinc-400">
             <MessageSquare className="size-5" />
          </div>
       </div>
       <SecondaryTitle
          text="No Messages Yet"
-         className="text-xs! 2xl:text-xs! font-semibold! text-zinc-200!"
+         className="text-sm! 2xl:text-sm! font-semibold! text-zinc-200!"
       />
       <PrimaryBody
          text="Send a message to share links, notes, or questions during your interview."
-         className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-zinc-400! mt-1 max-w-55 leading-relaxed"
+         className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400! mt-2 max-w-55 leading-relaxed"
       />
    </div>
 );
@@ -384,9 +382,9 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }
                      <button
                         type="button"
                         onClick={() => setActiveTab('chat')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${activeTab === 'chat'
-                           ? 'bg-violet-600 text-white shadow-sm'
-                           : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer border ${activeTab === 'chat'
+                           ? 'bg-violet-500/10 border-violet-500/25 text-violet-300 shadow-sm'
+                           : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5 border-transparent'
                            }`}
                      >
                         <MessageSquare className="size-3.5" />
@@ -395,9 +393,9 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }
                      <button
                         type="button"
                         onClick={() => setActiveTab('ai-questions')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${activeTab === 'ai-questions'
-                           ? 'bg-violet-600 text-white shadow-sm'
-                           : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer border ${activeTab === 'ai-questions'
+                           ? 'bg-violet-500/10 border-violet-500/25 text-violet-300 shadow-sm'
+                           : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5 border-transparent'
                            }`}
                      >
                         <ScrollText className="size-3.5" />
@@ -406,7 +404,7 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }
                   </div>
                ) : (
                   <div className="flex items-center gap-2.5">
-                     <div className="flex items-center justify-center size-8 rounded-lg bg-violet-600/20 border border-violet-500/30 text-violet-400">
+                     <div className="flex items-center justify-center size-8 rounded-lg bg-violet-500/10 border-violet-500/25 text-violet-400 border">
                         <MessageSquare className="size-4" />
                      </div>
                      <div>
@@ -421,11 +419,6 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }
                      </div>
                   </div>
                )}
-
-               <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px] px-2.5 py-0.5 font-normal flex items-center gap-1.5">
-                  <span className="size-1.5 rounded-full bg-emerald-400 inline-block animate-pulse" />
-                  Active
-               </Badge>
             </div>
 
             {/* Content Area */}
@@ -439,7 +432,7 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }
                      <div className="flex flex-col flex-1 min-h-0">
                         <div className="flex-1 min-h-0 overflow-hidden">
                            <Window>
-                              <ComponentProvider value={{ MessageUI: CustomMessageUI }}>
+                              <ComponentProvider value={{ MessageUI: CustomMessageUI, EmptyStateIndicator: EmptyChatState }}>
                                  <MessageList disableDateSeparator={false} />
                               </ComponentProvider>
                            </Window>

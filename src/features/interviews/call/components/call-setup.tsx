@@ -252,7 +252,7 @@ export const CallSetup = ({
             {/* Top header bar */}
             <header className="flex items-center justify-between p-4 border-b border-white/10 bg-zinc-900/60 backdrop-blur-md shrink-0">
                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center size-9 rounded-lg bg-violet-600/10 border border-violet-500/30 text-violet-400 shrink-0">
+                  <div className="flex items-center justify-center size-9 rounded-lg bg-violet-500/10 border border-violet-500/25 text-violet-300 shrink-0">
                      <Video className="size-5" />
                   </div>
                   <div>
@@ -261,9 +261,15 @@ export const CallSetup = ({
                            text="Pre-Call Device Setup"
                            className="text-sm! 2xl:text-sm! font-semibold! text-zinc-100!"
                         />
-                        <Badge variant="outline" className="bg-violet-500/10 text-violet-300 border-violet-500/20 text-[10px] font-normal px-2">
-                           {isRejoining ? 'Rejoining' : 'Lobby'}
-                        </Badge>
+                        {
+                           isRejoining &&
+                           <Badge
+                              variant="outline"
+                              className="bg-violet-500/10 text-violet-300 border-violet-500/25 text-[11px] font-normal p-2"
+                           >
+                              Rejoining
+                           </Badge>
+                        }
                      </div>
                      <PrimaryBody
                         text="Adjust your microphone and camera before entering the room"
@@ -273,11 +279,12 @@ export const CallSetup = ({
                </div>
 
                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="hidden sm:flex items-center gap-1.5 border-white/10 bg-zinc-800/60 text-zinc-300 text-xs px-3 py-1">
-                     <Clock className="size-3.5 text-violet-400" />
-                     <span>{scheduledStart} – {scheduledEnd}</span>
-                  </Badge>
-                  <Button variant="ghost" size="sm" onClick={onCancel} className="text-zinc-400 hover:text-zinc-200 hover:bg-white/5 text-xs">
+                  <Button
+                     variant="ghost"
+                     size="sm"
+                     onClick={onCancel}
+                     className="text-zinc-400 hover:text-zinc-100 text-xs"
+                  >
                      Exit
                   </Button>
                </div>
@@ -393,10 +400,10 @@ export const CallSetup = ({
                      {/* Reassurance tips under the preview */}
                      <div className="hidden sm:flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-900/40 border border-white/5 text-xs text-zinc-400">
                         <div className="flex items-center gap-2">
-                           <Info className="size-4 text-violet-400 shrink-0" />
-                           <span>Tip: Position yourself in good lighting facing your camera.</span>
+                           <Info className="size-4 text-zinc-400 shrink-0" />
+                           <span>Tip: Position yourself in good lighting facing your camera</span>
                         </div>
-                        <div className="flex items-center gap-1 text-[11px] text-zinc-500">
+                        <div className="flex items-center gap-1 text-[11px] text-zinc-400">
                            <CheckCircle2 className="size-3.5 text-emerald-500" />
                            <span>Secure connection</span>
                         </div>
@@ -410,11 +417,14 @@ export const CallSetup = ({
                      <div className="p-5 rounded-2xl bg-zinc-900/70 border border-white/10 backdrop-blur-md flex flex-col gap-3.5 shadow-xl">
                         <div className="flex items-start justify-between gap-3">
                            <div className="min-w-0">
-                              <span className="text-[11px] uppercase tracking-wider font-semibold text-violet-400">
+                              <span className="text-[11px] uppercase tracking-wider font-semibold text-zinc-300">
                                  Technical Mock Interview
                               </span>
                            </div>
-                           <Badge variant="outline" className="bg-violet-500/10 border-violet-500/30 text-violet-300 text-xs shrink-0">
+                           <Badge
+                              variant="outline"
+                              className="bg-zinc-500/10 border-zinc-500/30 text-zinc-300 text-xs shrink-0 p-2"
+                           >
                               {isInterviewer ? 'Interviewer' : 'Interviewee'}
                            </Badge>
                         </div>
@@ -437,7 +447,7 @@ export const CallSetup = ({
                               />
                               <PrimaryBody
                                  text={counterPartyRole}
-                                 className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-violet-400/90! leading-none! mt-0.5"
+                                 className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-zinc-400! leading-none! mt-0.5"
                               />
                            </div>
                         </div>
@@ -452,7 +462,7 @@ export const CallSetup = ({
                      <div className="p-5 rounded-2xl bg-zinc-900/70 border border-white/10 backdrop-blur-md flex flex-col gap-4 shadow-xl">
                         <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
                            <div className="flex items-center gap-2">
-                              <Camera className="size-4 text-violet-400" />
+                              <Camera className="size-4 text-zinc-400" />
                               <SecondaryTitle
                                  text="Device Settings"
                                  className="text-xs! 2xl:text-xs! font-semibold! uppercase tracking-wider text-zinc-300!"
@@ -544,7 +554,7 @@ export const CallSetup = ({
                                  size="sm"
                                  onClick={() => { void handlePlayTestSound(); }}
                                  disabled={isPlayingTestSound}
-                                 className="h-6 px-2 text-[11px] text-violet-400 hover:text-violet-300 hover:bg-violet-500/10 gap-1"
+                                 className="h-6 px-2 text-[11px] text-violet-300! hover:bg-violet-500/10 gap-1"
                               >
                                  <Play className={`size-3 ${isPlayingTestSound ? 'animate-spin' : ''}`} />
                                  <span>{isPlayingTestSound ? 'Playing...' : 'Test Sound'}</span>

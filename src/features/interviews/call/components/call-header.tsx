@@ -89,7 +89,7 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
                   />
                   <PrimaryBody
                      text="Candidate"
-                     className="text-[10px]! lg:text-[10px]! 2xl:text-[10px]! text-zinc-500! mt-0.5"
+                     className="text-[10px]! lg:text-[10px]! 2xl:text-[10px]! text-zinc-400! mt-0.5"
                   />
                </div>
             </div>
@@ -110,7 +110,7 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
                   />
                   <PrimaryBody
                      text="Interviewer"
-                     className="text-[10px]! lg:text-[10px]! 2xl:text-[10px]! text-violet-400! mt-0.5"
+                     className="text-[10px]! lg:text-[10px]! 2xl:text-[10px]! text-zinc-400! mt-0.5"
                   />
                </div>
             </div>
@@ -120,7 +120,7 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Badge
                variant="outline"
-               className="gap-1.5 font-mono tabular-nums border-white/10 bg-zinc-800/60 text-zinc-200 px-3 py-1.5 text-xs shadow-sm"
+               className="gap-1.5 font-mono tabular-nums bg-violet-500/10 border-violet-500/25 text-violet-300 text-xs p-2.5"
             >
                <Clock className="size-3.5 text-violet-400" />
                {formatDuration(elapsedSeconds)}
