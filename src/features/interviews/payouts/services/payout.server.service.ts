@@ -8,7 +8,7 @@ import {
    RequestPayoutSchemaTypes,
    requestPayoutSchema
 } from "../schemas/payout.schemas";
-import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
+import { interviewerData } from "@/data/interviews/interviews.data";
 import { getAuthenticatedInterviewer } from "@/features/interviews/shared/services/shared.server.service";
 
 // Get Payouts & Credit Transactions
@@ -29,8 +29,8 @@ export const getPayoutsAndTransactions = async (): Promise<PayoutsData> => {
 
       return {
          creditBalance: interviewer.creditBalance,
-         ratePerCredit: interviewerDashboardData.payout.ratePerCredit,
-         platformFeePercent: interviewerDashboardData.payout.platformFeePercent,
+         ratePerCredit: interviewerData.payout.ratePerCredit,
+         platformFeePercent: interviewerData.payout.platformFeePercent,
          payouts: payouts.map((p) => ({
             id: p.id,
             credits: p.credits,
@@ -73,8 +73,8 @@ export const requestPayout = async (
          );
       }
 
-      const grossAmount = credits * interviewerDashboardData.payout.ratePerCredit;
-      const platformFee = grossAmount * (interviewerDashboardData.payout.platformFeePercent / 100);
+      const grossAmount = credits * interviewerData.payout.ratePerCredit;
+      const platformFee = grossAmount * (interviewerData.payout.platformFeePercent / 100);
       const netAmount = grossAmount - platformFee;
 
       const payout = await db.$transaction(async (tx) => {

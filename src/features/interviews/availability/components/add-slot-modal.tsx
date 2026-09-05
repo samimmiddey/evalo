@@ -5,7 +5,7 @@ import ModalWrapper from "@/components/wrappers/modal-wrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
+import { interviewerData } from "@/data/interviews/interviews.data";
 import { addDays, addMinutes, format, parse } from "date-fns";
 import { Plus, ClockFading } from "lucide-react";
 import { useMutation } from "@/hooks/use-mutation";
@@ -54,7 +54,7 @@ const isPresetExpired = (preset: { start: string; end: string; }, dateStr: strin
 // Calculate smart initial default date and preset
 const getSmartInitialDefaults = (todayStr: string) => {
    // Find the first preset that has not expired for today
-   const validTodayPreset = interviewerDashboardData.slotPresets.find(
+   const validTodayPreset = interviewerData.slotPresets.find(
       (preset) => !isPresetExpired(preset, todayStr, todayStr)
    );
 
@@ -68,7 +68,7 @@ const getSmartInitialDefaults = (todayStr: string) => {
 
    // If all presets today have passed, default to tomorrow with the first preset (Morning)
    const tomorrowStr = format(addDays(new Date(), 1), "yyyy-MM-dd");
-   const firstPreset = interviewerDashboardData.slotPresets[0];
+   const firstPreset = interviewerData.slotPresets[0];
 
    return {
       date: tomorrowStr,
@@ -217,7 +217,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
             <div className="space-y-2">
                <Label className="text-xs font-semibold uppercase text-zinc-400">Quick Presets</Label>
                <div className="flex flex-wrap gap-2">
-                  {interviewerDashboardData.slotPresets.map((preset, idx) => {
+                  {interviewerData.slotPresets.map((preset, idx) => {
                      const isExpired = isPresetExpired(preset, selectedDate, todayStr);
                      const isActive = !isExpired && preset.start === startTime && preset.end === endTime;
 
@@ -269,7 +269,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                                  todayStr
                               );
                               if (isCurrentExpired) {
-                                 const firstValid = interviewerDashboardData.slotPresets.find(
+                                 const firstValid = interviewerData.slotPresets.find(
                                     (p) => !isPresetExpired(p, newDate, todayStr)
                                  );
                                  if (firstValid) {

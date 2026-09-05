@@ -14,7 +14,7 @@ import {
    SelectValue
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
+import { interviewerData } from "@/data/interviews/interviews.data";
 import { useMutation } from "@/hooks/use-mutation";
 import { requestPayout } from "../services/payout.client.service";
 import {
@@ -57,8 +57,8 @@ export const RequestPayoutModal = ({
    const creditsWatch = watch("credits") || 0;
    const paymentMethodWatch = watch("paymentMethod");
 
-   const grossAmount = creditsWatch * interviewerDashboardData.payout.ratePerCredit;
-   const platformFee = grossAmount * (interviewerDashboardData.payout.platformFeePercent / 100);
+   const grossAmount = creditsWatch * interviewerData.payout.ratePerCredit;
+   const platformFee = grossAmount * (interviewerData.payout.platformFeePercent / 100);
    const netAmount = Math.max(0, grossAmount - platformFee);
 
    const { isPending, mutate } = useMutation(requestPayout);
@@ -99,10 +99,10 @@ export const RequestPayoutModal = ({
                </div>
                <div className="flex items-center justify-between text-xs text-zinc-400">
                   <span>Conversion Rate:</span>
-                  <span>${interviewerDashboardData.payout.ratePerCredit} / credit</span>
+                  <span>${interviewerData.payout.ratePerCredit} / credit</span>
                </div>
                <div className="flex items-center justify-between text-xs text-zinc-400">
-                  <span>Platform Fee ({interviewerDashboardData.payout.platformFeePercent}%):</span>
+                  <span>Platform Fee ({interviewerData.payout.platformFeePercent}%):</span>
                   <span className="text-rose-400">-${platformFee.toFixed(2)}</span>
                </div>
                <div className="pt-2 border-t border-violet-500/20 flex items-center justify-between text-sm font-bold text-zinc-100">
@@ -155,7 +155,7 @@ export const RequestPayoutModal = ({
                         <SelectValue placeholder="Select payment method" />
                      </SelectTrigger>
                      <SelectContent className="bg-zinc-900 border-white/10 text-zinc-200">
-                        {interviewerDashboardData.payout.paymentMethods.map((m) => (
+                        {interviewerData.payout.paymentMethods.map((m) => (
                            <SelectItem key={m.value} value={m.value}>
                               {m.label}
                            </SelectItem>

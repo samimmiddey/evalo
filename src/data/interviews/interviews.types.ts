@@ -60,3 +60,79 @@ export interface InterviewerDetails {
    whatToExpect: WhatToExpect;
    interviewers: DetailedInterviewer[];
 }
+
+export interface SectionHeader {
+   title: string;
+   description: string;
+}
+
+export interface PaymentMethodOption {
+   value: string;
+   label: string;
+}
+
+export interface PayoutConfig {
+   ratePerCredit: number;
+   platformFeePercent: number;
+   minCredits: number;
+   paymentMethods: PaymentMethodOption[];
+}
+
+export interface SlotPreset {
+   label: string;
+   start: string;
+   end: string;
+}
+
+export interface InterviewerData {
+   sessions: SectionHeader;
+   availability: SectionHeader;
+   payouts: SectionHeader;
+   profile: SectionHeader;
+   payout: PayoutConfig;
+   slotPresets: SlotPreset[];
+}
+
+export interface DashboardHeader {
+   title: string;
+   description: string;
+}
+
+export interface IntervieweeStatsLabels {
+   total: string;
+   scheduled: string;
+   completed: string;
+   successRate: string;
+}
+
+export interface InterviewerStatsLabels {
+   total: string;
+   scheduled: string;
+   balance: string;
+   rating: string;
+}
+
+export interface DashboardQuickAction {
+   title: string;
+   description: string;
+   href: string;
+   icon: LucideIcon;
+   accent: string;
+}
+
+export interface IntervieweeDashboardConfig {
+   header: DashboardHeader;
+   statsLabels: IntervieweeStatsLabels;
+   quickActions: DashboardQuickAction[];
+}
+
+export interface InterviewerDashboardConfig {
+   header: DashboardHeader;
+   statsLabels: InterviewerStatsLabels;
+   quickActions: DashboardQuickAction[];
+}
+
+export interface DashboardData {
+   interviewee: IntervieweeDashboardConfig;
+   interviewer: InterviewerDashboardConfig;
+}

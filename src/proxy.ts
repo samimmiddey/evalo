@@ -22,7 +22,7 @@ const isAuthRoute = createRouteMatcher([
 
 const roleRouteMap = [
    { matcher: createRouteMatcher(['/dashboard/interviewers(.*)', '/dashboard/appointments(.*)']), allowedRole: 'INTERVIEWEE' },
-   { matcher: createRouteMatcher(['/dashboard/sessions(.*)', '/dashboard/availability(.*)', '/dashboard/payouts(.*)', '/dashboard/settings(.*)']), allowedRole: 'INTERVIEWER' },
+   { matcher: createRouteMatcher(['/dashboard/sessions(.*)', '/dashboard/availability(.*)', '/dashboard/payouts(.*)', '/dashboard/profile(.*)']), allowedRole: 'INTERVIEWER' },
 ] as const;
 
 const isOnboardingRoute = createRouteMatcher(['/onboarding(.*)']);

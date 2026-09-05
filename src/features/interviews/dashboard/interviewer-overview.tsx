@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { DashboardStats, DashboardStatItem } from "./components/dashboard-stats";
 import { DashboardSessionCard } from "./components/dashboard-session-card";
 import { DashboardQuickActions } from "./components/dashboard-quick-actions";
-import { dashboardData } from "@/data/dashboard/dashboard.data";
+import { dashboardData } from "@/data/interviews/interviews.data";
 import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview-skeleton";
 import { Calendar, Clock, Coins, Star, Video } from "lucide-react";
 import Link from "next/link";
