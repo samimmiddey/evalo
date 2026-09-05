@@ -9,9 +9,8 @@ import useMediaQuery from "@/hooks/use-media-query";
 import { getDashboardSessions } from "../../services/dashboard.client.service";
 import {
    DashboardSession,
-   SessionFeedback,
-   SessionsFilterParams
-} from "../../types/dashboard.types";
+   SessionFeedback
+} from "../../../shared/types/shared.types";
 import SessionCard from "./session-card";
 import { FeedbackModal } from "@/features/interviews/shared/modal/feedback-modal";
 import { DashboardContentSkeleton } from "../skeletons/dashboard-content-skeleton";
@@ -29,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Grid2x2, Rows3 } from "lucide-react";
+import { SessionsFilterParams } from "../../types/dashboard.types";
 
 const statusFilterOptions: { label: string; value: SessionsFilterParams["status"]; }[] = [
    { label: "All Sessions", value: "ALL" },

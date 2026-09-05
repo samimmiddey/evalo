@@ -1,57 +1,8 @@
-import { AvailabilityStatus, BookingStatus, FeedbackRating, PayoutStatus, StreamStatus, TransactionType } from "@/generated/prisma/enums";
+import { AvailabilityStatus, BookingStatus, PayoutStatus, TransactionType } from "@/generated/prisma/enums";
 import { BaseResponse } from "@/types/api.types";
+import { DashboardSession } from "../../shared/types/shared.types";
 
 export type DashboardTabType = 'sessions' | 'availability' | 'payouts' | 'settings';
-
-export interface DashboardStats {
-   totalSessions: number;
-   completedSessions: number;
-   scheduledSessions: number;
-   cancelledSessions: number;
-   totalEarnings: number;
-   creditBalance: number;
-   creditRate: number;
-   averageRating: number | null;
-   totalRatings: number;
-   nextSession: DashboardSession | null;
-}
-
-export interface CandidateInfo {
-   id: string;
-   firstName: string | null;
-   lastName: string | null;
-   imageUrl: string | null;
-   email: string;
-}
-
-export interface SessionFeedback {
-   id: string;
-   summary: string;
-   technical: string;
-   communication: string;
-   problemSolving: string;
-   recommendation: string;
-   strengths: string[];
-   improvements: string[];
-   overallRating: FeedbackRating;
-   sessionRating: number | null;
-   sessionComment: string | null;
-   createdAt: string;
-}
-
-export interface DashboardSession {
-   id: string;
-   startTime: string;
-   endTime: string;
-   status: BookingStatus;
-   streamStatus: StreamStatus;
-   creditsCharged: number;
-   streamCallId: string | null;
-   recordingUrl: string | null;
-   candidate: CandidateInfo;
-   feedback: SessionFeedback | null;
-   createdAt: string;
-}
 
 export interface SessionsFilterParams {
    status?: BookingStatus | 'ALL';
@@ -121,7 +72,6 @@ export interface InterviewerProfileData {
    bio: string | null;
 }
 
-export type DashboardStatsResponse = BaseResponse<DashboardStats>;
 export type DashboardSessionsResponse = BaseResponse<DashboardSessionsData>;
 export type DashboardAvailabilityResponse = BaseResponse<AvailabilitySlot[]>;
 export type DashboardPayoutsResponse = BaseResponse<DashboardPayoutsData>;

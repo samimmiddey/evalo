@@ -6,7 +6,6 @@ import {
    DASHBOARD_AVAILABILITY,
    GET_DASHBOARD_PAYOUTS,
    GET_DASHBOARD_SESSIONS,
-   GET_DASHBOARD_STATS,
    REQUEST_DASHBOARD_PAYOUT,
    UPDATE_DASHBOARD_PROFILE
 } from "@/config/query-urls";
@@ -18,8 +17,6 @@ import {
    DashboardProfileResponse,
    DashboardSessionsData,
    DashboardSessionsResponse,
-   DashboardStats,
-   DashboardStatsResponse,
    InterviewerProfileData,
    SessionsFilterParams
 } from "../types/dashboard.types";
@@ -29,24 +26,6 @@ import {
    UpdateInterviewerProfileSchemaTypes
 } from "../schemas/dashboard.schemas";
 import { BaseResponse } from "@/types/api.types";
-
-// Get Dashboard Stats
-export const getDashboardStats = async (): Promise<DashboardStats> => {
-   try {
-      const res = await api.get(GET_DASHBOARD_STATS).json<DashboardStatsResponse>();
-
-      if (!res.success) {
-         throw new Error(res.error);
-      }
-
-      return res.data;
-   } catch (error: unknown) {
-      return apiError({
-         error,
-         fallbackMessage: "Failed to load dashboard statistics"
-      });
-   }
-};
 
 // Get Dashboard Sessions
 export const getDashboardSessions = async (

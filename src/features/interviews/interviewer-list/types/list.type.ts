@@ -1,5 +1,5 @@
 import { BaseResponse } from "@/types/api.types";
-import { Interviewer } from "../../shared/types/interviewers.shared.types";
+import { Interviewer } from "../../shared/types/shared.types";
 
 export interface FilterParams {
    search?: string;
