@@ -1,6 +1,6 @@
 "use client";
 
-import { DB_USER } from "@/config/query-urls";
+import { DB_USER } from "@/constants/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
 import { UserClient, UserResponse } from "@/types/user.types";

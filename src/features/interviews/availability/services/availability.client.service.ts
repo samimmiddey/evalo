@@ -1,4 +1,4 @@
-import { DASHBOARD_AVAILABILITY } from "@/config/query-urls";
+import { INTERVIEWER_AVAILABILITY } from "@/constants/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
 import { BaseResponse } from "@/types/api.types";
@@ -8,7 +8,7 @@ import { CreateAvailabilitySlotsSchemaTypes } from "../schemas/availability.sche
 // Get Availability Slots
 export const getAvailabilitySlots = async (): Promise<AvailabilitySlot[]> => {
    try {
-      const res = await api.get(DASHBOARD_AVAILABILITY).json<DashboardAvailabilityResponse>();
+      const res = await api.get(INTERVIEWER_AVAILABILITY).json<DashboardAvailabilityResponse>();
 
       if (!res.success) {
          throw new Error(res.error);
@@ -29,7 +29,7 @@ export const createAvailabilitySlots = async (
 ): Promise<{ count: number; skipped: number; }> => {
    try {
       const res = await api
-         .post(DASHBOARD_AVAILABILITY, { json: data })
+         .post(INTERVIEWER_AVAILABILITY, { json: data })
          .json<BaseResponse<{ count: number; skipped: number; }>>();
 
       if (!res.success) {
@@ -49,7 +49,7 @@ export const createAvailabilitySlots = async (
 export const deleteAvailabilitySlot = async (slotId: string): Promise<{ success: boolean; }> => {
    try {
       const res = await api
-         .delete(`${DASHBOARD_AVAILABILITY}?id=${encodeURIComponent(slotId)}`)
+         .delete(`${INTERVIEWER_AVAILABILITY}?id=${encodeURIComponent(slotId)}`)
          .json<BaseResponse<{ success: boolean; }>>();
 
       if (!res.success) {

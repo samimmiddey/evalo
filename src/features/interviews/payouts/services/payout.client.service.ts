@@ -5,7 +5,7 @@ import { apiError } from "@/lib/api-error";
 import {
    GET_PAYOUTS,
    REQUEST_PAYOUT
-} from "@/config/query-urls";
+} from "@/constants/query-urls";
 import {
    PayoutsData,
    PayoutsResponse

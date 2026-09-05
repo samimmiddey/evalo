@@ -1,6 +1,6 @@
 "use client";
 
-import { GET_INTERVIEWERS } from "@/config/query-urls";
+import { GET_INTERVIEWERS } from "@/constants/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
 import { GetInterviewersParams, GetInterviewersResponse, InterviewersResponse } from "../types/list.type";

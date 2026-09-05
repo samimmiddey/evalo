@@ -2,7 +2,7 @@
 
 import { api } from "@/lib/api";
 import { BookSessionResponse, BookSession, BookSessionParams } from "../types/details.types";
-import { BOOK_SESSION } from "@/config/query-urls";
+import { BOOK_SESSION } from "@/constants/query-urls";
 import { apiError } from "@/lib/api-error";
 
 export const handleBookSession = async ({ interviewerId, startTime, endTime }: BookSessionParams): Promise<BookSession> => {

@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import { UpdateInterviewerProfileSchemaTypes } from "../schema/profile.schema";
 import { InterviewerProfileData, ProfileResponse } from "../types/profile.types";
-import { UPDATE_PROFILE } from "@/config/query-urls";
+import { UPDATE_PROFILE } from "@/constants/query-urls";
 import { apiError } from "@/lib/api-error";
 
 // Update Profile & Rates

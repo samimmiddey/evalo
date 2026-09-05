@@ -3,7 +3,7 @@
 import { apiError } from "@/lib/api-error";
 import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams, AppointmentsStatsClientResponse, AppointmentsStatsData, CancelBookingClientResponse, RetryBookSessionClientResponse, RetryBookSession, CancelBookingData } from "../types/appointments.types";
 import { api } from "@/lib/api";
-import { CANCEL_BOOKING, GET_APPOINTMENT_STATS, GET_APPOINTMENTS, RETRY_BOOKING } from "@/config/query-urls";
+import { CANCEL_BOOKING, GET_APPOINTMENT_STATS, GET_APPOINTMENTS, RETRY_BOOKING } from "@/constants/query-urls";
 
 // Get appointments
 export const getAppointments = async (params: GetAppointmentsParams): Promise<AppointmentsData> => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { ONBOARDING_USER } from "@/config/query-urls";
+import { ONBOARDING_USER } from "@/constants/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
 import { Onboarding, OnboardingResponse } from "../types/onboarding.types";

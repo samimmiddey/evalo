@@ -1,4 +1,4 @@
-import { GET_DASHBOARD_SESSIONS } from "@/config/query-urls";
+import { GET_SESSIONS } from "@/constants/query-urls";
 import { SessionsData, DashboardSessionsResponse, SessionsFilterParams } from "../types/session.types";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
@@ -24,7 +24,7 @@ export const getDashboardSessions = async (
       }
 
       const queryString = searchParams.toString();
-      const url = queryString ? `${GET_DASHBOARD_SESSIONS}?${queryString}` : GET_DASHBOARD_SESSIONS;
+      const url = queryString ? `${GET_SESSIONS}?${queryString}` : GET_SESSIONS;
 
       const res = await api.get(url).json<DashboardSessionsResponse>();
 

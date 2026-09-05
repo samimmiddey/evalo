@@ -1,7 +1,7 @@
 import { apiError } from "@/lib/api-error";
 import { DashboardStats, DashboardStatsResponse } from "../types/dashboard.types";
 import { api } from "@/lib/api";
-import { GET_DASHBOARD_STATS } from "@/config/query-urls";
+import { GET_DASHBOARD_STATS } from "@/constants/query-urls";
 
 // Get Dashboard Stats
 export const getDashboardStats = async (): Promise<DashboardStats> => {

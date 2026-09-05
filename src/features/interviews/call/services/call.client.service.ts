@@ -1,6 +1,6 @@
 "use client";
 
-import { COMPLETE_CALL, GENERATE_QUESTIONS } from "@/config/query-urls";
+import { COMPLETE_CALL, GENERATE_QUESTIONS } from "@/constants/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
 import { CompleteCallData, CompleteCallParams, CompleteCallResponse, GeneratedQuestion, GenerateQuestionsResponse } from "../types/call.types";
