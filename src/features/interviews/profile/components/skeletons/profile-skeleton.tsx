@@ -1,4 +1,4 @@
-export const ProfileSettingsSkeleton = () => {
+export const ProfileSkeleton = () => {
    return (
       <div className="space-y-6">
          <div className="bg-zinc-900/40 border border-white/5 rounded-2xl p-6 sm:p-8 space-y-6">
@@ -53,4 +53,4 @@ export const ProfileSettingsSkeleton = () => {
    );
 };
 
-export default ProfileSettingsSkeleton;
+export default ProfileSkeleton;

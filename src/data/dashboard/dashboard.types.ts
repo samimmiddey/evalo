@@ -25,7 +25,7 @@ export interface InterviewerDashboardData {
    sessions: DashboardSectionHeader;
    availability: DashboardSectionHeader;
    payouts: DashboardSectionHeader;
-   settings: DashboardSectionHeader;
+   profile: DashboardSectionHeader;
    payout: DashboardPayoutConfig;
    slotPresets: SlotPreset[];
 }

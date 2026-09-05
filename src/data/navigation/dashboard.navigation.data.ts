@@ -50,7 +50,7 @@ export const interviewerNavigationData: NavigationItem[] = [
    },
    {
       name: 'Profile Settings',
-      href: '/dashboard/settings',
+      href: '/dashboard/profile',
       icon: SlidersHorizontal
    }
 ];

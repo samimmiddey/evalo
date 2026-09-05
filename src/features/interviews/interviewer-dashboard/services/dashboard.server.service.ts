@@ -3,13 +3,10 @@ import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import {
    DashboardPayoutsData,
-   InterviewerProfileData,
 } from "../types/dashboard.types";
 import {
    RequestPayoutSchemaTypes,
-   UpdateInterviewerProfileSchemaTypes,
-   requestPayoutSchema,
-   updateInterviewerProfileSchema
+   requestPayoutSchema
 } from "../schemas/dashboard.schemas";
 import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
 import { getAuthenticatedInterviewer } from "@/features/interviews/shared/services/shared.server.service";
@@ -121,41 +118,6 @@ export const requestPayout = async (
       return serverError({
          error,
          fallbackMessage: "Failed to submit payout request"
-      });
-   }
-};
-
-// Update Interviewer Profile & Rates
-export const updateInterviewerProfile = async (
-   data: UpdateInterviewerProfileSchemaTypes
-): Promise<InterviewerProfileData> => {
-   try {
-      const interviewer = await getAuthenticatedInterviewer();
-      const parsed = updateInterviewerProfileSchema.parse(data);
-
-      const updated = await db.user.update({
-         where: { id: interviewer.id },
-         data: {
-            designation: parsed.designation,
-            company: parsed.company,
-            experience: parsed.experience,
-            expertise: parsed.expertise,
-            bio: parsed.bio
-         },
-         select: {
-            designation: true,
-            company: true,
-            experience: true,
-            expertise: true,
-            bio: true
-         }
-      });
-
-      return updated;
-   } catch (error: unknown) {
-      return serverError({
-         error,
-         fallbackMessage: "Failed to update profile"
       });
    }
 };

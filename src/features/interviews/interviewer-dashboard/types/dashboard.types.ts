@@ -32,13 +32,4 @@ export interface DashboardPayoutsData {
    transactions: CreditTransactionRecord[];
 }
 
-export interface InterviewerProfileData {
-   designation: string | null;
-   company: string | null;
-   experience: number | null;
-   expertise: string[];
-   bio: string | null;
-}
-
 export type DashboardPayoutsResponse = BaseResponse<DashboardPayoutsData>;
-export type DashboardProfileResponse = BaseResponse<InterviewerProfileData>;

@@ -86,7 +86,7 @@ export const interviewerDashboardData: InterviewerDashboardData = {
       title: "Earnings & Payouts",
       description: "Track your earned credit balance, view transaction history, and submit withdrawal requests."
    },
-   settings: {
+   profile: {
       title: "Profile Settings",
       description: "Update your bio, current company, designation, years of experience, and interview domains."
    },

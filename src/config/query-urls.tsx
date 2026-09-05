@@ -24,4 +24,4 @@ export const GET_DASHBOARD_SESSIONS = '/dashboard/sessions';
 export const DASHBOARD_AVAILABILITY = '/dashboard/availability';
 export const GET_DASHBOARD_PAYOUTS = '/dashboard/payouts';
 export const REQUEST_DASHBOARD_PAYOUT = '/dashboard/payouts/request';
-export const UPDATE_DASHBOARD_PROFILE = '/dashboard/profile';
+export const UPDATE_PROFILE = '/dashboard/profile';

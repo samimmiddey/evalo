@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
    UpdateInterviewerProfileSchemaTypes,
    updateInterviewerProfileSchema
-} from "../../schemas/dashboard.schemas";
-import { updateInterviewerProfile } from "../../services/dashboard.client.service";
+} from "../schema/profile.schema";
+import { updateInterviewerProfile } from "../services/profile.client.service";
 import { useMutation } from "@/hooks/use-mutation";
 import { useDbUser } from "@/hooks/use-db-user";
 import { Button } from "@/components/ui/button";
@@ -19,16 +19,16 @@ import { DOMAINS } from "@/data/onboarding/onboarding.data";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { Briefcase, Building2, Flame, Save, Settings, User, UserPen } from "lucide-react";
-import { ProfileSettingsSkeleton } from "../skeletons/profile-settings-skeleton";
+import { ProfileSkeleton } from "./skeletons/profile-skeleton";
 import CardLayout from "@/components/layouts/card-layout";
 import SecondaryTitle from "@/components/common/secondary-title";
 import PrimaryBody from "@/components/common/primary-body";
 
-interface ProfileSettingsFormProps {
+interface ProfileFormProps {
    onProfileUpdated?: () => void;
 }
 
-export const ProfileSettingsForm = ({ onProfileUpdated }: ProfileSettingsFormProps) => {
+export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
    const { user, isLoading: isUserLoading, refetch } = useDbUser();
 
    const {
@@ -74,7 +74,7 @@ export const ProfileSettingsForm = ({ onProfileUpdated }: ProfileSettingsFormPro
    };
 
    if (isUserLoading) {
-      return <ProfileSettingsSkeleton />;
+      return <ProfileSkeleton />;
    }
 
    const expertiseWatch = watch("expertise") || [];
@@ -231,4 +231,4 @@ export const ProfileSettingsForm = ({ onProfileUpdated }: ProfileSettingsFormPro
    );
 };
 
-export default ProfileSettingsForm;
+export default ProfileForm;
