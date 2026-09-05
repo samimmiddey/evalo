@@ -43,7 +43,7 @@ export const DashboardSessionCard = ({
    emptyDescription,
 }: DashboardSessionCardProps) => {
    return (
-      <CardLayout className="p-6! space-y-5 relative overflow-hidden">
+      <CardLayout className="p-5.75! space-y-5 relative overflow-hidden">
          {/* Card Header */}
          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -55,7 +55,7 @@ export const DashboardSessionCard = ({
             {session && (
                <Badge
                   variant="outline"
-                  className="bg-violet-500/10 border-violet-500/30 text-violet-300 text-xs px-2.5 py-0.5"
+                  className="bg-blue-500/10 border-blue-500/25 text-blue-300 text-xs p-2.5"
                >
                   {isPast(new Date(session.startTime))
                      ? "In progress"
@@ -99,8 +99,8 @@ export const DashboardSessionCard = ({
 
                   {/* Scheduled Date/Time */}
                   <div className="flex items-center gap-3 text-xs text-zinc-300 bg-zinc-900/60 px-3 py-2 rounded-lg border border-white/5">
-                     <div className="flex items-center gap-1.5 text-violet-300 font-medium">
-                        <Calendar className="size-3.5 text-violet-400" />
+                     <div className="flex items-center gap-1.5 text-zinc-100 font-medium">
+                        <Calendar className="size-3.5" />
                         <span>{format(new Date(session.startTime), "EEE, MMM d")}</span>
                      </div>
                      <div className="h-3 w-px bg-white/10" />

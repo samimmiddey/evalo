@@ -21,17 +21,17 @@ export const DashboardQuickActions = ({ actions }: DashboardQuickActionsProps) =
    return (
       <div className="space-y-6">
          {/* Quick Action Navigation Links */}
-         <div className="grid grid-cols-1 gap-3">
+         <div className="grid grid-cols-1 gap-4 2xl:gap-5">
             {actions.map((action) => {
                const Icon = action.icon;
                return (
                   <Link
                      key={action.title}
                      href={action.href}
-                     className="group block p-4 rounded-xl bg-zinc-900/40 border border-white/5 hover:border-white/15 transition-all duration-200"
+                     className="group block p-5 rounded-xl bg-zinc-900/40 border border-white/5 hover:border-white/15 transition-all duration-200"
                   >
                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex items-start gap-3">
+                        <div className="flex items-start gap-3.5">
                            <div className="p-2 rounded-lg bg-white/5 text-violet-400 group-hover:bg-violet-500/10 transition-colors shrink-0">
                               <Icon className="size-4" />
                            </div>

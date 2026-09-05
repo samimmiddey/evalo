@@ -75,7 +75,7 @@ export const IntervieweeOverview = () => {
    } : null;
 
    return (
-      <div className="container s-margin space-y-7 2xl:space-y-8">
+      <div className="container s-margin space-y-6 2xl:space-y-7">
          {/* Hero Header */}
          <PageHeaderLayout>
             <HeaderLayout className="gap-4! items-start text-start mb-0! mx-0!">
