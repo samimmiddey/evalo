@@ -19,11 +19,11 @@ export const GENERATE_QUESTIONS = '/call/generate-questions';
 export const COMPLETE_CALL = '/call/complete';
 
 // Dashboard
-export const GET_DASHBOARD_STATS = '/dashboard/stats';
+export const GET_DASHBOARD_STATS = '/dashboard';
 
 // Interviewer
-export const GET_SESSIONS = '/dashboard/sessions';
-export const INTERVIEWER_AVAILABILITY = '/dashboard/availability';
-export const GET_PAYOUTS = '/dashboard/payouts';
-export const REQUEST_PAYOUT = '/dashboard/payouts/request';
-export const UPDATE_PROFILE = '/dashboard/profile';
+export const GET_SESSIONS = '/sessions';
+export const INTERVIEWER_AVAILABILITY = '/availability';
+export const GET_PAYOUTS = '/payouts';
+export const REQUEST_PAYOUT = '/payouts/request';
+export const UPDATE_PROFILE = '/profile';
