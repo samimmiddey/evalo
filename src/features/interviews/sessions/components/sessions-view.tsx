@@ -6,14 +6,14 @@ import { usePaginationTrigger } from "@/hooks/use-pagination-trigger";
 import useDebounce from "@/hooks/use-debounce";
 import useView from "@/hooks/use-view";
 import useMediaQuery from "@/hooks/use-media-query";
-import { getDashboardSessions } from "../../services/dashboard.client.service";
+import { getDashboardSessions } from "../services/session.client.service";
 import {
    DashboardSession,
    SessionFeedback
-} from "../../../shared/types/shared.types";
+} from "../../shared/types/shared.types";
 import SessionCard from "./session-card";
 import { FeedbackModal } from "@/features/interviews/shared/modal/feedback-modal";
-import { DashboardContentSkeleton } from "../skeletons/dashboard-content-skeleton";
+import { SessionSkeleton } from "./skeletons/session-skeleton";
 import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 import SearchBar from "@/components/common/search-bar";
 import CustomTooltip from "@/components/common/custom-tooltip";
@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Grid2x2, Rows3 } from "lucide-react";
-import { SessionsFilterParams } from "../../types/dashboard.types";
+import { SessionsFilterParams } from "../types/session.types";
 
 const statusFilterOptions: { label: string; value: SessionsFilterParams["status"]; }[] = [
    { label: "All Sessions", value: "ALL" },
@@ -133,7 +133,7 @@ export const SessionsView = () => {
 
          {/* Sessions Content */}
          {isLoading ? (
-            <DashboardContentSkeleton view={view} />
+            <SessionSkeleton view={view} />
          ) : sessions && sessions.length > 0 ? (
             <>
                <div className={view === "grid" ? "grid grid-cols-1 md:grid-cols-2 gap-5 2xl:gap-6" : "grid grid-cols-1 gap-5 2xl:gap-6"}>
@@ -152,7 +152,7 @@ export const SessionsView = () => {
                {/* Loading more state */}
                {isFetchingNextPage && (
                   <div className="mt-5 2xl:mt-6">
-                     <DashboardContentSkeleton view={view} count={2} />
+                     <SessionSkeleton view={view} count={2} />
                   </div>
                )}
 

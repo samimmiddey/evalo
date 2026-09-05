@@ -5,7 +5,7 @@ import PageHeaderLayout from "@/components/layouts/page-header-layout";
 import PrimaryTitle from "@/components/common/primary-title";
 import PrimaryBody from "@/components/common/primary-body";
 import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
-import SessionsView from "./components/sessions/sessions-view";
+import SessionsView from "./components/sessions-view";
 
 const Sessions = () => {
    return (

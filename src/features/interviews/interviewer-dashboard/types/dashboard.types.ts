@@ -1,25 +1,7 @@
-import { BookingStatus, PayoutStatus, TransactionType } from "@/generated/prisma/enums";
+import { PayoutStatus, TransactionType } from "@/generated/prisma/enums";
 import { BaseResponse } from "@/types/api.types";
-import { DashboardSession } from "../../shared/types/shared.types";
 
 export type DashboardTabType = 'sessions' | 'availability' | 'payouts' | 'settings';
-
-export interface SessionsFilterParams {
-   status?: BookingStatus | 'ALL';
-   search?: string;
-   page?: number;
-   pageSize?: number;
-}
-
-export interface DashboardSessionsData {
-   data: DashboardSession[];
-   page: number;
-   pageSize: number;
-   totalCount: number;
-   totalPages: number;
-   hasNextPage: boolean;
-   hasPrevPage: boolean;
-}
 
 export interface PayoutRecord {
    id: string;
@@ -58,6 +40,5 @@ export interface InterviewerProfileData {
    bio: string | null;
 }
 
-export type DashboardSessionsResponse = BaseResponse<DashboardSessionsData>;
 export type DashboardPayoutsResponse = BaseResponse<DashboardPayoutsData>;
 export type DashboardProfileResponse = BaseResponse<InterviewerProfileData>;

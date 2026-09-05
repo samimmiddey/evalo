@@ -1,4 +1,4 @@
-import Sessions from "@/features/interviews/interviewer-dashboard/sessions";
+import Sessions from "@/features/interviews/sessions/sessions";
 
 const SessionsPage = () => {
    return <Sessions />;

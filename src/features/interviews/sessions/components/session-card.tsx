@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import SecondaryTitle from "@/components/common/secondary-title";
 import PrimaryBody from "@/components/common/primary-body";
-import { DashboardSession, SessionFeedback } from "../../../shared/types/shared.types";
+import { DashboardSession, SessionFeedback } from "../../shared/types/shared.types";
 import { differenceInMinutes, format } from "date-fns";
 import {
    Calendar,
