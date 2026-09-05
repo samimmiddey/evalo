@@ -19,7 +19,7 @@ import {
    requestPayoutSchema,
    updateInterviewerProfileSchema
 } from "../schemas/dashboard.schemas";
-import { interviewerDashboardData } from "@/data/interviewer-dashboard/interviewer-dashboard.data";
+import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
 import { Prisma } from "@/generated/prisma/client";
 
 // Helper to authenticate and verify interviewer role

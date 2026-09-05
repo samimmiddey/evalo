@@ -11,7 +11,7 @@ import {
 import Logo from "@/components/common/logo";
 import { useDashboardMenu } from "@/hooks/use-dashboard-menu";
 import MenuItemSkeleton from "./menuitem-skeleton";
-import CreditButton from "../common-navigation/components/credit-button";
+import CreditButton from "../../common/credit-button";
 import { useDbUser } from "@/hooks/use-db-user";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";

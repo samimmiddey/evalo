@@ -34,10 +34,7 @@ const Appointments = () => {
       <div className="container s-margin">
 
          {/* Page Header */}
-         <AppointmentsHeader
-            data={data}
-            isLoading={isLoading}
-         />
+         <AppointmentsHeader />
 
          {/* Filter and Navigation Bar */}
          <FilterBar

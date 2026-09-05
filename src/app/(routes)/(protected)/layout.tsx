@@ -7,9 +7,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode; }) => {
    return (
       <Suspense
          fallback={
-            <div className='s-padding-t'>
-               <ScreenLoader text="Loading..." />
-            </div>
+            <ScreenLoader text="Loading..." className='min-h-screen' />
          }
       >
          <OnboardingProtection>

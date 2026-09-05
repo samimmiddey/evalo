@@ -5,7 +5,7 @@ import ModalWrapper from "@/components/wrappers/modal-wrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { interviewerDashboardData } from "@/data/interviewer-dashboard/interviewer-dashboard.data";
+import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
 import { addDays, addMinutes, format, parse } from "date-fns";
 import { Plus, ClockFading } from "lucide-react";
 import { useMutation } from "@/hooks/use-mutation";

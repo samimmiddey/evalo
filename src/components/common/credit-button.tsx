@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Coins } from 'lucide-react';
 import { useState } from 'react';
-import UpgradeModal from './upgrade-modal';
+import UpgradeModal from '@/components/common/upgrade-modal';
 import useMediaQuery from '@/hooks/use-media-query';
 
 interface CreditButtonProps {
@@ -24,16 +24,20 @@ const CreditButton = ({ role, credits }: CreditButtonProps) => {
 
    return (
       <>
-         <Button
-            variant='white'
-            className='rounded-md'
-            onClick={handleButton}
-         >
-            <Coins className='icon-size' />
-            <span>
-               {credits} {!lgWidth && (role === 'INTERVIEWER' ? 'Earned' : 'Credits')}
-            </span>
-         </Button>
+         {
+            credits ?
+               <Button
+                  variant='white'
+                  className='rounded-md'
+                  onClick={handleButton}
+               >
+                  <Coins className='icon-size' />
+                  <span>
+                     {credits} {!lgWidth && (role === 'INTERVIEWER' ? 'Earned' : 'Credits')}
+                  </span>
+               </Button> :
+               <div className='h-9 w-full rounded-md animate-pulse bg-zinc-800' />
+         }
          <UpgradeModal open={openModal} onClose={() => setOpenModal(prev => !prev)} />
       </>
    );

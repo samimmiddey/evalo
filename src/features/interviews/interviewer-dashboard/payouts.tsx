@@ -4,7 +4,7 @@ import HeaderLayout from "@/components/layouts/header-layout";
 import PageHeaderLayout from "@/components/layouts/page-header-layout";
 import PrimaryTitle from "@/components/common/primary-title";
 import PrimaryBody from "@/components/common/primary-body";
-import { interviewerDashboardData } from "@/data/interviewer-dashboard/interviewer-dashboard.data";
+import { interviewerDashboardData } from "@/data/dashboard/dashboard.data";
 import PayoutsView from "./components/payouts/payouts-view";
 
 const Payouts = () => {
