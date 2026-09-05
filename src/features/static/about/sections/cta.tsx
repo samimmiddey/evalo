@@ -6,7 +6,8 @@ import PrimaryTitle from "@/components/common/primary-title";
 import { aboutData } from "@/data/about/about.data";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
-import { ArrowRight, Search, Star, Users } from "lucide-react";
+import { Search, Star, Users } from "lucide-react";
+import Link from "next/link";
 
 const CTA = () => {
    return (
@@ -55,13 +56,16 @@ const CTA = () => {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3 2xl:gap-4">
-                     <Button size="xxl" variant="white">
-                        Start Exploring
-                        <ArrowRight className="w-4 h-4 ml-1" />
-                     </Button>
-                     <Button size="xxl" variant="outline">
-                        Browse Experts
-                     </Button>
+                     <Link href='/dashboard'>
+                        <Button size="xxl" variant="white">
+                           Start Exploring
+                        </Button>
+                     </Link>
+                     <Link href='/dashboard/interviewers'>
+                        <Button size="xxl" variant="outline">
+                           Browse Experts
+                        </Button>
+                     </Link>
                   </div>
                </div>
 

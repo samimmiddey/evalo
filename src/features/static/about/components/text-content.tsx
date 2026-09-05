@@ -5,6 +5,7 @@ import { Telescope } from "lucide-react";
 import { motion } from "motion/react";
 import HeaderText from "@/components/common/header-text";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const TextContent = () => {
    return (
@@ -51,12 +52,16 @@ const TextContent = () => {
             transition={{ duration: 0.3, delay: 0.95 }}
             className="mt-4 lg:mt-5 2xl:mt-6 flex flex-wrap items-center justify-center gap-2.5 md:gap-3 2xl:gap-4"
          >
-            <Button size="xxl" variant="white">
-               Start Exploring
-            </Button>
-            <Button size="xxl" variant="outline">
-               How It Works
-            </Button>
+            <Link href='/dashboard/interviewers'>
+               <Button size="xxl" variant="white">
+                  Start Exploring
+               </Button>
+            </Link>
+            <Link href='#HowItWorks'>
+               <Button size="xxl" variant="outline">
+                  How It Works
+               </Button>
+            </Link>
          </motion.div>
       </div>
    );

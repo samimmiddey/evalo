@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { homeData } from '@/data/home/home.data';
 import { Sparkle } from 'lucide-react';
 import { motion } from "motion/react";
+import Link from 'next/link';
 
 const TextContent = () => {
    return (
@@ -74,11 +75,15 @@ const TextContent = () => {
             }}
             className="mt-4 lg:mt-5 2xl:mt-6 flex flex-wrap items-center justify-center gap-2.5 md:gap-3 2xl:gap-4"
          >
-            <Button size="xxl" variant="white">Get Started</Button>
-            <Button size="xxl" variant="outline">Browse Interviews</Button>
+            <Link href='/dashboard'>
+               <Button size="xxl" variant="white">Get Started</Button>
+            </Link>
+            <Link href='/dashboard/interviewers'>
+               <Button size="xxl" variant="outline">Browse Experts</Button>
+            </Link>
          </motion.div>
       </div>
-   )
-}
+   );
+};
 
-export default TextContent
+export default TextContent;

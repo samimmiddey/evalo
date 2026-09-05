@@ -9,7 +9,7 @@ import { motion } from "motion/react";
 
 const Features = () => {
    return (
-      <div className="s-margin-t container">
+      <div id='HowItWorks' className="s-padding-t container">
          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16 2xl:gap-20 items-start">
 
             {/* Left: Sticky section header */}

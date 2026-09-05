@@ -6,6 +6,7 @@ import PrimaryTitle from '@/components/common/primary-title';
 import HeaderLayout from '@/components/layouts/header-layout';
 import { homeData } from '@/data/home/home.data';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const CTA = () => {
    return (
@@ -26,8 +27,12 @@ const CTA = () => {
                />
 
                <div className="flex items-center justify-center gap-3 2xl:gap-4 mt-3 2xl:mt-4">
-                  <Button size="xxl" variant="white">Get Started</Button>
-                  <Button size="xxl" variant="outline">Browse Interviews</Button>
+                  <Link href='/dashboard'>
+                     <Button size="xxl" variant="white">Get Started</Button>
+                  </Link>
+                  <Link href='/dashboard/interviewers'>
+                     <Button size="xxl" variant="outline">Browse Experts</Button>
+                  </Link>
                </div>
             </HeaderLayout>
          </div>
