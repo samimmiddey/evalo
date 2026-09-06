@@ -11,7 +11,7 @@ interface ErrorStateProps {
 export const ErrorState = ({ error, onRetry }: ErrorStateProps) => {
    return (
       <div className="flex flex-col items-center justify-center p-6 text-center my-auto gap-3">
-         <div className="flex items-center justify-center size-11 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
+         <div className="flex items-center justify-center size-11 rounded-xl bg-red-500/15 border border-red-500/30 text-red-400">
             <AlertCircle className="size-5" />
          </div>
          <div>

@@ -32,14 +32,14 @@ export const SlotItem = ({ slot, onDelete, isDeleting = false }: SlotItemProps) 
             {isBooked ? (
                <Badge
                   variant="outline"
-                  className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-xs"
+                  className="bg-emerald-500/15 text-emerald-400 border-emerald-500/30 text-xs"
                >
                   Booked
                </Badge>
             ) : (
                <Badge
                   variant="outline"
-                  className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-xs"
+                  className="bg-blue-500/15 text-blue-400 border-blue-500/30 text-xs"
                >
                   Available
                </Badge>
@@ -51,7 +51,7 @@ export const SlotItem = ({ slot, onDelete, isDeleting = false }: SlotItemProps) 
                   size="icon-sm"
                   disabled={isDeleting}
                   onClick={() => onDelete(id)}
-                  className="text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                  className="text-zinc-500 hover:text-rose-400 hover:bg-rose-500/15 transition-colors cursor-pointer"
                   aria-label="Delete slot"
                >
                   {isDeleting ? <Spinner className="size-3.5" /> : <Trash2 className="w-3.5 h-3.5" />}

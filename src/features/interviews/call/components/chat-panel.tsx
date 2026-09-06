@@ -106,7 +106,7 @@ const CustomMessageUI = () => {
                         type="button"
                         onMouseDown={(e) => e.stopPropagation()}
                         onClick={(e) => void handleToggleReaction(e, type)}
-                        className={`size-6 flex items-center justify-center rounded-full text-xs hover:scale-125 transition-transform cursor-pointer ${isSelected ? 'bg-violet-600/40 ring-1 ring-violet-500/50' : 'hover:bg-zinc-800'
+                        className={`size-6 flex items-center justify-center rounded-full text-xs hover:scale-125 transition-transform cursor-pointer ${isSelected ? 'bg-violet-500/25 ring-1 ring-violet-500/50' : 'hover:bg-zinc-800'
                            }`}
                         title={type}
                      >
@@ -200,7 +200,7 @@ const CustomMessageUI = () => {
                               onMouseDown={(e) => e.stopPropagation()}
                               onClick={(e) => void handleToggleReaction(e, type)}
                               className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[11px] font-medium border transition-colors cursor-pointer ${isSelected
-                                 ? 'bg-violet-600/20 border-violet-500/40 text-violet-300'
+                                 ? 'bg-violet-500/15 border-violet-500/30 text-violet-300'
                                  : 'bg-zinc-900/80 border-white/10 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
                                  }`}
                            >
@@ -383,7 +383,7 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }
                         type="button"
                         onClick={() => setActiveTab('chat')}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer border ${activeTab === 'chat'
-                           ? 'bg-violet-500/10 border-violet-500/25 text-violet-300 shadow-sm'
+                           ? 'bg-violet-500/15 border-violet-500/30 text-violet-300 shadow-sm'
                            : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5 border-transparent'
                            }`}
                      >
@@ -394,7 +394,7 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }
                         type="button"
                         onClick={() => setActiveTab('ai-questions')}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer border ${activeTab === 'ai-questions'
-                           ? 'bg-violet-500/10 border-violet-500/25 text-violet-300 shadow-sm'
+                           ? 'bg-violet-500/15 border-violet-500/30 text-violet-300 shadow-sm'
                            : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5 border-transparent'
                            }`}
                      >
@@ -404,7 +404,7 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }
                   </div>
                ) : (
                   <div className="flex items-center gap-2.5">
-                     <div className="flex items-center justify-center size-8 rounded-lg bg-violet-500/10 border-violet-500/25 text-violet-400 border">
+                     <div className="flex items-center justify-center size-8 rounded-lg bg-violet-500/15 border-violet-500/30 text-violet-400 border">
                         <MessageSquare className="size-4" />
                      </div>
                      <div>

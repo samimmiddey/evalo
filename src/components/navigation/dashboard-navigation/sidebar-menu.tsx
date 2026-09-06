@@ -34,7 +34,7 @@ export function DashboardSidebarMenu({ items }: DashboardSidebarMenuProps) {
             Navigation
          </SidebarGroupLabel>
          <SidebarGroupContent>
-            <SidebarMenu className="gap-1.5">
+            <SidebarMenu className="gap-2">
                {items.map((item) => {
                   const isActive = pathname === item.href;
                   const Icon = item.icon;
@@ -46,9 +46,9 @@ export function DashboardSidebarMenu({ items }: DashboardSidebarMenuProps) {
                            tooltip={item.name}
                            isActive={isActive}
                            className={cn(
-                              "h-9 px-3 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer group",
+                              "h-10 px-3 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer group",
                               isActive
-                                 ? "bg-violet-500/10! text-violet-200! font-semibold border border-violet-500/25"
+                                 ? "bg-violet-500/15! text-violet-200! font-semibold border border-violet-500/30"
                                  : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
                            )}
                         >

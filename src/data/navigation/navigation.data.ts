@@ -1,5 +1,5 @@
 import { FooterDataTypes, NavigationItem } from "./navigation.types";
-import { HomeIcon, MessageCircleIcon, StarIcon, TagIcon } from "lucide-react";
+import { HomeIcon, UserRound, StarIcon, TagIcon } from "lucide-react";
 
 export const navigationData: NavigationItem[] = [
    {
@@ -20,7 +20,7 @@ export const navigationData: NavigationItem[] = [
    {
       name: "Contact",
       href: "/contact",
-      icon: MessageCircleIcon
+      icon: UserRound
    }
 ];
 

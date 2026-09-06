@@ -14,23 +14,23 @@ const RoleCard = ({ i, role, type }: RoleCardProps) => {
    // Distinct themes for each role side to make them uniquely attractive side-by-side
    const theme = isInterviewee ? {
       gradient: "from-blue-600/20 via-transparent to-transparent",
-      glow: "bg-blue-500/10 group-hover:bg-blue-500/20",
+      glow: "bg-blue-500/15 group-hover:bg-blue-500/20",
       border: "border-blue-500/20 group-hover:border-blue-500/40",
-      badge: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+      badge: "bg-blue-500/15 text-blue-400 border-blue-500/20",
       title: "from-blue-100 to-blue-400",
-      icon: "text-blue-400 bg-blue-500/10",
+      icon: "text-blue-400 bg-blue-500/15",
       check: "text-blue-400",
-      listBg: "bg-blue-950/20 border-blue-500/10 group-hover:border-blue-500/20",
+      listBg: "bg-blue-950/20 border-blue-500/15 group-hover:border-blue-500/20",
       shadow: "hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]"
    } : {
       gradient: "from-fuchsia-600/20 via-transparent to-transparent",
-      glow: "bg-fuchsia-500/10 group-hover:bg-fuchsia-500/20",
+      glow: "bg-fuchsia-500/15 group-hover:bg-fuchsia-500/20",
       border: "border-fuchsia-500/20 group-hover:border-fuchsia-500/40",
-      badge: "bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/20",
+      badge: "bg-fuchsia-500/15 text-fuchsia-400 border-fuchsia-500/20",
       title: "from-fuchsia-100 to-fuchsia-400",
-      icon: "text-fuchsia-400 bg-fuchsia-500/10",
+      icon: "text-fuchsia-400 bg-fuchsia-500/15",
       check: "text-fuchsia-400",
-      listBg: "bg-fuchsia-950/20 border-fuchsia-500/10 group-hover:border-fuchsia-500/20",
+      listBg: "bg-fuchsia-950/20 border-fuchsia-500/15 group-hover:border-fuchsia-500/20",
       shadow: "hover:shadow-[0_0_40px_rgba(217,70,239,0.15)]"
    };
 

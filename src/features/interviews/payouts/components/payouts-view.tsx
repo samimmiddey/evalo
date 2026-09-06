@@ -73,7 +73,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
                            text={`${creditBalance}`}
                            className="text-xl! font-extrabold! text-white!"
                         />
-                        <span className="text-sm font-medium text-violet-400">{`Credit${creditBalance > 1 ? 's' : ''}`}</span>
+                        <span className="text-sm font-medium text-violet-300">{`Credit${creditBalance > 1 ? 's' : ''}`}</span>
                      </div>
                   </div>
                </div>
@@ -82,7 +82,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
                   size='lg'
                   disabled={creditBalance < 1}
                   onClick={() => setOpenRequestModal(true)}
-                  className="bg-violet-600 hover:bg-violet-500 text-white gap-2 cursor-pointer disabled:opacity-50 max-sm:w-full"
+                  className="bg-violet-600 hover:bg-violet-700 text-white gap-2 cursor-pointer disabled:opacity-50 max-sm:w-full"
                >
                   <Coins className="w-4 h-4" />
                   Request Payout
@@ -115,7 +115,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
             <TabsList className="bg-zinc-900 border border-white/10 h-10! group-data-horizontal/tabs:h-10! p-1 gap-1.5 rounded-lg w-fit">
                <TabsTrigger
                   value="payouts"
-                  className="h-full! py-2! px-3! gap-2 rounded-md data-active:bg-violet-600/20! data-active:text-violet-300! data-active:border-violet-500/30! data-active:border! text-zinc-400! hover:text-zinc-200! text-xs! font-semibold! transition-all! cursor-pointer!"
+                  className="h-full! py-2! px-3! gap-2 rounded-md data-active:bg-violet-500/15! data-active:text-violet-300! data-active:border-violet-500/30! data-active:border! text-zinc-400! hover:text-zinc-200! text-xs! font-semibold! transition-all! cursor-pointer!"
                >
                   <History className="w-3.5 h-3.5" />
                   <span>Payout Requests ({data?.payouts.length ?? 0})</span>
@@ -123,7 +123,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
 
                <TabsTrigger
                   value="transactions"
-                  className="h-full! py-2! px-3! gap-2 rounded-md data-active:bg-violet-600/20! data-active:text-violet-300! data-active:border-violet-500/30! data-active:border! text-zinc-400! hover:text-zinc-200! text-xs! font-semibold! transition-all! cursor-pointer!"
+                  className="h-full! py-2! px-3! gap-2 rounded-md data-active:bg-violet-500/15! data-active:text-violet-300! data-active:border-violet-500/30! data-active:border! text-zinc-400! hover:text-zinc-200! text-xs! font-semibold! transition-all! cursor-pointer!"
                >
                   <Layers className="w-3.5 h-3.5" />
                   <span>Credit Transactions ({data?.transactions.length ?? 0})</span>

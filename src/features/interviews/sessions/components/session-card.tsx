@@ -72,7 +72,7 @@ export const SessionCard = ({
    const renderStatusBadge = (sessionStatus: DashboardSession["status"]) => {
       if (sessionStatus === "SCHEDULED" && isExpired) {
          return (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/10 text-zinc-400 border border-white/10">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/15 text-zinc-400 border border-white/10">
                <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
                Expired
             </span>
@@ -82,21 +82,21 @@ export const SessionCard = ({
       switch (sessionStatus) {
          case "SCHEDULED":
             return (
-               <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+               <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
                   <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
                   Scheduled
                </span>
             );
          case "COMPLETED":
             return (
-               <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+               <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                   Completed
                </span>
             );
          case "CANCELLED":
             return (
-               <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/10 text-rose-400 border border-white/10">
+               <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/15 text-rose-400 border border-white/10">
                   <span className="h-1.5 w-1.5 rounded-full bg-rose-400" />
                   Cancelled
                </span>
@@ -110,25 +110,25 @@ export const SessionCard = ({
    const getPerformanceLevelColor = (level: string) => {
       const upper = level?.toUpperCase() || "";
       if (upper === "OUTSTANDING" || upper === "EXCELLENT") {
-         return "text-emerald-400 border-emerald-500/30 bg-emerald-500/10";
+         return "text-emerald-400 border-emerald-500/30 bg-emerald-500/15";
       }
       if (upper === "GOOD") {
-         return "text-blue-400 border-blue-500/30 bg-blue-500/10";
+         return "text-blue-400 border-blue-500/30 bg-blue-500/15";
       }
       if (upper === "AVERAGE") {
-         return "text-amber-400 border-amber-500/30 bg-amber-500/10";
+         return "text-amber-400 border-amber-500/30 bg-amber-500/15";
       }
       if (upper === "POOR") {
-         return "text-rose-400 border-rose-500/30 bg-rose-500/10";
+         return "text-rose-400 border-rose-500/30 bg-rose-500/15";
       }
-      return "text-zinc-400 border-white/10 bg-zinc-500/10";
+      return "text-zinc-400 border-white/10 bg-zinc-500/15";
    };
 
    // Refined Credits Charged Badge
    const getCreditsChargedBadge = () => {
       if (status === "COMPLETED") {
          return (
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                <Coins className="w-3.5 h-3.5" />
                <span>{`+${creditsCharged} Credit${creditsCharged > 1 ? "s" : ""} Earned`}</span>
             </div>
@@ -138,7 +138,7 @@ export const SessionCard = ({
       if (status === "SCHEDULED") {
          if (isExpired) {
             return (
-               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-zinc-500/10 text-zinc-400 border border-zinc-500/20">
+               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-zinc-500/15 text-zinc-400 border border-zinc-500/30">
                   <Coins className="w-3.5 h-3.5" />
                   <span>0 Credits (Expired)</span>
                </div>
@@ -146,7 +146,7 @@ export const SessionCard = ({
          }
 
          return (
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-violet-500/10 text-violet-400 border border-violet-500/20">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-violet-500/15 text-violet-400 border border-violet-500/30">
                <Coins className="w-3.5 h-3.5" />
                <span>{`${creditsCharged} Credit${creditsCharged > 1 ? "s" : ""} (Pending)`}</span>
             </div>
@@ -154,7 +154,7 @@ export const SessionCard = ({
       }
 
       return (
-         <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20">
+         <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-rose-500/15 text-rose-400 border border-rose-500/30">
             <Coins className="w-3.5 h-3.5" />
             <span>0 Credits (Refunded)</span>
          </div>
@@ -269,7 +269,7 @@ export const SessionCard = ({
                {status === "SCHEDULED" && !isExpired && (
                   <div className="p-6 2xl:p-7 border-b border-white/5">
                      <div className="flex max-sm:flex-col items-start gap-3.5">
-                        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 shadow-sm shrink-0 max-sm:mb-1">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-400 shadow-sm shrink-0 max-sm:mb-1">
                            <Info className="w-4 h-4" />
                         </div>
                         <div>
@@ -288,7 +288,7 @@ export const SessionCard = ({
                {status === "COMPLETED" && feedback && (
                   <div className="p-6 2xl:p-7 border-b border-white/5">
                      <div className="flex max-sm:flex-col items-start gap-3.5">
-                        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 shadow-sm shrink-0 max-sm:mb-1">
+                        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-400 shadow-sm shrink-0 max-sm:mb-1">
                            <NotebookText className="w-4 h-4" />
                         </div>
 
@@ -364,7 +364,7 @@ export const SessionCard = ({
                      {/* Join call button for scheduled */}
                      {canJoinCall && (
                         <Link href={`/call/${streamCallId}`} className="max-sm:w-full">
-                           <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5 max-sm:w-full">
+                           <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                               <Video className="w-3.5 h-3.5" />
                               Join Interview
                            </Button>
@@ -403,7 +403,7 @@ export const SessionCard = ({
                      {status === "COMPLETED" && feedback && (
                         <Button
                            onClick={() => onViewFeedback(feedback, candidateFullName)}
-                           className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5 max-sm:w-full"
+                           className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg flex items-center gap-1.5 max-sm:w-full"
                         >
                            <FileText className="w-3.5 h-3.5 text-violet-200" />
                            View Full Feedback

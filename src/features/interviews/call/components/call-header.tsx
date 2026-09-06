@@ -48,7 +48,7 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
       <header className="flex items-center justify-between gap-3 px-4 lg:px-6 py-3 bg-zinc-900/60 border-b border-white/10 backdrop-blur-md shrink-0 z-30">
          {/* Left: Branding + Topic & Status */}
          <div className="flex items-center gap-3 min-w-0">
-            <div className="flex items-center justify-center size-9 rounded-lg bg-violet-600/10 border border-violet-500/30 text-violet-400 shrink-0">
+            <div className="flex items-center justify-center size-9 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-300 shrink-0">
                <Video className="size-5" />
             </div>
 
@@ -58,7 +58,7 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
                      text="Technical Mock Interview"
                      className="text-sm! 2xl:text-sm! font-semibold! text-zinc-100! truncate"
                   />
-                  <Badge variant="outline" className="hidden sm:inline-flex items-center gap-1.5 bg-red-500/10 text-red-300 border-red-500/20 text-[10px] font-medium px-2 py-0.5">
+                  <Badge variant="outline" className="hidden sm:inline-flex items-center gap-1.5 bg-red-500/15 text-red-300 border-red-500/30 text-[10px] font-medium px-2 py-0.5">
                      <span className="relative flex size-1.5">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
                         <span className="relative inline-flex rounded-full size-1.5 bg-red-500" />
@@ -120,7 +120,7 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Badge
                variant="outline"
-               className="gap-1.5 font-mono tabular-nums bg-violet-500/10 border-violet-500/25 text-violet-300 text-xs p-2.5"
+               className="gap-1.5 font-mono tabular-nums bg-violet-500/15 border-violet-500/30 text-violet-300 text-xs p-2.5"
             >
                <Clock className="size-3.5 text-violet-400" />
                {formatDuration(elapsedSeconds)}

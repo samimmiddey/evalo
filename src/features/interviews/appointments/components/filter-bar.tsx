@@ -47,16 +47,16 @@ const FilterBar = ({ view, setView, filterParams, onFilterParams, data, isLoadin
                      key={tab}
                      variant='outline'
                      onClick={() => onFilterParams({ ...filterParams, status: tab === 'all' ? undefined : tab.toUpperCase() as InterviewStatus })}
-                     className={`max-lg:w-full flex items-center gap-2 px-4! h-10 text-sm font-medium rounded-lg! transition-all duration-200 cursor-pointer ${isActive ? 'bg-violet-500/10 border-violet-500/30 hover:bg-violet-500/20 text-violet-300' : 'bg-zinc-900 border-white/10 text-zinc-400 hover:text-zinc-100 hover:border-white/20'}`}
+                     className={`max-lg:w-full flex items-center gap-2 px-4! h-10 text-sm font-medium rounded-lg! transition-all duration-200 cursor-pointer ${isActive ? 'bg-violet-500/15 border-violet-500/30 hover:bg-violet-500/20 text-violet-300' : 'bg-zinc-900 border-white/10 text-zinc-400 hover:text-zinc-100 hover:border-white/20'}`}
                   >
                      <span className="capitalize">{tab}</span>
                      {
                         isLoading ? (
-                           <span className={`h-5 w-5 rounded-md animate-pulse ${isActive ? 'bg-violet-500/20' : 'bg-zinc-800'
+                           <span className={`h-5 w-5 rounded-md animate-pulse ${isActive ? 'bg-violet-500/25' : 'bg-zinc-800'
                               }`} />
                         ) : (
                            <span
-                              className={`inline-flex items-center justify-center h-5 w-5 text-xs rounded-md ${isActive ? 'bg-violet-500/20 text-violet-300' : 'bg-zinc-800 text-zinc-400'
+                              className={`inline-flex items-center justify-center h-5 w-5 text-xs rounded-md ${isActive ? 'bg-violet-500/25 text-violet-300' : 'bg-zinc-800 text-zinc-400'
                                  }`}
                            >
                               {count}

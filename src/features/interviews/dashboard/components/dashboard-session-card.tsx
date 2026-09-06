@@ -55,7 +55,7 @@ export const DashboardSessionCard = ({
             {session && (
                <Badge
                   variant="outline"
-                  className="bg-blue-500/10 border-blue-500/25 text-blue-300 text-xs p-2.5"
+                  className="bg-blue-500/15 border-blue-500/30 text-blue-300 text-xs p-2.5"
                >
                   {isPast(new Date(session.startTime))
                      ? "In progress"
@@ -120,7 +120,7 @@ export const DashboardSessionCard = ({
 
                   {session.streamCallId ? (
                      <Link href={`/call/${session.streamCallId}`} className="max-sm:w-full">
-                        <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5 max-sm:w-full">
+                        <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                            <Video className="w-3.5 h-3.5" />
                            <span>Join Interview</span>
                         </Button>
@@ -139,11 +139,11 @@ export const DashboardSessionCard = ({
             </div>
          ) : (
             /* Empty State */
-            <div className="text-center py-6 space-y-4">
-               <div className="size-10 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400 flex items-center justify-center mx-auto">
+            <div className="text-center py-2 space-y-4">
+               <div className="size-10 rounded-xl bg-zinc-500/15 border border-zinc-500/30 text-zinc-400 flex items-center justify-center mx-auto">
                   <CalendarCheck className="size-5" />
                </div>
-               <div className="space-y-1 max-w-sm mx-auto">
+               <div className="space-y-2 max-w-sm mx-auto">
                   <SecondaryTitle
                      text={emptyTitle}
                      className="text-sm! font-semibold! text-zinc-200!"

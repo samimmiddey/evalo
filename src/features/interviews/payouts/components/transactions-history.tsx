@@ -48,8 +48,8 @@ export const TransactionsHistory = ({ transactions }: TransactionsHistoryProps) 
                         className={cn(
                            "flex items-center justify-center w-8 h-8 rounded-lg border",
                            isPositive
-                              ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
-                              : "bg-rose-500/10 border-rose-500/20 text-rose-400"
+                              ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400"
+                              : "bg-rose-500/15 border-rose-500/30 text-rose-400"
                         )}
                      >
                         {isPositive ? (

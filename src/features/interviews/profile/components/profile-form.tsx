@@ -219,7 +219,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                   <Button
                      type="submit"
                      disabled={isPending || !isDirty}
-                     className="cursor-pointer bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5"
+                     className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5"
                   >
                      {isPending ? <Spinner className="size-4" /> : <Save className="w-4 h-4" />}
                      Save Changes

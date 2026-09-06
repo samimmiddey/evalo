@@ -41,7 +41,7 @@ const ContactForm = () => {
 
                   <div className="flex flex-col gap-8">
                      <div className="flex items-start gap-4 group/item cursor-pointer">
-                        <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 group-hover/item:text-violet-300 group-hover/item:border-violet-400/50 group-hover/item:bg-violet-500/20 transition-all duration-300 shadow-sm">
+                        <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-400 group-hover/item:text-violet-300 group-hover/item:border-violet-500/50 group-hover/item:bg-violet-500/20 transition-all duration-300 shadow-sm">
                            <Mail className="w-5 h-5" />
                         </div>
                         <div className="pt-0.5">
@@ -51,7 +51,7 @@ const ContactForm = () => {
                      </div>
 
                      <div className="flex items-start gap-4 group/item cursor-pointer">
-                        <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-400 group-hover/item:text-fuchsia-300 group-hover/item:border-fuchsia-400/50 group-hover/item:bg-fuchsia-500/20 transition-all duration-300 shadow-sm">
+                        <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-fuchsia-500/15 border border-fuchsia-500/30 text-fuchsia-400 group-hover/item:text-fuchsia-300 group-hover/item:border-fuchsia-500/50 group-hover/item:bg-fuchsia-500/20 transition-all duration-300 shadow-sm">
                            <Phone className="w-5 h-5" />
                         </div>
                         <div className="pt-0.5">
@@ -61,7 +61,7 @@ const ContactForm = () => {
                      </div>
 
                      <div className="flex items-start gap-4 group/item cursor-pointer">
-                        <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 group-hover/item:text-blue-300 group-hover/item:border-blue-400/50 group-hover/item:bg-blue-500/20 transition-all duration-300 shadow-sm">
+                        <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-400 group-hover/item:text-blue-300 group-hover/item:border-blue-500/50 group-hover/item:bg-blue-500/20 transition-all duration-300 shadow-sm">
                            <MapPin className="w-5 h-5" />
                         </div>
                         <div className="pt-0.5">

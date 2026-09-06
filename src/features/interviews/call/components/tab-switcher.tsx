@@ -22,7 +22,7 @@ const TabSwitcher = ({ activeTab, onTabChange }: TabSwitcherProps) => {
             <TabsList className="w-full bg-zinc-950/70 border border-white/10 h-10! group-data-horizontal/tabs:h-10! p-1 gap-1.5 rounded-xl">
                <TabsTrigger
                   value="video"
-                  className="flex-1 h-full! py-2! gap-2 rounded-lg data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/30 data-active:border text-zinc-400 hover:text-zinc-200 text-xs font-medium transition-all cursor-pointer"
+                  className="flex-1 h-full! py-2! gap-2 rounded-lg data-active:bg-violet-500/15 data-active:text-violet-300 data-active:border-violet-500/30 data-active:border text-zinc-400 hover:text-zinc-200 text-xs font-medium transition-all cursor-pointer"
                >
                   <Video className="size-3.5 shrink-0 text-violet-400" />
                   <span>Live Video</span>
@@ -30,7 +30,7 @@ const TabSwitcher = ({ activeTab, onTabChange }: TabSwitcherProps) => {
 
                <TabsTrigger
                   value="chat"
-                  className="flex-1 h-full! py-2! gap-2 rounded-lg relative data-active:bg-violet-600/20 data-active:text-violet-300 data-active:border-violet-500/30 data-active:border text-zinc-400 hover:text-zinc-200 text-xs font-medium transition-all cursor-pointer"
+                  className="flex-1 h-full! py-2! gap-2 rounded-lg relative data-active:bg-violet-500/15 data-active:text-violet-300 data-active:border-violet-500/30 data-active:border text-zinc-400 hover:text-zinc-200 text-xs font-medium transition-all cursor-pointer"
                >
                   <MessageSquare className="size-3.5 shrink-0 text-violet-400" />
                   <span>Interview Chat</span>

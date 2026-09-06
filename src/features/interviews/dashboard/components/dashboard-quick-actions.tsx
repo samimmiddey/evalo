@@ -32,7 +32,7 @@ export const DashboardQuickActions = ({ actions }: DashboardQuickActionsProps) =
                   >
                      <div className="flex items-start justify-between gap-3">
                         <div className="flex items-start gap-3.5">
-                           <div className="p-2 rounded-lg bg-white/5 text-violet-400 group-hover:bg-violet-500/10 transition-colors shrink-0">
+                           <div className="p-2 rounded-lg bg-white/5 text-violet-400 group-hover:bg-violet-500/15 transition-colors shrink-0">
                               <Icon className="size-4" />
                            </div>
                            <div className="space-y-1">

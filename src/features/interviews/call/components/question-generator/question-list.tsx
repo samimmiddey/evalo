@@ -28,7 +28,7 @@ export const QuestionsList = ({ questions, expertise, onRegenerate, isPending }:
                size="sm"
                onClick={onRegenerate}
                disabled={isPending}
-               className="h-7 px-2 text-xs text-violet-400 hover:text-violet-300 hover:bg-violet-500/10 gap-1 cursor-pointer"
+               className="h-7 px-2 text-xs text-violet-400 hover:text-violet-300 hover:bg-violet-500/15 gap-1 cursor-pointer"
             >
                <RotateCcw className="size-3" />
                <span>Regenerate</span>
@@ -45,9 +45,9 @@ export const QuestionsList = ({ questions, expertise, onRegenerate, isPending }:
 };
 
 const DIFFICULTY_STYLES = {
-   EASY: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-   MEDIUM: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-   HARD: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
+   EASY: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+   MEDIUM: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
+   HARD: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
 } as const;
 
 interface QuestionCardProps {

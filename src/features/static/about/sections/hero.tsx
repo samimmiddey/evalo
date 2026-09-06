@@ -13,8 +13,8 @@ const Hero = () => {
          <div className="absolute inset-0 bg-linear-to-b from-transparent via-[#0A0812]/50 to-[#0A0812] pointer-events-none" />
 
          {/* Rich radial ambient glows for inner page depth */}
-         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-87.5 rounded-full bg-violet-600/15 blur-[120px] pointer-events-none" />
-         <div className="absolute top-12 left-1/2 -translate-x-1/2 w-225 h-112.5 rounded-full bg-indigo-500/10 blur-[150px] pointer-events-none" />
+         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-87.5 rounded-full bg-violet-500/15 blur-[120px] pointer-events-none" />
+         <div className="absolute top-12 left-1/2 -translate-x-1/2 w-225 h-112.5 rounded-full bg-indigo-500/15 blur-[150px] pointer-events-none" />
 
          {/* Subtle top border highlight */}
          <div className="absolute top-16 left-0 right-0 h-px bg-linear-to-r from-transparent via-violet-500/20 to-transparent pointer-events-none" />

@@ -233,7 +233,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                                  ? "bg-zinc-900/20 text-zinc-600 border-white/5 cursor-not-allowed line-through"
                                  : isActive
                                     ? "bg-violet-500/15 border-violet-500/30 hover:bg-violet-500/20 text-violet-300 font-semibold shadow-xs"
-                                    : "bg-zinc-900/60 border-white/8 hover:border-violet-500/40 hover:bg-violet-500/10 text-zinc-300"
+                                    : "bg-zinc-900/60 border-white/8 hover:border-violet-500/30 hover:bg-violet-500/15 text-zinc-300"
                            )}
                         >
                            {preset.label}
@@ -419,7 +419,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                   type="button"
                   onClick={() => void handleSave()}
                   disabled={isPending || generatedSlots.filter((s) => s.selected && !s.isOverlapping).length === 0}
-                  className="bg-violet-600/90 hover:bg-violet-600 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5"
+                  className="bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5"
                >
                   {isPending ? <Spinner className="size-4" /> : <Plus className="w-4 h-4" />}
                   Save Slots

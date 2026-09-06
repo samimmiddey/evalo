@@ -30,8 +30,8 @@ const Footer = () => {
    return (
       <footer className="relative s-padding-t pb-6 s-margin-t overflow-hidden border-t border-white/5">
          {/* Deep background ambient glows */}
-         <div className="absolute top-0 left-1/4 w-150 h-150 bg-violet-600/10 rounded-full blur-[120px] pointer-events-none" />
-         <div className="absolute bottom-0 right-1/4 w-150 h-150 bg-violet-600/10 rounded-full blur-[120px] pointer-events-none" />
+         <div className="absolute top-0 left-1/4 w-150 h-150 bg-violet-500/15 rounded-full blur-[120px] pointer-events-none" />
+         <div className="absolute bottom-0 right-1/4 w-150 h-150 bg-violet-500/15 rounded-full blur-[120px] pointer-events-none" />
 
          {/* Top glassmorphic gradient line */}
          <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-violet-500/50 to-transparent" />
@@ -106,7 +106,7 @@ const Footer = () => {
                            href={social.href}
                            target="_blank"
                            rel="noopener noreferrer"
-                           className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-zinc-100 hover:bg-violet-600 hover:border-violet-500 hover:shadow-[0_0_20px_rgba(124,58,237,0.5)] hover:-translate-y-1 transition-all duration-300"
+                           className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-violet-300 hover:bg-violet-500/15 hover:border-violet-500/30 hover:shadow-[0_0_20px_rgba(124,58,237,0.5)] hover:-translate-y-1 transition-all duration-300"
                         >
                            <SocialIcon type={social.icon} />
                         </Link>

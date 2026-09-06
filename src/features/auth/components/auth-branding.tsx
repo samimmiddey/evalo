@@ -61,7 +61,7 @@ export default function AuthBranding() {
                      <span className="h-4 w-px bg-[#1e293b]" />
                      <span className="text-xs font-semibold text-zinc-300 tracking-wide">{data.dashboard.title}</span>
                   </div>
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold tracking-wide">
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold tracking-wide">
                      {data.dashboard.status}
                   </span>
                </div>

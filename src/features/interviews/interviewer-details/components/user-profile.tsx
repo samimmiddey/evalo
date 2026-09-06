@@ -37,7 +37,7 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
                      />
                      <Badge
                         variant="outline"
-                        className="h-5.5 px-2 bg-violet-500/10 text-violet-300 border-violet-500/20"
+                        className="h-5.5 px-2 bg-violet-500/15 text-violet-300 border-violet-500/30"
                      >
                         Interviewer
                      </Badge>

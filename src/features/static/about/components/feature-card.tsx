@@ -18,14 +18,14 @@ const FeatureRow = ({ i, feature, Icon }: FeatureRowProps) => {
       >
          {/* Left: Index number */}
          <div className="pt-0.5 flex flex-col items-start gap-3">
-            <span className="font-outfit font-bold text-2xl lg:text-3xl 2xl:text-4xl text-violet-500/30 group-hover:text-violet-500/60 transition-colors duration-300 leading-none tabular-nums">
+            <span className="font-outfit font-bold text-2xl lg:text-3xl 2xl:text-4xl text-violet-500/40 group-hover:text-violet-500/60 transition-colors duration-300 leading-none tabular-nums">
                {String(i + 1).padStart(2, "0")}
             </span>
          </div>
 
          {/* Right: Icon + content */}
          <div className="flex flex-col sm:flex-row sm:items-start gap-4 lg:gap-6">
-            <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-violet-500/10 border border-violet-500/20 text-violet-400 group-hover:text-violet-300 group-hover:border-violet-400/40 group-hover:bg-violet-500/15 transition-all duration-300 self-start">
+            <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-400 group-hover:text-violet-300 group-hover:border-violet-400/40 group-hover:bg-violet-500/15 transition-all duration-300 self-start">
                <Icon className="w-5 h-5 2xl:w-6 2xl:h-6" />
             </div>
             <div>

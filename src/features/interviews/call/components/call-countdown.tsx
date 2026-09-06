@@ -74,12 +74,12 @@ const CallCountdown = ({
       <div className="flex flex-col items-center justify-center min-h-dvh w-full p-4 sm:p-6 bg-zinc-950 text-zinc-100 selection:bg-violet-500/30">
          <CardLayout className="flex flex-col items-center text-center gap-4 max-w-135 w-full">
             {/* Top Icon */}
-            <div className="flex items-center justify-center size-12 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400 mb-1 shadow-inner">
+            <div className="flex items-center justify-center size-12 rounded-xl bg-violet-500/15 border border-violet-500/30 text-violet-400 mb-1 shadow-inner">
                <Timer className="size-6" />
             </div>
 
             {/* Badge & Title */}
-            <Badge variant="outline" className="bg-violet-500/10 text-violet-300 border-violet-500/20 text-xs p-2.5 font-normal">
+            <Badge variant="outline" className="bg-violet-500/15 text-violet-300 border-violet-500/30 text-xs p-2.5 font-normal">
                Waiting Lobby
             </Badge>
 

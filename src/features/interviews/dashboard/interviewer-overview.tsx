@@ -33,28 +33,28 @@ export const InterviewerOverview = () => {
          label: "Total Sessions",
          value: stats?.totalSessions ?? 0,
          icon: Video,
-         accent: "text-violet-400 bg-violet-500/10 border-violet-500/20",
+         accent: "text-violet-400 bg-violet-500/15 border-violet-500/30",
          subtext: `${stats?.completedSessions ?? 0} completed rounds`
       },
       {
          label: "Upcoming",
          value: stats?.scheduledSessions ?? 0,
          icon: Calendar,
-         accent: "text-blue-400 bg-blue-500/10 border-blue-500/20",
+         accent: "text-blue-400 bg-blue-500/15 border-blue-500/30",
          subtext: "On calendar schedule"
       },
       {
          label: "Credit Balance",
          value: stats?.creditBalance ?? 0,
          icon: Coins,
-         accent: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+         accent: "text-emerald-400 bg-emerald-500/15 border-emerald-500/30",
          subtext: `≈ $${(stats?.creditBalance ?? 0) * (stats?.creditRate ?? 25)} USD value`
       },
       {
          label: "Rating",
          value: stats?.averageRating ? stats.averageRating.toFixed(1) : "N/A",
          icon: Star,
-         accent: "text-amber-400 bg-amber-500/10 border-amber-500/20",
+         accent: "text-amber-400 bg-amber-500/15 border-amber-500/30",
          subtext: `${stats?.totalRatings ?? 0} total candidate reviews`
       }
    ];
@@ -85,7 +85,7 @@ export const InterviewerOverview = () => {
             {/* Quick Action Button */}
             <div className="flex items-center gap-3">
                <Link href="/dashboard/availability" className="max-sm:w-full">
-                  <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold shadow-lg hover:shadow-violet-600/10 flex items-center gap-1.5 max-sm:w-full">
+                  <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                      <Clock className="w-3.5 h-3.5" />
                      <span>Configure Slots</span>
                   </Button>

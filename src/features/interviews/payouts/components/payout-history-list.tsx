@@ -36,14 +36,14 @@ export const PayoutHistoryList = ({ payouts }: PayoutHistoryListProps) => {
                         {isProcessed ? (
                            <Badge
                               variant="outline"
-                              className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[11px] gap-1"
+                              className="bg-emerald-500/15 text-emerald-400 border-emerald-500/30 text-[11px] gap-1"
                            >
                               <CheckCircle2 className="w-3 h-3" /> Processed
                            </Badge>
                         ) : (
                            <Badge
                               variant="outline"
-                              className="bg-amber-500/10 text-amber-400 border-amber-500/20 text-[11px] gap-1"
+                              className="bg-amber-500/15 text-amber-400 border-amber-500/30 text-[11px] gap-1"
                            >
                               <Clock className="w-3 h-3" /> Processing
                            </Badge>

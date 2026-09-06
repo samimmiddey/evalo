@@ -72,7 +72,7 @@ export const LoadingState = () => {
          {/* Thinking Status Pill */}
          <div className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-zinc-900/90 border border-violet-500/20 shadow-inner">
             <div className="flex items-center gap-2 min-w-0">
-               <div className="relative flex items-center justify-center size-5 rounded-md bg-violet-600/20 text-violet-400 shrink-0">
+               <div className="relative flex items-center justify-center size-5 rounded-md bg-violet-500/15 text-violet-300 shrink-0">
                   <PulsingBrain />
                </div>
                <span className="text-xs font-medium text-zinc-300 truncate">

@@ -33,8 +33,8 @@ const CTA = () => {
             />
 
             {/* Corner glow */}
-            <div className="absolute top-0 right-0 w-md h-md bg-violet-600/15 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-56 h-56 bg-fuchsia-600/10 rounded-full blur-[80px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-md h-md bg-violet-500/15 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-56 h-56 bg-fuchsia-500/15 rounded-full blur-[80px] pointer-events-none" />
 
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_auto] items-stretch">
 

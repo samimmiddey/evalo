@@ -24,20 +24,20 @@ const CallExpired = ({
    const getIcon = () => {
       if (isCompleted) {
          return (
-            <div className="flex items-center justify-center size-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mb-2 shadow-inner">
+            <div className="flex items-center justify-center size-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 mb-2 shadow-inner">
                <CheckCircle2 className="size-6" />
             </div>
          );
       }
       if (isCancelled) {
          return (
-            <div className="flex items-center justify-center size-12 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 mb-2 shadow-inner">
+            <div className="flex items-center justify-center size-12 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 mb-2 shadow-inner">
                <Ban className="size-6" />
             </div>
          );
       }
       return (
-         <div className="flex items-center justify-center size-12 rounded-xl bg-zinc-500/10 border border-white/10 text-zinc-400 mb-2 shadow-inner">
+         <div className="flex items-center justify-center size-12 rounded-xl bg-zinc-500/15 border border-white/10 text-zinc-400 mb-2 shadow-inner">
             <AlertCircle className="size-6" />
          </div>
       );
@@ -46,20 +46,20 @@ const CallExpired = ({
    const getBadge = () => {
       if (isCompleted) {
          return (
-            <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-xs p-2.5 font-normal">
+            <Badge variant="outline" className="bg-emerald-500/15 text-emerald-400 border-emerald-500/30 text-xs p-2.5 font-normal">
                Session Completed
             </Badge>
          );
       }
       if (isCancelled) {
          return (
-            <Badge variant="outline" className="bg-rose-500/10 text-rose-400 border-rose-500/20 text-xs p-2.5 font-normal">
+            <Badge variant="outline" className="bg-rose-500/15 text-rose-400 border-rose-500/30 text-xs p-2.5 font-normal">
                Session Cancelled
             </Badge>
          );
       }
       return (
-         <Badge variant="outline" className="bg-zinc-500/10 text-zinc-400 border-white/10 text-xs p-2.5 font-normal">
+         <Badge variant="outline" className="bg-zinc-500/15 text-zinc-400 border-white/10 text-xs p-2.5 font-normal">
             Session Expired
          </Badge>
       );

@@ -1,8 +1,9 @@
 "use client";
 
+import Logo from "@/components/common/logo";
 import { navigationData } from "@/data/navigation/navigation.data";
 import { cn } from "@/lib/utils";
-import { X, BotMessageSquare } from "lucide-react";
+import { X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -27,16 +28,15 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
          {/* Sidebar */}
          <aside
             className={cn(
-               "fixed left-0 top-0 h-dvh w-full bg-linear-to-b from-zinc-900 to-zinc-950 border-r border-white/8 z-9999 flex flex-col transform transition-transform duration-300 ease-in-out",
+               "fixed left-0 top-0 h-dvh w-full bg-zinc-900 border-r border-white/8 z-9999 flex flex-col transform transition-transform duration-300 ease-in-out",
                isOpen ? "translate-x-0" : "-translate-x-full",
                "md:hidden"
             )}
          >
             {/* Header */}
-            <div className="px-5 py-4 border-b border-white/8 flex items-center justify-between">
-               <Link href='/' className='flex items-center gap-1.5 text-violet-400' onClick={onClose}>
-                  <BotMessageSquare className='mt-0.5 h-6.5 w-6.5' />
-                  <h4 className='font-musemoderno font-bold text-xl'>evalo</h4>
+            <div className="p-4 border-b border-white/8 flex items-center justify-between">
+               <Link href='/' onClick={onClose}>
+                  <Logo />
                </Link>
                <button
                   onClick={onClose}
@@ -63,7 +63,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                            className={cn(
                               "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                               isActive
-                                 ? "bg-violet-500/20 text-violet-400 border border-violet-500/30 shadow-lg shadow-violet-500/10"
+                                 ? "bg-violet-500/15 text-violet-400 border border-violet-500/25"
                                  : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
                            )}
                         >

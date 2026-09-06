@@ -29,18 +29,18 @@ const FaqItem = ({ item, index }: FaqItemProps) => {
             className="group w-full flex items-start gap-4 lg:gap-6 py-6 lg:py-7 2xl:py-8 text-left transition-colors duration-200 cursor-pointer"
          >
             {/* Index number */}
-            <span className="shrink-0 font-outfit font-bold text-xl lg:text-2xl 2xl:text-3xl text-violet-500/30 group-hover:text-violet-500/60 transition-colors duration-300 leading-none tabular-nums mt-0.5 select-none">
+            <span className="shrink-0 font-outfit font-bold text-xl lg:text-2xl 2xl:text-3xl text-violet-500/40 group-hover:text-violet-500/60 transition-colors duration-300 leading-none tabular-nums mt-0.5 select-none">
                {String(index + 1).padStart(2, "0")}
             </span>
 
             {/* Question text */}
-            <span className="flex-1 font-outfit font-semibold text-base lg:text-lg 2xl:text-xl text-zinc-200 group-hover:text-zinc-100 transition-colors duration-300 leading-snug">
+            <span className="flex-1 font-outfit font-semibold text-base lg:text-lg 2xl:text-xl text-zinc-200 group-hover:text-zinc-100 transition-colors duration-300 leading-snug mt-px lg:mt-1">
                {item.question}
             </span>
 
             {/* Expand icon */}
             <span
-               className="shrink-0 mt-0.5 h-6 w-6 2xl:h-7 2xl:w-7 rounded-full border border-violet-500/25 flex items-center justify-center bg-violet-500/5 group-hover:border-violet-500/50 group-hover:bg-violet-500/10 transition-all duration-300"
+               className="shrink-0 mt-0.5 h-6 w-6 2xl:h-7 2xl:w-7 rounded-full border border-violet-500/30 flex items-center justify-center bg-violet-500/15 group-hover:border-violet-500/40 group-hover:bg-violet-500/15 transition-all duration-300"
                aria-hidden="true"
             >
                <motion.svg

@@ -252,7 +252,7 @@ export const CallSetup = ({
             {/* Top header bar */}
             <header className="flex items-center justify-between p-4 border-b border-white/10 bg-zinc-900/60 backdrop-blur-md shrink-0">
                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center size-9 rounded-lg bg-violet-500/10 border border-violet-500/25 text-violet-300 shrink-0">
+                  <div className="flex items-center justify-center size-9 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-300 shrink-0">
                      <Video className="size-5" />
                   </div>
                   <div>
@@ -265,7 +265,7 @@ export const CallSetup = ({
                            isRejoining &&
                            <Badge
                               variant="outline"
-                              className="bg-violet-500/10 text-violet-300 border-violet-500/25 text-[11px] font-normal p-2"
+                              className="bg-violet-500/15 text-violet-300 border-violet-500/30 text-[11px] font-normal p-2"
                            >
                               Rejoining
                            </Badge>
@@ -423,7 +423,7 @@ export const CallSetup = ({
                            </div>
                            <Badge
                               variant="outline"
-                              className="bg-zinc-500/10 border-zinc-500/30 text-zinc-300 text-xs shrink-0 p-2"
+                              className="bg-zinc-500/15 border-zinc-500/30 text-zinc-300 text-xs shrink-0 p-2"
                            >
                               {isInterviewer ? 'Interviewer' : 'Interviewee'}
                            </Badge>
@@ -554,7 +554,7 @@ export const CallSetup = ({
                                  size="sm"
                                  onClick={() => { void handlePlayTestSound(); }}
                                  disabled={isPlayingTestSound}
-                                 className="h-6 px-2 text-[11px] text-violet-300! hover:bg-violet-500/10 gap-1"
+                                 className="h-6 px-2 text-[11px] text-violet-300! hover:bg-violet-500/15 gap-1"
                               >
                                  <Play className={`size-3 ${isPlayingTestSound ? 'animate-spin' : ''}`} />
                                  <span>{isPlayingTestSound ? 'Playing...' : 'Test Sound'}</span>
@@ -588,7 +588,7 @@ export const CallSetup = ({
 
                      {/* Error prompt if join failed */}
                      {joinError && (
-                        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-400 flex items-center gap-2">
+                        <div className="p-3 rounded-lg bg-red-500/15 border border-red-500/30 text-xs text-red-400 flex items-center gap-2">
                            <AlertCircle className="size-4 shrink-0" />
                            <span>{joinError}</span>
                         </div>
