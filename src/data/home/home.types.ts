@@ -8,10 +8,27 @@ export interface HeroDataTypes {
 }
 
 // Features Types
+export interface FeatureThemeConfig {
+   gradient: string;
+   glow: string;
+   border: string;
+   hoverBorder: string;
+   topShimmer: string;
+   iconBg: string;
+   iconText: string;
+   iconBorder: string;
+   dotBg: string;
+   badgeText: string;
+   arrowHover: string;
+   shadow: string;
+}
+
 export interface FeatureCard {
    icon: LucideIcon;
+   tag: string;
    title: string;
    description: string;
+   theme: FeatureThemeConfig;
 }
 
 export interface FeatureDataTypes {

@@ -1,5 +1,5 @@
 import { HomeDataTypes } from "./home.types";
-import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle, CreditCard, MessageSquareQuote, Rocket } from 'lucide-react'
+import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle, CreditCard, MessageSquareQuote, Rocket } from 'lucide-react';
 
 export const homeData: HomeDataTypes = {
    hero: {
@@ -15,33 +15,108 @@ export const homeData: HomeDataTypes = {
       cards: [
          {
             icon: Video,
+            tag: "HD Video & Context",
             title: "Live Interview Sessions & Persistent Chat",
             description:
                "Connect with interviewers through smooth HD video calls and persistent chat that keeps your entire conversation history, shared context, and discussion flow in one place, making it easy to revisit decisions, clarify doubts, and stay aligned throughout the interview process.",
+            theme: {
+               gradient: "from-indigo-600/15 via-indigo-950/5 to-transparent",
+               glow: "bg-indigo-500/15 group-hover:bg-indigo-500/25",
+               border: "border-indigo-500/20",
+               hoverBorder: "group-hover:border-indigo-500/45",
+               topShimmer: "group-hover:via-indigo-400/60",
+               iconBg: "bg-indigo-500/15 group-hover:bg-indigo-500/25",
+               iconText: "text-indigo-400 group-hover:text-indigo-300",
+               iconBorder: "border-indigo-500/30",
+               dotBg: "bg-indigo-400",
+               badgeText: "text-indigo-400",
+               arrowHover: "group-hover:border-indigo-500/40 group-hover:bg-indigo-500/15 group-hover:text-indigo-300",
+               shadow: "hover:shadow-[0_0_40px_rgba(99,102,241,0.14)]",
+            },
          },
          {
             icon: BrainCircuit,
+            tag: "AI Intelligence",
             title: "AI-Assisted Performance Evaluation",
             description:
                "Receive instant, objective feedback on your solutions with insights on code quality, complexity, and adherence to best practices to help you improve faster.",
+            theme: {
+               gradient: "from-cyan-600/15 via-cyan-950/5 to-transparent",
+               glow: "bg-cyan-500/15 group-hover:bg-cyan-500/25",
+               border: "border-cyan-500/20",
+               hoverBorder: "group-hover:border-cyan-500/45",
+               topShimmer: "group-hover:via-cyan-400/60",
+               iconBg: "bg-cyan-500/15 group-hover:bg-cyan-500/25",
+               iconText: "text-cyan-400 group-hover:text-cyan-300",
+               iconBorder: "border-cyan-500/30",
+               dotBg: "bg-cyan-400",
+               badgeText: "text-cyan-400",
+               arrowHover: "group-hover:border-cyan-500/40 group-hover:bg-cyan-500/15 group-hover:text-cyan-300",
+               shadow: "hover:shadow-[0_0_40px_rgba(6,182,212,0.14)]",
+            },
          },
          {
             icon: Library,
+            tag: "Flexible Economy",
             title: "Flexible Credit-Based Access",
             description:
                "Subscribe to monthly credits, book interview sessions instantly, and manage usage easily while interviewers can earn credits and withdraw their earnings anytime.",
+            theme: {
+               gradient: "from-amber-600/15 via-amber-950/5 to-transparent",
+               glow: "bg-amber-500/15 group-hover:bg-amber-500/25",
+               border: "border-amber-500/20",
+               hoverBorder: "group-hover:border-amber-500/45",
+               topShimmer: "group-hover:via-amber-400/60",
+               iconBg: "bg-amber-500/15 group-hover:bg-amber-500/25",
+               iconText: "text-amber-400 group-hover:text-amber-300",
+               iconBorder: "border-amber-500/30",
+               dotBg: "bg-amber-400",
+               badgeText: "text-amber-400",
+               arrowHover: "group-hover:border-amber-500/40 group-hover:bg-amber-500/15 group-hover:text-amber-300",
+               shadow: "hover:shadow-[0_0_40px_rgba(245,158,11,0.14)]",
+            },
          },
          {
             icon: LineChart,
+            tag: "Growth Analytics",
             title: "Detailed Performance Reports",
             description:
                "Track your progress over time with in-depth analytics that highlight strengths, weaknesses, and actionable areas for improvement.",
+            theme: {
+               gradient: "from-emerald-600/15 via-emerald-950/5 to-transparent",
+               glow: "bg-emerald-500/15 group-hover:bg-emerald-500/25",
+               border: "border-emerald-500/20",
+               hoverBorder: "group-hover:border-emerald-500/45",
+               topShimmer: "group-hover:via-emerald-400/60",
+               iconBg: "bg-emerald-500/15 group-hover:bg-emerald-500/25",
+               iconText: "text-emerald-400 group-hover:text-emerald-300",
+               iconBorder: "border-emerald-500/30",
+               dotBg: "bg-emerald-400",
+               badgeText: "text-emerald-400",
+               arrowHover: "group-hover:border-emerald-500/40 group-hover:bg-emerald-500/15 group-hover:text-emerald-300",
+               shadow: "hover:shadow-[0_0_40px_rgba(16,185,129,0.14)]",
+            },
          },
          {
             icon: CalendarClock,
+            tag: "Smart Scheduling",
             title: "Slot-Based Scheduling",
             description:
                "Easily book and manage interview sessions using flexible time slots, allowing candidates and interviewers to coordinate availability seamlessly without conflicts.",
+            theme: {
+               gradient: "from-fuchsia-600/15 via-fuchsia-950/5 to-transparent",
+               glow: "bg-fuchsia-500/15 group-hover:bg-fuchsia-500/25",
+               border: "border-fuchsia-500/20",
+               hoverBorder: "group-hover:border-fuchsia-500/45",
+               topShimmer: "group-hover:via-fuchsia-400/60",
+               iconBg: "bg-fuchsia-500/15 group-hover:bg-fuchsia-500/25",
+               iconText: "text-fuchsia-400 group-hover:text-fuchsia-300",
+               iconBorder: "border-fuchsia-500/30",
+               dotBg: "bg-fuchsia-400",
+               badgeText: "text-fuchsia-400",
+               arrowHover: "group-hover:border-fuchsia-500/40 group-hover:bg-fuchsia-500/15 group-hover:text-fuchsia-300",
+               shadow: "hover:shadow-[0_0_40px_rgba(217,70,239,0.14)]",
+            },
          }
       ]
    },
@@ -169,4 +244,4 @@ export const homeData: HomeDataTypes = {
       title: "Ready to accelerate your career?",
       description: "Join thousands of candidates and industry experts who are already using Evalo to sharpen their skills, gain valuable interview experience, connect with opportunities, and achieve their professional goals with confidence."
    }
-}
+};

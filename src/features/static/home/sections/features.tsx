@@ -9,7 +9,7 @@ import FeatureCard from '../components/feature-card';
 
 const Features = () => {
    return (
-      <div className='s-margin-t container'>
+      <section className='s-margin-t container relative'>
          <HeaderLayout>
             <HeaderText
                icon={homeData.features.icon}
@@ -21,21 +21,29 @@ const Features = () => {
             />
          </HeaderLayout>
 
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 2xl:gap-6">
+         {/* Bento Grid Layout */}
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 2xl:gap-8">
             {homeData.features.cards.map((feature, i) => {
-               const Icon = feature.icon;
+               const gridSpan =
+                  i === 0
+                     ? 'md:col-span-2 lg:col-span-7'
+                     : i === 1
+                        ? 'md:col-span-2 lg:col-span-5'
+                        : i === 4
+                           ? 'md:col-span-2 lg:col-span-4'
+                           : 'md:col-span-1 lg:col-span-4';
+
                return (
                   <FeatureCard
                      key={i}
                      i={i}
                      feature={feature}
-                     Icon={Icon}
-                     className={i === 0 ? "sm:col-span-2 lg:col-span-2" : ""}
+                     className={gridSpan}
                   />
                );
             })}
          </div>
-      </div>
+      </section>
    );
 };
 
