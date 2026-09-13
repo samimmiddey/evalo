@@ -39,11 +39,41 @@ export interface FeatureDataTypes {
    cards: FeatureCard[];
 }
 
-// Roles Types
+// Roles Types (Two-Card Design)
+export interface RoleTheme {
+   gradient: string;
+   glow: string;
+   border: string;
+   hoverBorder: string;
+   topShimmer: string;
+   iconBg: string;
+   iconBorder: string;
+   iconText: string;
+   badgeText: string;
+   dotBg: string;
+   checkBg: string;
+   checkBorder: string;
+   checkColor: string;
+   arrowHover: string;
+   shadow: string;
+   buttonClass: string;
+}
+
 export interface RoleCard {
+   icon: LucideIcon;
+   tag: string;
+   trackLabel: string;
+   statusLabel: string;
+   index: string;
    title: string;
    description: string;
+   workflowTitle?: string;
    points: string[];
+   cta: {
+      text: string;
+      href: string;
+   };
+   theme: RoleTheme;
 }
 
 export interface RoleDataTypes {

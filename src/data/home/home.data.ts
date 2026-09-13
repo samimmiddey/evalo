@@ -1,5 +1,5 @@
 import { HomeDataTypes } from "./home.types";
-import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle, CreditCard, MessageSquareQuote, Rocket } from 'lucide-react';
+import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle, CreditCard, MessageSquareQuote, Rocket, User, BriefcaseBusiness } from 'lucide-react';
 
 export const homeData: HomeDataTypes = {
    hero: {
@@ -126,9 +126,15 @@ export const homeData: HomeDataTypes = {
       title: "Where Talent Meets Opportunity",
       description: "Where talent meets real opportunity through structured interviews, skill-based assessments, and meaningful evaluation that helps candidates grow and get discovered.",
       interviewee: {
+         icon: User,
+         tag: "FOR CANDIDATES",
+         trackLabel: "CANDIDATE PIPELINE",
+         statusLabel: "PREPARATION ENGINE",
+         workflowTitle: "CORE CAPABILITIES & WORKFLOW",
+         index: "01",
          title: "Land the role you deserve",
          description:
-            "Practice real interview scenarios, sharpen your problem-solving skills, and get evaluated through structured assessments designed to reflect actual hiring standards. Build confidence and improve continuously with every attempt.",
+            "Practice real interview scenarios, sharpen your problem-solving skills, and get evaluated through structured assessments designed to reflect hiring standards. Build confidence and improve with every attempt.",
          points: [
             "Solve real-world coding and system design problems",
             "Get instant AI-driven performance feedback",
@@ -136,12 +142,40 @@ export const homeData: HomeDataTypes = {
             "Practice in a real interview-like environment",
             "Improve with every attempt you take",
          ],
+         cta: {
+            text: "Browse Interviewers",
+            href: "/interviewers",
+         },
+         theme: {
+            gradient: "from-indigo-600/15 via-indigo-950/5 to-transparent",
+            glow: "bg-indigo-500/15 group-hover:bg-indigo-500/25",
+            border: "border-indigo-500/20",
+            hoverBorder: "group-hover:border-indigo-500/45",
+            topShimmer: "group-hover:via-indigo-400/60",
+            iconBg: "bg-indigo-500/15 group-hover:bg-indigo-500/25",
+            iconText: "text-indigo-400 group-hover:text-indigo-300",
+            iconBorder: "border-indigo-500/30",
+            dotBg: "bg-indigo-400",
+            badgeText: "text-indigo-400",
+            checkBg: "bg-indigo-500/15",
+            checkBorder: "border-indigo-500/30",
+            checkColor: "text-indigo-400",
+            arrowHover: "group-hover:border-indigo-500/40 group-hover:bg-indigo-500/15 group-hover:text-indigo-300",
+            shadow: "hover:shadow-[0_0_40px_rgba(99,102,241,0.14)]",
+            buttonClass: "bg-indigo-600 hover:bg-indigo-500! text-white shadow-[0_0_20px_rgba(79,70,229,0.25)]",
+         },
       },
 
       interviewer: {
+         icon: BriefcaseBusiness,
+         tag: "FOR INTERVIEWERS",
+         trackLabel: "EXPERT NETWORK",
+         statusLabel: "VERIFIED COHORT",
+         workflowTitle: "CORE CAPABILITIES & WORKFLOW",
+         index: "02",
          title: "Put Your Expertise to Work",
          description:
-            "Conduct interviews on your own schedule, evaluate candidates efficiently, and earn credits for every session you complete. Share your expertise while helping others grow in their careers and achieve their professional goals.",
+            "Conduct interviews on your own schedule, evaluate candidates efficiently, and earn credits for every session you complete. Share your expertise while helping others grow in their careers and achieve their goals.",
          points: [
             "Conduct structured technical interviews remotely",
             "Evaluate candidates using guided assessment flows",
@@ -149,6 +183,28 @@ export const homeData: HomeDataTypes = {
             "Withdraw earnings anytime with ease",
             "Build reputation as a trusted interviewer",
          ],
+         cta: {
+            text: "Join as an Interviewer",
+            href: "/dashboard",
+         },
+         theme: {
+            gradient: "from-emerald-600/15 via-emerald-950/5 to-transparent",
+            glow: "bg-emerald-500/15 group-hover:bg-emerald-500/25",
+            border: "border-emerald-500/20",
+            hoverBorder: "group-hover:border-emerald-500/45",
+            topShimmer: "group-hover:via-emerald-400/60",
+            iconBg: "bg-emerald-500/15 group-hover:bg-emerald-500/25",
+            iconText: "text-emerald-400 group-hover:text-emerald-300",
+            iconBorder: "border-emerald-500/30",
+            dotBg: "bg-emerald-400",
+            badgeText: "text-emerald-400",
+            checkBg: "bg-emerald-500/15",
+            checkBorder: "border-emerald-500/30",
+            checkColor: "text-emerald-400",
+            arrowHover: "group-hover:border-emerald-500/40 group-hover:bg-emerald-500/15 group-hover:text-emerald-300",
+            shadow: "hover:shadow-[0_0_40px_rgba(16,185,129,0.14)]",
+            buttonClass: "bg-emerald-600 hover:bg-emerald-500! text-white shadow-[0_0_20px_rgba(5,150,105,0.25)]",
+         },
       },
    },
    pricing: {

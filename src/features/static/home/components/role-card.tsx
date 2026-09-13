@@ -1,90 +1,135 @@
-import { motion } from 'motion/react';
-import { Check, User, BriefcaseBusiness } from 'lucide-react';
-import { RoleCard as RoleCardType } from '@/data/home/home.types';
+"use client";
+
+import { motion } from "motion/react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { RoleDataTypes } from "@/data/home/home.types";
+
+import { Button } from "@/components/ui/button";
+import SecondaryTitle from "@/components/common/secondary-title";
+import PrimaryBody from "@/components/common/primary-body";
 
 interface RoleCardProps {
-   i: number;
-   role: RoleCardType;
-   type: "Interviewees" | "Interviewers";
+   data: RoleDataTypes;
 }
 
-const RoleCard = ({ i, role, type }: RoleCardProps) => {
-   const isInterviewee = type === "Interviewees";
-
-   // Distinct themes for each role side to make them uniquely attractive side-by-side
-   const theme = isInterviewee ? {
-      gradient: "from-blue-600/20 via-transparent to-transparent",
-      glow: "bg-blue-500/15 group-hover:bg-blue-500/20",
-      border: "border-blue-500/20 group-hover:border-blue-500/40",
-      badge: "bg-blue-500/15 text-blue-400 border-blue-500/20",
-      title: "from-blue-100 to-blue-400",
-      icon: "text-blue-400 bg-blue-500/15",
-      check: "text-blue-400",
-      listBg: "bg-blue-950/20 border-blue-500/15 group-hover:border-blue-500/20",
-      shadow: "hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]"
-   } : {
-      gradient: "from-fuchsia-600/20 via-transparent to-transparent",
-      glow: "bg-fuchsia-500/15 group-hover:bg-fuchsia-500/20",
-      border: "border-fuchsia-500/20 group-hover:border-fuchsia-500/40",
-      badge: "bg-fuchsia-500/15 text-fuchsia-400 border-fuchsia-500/20",
-      title: "from-fuchsia-100 to-fuchsia-400",
-      icon: "text-fuchsia-400 bg-fuchsia-500/15",
-      check: "text-fuchsia-400",
-      listBg: "bg-fuchsia-950/20 border-fuchsia-500/15 group-hover:border-fuchsia-500/20",
-      shadow: "hover:shadow-[0_0_40px_rgba(217,70,239,0.15)]"
-   };
-
-   const HeaderIcon = isInterviewee ? User : BriefcaseBusiness;
+const RoleCard = ({ data }: RoleCardProps) => {
+   const roles = [data.interviewee, data.interviewer];
 
    return (
-      <motion.div
-         key={i}
-         initial={{ opacity: 0, y: 30 }}
-         whileInView={{ opacity: 1, y: 0 }}
-         viewport={{ once: true, margin: "-50px", amount: 0.1 }}
-         transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
-         className={`group relative flex flex-col h-full rounded-3xl bg-surface-dark/90 border ${theme.border} overflow-hidden transition-all duration-500 hover:-translate-y-2 ${theme.shadow}`}
-      >
-         {/* Top Gradient Wash */}
-         <div className={`absolute inset-0 bg-linear-to-b ${theme.gradient} opacity-50`} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 2xl:gap-8 w-full">
+         {roles.map((role, idx) => {
+            const Icon = role.icon;
 
-         {/* Massive Ambient Glow */}
-         <div className={`absolute top-0 right-0 w-125 h-125 rounded-full blur-[100px] transition-colors duration-700 ${theme.glow} -translate-y-1/2 translate-x-1/3`} />
+            return (
+               <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px", amount: 0.1 }}
+                  transition={{ duration: 0.5, delay: idx * 0.08, ease: "easeOut" }}
+                  className="group relative flex flex-col justify-between px-6 py-7 sm:p-9 lg:p-11 xl:p-12 rounded-3xl border border-white/8 bg-surface-dark/95 backdrop-blur-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1.5 shadow-[0_24px_80px_rgba(0,0,0,0.7)] hover:bg-white/1.5"
+               >
+                  {/* Top Border Shimmer */}
+                  <div
+                     className={`absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 ${role.theme.topShimmer} to-transparent transition-colors duration-500 pointer-events-none`}
+                  />
 
-         <div className="relative z-10 flex flex-col grow p-7 lg:p-9 2xl:p-11">
+                  {/* Ambient Radial Glow Orb */}
+                  <div
+                     className={`pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full blur-[90px] transition-all duration-700 ${role.theme.glow}`}
+                  />
 
-            {/* Header / Badge */}
-            <div className="flex items-center gap-3.5 mb-5 lg:mb-6 2xl:mb-8">
-               <div className={`p-2.5 rounded-lg ${theme.icon} backdrop-blur-sm shadow-inner`}>
-                  <HeaderIcon className="w-5 h-5 2xl:w-6 2xl:h-6" />
-               </div>
-               <span className={`px-4 py-1.5 text-xs 2xl:text-sm font-bold tracking-widest uppercase rounded-full border backdrop-blur-md ${theme.badge}`}>
-                  For {type}
-               </span>
-            </div>
+                  {/* Background Watermark Index */}
+                  <span className="absolute top-4 right-6 sm:top-6 sm:right-8 font-mono text-7xl sm:text-8xl font-black text-white/2 group-hover:text-white/4 transition-colors duration-500 pointer-events-none select-none">
+                     {role.index}
+                  </span>
 
-            {/* Title & Description */}
-            <h3 className={`text-2xl lg:text-3xl 2xl:text-4xl font-bold font-outfit bg-clip-text text-transparent bg-linear-to-br ${theme.title} mb-3 lg:mb-4`}>
-               {role.title}
-            </h3>
+                  {/* Content Container */}
+                  <div className="relative z-10 space-y-6 sm:space-y-7">
+                     {/* Track Header & Monospace Identifier */}
+                     <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                           <div
+                              className={`w-11 h-11 rounded-xl border ${role.theme.iconBorder} ${role.theme.iconBg} flex items-center justify-center transition-all duration-300 group-hover:scale-105 shadow-sm`}
+                           >
+                              <Icon className={`w-5 h-5 ${role.theme.iconText}`} />
+                           </div>
+                           <div>
+                              <div className="text-xs sm:text-sm font-semibold text-zinc-200 uppercase tracking-wide group-hover:text-white transition-colors duration-200">
+                                 {role.tag}
+                              </div>
+                              <div className="text-xs font-mono font-medium tracking-wider text-zinc-400 uppercase mt-0.5 group-hover:text-zinc-300 transition-colors duration-200">
+                                 {role.trackLabel}
+                              </div>
+                           </div>
+                        </div>
 
-            <p className="text-zinc-400 font-inter text-sm lg:text-base 2xl:text-[17px] leading-relaxed mb-7 lg:mb-8 2xl:mb-10">
-               {role.description}
-            </p>
-
-            {/* Premium Points List */}
-            <div className="mt-auto space-y-3">
-               {role.points.map((point, idx) => (
-                  <div key={idx} className={`flex items-center gap-4 p-3.5 2xl:p-4 rounded-lg border ${theme.listBg} backdrop-blur-sm transition-colors duration-300`}>
-                     <div className="p-1 rounded-full bg-surface-dark border border-white/5 shadow-[inset_0_1px_3px_rgba(255,255,255,0.1)] shrink-0">
-                        <Check className={`w-4 h-4 ${theme.check}`} strokeWidth={3} />
+                        <div className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/3 border border-white/8 text-xs font-mono text-zinc-300 transition-colors duration-300 group-hover:border-white/[0.14]">
+                           <span className={`w-1.5 h-1.5 rounded-full ${role.theme.dotBg}`} />
+                           <span>{role.statusLabel}</span>
+                        </div>
                      </div>
-                     <span className="text-zinc-200 font-inter text-sm 2xl:text-base font-medium">{point}</span>
+
+                     {/* Title & Description */}
+                     <div className="space-y-3">
+                        <SecondaryTitle
+                           text={role.title}
+                           className="text-xl sm:text-2xl lg:text-3xl 2xl:text-3xl tracking-tight leading-snug group-hover:text-white transition-colors duration-200"
+                        />
+                        <PrimaryBody
+                           text={role.description}
+                           className="text-sm sm:text-base lg:text-base 2xl:text-base leading-relaxed group-hover:text-zinc-300 transition-colors duration-200"
+                        />
+                     </div>
+
+                     {/* Capabilities Connected Pipeline */}
+                     <div className="pt-2">
+                        {role.workflowTitle && (
+                           <div className="text-xs sm:text-[13px] font-mono font-semibold tracking-wider text-zinc-400 uppercase mb-3.5 group-hover:text-zinc-300 transition-colors duration-200">
+                              {role.workflowTitle}
+                           </div>
+                        )}
+                        <div className="space-y-2 relative">
+                           {role.points.map((point, pIdx) => (
+                              <div
+                                 key={pIdx}
+                                 className="group/item relative flex items-center gap-3.5 p-2.5 sm:p-3 rounded-xl bg-white/1.5 border border-white/4 transition-all duration-300 group-hover:border-white/[0.07] group-hover:bg-white/2.5"
+                              >
+                                 {/* Numbered Pipeline Node */}
+                                 <div
+                                    className={`relative z-10 w-7.5 h-7.5 rounded-lg font-mono text-xs font-semibold ${role.theme.iconBg} ${role.theme.iconBorder} ${role.theme.badgeText} border flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105 shadow-sm`}
+                                 >
+                                    0{pIdx + 1}
+                                 </div>
+
+                                 {/* Point Text */}
+                                 <PrimaryBody
+                                    text={point}
+                                    className="text-zinc-300 text-sm sm:text-[15px] lg:text-[15px] 2xl:text-[15px] font-medium leading-snug group-hover:text-zinc-100 transition-colors duration-200 grow"
+                                 />
+                              </div>
+                           ))}
+                        </div>
+                     </div>
                   </div>
-               ))}
-            </div>
-         </div>
-      </motion.div>
+
+                  {/* Action Dock */}
+                  <div className="relative z-10 pt-6 sm:pt-8 mt-6 sm:mt-8 border-t border-white/6">
+                     <Button
+                        asChild
+                        className={`group/btn w-full h-auto px-4 py-3 2xl:py-3.5 justify-between rounded-xl font-medium text-sm 2xl:text-base cursor-pointer transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] ${role.theme.buttonClass}`}
+                     >
+                        <Link href={role.cta.href}>
+                           <span>{role.cta.text}</span>
+                           <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                        </Link>
+                     </Button>
+                  </div>
+               </motion.div>
+            );
+         })}
+      </div>
    );
 };
 
