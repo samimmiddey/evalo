@@ -43,10 +43,7 @@ const Footer = () => {
    ];
 
    return (
-      <footer className="relative s-margin-t pt-16 sm:pt-20 2xl:pt-24 border-t border-white/10 overflow-hidden bg-violet-500/5">
-
-         {/* Subtle Ambient Depth Glow */}
-         <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-160 h-40 bg-violet-600/5 blur-[100px]" />
+      <footer className="relative s-margin-t pt-16 sm:pt-20 2xl:pt-24 border-t border-white/5 overflow-hidden bg-surface-dark">
 
          <div className="container relative z-10">
             {/* Top Grid: Brand & Structured Navigation */}
