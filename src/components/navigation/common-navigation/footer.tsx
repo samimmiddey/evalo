@@ -1,118 +1,135 @@
-import Link from 'next/link';
-import { footerData } from '@/data/navigation/navigation.data';
-import Logo from '../../common/logo';
+import Link from "next/link";
+import { footerData } from "@/data/navigation/navigation.data";
+import Logo from "../../common/logo";
+import PrimaryBody from "@/components/common/primary-body";
+import SecondaryTitle from "@/components/common/secondary-title";
 
 const Footer = () => {
    const SocialIcon = ({ type }: { type: string; }) => {
       switch (type) {
-         case 'twitter': return (
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-               <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-            </svg>
-         );
-         case 'github': return (
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-               <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-               <path d="M9 18c-4.51 2-5-2-7-2" />
-            </svg>
-         );
-         case 'linkedin': return (
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-               <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-               <rect width="4" height="12" x="2" y="9" />
-               <circle cx="4" cy="4" r="2" />
-            </svg>
-         );
-         default: return null;
+         case "twitter":
+            return (
+               <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+               </svg>
+            );
+         case "github":
+            return (
+               <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+               </svg>
+            );
+         case "linkedin":
+            return (
+               <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                  <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.55a1.62 1.62 0 1 0 1.62 1.62A1.62 1.62 0 0 0 7.86 6.55z" />
+               </svg>
+            );
+         default:
+            return null;
       }
    };
 
-   return (
-      <footer className="relative s-padding-t pb-6 s-margin-t overflow-hidden border-t border-white/5">
-         {/* Deep background ambient glows */}
-         <div className="absolute top-0 left-1/4 w-150 h-150 bg-violet-500/15 rounded-full blur-[120px] pointer-events-none" />
-         <div className="absolute bottom-0 right-1/4 w-150 h-150 bg-violet-500/15 rounded-full blur-[120px] pointer-events-none" />
+   const navigationSections = [
+      ...footerData.columns,
+      {
+         title: "Platform",
+         links: [
+            { name: "Browse Interviewers", href: "/dashboard" },
+            { name: "Browse Sessions", href: "/dashboard" },
+            { name: "AI Feedback", href: "/dashboard" },
+         ],
+      },
+   ];
 
-         {/* Top glassmorphic gradient line */}
-         <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-violet-500/50 to-transparent" />
+   return (
+      <footer className="relative s-margin-t pt-16 sm:pt-20 2xl:pt-24 border-t border-white/10 overflow-hidden bg-violet-500/5">
+
+         {/* Subtle Ambient Depth Glow */}
+         <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-160 h-40 bg-violet-600/5 blur-[100px]" />
 
          <div className="container relative z-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-8 lg:gap-10 mb-13 lg:mb-15 2xl:mb-16">
-               {/* Brand Info */}
-               <div className="xl:col-span-2 flex flex-col gap-5 lg:gap-6">
-                  <Link href='/' className='w-fit'>
-                     <Logo containerClassName='scale-115 2xl:scale-125' />
+            {/* Top Grid: Brand & Structured Navigation */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 2xl:gap-18 pb-10 lg:pb-12">
+               {/* Brand & Identity Column */}
+               <div className="lg:col-span-5 flex flex-col items-start space-y-6">
+                  <Link href="/" className="w-fit">
+                     <Logo containerClassName="scale-110 2xl:scale-120 origin-left" />
                   </Link>
-                  <p className="text-zinc-400 font-inter text-[15px] leading-relaxed max-w-sm">
-                     {footerData.description}
-                  </p>
-               </div>
 
-               {/* Navigation Links */}
-               {footerData.columns.map((col, idx) => (
-                  <div key={idx} className="flex flex-col gap-5 lg:gap-6 xl:col-span-1">
-                     <h5 className="text-zinc-100 font-semibold text-lg font-outfit tracking-wide">
-                        {col.title}
-                     </h5>
-                     <div className="flex flex-col gap-4">
-                        {col.links.map((link, lIdx) => (
-                           <Link
-                              key={lIdx}
-                              href={link.href}
-                              className="group flex items-center gap-3 text-zinc-400 hover:text-zinc-100 transition-all duration-300 font-inter text-[15px] w-fit"
-                           >
-                              {link.name}
-                           </Link>
-                        ))}
-                     </div>
-                  </div>
-               ))}
+                  <PrimaryBody
+                     text={footerData.description}
+                     className="text-zinc-400 text-sm sm:text-[15px] 2xl:text-base leading-relaxed max-w-md font-inter"
+                  />
 
-               {/* Mini CTA */}
-               <div className="xl:col-span-2 flex flex-col gap-5 lg:gap-6">
-                  <h5 className="text-zinc-100 font-semibold text-lg font-outfit tracking-wide">
-                     Ready to start?
-                  </h5>
-                  <p className="text-zinc-400 font-inter text-[15px] leading-relaxed">
-                     Join thousands of candidates and experts who are already using Evalo to achieve their goals.
-                  </p>
-                  <div className="relative group w-fit mt-1">
-                     <Link href="/signup" className="relative flex items-center gap-2 px-6 py-3 bg-zinc-100 border border-white/10 rounded-xl text-zinc-900 font-medium hover:bg-zinc-100 transition-colors shadow-xl">
-                        Get Started for Free
-                        <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                     </Link>
-                  </div>
-               </div>
-            </div>
-
-            {/* Giant Watermark Text & Footer Bottom */}
-            <div className="w-full border-t border-white/5 relative overflow-hidden pt-6 flex flex-col items-center">
-               <h1 className="text-[14vw] xl:text-[180px] leading-none font-bold text-center text-zinc-100/3 select-none pointer-events-none font-musemoderno tracking-tighter uppercase mb-4 md:mb-0">
-                  EVALO
-               </h1>
-
-               {/* Overlay for social/copyright */}
-               <div className="md:absolute inset-0 flex flex-col md:flex-row items-center justify-between md:px-4 md:mt-auto md:pb-6 gap-6 z-10 h-fit self-end w-full">
-                  <p className="text-zinc-500 font-inter text-[15px]">
-                     {footerData.copyright}
-                  </p>
-
-                  <div className="flex items-center gap-4">
+                  {/* Social Icon Row */}
+                  <div className="flex items-center gap-2.5 pt-1">
                      {footerData.socials?.map((social, idx) => (
                         <Link
                            key={idx}
-                           href={social.href}
+                           href={social.href || "#"}
                            target="_blank"
                            rel="noopener noreferrer"
-                           className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-violet-300 hover:bg-violet-500/15 hover:border-violet-500/30 hover:shadow-[0_0_20px_rgba(124,58,237,0.5)] hover:-translate-y-1 transition-all duration-300"
+                           aria-label={social.icon}
+                           className="flex items-center justify-center w-9 h-9 rounded-lg bg-surface-dark border border-white/8 text-zinc-400 hover:text-zinc-100 hover:border-white/20 hover:bg-white/5 transition-all duration-200"
                         >
                            <SocialIcon type={social.icon} />
                         </Link>
                      ))}
                   </div>
                </div>
+
+               {/* Navigation Links Grid */}
+               <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
+                  {navigationSections.map((section, idx) => (
+                     <div key={idx} className="flex flex-col space-y-4">
+                        <SecondaryTitle
+                           text={section.title}
+                           className="text-sm 2xl:text-lg font-bold uppercase tracking-wider text-zinc-200"
+                        />
+                        <ul className="space-y-3">
+                           {section.links.map((link, lIdx) => (
+                              <li key={lIdx}>
+                                 <Link
+                                    href={link.href}
+                                    className="text-sm 2xl:text-[15px] text-zinc-400 hover:text-zinc-100 transition-colors duration-200 inline-block"
+                                 >
+                                    {link.name}
+                                 </Link>
+                              </li>
+                           ))}
+                        </ul>
+                     </div>
+                  ))}
+               </div>
+            </div>
+
+            {/* Bottom Row: Copyright & Legal */}
+            <div className="border-t border-white/6 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 2xl:gap-4 text-sm 2xl:text-[15px] text-zinc-500">
+               <p className="font-inter">
+                  {footerData.copyright}
+               </p>
+
+               <div className="flex items-center gap-6 text-sm 2xl:text-[15px] text-zinc-500">
+                  <Link href="/about" className="hover:text-zinc-300 transition-colors">
+                     Privacy Policy
+                  </Link>
+                  <Link href="/about" className="hover:text-zinc-300 transition-colors">
+                     Terms of Service
+                  </Link>
+                  <Link href="/about" className="hover:text-zinc-300 transition-colors">
+                     Security
+                  </Link>
+               </div>
+            </div>
+
+            {/* Centered Brand Watermark with Hairlines */}
+            <div className="w-full flex items-center justify-center gap-4 sm:gap-8 pt-5 sm:pt-6 overflow-hidden select-none pointer-events-none">
+               <div className="h-px bg-linear-to-l from-white/10 to-transparent grow min-w-8" />
+               <span className="font-musemoderno font-black text-[15vw] md:text-[10vw] tracking-tight uppercase leading-none bg-linear-to-b from-white/8 via-white/2 to-transparent bg-clip-text text-transparent block shrink-0">
+                  evalo
+               </span>
+               <div className="h-px bg-linear-to-r from-white/10 to-transparent grow min-w-8" />
             </div>
          </div>
       </footer>
