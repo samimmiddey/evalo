@@ -46,7 +46,7 @@ const Testimonials = () => {
                   <div className="flex">
                      {row1.map((testimonial, i) => (
                         <div key={`top-${i}`} className="flex-none pl-5 2xl:pl-6 w-[320px] md:w-100 xl:w-112.5">
-                           <TestimonialCard testimonial={testimonial} />
+                           <TestimonialCard testimonial={testimonial} index={i} />
                         </div>
                      ))}
                   </div>
@@ -57,7 +57,7 @@ const Testimonials = () => {
                   <div className="flex">
                      {row2.map((testimonial, i) => (
                         <div key={`bottom-${i}`} className="flex-none pl-5 2xl:pl-6 w-[320px] md:w-100 xl:w-112.5" dir="ltr">
-                           <TestimonialCard testimonial={testimonial} />
+                           <TestimonialCard testimonial={testimonial} index={i + 3} />
                         </div>
                      ))}
                   </div>
