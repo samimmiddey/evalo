@@ -21,7 +21,7 @@ const TextContent = () => {
                duration: 0.3,
                delay: 0.1,
             }}
-            className='mb-4 2xl:mb-5'
+            className='mb-3 2xl:mb-4'
          >
             <HeaderText
                icon={Sparkle}

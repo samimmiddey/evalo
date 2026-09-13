@@ -34,7 +34,7 @@ const Pricing = () => {
                icon={homeData.pricing.icon}
                text={homeData.pricing.header}
             />
-            <PrimaryTitle text={homeData.pricing.title} className='mt-1 2xl:mt-2' />
+            <PrimaryTitle text={homeData.pricing.title} />
             <PrimaryBody
                text={homeData.pricing.description}
             />

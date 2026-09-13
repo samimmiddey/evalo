@@ -32,7 +32,7 @@ const Testimonials = () => {
                   icon={homeData.testimonials.icon}
                   text={homeData.testimonials.header}
                />
-               <PrimaryTitle text={homeData.testimonials.title} className='mt-1 2xl:mt-2' />
+               <PrimaryTitle text={homeData.testimonials.title} />
                <PrimaryBody
                   text={homeData.testimonials.description}
                />

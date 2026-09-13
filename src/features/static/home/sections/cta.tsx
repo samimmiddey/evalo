@@ -20,7 +20,7 @@ const CTA = () => {
                   icon={homeData.cta.icon}
                   text={homeData.cta.header}
                />
-               <PrimaryTitle text={homeData.cta.title} className='mt-1 2xl:mt-2 text-zinc-100' />
+               <PrimaryTitle text={homeData.cta.title} />
                <PrimaryBody
                   text={homeData.cta.description}
                   className="w-full md:max-w-2xl 2xl:max-w-3xl mx-auto text-zinc-300"

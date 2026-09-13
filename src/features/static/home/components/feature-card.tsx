@@ -22,7 +22,7 @@ const FeatureCard = ({ i, feature, className }: FeatureCardProps) => {
          whileInView={{ opacity: 1, y: 0 }}
          viewport={{ once: true, margin: "-50px", amount: 0.1 }}
          transition={{ duration: 0.5, delay: i * 0.08, ease: 'easeOut' }}
-         className={`group relative flex flex-col justify-between p-7 sm:p-8 lg:p-9 2xl:p-10 rounded-3xl bg-surface-dark/90 border ${theme.border} ${theme.hoverBorder} overflow-hidden transition-all duration-500 hover:-translate-y-1.5 ${theme.shadow} ${className ?? ""}`}
+         className={`group relative flex flex-col justify-between px-6 py-7 sm:p-8 lg:p-9 2xl:p-10 rounded-3xl bg-surface-dark/90 border ${theme.border} ${theme.hoverBorder} overflow-hidden transition-all duration-500 hover:-translate-y-1.5 ${theme.shadow} ${className ?? ""}`}
       >
          {/* Top Gradient Wash */}
          <div className={`absolute inset-0 bg-linear-to-b ${theme.gradient} pointer-events-none transition-opacity duration-500 group-hover:opacity-100 opacity-60`} />

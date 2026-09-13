@@ -15,7 +15,7 @@ const Roles = () => {
                icon={homeData.roles.icon}
                text={homeData.roles.header}
             />
-            <PrimaryTitle text={homeData.roles.title} className='mt-1 2xl:mt-2' />
+            <PrimaryTitle text={homeData.roles.title} />
             <PrimaryBody
                text={homeData.roles.description}
             />

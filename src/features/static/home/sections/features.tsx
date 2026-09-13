@@ -15,7 +15,7 @@ const Features = () => {
                icon={homeData.features.icon}
                text={homeData.features.header}
             />
-            <PrimaryTitle text={homeData.features.title} className='mt-1 2xl:mt-2' />
+            <PrimaryTitle text={homeData.features.title} />
             <PrimaryBody
                text={homeData.features.description}
             />

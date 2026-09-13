@@ -14,7 +14,7 @@ const TextContent = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.1 }}
-            className="mb-4 2xl:mb-5"
+            className="mb-3 2xl:mb-4"
          >
             <HeaderText icon={Telescope} text={aboutData.hero.header} />
          </motion.div>

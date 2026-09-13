@@ -15,7 +15,7 @@ const Form = () => {
                icon={contactData.form.icon}
                text={contactData.form.header}
             />
-            <PrimaryTitle text={contactData.form.title} className="mt-1 2xl:mt-2" />
+            <PrimaryTitle text={contactData.form.title} />
             <PrimaryBody text={contactData.form.description} />
          </HeaderLayout>
 
