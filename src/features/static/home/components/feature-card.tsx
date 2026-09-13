@@ -3,6 +3,8 @@
 import { motion } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { FeatureCard as FeatureCardType } from '@/data/home/home.types';
+import SecondaryTitle from '@/components/common/secondary-title';
+import PrimaryBody from '@/components/common/primary-body';
 
 interface FeatureCardProps {
    i: number;
@@ -48,14 +50,16 @@ const FeatureCard = ({ i, feature, className }: FeatureCardProps) => {
             </div>
 
             {/* Title */}
-            <h3 className="text-xl lg:text-2xl font-semibold font-outfit text-zinc-100 tracking-tight mb-3 lg:mb-4 group-hover:text-white transition-colors duration-200">
-               {feature.title}
-            </h3>
+            <SecondaryTitle
+               text={feature.title}
+               className="text-lg lg:text-xl 2xl:text-2xl tracking-tight mb-3 lg:mb-4 group-hover:text-white transition-colors duration-200"
+            />
 
             {/* Description */}
-            <p className="text-zinc-400 font-inter text-sm lg:text-[15px] 2xl:text-base leading-relaxed group-hover:text-zinc-300 transition-colors duration-200">
-               {feature.description}
-            </p>
+            <PrimaryBody
+               text={feature.description}
+               className="text-sm lg:text-[15px] 2xl:text-base leading-relaxed group-hover:text-zinc-300 transition-colors duration-200"
+            />
          </div>
 
          {/* Bottom Row */}
