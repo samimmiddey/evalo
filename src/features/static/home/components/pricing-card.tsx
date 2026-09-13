@@ -77,9 +77,9 @@ const PricingCard = ({ i, plan, disableAnimation = false }: PricingCardProps) =>
             {/* Checkout Button when signed out */}
             <Show when='signed-out'>
                <Button
-                  className={`w-full h-auto py-3.25 2xl:py-3.75 rounded-xl font-semibold font-outfit tracking-wide transition-all duration-300 mb-8 lg:mb-9 
+                  className={`w-full h-auto py-3.25 2xl:py-3.75 rounded-xl font-semibold tracking-wide transition-all duration-300 mb-8 lg:mb-9 
                      ${isPopular
-                        ? "bg-violet-600 hover:bg-violet-500 text-zinc-100 shadow-[0_0_20px_rgba(124,58,237,0.3)]"
+                        ? "bg-violet-600 hover:bg-violet-500 text-zinc-100"
                         : "bg-white/5 hover:bg-white/10 text-zinc-200 border border-white/10"
                      }`}
                   onClick={() => {

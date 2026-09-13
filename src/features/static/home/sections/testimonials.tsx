@@ -25,41 +25,43 @@ const Testimonials = () => {
    const row2 = [...homeData.testimonials.reviews, ...homeData.testimonials.reviews].reverse();
 
    return (
-      <div className='s-margin-t w-full overflow-hidden'>
-         <div className="container">
-            <HeaderLayout>
-               <HeaderText
-                  icon={homeData.testimonials.icon}
-                  text={homeData.testimonials.header}
-               />
-               <PrimaryTitle text={homeData.testimonials.title} />
-               <PrimaryBody
-                  text={homeData.testimonials.description}
-               />
-            </HeaderLayout>
-         </div>
+      <div className="-mt-9 lg:-mt-5">
+         <div className='s-margin-t w-full overflow-hidden'>
+            <div className="container">
+               <HeaderLayout>
+                  <HeaderText
+                     icon={homeData.testimonials.icon}
+                     text={homeData.testimonials.header}
+                  />
+                  <PrimaryTitle text={homeData.testimonials.title} />
+                  <PrimaryBody
+                     text={homeData.testimonials.description}
+                  />
+               </HeaderLayout>
+            </div>
 
-         <div className="relative w-full">
-            <div className="brands-cover flex flex-col gap-5 2xl:gap-6">
-               {/* Top Row */}
-               <div className="overflow-hidden" ref={emblaRefTop}>
-                  <div className="flex">
-                     {row1.map((testimonial, i) => (
-                        <div key={`top-${i}`} className="flex-none pl-5 2xl:pl-6 w-[320px] md:w-100 xl:w-112.5">
-                           <TestimonialCard testimonial={testimonial} index={i} />
-                        </div>
-                     ))}
+            <div className="relative w-full">
+               <div className="brands-cover flex flex-col gap-5 2xl:gap-6">
+                  {/* Top Row */}
+                  <div className="overflow-hidden" ref={emblaRefTop}>
+                     <div className="flex">
+                        {row1.map((testimonial, i) => (
+                           <div key={`top-${i}`} className="flex-none pl-5 2xl:pl-6 w-[320px] md:w-100 xl:w-112.5">
+                              <TestimonialCard testimonial={testimonial} index={i} />
+                           </div>
+                        ))}
+                     </div>
                   </div>
-               </div>
 
-               {/* Bottom Row */}
-               <div className="overflow-hidden" ref={emblaRefBottom} dir="rtl">
-                  <div className="flex">
-                     {row2.map((testimonial, i) => (
-                        <div key={`bottom-${i}`} className="flex-none pl-5 2xl:pl-6 w-[320px] md:w-100 xl:w-112.5" dir="ltr">
-                           <TestimonialCard testimonial={testimonial} index={i + 3} />
-                        </div>
-                     ))}
+                  {/* Bottom Row */}
+                  <div className="overflow-hidden" ref={emblaRefBottom} dir="rtl">
+                     <div className="flex">
+                        {row2.map((testimonial, i) => (
+                           <div key={`bottom-${i}`} className="flex-none pl-5 2xl:pl-6 w-[320px] md:w-100 xl:w-112.5" dir="ltr">
+                              <TestimonialCard testimonial={testimonial} index={i + 3} />
+                           </div>
+                        ))}
+                     </div>
                   </div>
                </div>
             </div>

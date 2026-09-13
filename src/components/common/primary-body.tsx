@@ -7,7 +7,7 @@ interface PrimaryBodyProps {
 
 const PrimaryBody = ({ text, className }: PrimaryBodyProps) => {
    return (
-      <p className={cn('font-inter text-sm lg:text-base 2xl:text-lg text-zinc-400', className)}>
+      <p className={cn('font-inter text-sm lg:text-base 2xl:text-lg text-zinc-400 leading-relaxed', className)}>
          {text}
       </p>
    );

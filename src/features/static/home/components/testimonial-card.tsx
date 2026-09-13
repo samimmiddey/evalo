@@ -40,7 +40,7 @@ const TestimonialCard = ({ testimonial, index = 0 }: TestimonialCardProps) => {
    const color = AVATAR_VARIANTS[index % AVATAR_VARIANTS.length];
 
    return (
-      <div className="group relative flex flex-col justify-between h-full p-6 sm:p-7 2xl:p-8 rounded-3xl bg-surface-dark/95 border border-white/8 backdrop-blur-2xl overflow-hidden transition-colors duration-300 hover:border-violet-500/40 shadow-[0_12px_40px_rgba(0,0,0,0.6)] select-none">
+      <div className="group relative flex flex-col justify-between h-full px-6 py-7 sm:p-7 2xl:p-8 rounded-3xl bg-surface-dark/95 border border-white/8 backdrop-blur-2xl overflow-hidden transition-colors duration-300 hover:border-violet-500/40 shadow-[0_12px_40px_rgba(0,0,0,0.6)] select-none">
          {/* Top Border Shimmer */}
          <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 group-hover:via-violet-400/50 to-transparent transition-colors duration-500 pointer-events-none" />
 
