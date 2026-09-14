@@ -8,12 +8,10 @@ export interface AboutValuePillar {
 
 export interface AboutSatelliteNodeItem {
    label: string;
-   meta: string;
 }
 
 export interface AboutSatelliteNode {
    id: string;
-   index: string;
    title: string;
    icon: LucideIcon;
    iconColor: string;
@@ -37,7 +35,6 @@ export interface AboutHeroDataTypes {
    };
    radarHub: {
       title: string;
-      subtitle: string;
    };
    satelliteNodes: AboutSatelliteNode[];
    pillars: AboutValuePillar[];

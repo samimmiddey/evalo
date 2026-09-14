@@ -289,36 +289,39 @@ const Hero = () => {
             </div>
 
             {/* 3 Value Pillar Cards at Bottom using SecondaryTitle and PrimaryBody */}
-            <motion.div
-               initial={{ opacity: 0, y: 20 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ duration: 0.55, delay: 0.35, ease: "easeOut" }}
-               className="mt-12 sm:mt-16 lg:mt-18 2xl:mt-20 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6"
-            >
+            <div className="mt-12 sm:mt-16 lg:mt-18 2xl:mt-20 grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
                {pillars.map((pillar, idx) => (
-                  <div
+                  <motion.div
                      key={idx}
-                     className="group relative p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-surface-dark border border-white/5 hover:border-violet-500/30 transition-all duration-300 overflow-hidden flex flex-col justify-between space-y-4 shadow-sm hover:shadow-[0_0_30px_rgba(139,92,246,0.12)]"
+                     initial={{ opacity: 0, y: 24 }}
+                     whileInView={{ opacity: 1, y: 0 }}
+                     viewport={{ once: true, margin: "-50px", amount: 0.1 }}
+                     transition={{ duration: 0.5, delay: idx * 0.08, ease: "easeOut" }}
+                     className="group relative p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-surface-dark/90 border border-white/5 hover:border-violet-500/30 overflow-hidden transition-all duration-500 hover:-translate-y-1.5 flex flex-col justify-between space-y-4 shadow-sm hover:shadow-[0_0_30px_rgba(139,92,246,0.14)]"
                   >
-                     {/* Top subtle border highlight */}
-                     <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-violet-500/20 to-transparent group-hover:via-violet-400/50 transition-colors pointer-events-none" />
 
-                     <div className="flex flex-col gap-4">
-                        <span className="font-outfit font-bold text-2xl lg:text-3xl text-violet-400/70 group-hover:text-violet-300 transition-colors leading-none">
+                     {/* Top Border Shimmer */}
+                     <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 group-hover:via-violet-400/50 to-transparent transition-colors duration-500 pointer-events-none" />
+
+                     {/* Ambient Radial Glow Orb */}
+                     <div className="pointer-events-none absolute -top-24 -right-24 w-60 h-60 rounded-full blur-[80px] bg-violet-600/10 group-hover:bg-violet-600/20 transition-all duration-700" />
+
+                     <div className="relative z-10 flex flex-col gap-4">
+                        <span className="font-outfit font-bold text-2xl lg:text-3xl text-violet-400/70 group-hover:text-violet-300 transition-colors duration-200 leading-none">
                            {pillar.number}
                         </span>
                         <SecondaryTitle
                            text={pillar.title}
-                           className="font-outfit font-semibold text-lg lg:text-xl 2xl:text-xl text-zinc-100 tracking-tight"
+                           className="font-outfit font-semibold text-lg lg:text-xl 2xl:text-xl text-zinc-100 tracking-tight group-hover:text-white transition-colors duration-200"
                         />
                         <PrimaryBody
                            text={pillar.description}
-                           className="font-inter text-sm lg:text-sm 2xl:text-[15px] text-zinc-400 leading-relaxed"
+                           className="font-inter text-sm lg:text-sm 2xl:text-[15px] text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-200"
                         />
                      </div>
-                  </div>
+                  </motion.div>
                ))}
-            </motion.div>
+            </div>
          </div>
       </div>
    );
