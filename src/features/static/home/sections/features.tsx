@@ -9,7 +9,7 @@ import FeatureCard from '../components/feature-card';
 
 const Features = () => {
    return (
-      <section className='s-margin-t container relative'>
+      <section className='s-padding-t container relative'>
          <HeaderLayout>
             <HeaderText
                icon={homeData.features.icon}
