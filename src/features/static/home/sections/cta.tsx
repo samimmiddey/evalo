@@ -127,7 +127,7 @@ const CTA = () => {
                               <div className="flex items-center gap-2.5">
                                  <SecondaryTitle
                                     text={step.title}
-                                    className="text-base sm:text-lg font-semibold text-zinc-100 group-hover:text-white transition-colors duration-200"
+                                    className="text-lg lg:text-lg 2xl:text-xl font-semibold text-zinc-100 group-hover:text-white transition-colors duration-200 font-outfit"
                                  />
                                  <span
                                     className="text-xs font-mono px-2 py-0.5 rounded-full border bg-surface-dark text-zinc-400 border-white/10"

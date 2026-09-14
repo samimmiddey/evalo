@@ -46,7 +46,7 @@ const Hero = () => {
                   {/* Description using PrimaryBody */}
                   <PrimaryBody
                      text={description}
-                     className="max-w-full lg:max-w-2xl mt-1 py-4 text-[15px] lg:text-[15px] 2xl:text-lg font-normal text-zinc-300 font-inter leading-relaxed"
+                     className="max-w-full lg:max-w-2xl mt-1 py-4 text-[15px] lg:text-[15px] 2xl:text-lg text-zinc-300 leading-relaxed"
                   />
 
                   {/* Action Buttons */}
@@ -297,7 +297,7 @@ const Hero = () => {
                      whileInView={{ opacity: 1, y: 0 }}
                      viewport={{ once: true, margin: "-50px", amount: 0.1 }}
                      transition={{ duration: 0.5, delay: idx * 0.08, ease: "easeOut" }}
-                     className="group relative p-6 sm:p-7 rounded-2xl sm:rounded-3xl bg-surface-dark/90 border border-white/5 hover:border-violet-500/30 overflow-hidden transition-all duration-500 hover:-translate-y-1.5 flex flex-col justify-between space-y-4 shadow-sm hover:shadow-[0_0_30px_rgba(139,92,246,0.14)]"
+                     className="group relative px-6 py-7 2xl:p-7 rounded-3xl bg-surface-dark/90 border border-white/5 hover:border-violet-500/30 overflow-hidden transition-all duration-500 hover:-translate-y-1.5 flex flex-col justify-between space-y-4 shadow-sm hover:shadow-[0_0_30px_rgba(139,92,246,0.14)]"
                   >
 
                      {/* Top Border Shimmer */}
@@ -306,8 +306,8 @@ const Hero = () => {
                      {/* Ambient Radial Glow Orb */}
                      <div className="pointer-events-none absolute -top-24 -right-24 w-60 h-60 rounded-full blur-[80px] bg-violet-600/10 group-hover:bg-violet-600/20 transition-all duration-700" />
 
-                     <div className="relative z-10 flex flex-col gap-4">
-                        <span className="font-outfit font-bold text-2xl lg:text-3xl text-violet-400/70 group-hover:text-violet-300 transition-colors duration-200 leading-none">
+                     <div className="relative z-10 flex flex-col gap-3">
+                        <span className="font-bold text-2xl lg:text-3xl text-violet-400/70 group-hover:text-violet-300 transition-colors duration-200 leading-none mb-1.5 2xl:mb-2">
                            {pillar.number}
                         </span>
                         <SecondaryTitle
@@ -316,7 +316,7 @@ const Hero = () => {
                         />
                         <PrimaryBody
                            text={pillar.description}
-                           className="font-inter text-sm lg:text-sm 2xl:text-[15px] text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-200"
+                           className="text-sm lg:text-sm 2xl:text-[15px] text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors duration-200"
                         />
                      </div>
                   </motion.div>

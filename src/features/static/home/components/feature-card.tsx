@@ -52,7 +52,7 @@ const FeatureCard = ({ i, feature, className }: FeatureCardProps) => {
             {/* Title */}
             <SecondaryTitle
                text={feature.title}
-               className="text-lg lg:text-xl 2xl:text-2xl tracking-tight mb-3 lg:mb-4 group-hover:text-white transition-colors duration-200"
+               className="text-xl 2xl:text-2xl tracking-tight mb-3 lg:mb-4 group-hover:text-white transition-colors duration-200 font-outfit"
             />
 
             {/* Description */}

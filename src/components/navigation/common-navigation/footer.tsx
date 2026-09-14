@@ -82,7 +82,7 @@ const Footer = () => {
                      <div key={idx} className="flex flex-col space-y-4">
                         <SecondaryTitle
                            text={section.title}
-                           className="text-sm 2xl:text-lg font-bold uppercase tracking-wider text-zinc-200"
+                           className="text-sm 2xl:text-lg font-bold uppercase tracking-wider text-zinc-200 font-outfit"
                         />
                         <ul className="space-y-3">
                            {section.links.map((link, lIdx) => (

@@ -69,7 +69,7 @@ const TestimonialCard = ({ testimonial, index = 0 }: TestimonialCardProps) => {
                <div className="min-w-0">
                   <SecondaryTitle
                      text={testimonial.name}
-                     className="text-sm sm:text-base 2xl:text-[17px] tracking-tight group-hover:text-white transition-colors duration-200 truncate"
+                     className="text-[15px] sm:text-lg 2xl:text-[19px] tracking-tight group-hover:text-white transition-colors duration-200 truncate font-outfit"
                   />
                   <PrimaryBody
                      text={testimonial.role}

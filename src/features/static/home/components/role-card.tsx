@@ -75,7 +75,7 @@ const RoleCard = ({ data }: RoleCardProps) => {
                      <div className="space-y-3">
                         <SecondaryTitle
                            text={role.title}
-                           className="text-xl sm:text-2xl lg:text-3xl 2xl:text-3xl tracking-tight leading-snug group-hover:text-white transition-colors duration-200 font-bold"
+                           className="text-2xl lg:text-3xl 2xl:text-3xl tracking-tight leading-snug group-hover:text-white transition-colors duration-200 font-bold font-outfit"
                         />
                         <PrimaryBody
                            text={role.description}
