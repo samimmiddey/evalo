@@ -22,7 +22,7 @@ const Features = () => {
          </HeaderLayout>
 
          {/* Bento Grid Layout */}
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 2xl:gap-8">
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5 lg:gap-6 2xl:gap-7">
             {homeData.features.cards.map((feature, i) => {
                const gridSpan =
                   i === 0
