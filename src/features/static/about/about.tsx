@@ -1,6 +1,6 @@
 import Hero from './sections/hero';
-import Features from './sections/features';
-import CTA from './sections/cta';
+import Features from '../home/sections/features';
+import CTA from '../home/sections/cta';
 
 const About = () => {
    return (
