@@ -193,7 +193,7 @@ const SignIn = () => {
                            ? `/forgot-password?redirect_url=${encodeURIComponent(redirectUrl)}`
                            : '/forgot-password'
                      }
-                     className="text-xs font-medium text-violet-400 hover:text-violet-300 transition-colors"
+                     className="text-xs font-medium text-violet-300 hover:text-violet-400 transition-colors"
                   >
                      Forgot password?
                   </Link>

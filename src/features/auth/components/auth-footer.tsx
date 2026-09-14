@@ -18,7 +18,7 @@ const AuthFooter = ({ text, linkText, linkUrl }: Props) => {
    return (
       <p className="text-center text-sm text-muted-foreground font-inter">
          {text}{" "}
-         <Link href={href} className="font-medium text-violet-400 hover:text-violet-300 transition-colors">
+         <Link href={href} className="font-medium text-violet-300 hover:text-violet-400 transition-colors">
             {linkText}
          </Link>
       </p>
