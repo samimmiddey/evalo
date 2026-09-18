@@ -1,5 +1,5 @@
 import { ContactDataTypes } from "./contact.types";
-import { MessageCircle, HelpCircle } from "lucide-react";
+import { MessageCircle, HelpCircle, Mail, Phone, MapPin } from "lucide-react";
 
 export const contactData: ContactDataTypes = {
    hero: {
@@ -10,17 +10,103 @@ export const contactData: ContactDataTypes = {
    },
    form: {
       icon: MessageCircle,
-      header: "Send a Message",
-      title: "Tell us what's on your mind",
+      header: "Get in Touch",
+      title: "Connect With Us",
       description:
-         "Fill out the form below and one of our team members will respond promptly. We're here to help with anything you need.",
+         "Have a question or need assistance? Fill out the form below with your details and a brief description of what you need, and our team will get back to you within one business day.",
+      formTitle: "Send a Message",
+      formDescription:
+         "Fill out the details below and our team will get back to you promptly.",
+      subjects: [
+         "General Inquiry",
+         "Technical Support",
+         "Billing & Refunds",
+         "Partnerships",
+         "Become an Interviewer",
+         "Other",
+      ],
+      channels: [
+         {
+            icon: Mail,
+            tag: "Direct Inbox",
+            title: "hello@evalo.io",
+            desc: "Response within 24 hours",
+            href: "mailto:hello@evalo.io",
+            isLink: true,
+            theme: {
+               gradient: "from-indigo-600/15 via-indigo-950/5 to-transparent",
+               glow: "bg-indigo-500/15 group-hover:bg-indigo-500/25",
+               border: "border-indigo-500/20",
+               hoverBorder: "group-hover:border-indigo-500/45",
+               topShimmer: "group-hover:via-indigo-400/60",
+               iconBg: "bg-indigo-500/15 group-hover:bg-indigo-500/25",
+               iconText: "text-indigo-400 group-hover:text-indigo-300",
+               iconBorder: "border-indigo-500/30",
+               dotBg: "bg-indigo-400",
+               badgeText: "text-indigo-400",
+               arrowHover:
+                  "group-hover:border-indigo-500/40 group-hover:bg-indigo-500/15 group-hover:text-indigo-300",
+               shadow: "hover:shadow-[0_0_40px_rgba(99,102,241,0.14)]",
+            },
+         },
+         {
+            icon: Phone,
+            tag: "Support Line",
+            title: "+1 (555) 123-4567",
+            desc: "Mon–Fri, 9 AM – 6 PM PST",
+            href: "tel:+15551234567",
+            isLink: true,
+            theme: {
+               gradient: "from-cyan-600/15 via-cyan-950/5 to-transparent",
+               glow: "bg-cyan-500/15 group-hover:bg-cyan-500/25",
+               border: "border-cyan-500/20",
+               hoverBorder: "group-hover:border-cyan-500/45",
+               topShimmer: "group-hover:via-cyan-400/60",
+               iconBg: "bg-cyan-500/15 group-hover:bg-cyan-500/25",
+               iconText: "text-cyan-400 group-hover:text-cyan-300",
+               iconBorder: "border-cyan-500/30",
+               dotBg: "bg-cyan-400",
+               badgeText: "text-cyan-400",
+               arrowHover:
+                  "group-hover:border-cyan-500/40 group-hover:bg-cyan-500/15 group-hover:text-cyan-300",
+               shadow: "hover:shadow-[0_0_40px_rgba(6,182,212,0.14)]",
+            },
+         },
+         {
+            icon: MapPin,
+            tag: "Headquarters",
+            title: "San Francisco, CA",
+            desc: "123 Innovation Dr., CA 94103",
+            href: null,
+            isLink: false,
+            theme: {
+               gradient: "from-amber-600/15 via-amber-950/5 to-transparent",
+               glow: "bg-amber-500/15 group-hover:bg-amber-500/25",
+               border: "border-amber-500/20",
+               hoverBorder: "group-hover:border-amber-500/45",
+               topShimmer: "group-hover:via-amber-400/60",
+               iconBg: "bg-amber-500/15 group-hover:bg-amber-500/25",
+               iconText: "text-amber-400 group-hover:text-amber-300",
+               iconBorder: "border-amber-500/30",
+               dotBg: "bg-amber-400",
+               badgeText: "text-amber-400",
+               arrowHover:
+                  "group-hover:border-amber-500/40 group-hover:bg-amber-500/15 group-hover:text-amber-300",
+               shadow: "hover:shadow-[0_0_40px_rgba(245,158,11,0.14)]",
+            },
+         },
+      ],
+      metaBadges: {
+         replyTime: "Average reply < 24 hrs",
+         security: "Encrypted transmission",
+      },
    },
    faq: {
       icon: HelpCircle,
       header: "Common Questions",
       title: "Frequently asked questions",
       description:
-         "Can't find the answer you're looking for? Reach out directly through the form above and we'll be happy to help.",
+         "Find answers to the most common questions about mock interviews, credits, and our platform.",
       items: [
          {
             question: "How quickly will I receive a response?",
@@ -30,7 +116,7 @@ export const contactData: ContactDataTypes = {
          {
             question: "I'm having a technical issue with my session. Who do I contact?",
             answer:
-               "Please use the contact form above and select 'Technical Support' as your subject. Include your session ID if you have it. Our engineering team monitors support tickets and will prioritize your case.",
+               "Please use the contact form and select 'Technical Support' as your subject. Include your session ID if you have it. Our engineering team monitors support tickets and will prioritize your case.",
          },
          {
             question: "Can I request a refund for unused credits?",

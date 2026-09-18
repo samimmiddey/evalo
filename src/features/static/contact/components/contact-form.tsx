@@ -1,173 +1,243 @@
 "use client";
 
-import { motion } from "motion/react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Send, MapPin, Phone, Mail } from "lucide-react";
-
-const SUBJECTS = [
-   "General Inquiry",
-   "Technical Support",
-   "Billing & Refunds",
-   "Partnerships",
-   "Become an Interviewer",
-   "Other",
-];
+import { Textarea } from "@/components/ui/textarea";
+import {
+   Select,
+   SelectContent,
+   SelectGroup,
+   SelectItem,
+   SelectTrigger,
+   SelectValue,
+} from "@/components/ui/select";
+import { Send, ArrowUpRight, ShieldCheck, Clock } from "lucide-react";
+import SecondaryTitle from "@/components/common/secondary-title";
+import PrimaryBody from "@/components/common/primary-body";
+import { toast } from "sonner";
+import { contactData } from "@/data/contact/contact.data";
 
 const ContactForm = () => {
+   const { formTitle, formDescription, channels, subjects, metaBadges } =
+      contactData.form;
+
+   const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      toast.success("Thank you! Your message has been sent successfully.");
+   };
+
    return (
-      <motion.div
-         initial={{ opacity: 0, y: 24 }}
-         whileInView={{ opacity: 1, y: 0 }}
-         viewport={{ once: true, margin: "-50px", amount: 0.1 }}
-         transition={{ duration: 0.5, ease: "easeOut" }}
-         className="group relative rounded-3xl bg-surface-dark/80 border border-violet-500/25 overflow-hidden transition-all duration-500 hover:border-violet-500/40 hover:shadow-[0_0_60px_-20px_rgba(139,92,246,0.3)]"
-      >
-         {/* Background Glows matching project style */}
-         <div className="absolute top-0 right-0 w-80 h-80 bg-violet-500/15 rounded-full blur-[80px] group-hover:bg-violet-500/25 transition-colors duration-500 pointer-events-none" />
-         <div className="absolute bottom-0 left-0 w-56 h-56 bg-fuchsia-600/8 rounded-full blur-[60px] pointer-events-none" />
+      <div className="space-y-8 lg:space-y-10">
+         {/* Top 3-Column Themed Channel Cards */}
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
+            {channels.map((item, idx) => {
+               const Icon = item.icon;
+               const theme = item.theme;
+               const numberStr = String(idx + 1).padStart(2, "0");
 
-         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_1.5fr]">
-            {/* Left side: Contact Info Card */}
-            <div className="p-8 lg:p-10 2xl:p-12 border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col justify-between">
-               <div>
-                  <h3 className="font-outfit text-2xl lg:text-3xl font-semibold text-zinc-100 mb-3">
-                     Let&apos;s talk
-                  </h3>
-                  <p className="text-zinc-400 font-inter text-sm lg:text-[15px] leading-relaxed mb-10">
-                     Whether you have a question about our services, pricing, or anything else, our team is ready to answer all your questions.
-                  </p>
+               const Content = (
+                  <div
+                     className={`group relative flex flex-col justify-between h-full px-6 py-7 lg:p-7 rounded-3xl bg-surface-dark/90 border ${theme.border} ${theme.hoverBorder} overflow-hidden transition-all duration-500 hover:-translate-y-1 ${theme.shadow}`}
+                  >
+                     {/* Top Gradient Wash */}
+                     <div
+                        className={`absolute inset-0 bg-linear-to-b ${theme.gradient} pointer-events-none transition-opacity duration-500 group-hover:opacity-100 opacity-60`}
+                     />
 
-                  <div className="flex flex-col gap-8">
-                     <div className="flex items-start gap-4 group/item cursor-pointer">
-                        <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-400 group-hover/item:text-violet-300 group-hover/item:border-violet-500/50 group-hover/item:bg-violet-500/20 transition-all duration-300 shadow-sm">
-                           <Mail className="w-5 h-5" />
+                     {/* Top Border Shimmer */}
+                     <div
+                        className={`absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 ${theme.topShimmer} to-transparent transition-colors duration-500 pointer-events-none`}
+                     />
+
+                     {/* Ambient Radial Glow Orb */}
+                     <div
+                        className={`pointer-events-none absolute -top-20 -right-20 w-48 h-48 rounded-full blur-[70px] transition-all duration-700 ${theme.glow}`}
+                     />
+
+                     <div className="relative z-10">
+                        {/* Header: Icon & Monospace Counter */}
+                        <div className="flex items-center justify-between mb-5">
+                           <div
+                              className={`flex items-center justify-center w-11 h-11 rounded-xl ${theme.iconBg} ${theme.iconBorder} ${theme.iconText} border shadow-inner transition-all duration-300 group-hover:scale-105`}
+                           >
+                              <Icon className="w-5 h-5" />
+                           </div>
+                           <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/2 border border-white/5">
+                              <span className={`w-1.5 h-1.5 rounded-full ${theme.dotBg}`} />
+                              <span
+                                 className={`font-mono text-xs font-semibold tracking-wider ${theme.badgeText}`}
+                              >
+                                 {numberStr}
+                              </span>
+                           </div>
                         </div>
-                        <div className="pt-0.5">
-                           <p className="text-zinc-500 font-inter text-sm mb-1">Email us at</p>
-                           <p className="text-zinc-200 font-medium group-hover/item:text-zinc-100 transition-colors duration-300">hello@evalo.io</p>
-                        </div>
+
+                        {/* Category & Title */}
+                        <span
+                           className={`font-mono text-xs font-semibold uppercase tracking-wider ${theme.badgeText} block mb-1`}
+                        >
+                           {item.tag}
+                        </span>
+                        <h4 className="text-lg font-outfit font-semibold text-zinc-100 group-hover:text-white transition-colors">
+                           {item.title}
+                        </h4>
                      </div>
 
-                     <div className="flex items-start gap-4 group/item cursor-pointer">
-                        <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-fuchsia-500/15 border border-fuchsia-500/30 text-fuchsia-400 group-hover/item:text-fuchsia-300 group-hover/item:border-fuchsia-500/50 group-hover/item:bg-fuchsia-500/20 transition-all duration-300 shadow-sm">
-                           <Phone className="w-5 h-5" />
-                        </div>
-                        <div className="pt-0.5">
-                           <p className="text-zinc-500 font-inter text-sm mb-1">Call us directly</p>
-                           <p className="text-zinc-200 font-medium group-hover/item:text-zinc-100 transition-colors duration-300">+1 (555) 123-4567</p>
-                        </div>
+                     {/* Bottom Row */}
+                     <div className="relative z-10 mt-5 pt-4 border-t border-white/5 flex items-center justify-between text-xs">
+                        <span className="text-xs text-zinc-400">
+                           {item.desc}
+                        </span>
+                        {item.isLink && (
+                           <div
+                              className={`w-7 h-7 rounded-full bg-white/3 border border-white/10 ${theme.arrowHover} flex items-center justify-center text-zinc-400 transition-all duration-300 shrink-0 ml-2`}
+                           >
+                              <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                           </div>
+                        )}
                      </div>
+                  </div>
+               );
 
-                     <div className="flex items-start gap-4 group/item cursor-pointer">
-                        <div className="shrink-0 inline-flex p-2.5 lg:p-3 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-400 group-hover/item:text-blue-300 group-hover/item:border-blue-500/50 group-hover/item:bg-blue-500/20 transition-all duration-300 shadow-sm">
-                           <MapPin className="w-5 h-5" />
-                        </div>
-                        <div className="pt-0.5">
-                           <p className="text-zinc-500 font-inter text-sm mb-1">Visit our office</p>
-                           <p className="text-zinc-200 font-medium group-hover/item:text-zinc-100 transition-colors duration-300">123 Innovation Dr.<br />San Francisco, CA 94103</p>
-                        </div>
-                     </div>
+               return item.isLink ? (
+                  <a key={idx} href={item.href!} className="block cursor-pointer">
+                     {Content}
+                  </a>
+               ) : (
+                  <div key={idx}>{Content}</div>
+               );
+            })}
+         </div>
+
+         {/* Main Form Card */}
+         <div className="px-6 py-7 lg:p-8 2xl:p-10 rounded-3xl bg-surface-dark border border-white/8 shadow-2xl">
+            <div className="mb-6 2xl:mb-8">
+               <SecondaryTitle
+                  text={formTitle}
+                  className="font-bold font-outfit mb-2 text-xl lg:text-2xl 2xl:text-3xl"
+               />
+               <PrimaryBody
+                  text={formDescription}
+                  className="text-sm lg:text-[15px] 2xl:text-base text-zinc-400"
+               />
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-5 2xl:space-y-6">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 2xl:gap-6">
+                  {/* Name */}
+                  <div className="space-y-2">
+                     <Label htmlFor="contact-name" className="text-sm text-zinc-300">
+                        Full Name
+                     </Label>
+                     <Input
+                        id="contact-name"
+                        name="name"
+                        type="text"
+                        required
+                        placeholder="John Doe"
+                        className="bg-white/3 border-white/10 text-zinc-100 placeholder:text-zinc-600"
+                     />
+                  </div>
+
+                  {/* Email */}
+                  <div className="space-y-2">
+                     <Label htmlFor="contact-email" className="text-sm text-zinc-300">
+                        Email Address
+                     </Label>
+                     <Input
+                        id="contact-email"
+                        name="email"
+                        type="email"
+                        required
+                        placeholder="john@example.com"
+                        className="bg-white/3 border-white/10 text-zinc-100 placeholder:text-zinc-600"
+                     />
                   </div>
                </div>
-            </div>
 
-            {/* Right side: Form */}
-            <div className="p-8 lg:p-10 2xl:p-12">
-               <form className="flex flex-col h-full justify-between" onSubmit={(e) => e.preventDefault()}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 2xl:gap-6 mb-8">
-                     {/* Name */}
-                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="contact-name">Full Name</Label>
-                        <Input
-                           id="contact-name"
-                           name="name"
-                           type="text"
-                           placeholder="John Smith"
-                           className="transition-all duration-200 hover:border-violet-500/30"
-                        />
-                     </div>
+               {/* Phone & Subject */}
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 2xl:gap-6">
+                  {/* Phone Number */}
+                  <div className="space-y-2">
+                     <Label htmlFor="contact-phone" className="text-sm text-zinc-300">
+                        Phone Number
+                     </Label>
+                     <Input
+                        id="contact-phone"
+                        name="phone"
+                        type="tel"
+                        placeholder="+1 (555) 000-0000"
+                        className="bg-white/3 border-white/10 text-zinc-100 placeholder:text-zinc-600"
+                     />
+                  </div>
 
-                     {/* Email */}
-                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="contact-email">Email Address</Label>
-                        <Input
-                           id="contact-email"
-                           name="email"
-                           type="email"
-                           placeholder="john@example.com"
-                           className="transition-all duration-200 hover:border-violet-500/30"
-                        />
-                     </div>
-
-                     {/* Subject */}
-                     <div className="md:col-span-2 flex flex-col gap-2">
-                        <Label htmlFor="contact-subject">Subject</Label>
-                        <div className="relative">
-                           <select
-                              id="contact-subject"
-                              name="subject"
-                              defaultValue=""
-                              className="w-full min-w-0 appearance-none rounded-lg border border-input bg-transparent dark:bg-input/30 bg-background/50 px-2.5 py-1 text-sm 2xl:text-base outline-none h-10 2xl:h-11 transition-all hover:border-violet-500/30 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 text-foreground cursor-pointer pr-9"
-                           >
-                              <option value="" disabled hidden className="text-muted-foreground/50">
-                                 Select a subject…
-                              </option>
-                              {SUBJECTS.map((s) => (
-                                 <option key={s} value={s} className="bg-zinc-900 text-zinc-100">
+                  {/* Subject */}
+                  <div className="flex flex-col gap-2">
+                     <Label htmlFor="contact-subject" className="text-sm text-zinc-300">
+                        Subject
+                     </Label>
+                     <Select name="subject" required>
+                        <SelectTrigger
+                           id="contact-subject"
+                           className="w-full bg-white/3 border-white/10 text-zinc-100 placeholder:text-zinc-600"
+                        >
+                           <SelectValue placeholder="Select a subject..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                           <SelectGroup>
+                              {subjects.map((s) => (
+                                 <SelectItem key={s} value={s}>
                                     {s}
-                                 </option>
+                                 </SelectItem>
                               ))}
-                           </select>
-                           <svg
-                              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
-                           >
-                              <polyline points="6 9 12 15 18 9" />
-                           </svg>
-                        </div>
-                     </div>
+                           </SelectGroup>
+                        </SelectContent>
+                     </Select>
+                  </div>
+               </div>
 
-                     {/* Message */}
-                     <div className="md:col-span-2 flex flex-col gap-2">
-                        <Label htmlFor="contact-message">
-                           Message
-                        </Label>
-                        <textarea
-                           id="contact-message"
-                           name="message"
-                           rows={5}
-                           placeholder="Tell us what you need help with…"
-                           className="w-full min-w-0 rounded-lg border border-input bg-transparent dark:bg-input/30 bg-background/50 px-2.5 py-2 text-sm 2xl:text-base outline-none transition-all hover:border-violet-500/30 resize-none placeholder:text-muted-foreground/50 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 text-foreground"
-                        />
+               {/* Message */}
+               <div className="space-y-2">
+                  <Label htmlFor="contact-message" className="text-sm text-zinc-300">
+                     Message
+                  </Label>
+                  <Textarea
+                     id="contact-message"
+                     name="message"
+                     rows={5}
+                     required
+                     placeholder="How can we help you?"
+                     className="w-full rounded-lg border border-white/10 bg-white/3 p-3 text-sm text-zinc-100 outline-none transition-all placeholder:text-zinc-600 resize-none h-28"
+                  />
+               </div>
+
+               {/* Submit Dock */}
+               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="hidden sm:flex items-center gap-4 text-xs text-zinc-500">
+                     <div className="flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5" />
+                        <span>{metaBadges.replyTime}</span>
+                     </div>
+                     <div className="flex items-center gap-1.5">
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        <span>{metaBadges.security}</span>
                      </div>
                   </div>
 
-                  {/* Submit */}
-                  <div className="mt-4">
-                     <Button
-                        type="button"
-                        size="xxl"
-                        variant="white"
-                        className="w-full sm:w-auto shrink-0 group/btn"
-                     >
-                        <span className="flex items-center gap-2">
-                           Send Message
-                           <Send className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
-                        </span>
-                     </Button>
-                  </div>
-               </form>
-            </div>
+                  <Button
+                     type="submit"
+                     size="xxl"
+                     variant="white"
+                     className="w-full sm:w-auto font-medium group/btn gap-2"
+                  >
+                     <span>Send Message</span>
+                     <Send className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                  </Button>
+               </div>
+            </form>
          </div>
-      </motion.div>
+      </div>
    );
 };
 
