@@ -256,7 +256,7 @@ const Hero = () => {
                               className={`absolute ${node.positionClass} w-45 sm:w-48 flex flex-col items-center text-center space-y-2 z-10`}
                            >
                               {/* 1. Standardized Header Pill */}
-                              <div className="inline-flex items-center gap-1.5 px-3 py-1.25 rounded-full bg-zinc-900/90 border border-violet-500/30 text-violet-300 text-xs font-mono shadow-md w-full justify-center">
+                              <div className="inline-flex items-center gap-1.5 px-3 py-1.25 rounded-full bg-surface-dark/90 border border-violet-500/30 text-violet-300 text-xs font-mono shadow-md w-full justify-center">
                                  <Icon className={`w-3.5 h-3.5 ${node.iconColor}`} />
                                  <span>
                                     {node.title}

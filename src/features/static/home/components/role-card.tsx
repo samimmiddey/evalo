@@ -40,11 +40,6 @@ const RoleCard = ({ data }: RoleCardProps) => {
                      className={`pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full blur-[90px] transition-all duration-700 ${role.theme.glow}`}
                   />
 
-                  {/* Background Watermark Index */}
-                  <span className="absolute top-4 right-6 sm:top-6 sm:right-8 font-mono text-7xl sm:text-8xl font-black text-white/2 group-hover:text-white/4 transition-colors duration-500 pointer-events-none select-none">
-                     {role.index}
-                  </span>
-
                   {/* Content Container */}
                   <div className="relative z-10 space-y-6 sm:space-y-7">
                      {/* Track Header & Monospace Identifier */}
