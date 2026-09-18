@@ -28,13 +28,13 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
          {/* Sidebar */}
          <aside
             className={cn(
-               "fixed left-0 top-0 h-dvh w-full bg-zinc-900 border-r border-white/8 z-9999 flex flex-col transform transition-transform duration-300 ease-in-out",
+               "fixed left-0 top-0 h-dvh w-full bg-zinc-900 border-r border-white/10 z-9999 flex flex-col transform transition-transform duration-300 ease-in-out",
                isOpen ? "translate-x-0" : "-translate-x-full",
                "md:hidden"
             )}
          >
             {/* Header */}
-            <div className="p-4 border-b border-white/8 flex items-center justify-between">
+            <div className="p-4 border-b border-white/5 flex items-center justify-between">
                <Link href='/' onClick={onClose}>
                   <Logo />
                </Link>

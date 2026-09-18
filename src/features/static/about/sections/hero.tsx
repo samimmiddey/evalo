@@ -140,7 +140,7 @@ const Hero = () => {
                                     {node.items.map((item, idx) => (
                                        <div
                                           key={idx}
-                                          className="py-1.5 px-2 rounded-lg bg-white/5 border border-white/8 flex flex-col items-center justify-center"
+                                          className="py-1.5 px-2 rounded-lg bg-white/5 border border-white/5 flex flex-col items-center justify-center"
                                        >
                                           <span className="font-semibold text-xs text-zinc-200 leading-tight truncate w-full text-center">
                                              {item.label}
@@ -268,7 +268,7 @@ const Hero = () => {
                                  {node.items.map((item, idx) => (
                                     <div
                                        key={idx}
-                                       className="py-1.25 px-1.5 rounded-lg bg-white/5 border border-white/8 flex flex-col items-center justify-center"
+                                       className="py-1.25 px-1.5 rounded-lg bg-white/5 border border-white/5 flex flex-col items-center justify-center"
                                     >
                                        <span className="font-semibold text-xs text-zinc-200 leading-tight truncate w-full text-center">
                                           {item.label}

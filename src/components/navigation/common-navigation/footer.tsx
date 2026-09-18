@@ -68,7 +68,7 @@ const Footer = () => {
                            target="_blank"
                            rel="noopener noreferrer"
                            aria-label={social.icon}
-                           className="flex items-center justify-center w-9 h-9 rounded-lg bg-surface-dark border border-white/8 text-zinc-400 hover:text-zinc-100 hover:border-white/20 hover:bg-white/5 transition-all duration-200"
+                           className="flex items-center justify-center w-9 h-9 rounded-lg bg-surface-dark border border-white/10 text-zinc-400 hover:text-zinc-100 hover:border-white/20 hover:bg-white/5 transition-all duration-200"
                         >
                            <SocialIcon type={social.icon} />
                         </Link>

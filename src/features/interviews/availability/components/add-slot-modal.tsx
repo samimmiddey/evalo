@@ -233,7 +233,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                                  ? "bg-zinc-900/20 text-zinc-600 border-white/5 cursor-not-allowed line-through"
                                  : isActive
                                     ? "bg-violet-500/15 border-violet-500/30 hover:bg-violet-500/20 text-violet-300 font-semibold shadow-xs"
-                                    : "bg-zinc-900/60 border-white/8 hover:border-violet-500/30 hover:bg-violet-500/15 text-zinc-300"
+                                    : "bg-zinc-900/60 border-white/10 hover:border-violet-500/30 hover:bg-violet-500/15 text-zinc-300"
                            )}
                         >
                            {preset.label}

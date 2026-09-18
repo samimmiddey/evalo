@@ -17,7 +17,7 @@ const ModalWrapper = ({ open, onClose, title, description, children, headerIcon 
          <DialogContent
             showCloseButton={false}
             className="flex flex-col gap-0 p-0 w-[calc(100%-2rem)] max-w-6xl max-h-[90vh]
-               rounded-2xl border border-white/8 bg-[#0f0f12] shadow-2xl shadow-black/60
+               rounded-2xl bg-[#0f0f12] shadow-2xl shadow-black/60
                sm:max-w-6xl overflow-hidden z-9999"
          >
             {/* Header */}
@@ -42,7 +42,7 @@ const ModalWrapper = ({ open, onClose, title, description, children, headerIcon 
                <button
                   onClick={onClose}
                   className="shrink-0 flex items-center justify-center w-6 2xl:w-7 h-6 2xl:h-7 rounded-lg
-                     bg-white/5 hover:bg-white/10 border border-white/8 hover:border-white/15
+                     bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/15
                      text-zinc-400 hover:text-zinc-100 transition-all duration-200 mt-0.5 cursor-pointer"
                   aria-label="Close modal"
                >

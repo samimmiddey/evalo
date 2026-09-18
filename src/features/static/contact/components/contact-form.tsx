@@ -85,13 +85,13 @@ const ContactForm = () => {
                      </div>
 
                      {/* Bottom Row */}
-                     <div className="relative z-10 mt-5 pt-4 border-t border-white/5 flex items-center justify-between text-xs">
+                     <div className="relative z-10 mt-5 pt-4 border-t border-white/6 flex items-center justify-between text-xs">
                         <span className="text-xs text-zinc-400">
                            {item.desc}
                         </span>
                         {item.isLink && (
                            <div
-                              className={`w-7 h-7 rounded-full bg-white/3 border border-white/10 ${theme.arrowHover} flex items-center justify-center text-zinc-400 transition-all duration-300 shrink-0 ml-2`}
+                              className={`w-7 h-7 rounded-full bg-white/3 border border-white/8 ${theme.arrowHover} flex items-center justify-center text-zinc-400 transition-all duration-300 shrink-0 ml-2`}
                            >
                               <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                            </div>
