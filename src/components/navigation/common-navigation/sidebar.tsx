@@ -28,7 +28,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
          {/* Sidebar */}
          <aside
             className={cn(
-               "fixed left-0 top-0 h-dvh w-full bg-zinc-900 border-r border-white/10 z-9999 flex flex-col transform transition-transform duration-300 ease-in-out",
+               "fixed left-0 top-0 h-dvh w-full bg-surface-dark border-r border-white/10 z-9999 flex flex-col transform transition-transform duration-300 ease-in-out",
                isOpen ? "translate-x-0" : "-translate-x-full",
                "md:hidden"
             )}
@@ -64,7 +64,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                               "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                               isActive
                                  ? "bg-violet-500/15 text-violet-400 border border-violet-500/25"
-                                 : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
+                                 : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200"
                            )}
                         >
                            {item.icon && <item.icon className="w-5 h-5" />}
