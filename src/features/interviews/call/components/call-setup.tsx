@@ -317,7 +317,7 @@ export const CallSetup = ({
                                  text={currentUserName}
                                  className="text-sm! lg:text-sm! 2xl:text-sm! font-medium! text-zinc-200!"
                               />
-                              <div className="flex items-center gap-1.5 mt-1.5 px-3 py-1 rounded-full bg-zinc-800/80 border border-white/10 text-xs text-zinc-400">
+                              <div className="flex items-center gap-1.5 mt-1.5 px-3 py-1 rounded-full bg-zinc-800/60 border border-white/10 text-xs text-zinc-400">
                                  <CameraOff className="size-3.5 text-zinc-500" />
                                  <span>Camera is turned off</span>
                               </div>

@@ -24,7 +24,7 @@ export const DashboardOverviewSkeleton = () => {
                      <div className="size-8 rounded-lg bg-zinc-800" />
                   </div>
                   <div className="h-7 w-16 rounded-md bg-zinc-800" />
-                  <div className="h-3 w-28 rounded bg-zinc-800/50" />
+                  <div className="h-3 w-28 rounded bg-zinc-800/60" />
                </CardLayout>
             ))}
          </div>
@@ -46,15 +46,15 @@ export const DashboardOverviewSkeleton = () => {
                         <div className="size-12 rounded-full bg-zinc-800 shrink-0" />
                         <div className="space-y-1.5">
                            <div className="h-4 w-32 rounded bg-zinc-800" />
-                           <div className="h-3 w-44 rounded bg-zinc-800/50" />
+                           <div className="h-3 w-44 rounded bg-zinc-800/60" />
                         </div>
                      </div>
-                     <div className="h-8 w-44 rounded-lg bg-zinc-800/40" />
+                     <div className="h-8 w-44 rounded-lg bg-zinc-800/60" />
                   </div>
 
                   {/* Action Footer */}
                   <div className="flex items-center justify-between gap-3 pt-1">
-                     <div className="h-4 w-28 rounded bg-zinc-800/50" />
+                     <div className="h-4 w-28 rounded bg-zinc-800/60" />
                      <div className="h-9 w-32 rounded-lg bg-zinc-800" />
                   </div>
                </CardLayout>
@@ -72,11 +72,11 @@ export const DashboardOverviewSkeleton = () => {
                            <div className="size-8 rounded-lg bg-zinc-800 shrink-0" />
                            <div className="space-y-2">
                               <div className="h-4 w-36 rounded bg-zinc-800" />
-                              <div className="h-4 w-52 max-w-full rounded bg-zinc-800/50" />
-                              <div className="h-4 w-44 max-w-full rounded bg-zinc-800/50" />
+                              <div className="h-4 w-52 max-w-full rounded bg-zinc-800/60" />
+                              <div className="h-4 w-44 max-w-full rounded bg-zinc-800/60" />
                            </div>
                         </div>
-                        <div className="size-4 rounded bg-zinc-800/40 shrink-0 mt-1" />
+                        <div className="size-4 rounded bg-zinc-800/60 shrink-0 mt-1" />
                      </div>
                   ))}
                </div>

@@ -27,9 +27,9 @@ export const AvailabilitySkeleton = () => {
                      >
                         <div className="flex items-center gap-2.5">
                            <div className="w-4 h-4 rounded bg-zinc-800 animate-pulse shrink-0" />
-                           <div className="h-3.5 w-32 bg-zinc-800/80 rounded animate-pulse" />
+                           <div className="h-3.5 w-32 bg-zinc-800/60 rounded animate-pulse" />
                         </div>
-                        <div className="w-7 h-7 rounded-lg bg-zinc-800/40 animate-pulse shrink-0" />
+                        <div className="w-7 h-7 rounded-lg bg-zinc-800/60 animate-pulse shrink-0" />
                      </div>
                   ))}
                </div>

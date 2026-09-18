@@ -102,11 +102,11 @@ export const LoadingState = () => {
                      <div className="flex items-center gap-2 flex-1">
                         <div className="size-5 rounded-md bg-zinc-800 animate-pulse shrink-0" />
                         <div
-                           className="h-3.5 rounded-md bg-zinc-800/90 animate-pulse"
+                           className="h-3.5 rounded-md bg-zinc-800 animate-pulse"
                            style={{ width: num === 1 ? '55%' : num === 2 ? '70%' : '60%' }}
                         />
                      </div>
-                     <div className="h-4 w-12 rounded-full bg-zinc-800/80 animate-pulse shrink-0" />
+                     <div className="h-4 w-12 rounded-full bg-zinc-800/60 animate-pulse shrink-0" />
                   </div>
 
                   {/* Question Body Lines */}
@@ -121,8 +121,8 @@ export const LoadingState = () => {
 
                   {/* Accordion Footer Skeleton */}
                   <div className="pt-2.5 border-t border-white/5 flex items-center justify-between">
-                     <div className="h-2.5 w-32 rounded-md bg-zinc-800/40 animate-pulse" />
-                     <div className="size-3 rounded-md bg-zinc-800/40 animate-pulse" />
+                     <div className="h-2.5 w-32 rounded-md bg-zinc-800/60 animate-pulse" />
+                     <div className="size-3 rounded-md bg-zinc-800/60 animate-pulse" />
                   </div>
                </div>
             ))}

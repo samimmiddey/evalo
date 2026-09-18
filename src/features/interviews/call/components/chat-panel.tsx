@@ -226,7 +226,7 @@ const CustomMessageUI = () => {
 const EmptyChatState = () => (
    <div className="flex flex-col items-center justify-center h-full p-6 text-center text-zinc-400">
       <div className="relative mb-4">
-         <div className="relative flex items-center justify-center size-12 rounded-xl bg-zinc-800/90 border border-zinc-500/30 text-zinc-400">
+         <div className="relative flex items-center justify-center size-12 rounded-xl bg-zinc-800 border border-zinc-500/30 text-zinc-400">
             <MessageSquare className="size-5" />
          </div>
       </div>

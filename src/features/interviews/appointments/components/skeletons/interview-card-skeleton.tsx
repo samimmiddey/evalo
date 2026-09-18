@@ -30,7 +30,7 @@ const InterviewCardSkeleton = ({ view = 'list' }: InterviewCardSkeletonProps) =>
                   </div>
 
                   {/* Experience text */}
-                  <div className="h-3 w-1/3 bg-zinc-800/40 rounded-md animate-pulse" />
+                  <div className="h-3 w-1/3 bg-zinc-800/60 rounded-md animate-pulse" />
 
                   {/* Expertise Badges */}
                   <div className="flex flex-wrap gap-1.5 pt-2">
@@ -50,17 +50,17 @@ const InterviewCardSkeleton = ({ view = 'list' }: InterviewCardSkeletonProps) =>
                      {/* Date */}
                      <div className="flex items-center gap-2">
                         <div className="h-4 w-4 rounded bg-zinc-800 animate-pulse" />
-                        <div className="h-4 w-24 bg-zinc-800/80 rounded animate-pulse" />
+                        <div className="h-4 w-24 bg-zinc-800/60 rounded animate-pulse" />
                      </div>
                      {/* Time */}
                      <div className="flex items-center gap-2">
                         <div className="h-4 w-4 rounded bg-zinc-800 animate-pulse" />
-                        <div className="h-4 w-32 bg-zinc-800/80 rounded animate-pulse" />
+                        <div className="h-4 w-32 bg-zinc-800/60 rounded animate-pulse" />
                      </div>
                      {/* Duration */}
                      <div className="flex items-center gap-2">
                         <div className="h-4 w-4 rounded bg-zinc-800 animate-pulse" />
-                        <div className="h-4 w-16 bg-zinc-800/80 rounded animate-pulse" />
+                        <div className="h-4 w-16 bg-zinc-800/60 rounded animate-pulse" />
                      </div>
                   </div>
 
@@ -88,7 +88,7 @@ const InterviewCardSkeleton = ({ view = 'list' }: InterviewCardSkeletonProps) =>
 
                {/* Bottom Row / Actions Bone */}
                <div className="p-6 2xl:p-7 flex flex-wrap items-center justify-end gap-2.5 2xl:gap-3">
-                  <div className="h-9 w-28 bg-zinc-800/40 rounded-lg animate-pulse" />
+                  <div className="h-9 w-28 bg-zinc-800/60 rounded-lg animate-pulse" />
                   <div className="h-9 w-36 bg-zinc-800 rounded-lg animate-pulse" />
                </div>
 
