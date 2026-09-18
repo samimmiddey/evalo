@@ -74,7 +74,7 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
          </div>
 
          {/* Centre: Participants Pill */}
-         <div className="hidden md:flex items-center gap-3 px-3.5 py-1.5 rounded-xl bg-zinc-950/60 border border-white/5 shadow-inner">
+         <div className="hidden md:flex items-center gap-3 px-3.5 py-1.5 rounded-xl bg-zinc-950/70 border border-white/5 shadow-inner">
             <div className="flex items-center gap-2">
                <Avatar className="border border-white/20 size-7 shrink-0">
                   <AvatarImage src={interviewee.imageUrl ?? undefined} alt={intervieweeName} />

@@ -295,7 +295,7 @@ const CustomChatInput = ({ chatChannel }: { chatChannel: StreamChannel; }) => {
    };
 
    return (
-      <div className="p-3 bg-zinc-950/80 border-t border-white/10 backdrop-blur-md shrink-0">
+      <div className="p-3 bg-zinc-950/70 border-t border-white/10 backdrop-blur-md shrink-0">
          {/* Attachment Preview Chip */}
          {attachedFile && (
             <div className="flex items-center gap-2 mb-2 p-1.5 px-3 rounded-lg bg-zinc-900 border border-white/10 text-xs text-zinc-300 w-fit">

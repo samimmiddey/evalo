@@ -348,7 +348,7 @@ export const CallSetup = ({
                         </div>
 
                         {/* Floating bottom toolbar */}
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 p-1.5 rounded-2xl bg-zinc-950/80 backdrop-blur-md border border-white/15 shadow-2xl">
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 p-1.5 rounded-2xl bg-zinc-950/70 backdrop-blur-md border border-white/15 shadow-2xl">
                            <CustomTooltip
                               trigger={
                                  <Button
@@ -429,7 +429,7 @@ export const CallSetup = ({
                            </Badge>
                         </div>
 
-                        <div className="flex items-center gap-3 p-3 rounded-xl bg-zinc-950/60 border border-white/5">
+                        <div className="flex items-center gap-3 p-3 rounded-xl bg-zinc-950/70 border border-white/5">
                            <Avatar className="size-10 border border-white/10 shrink-0">
                               <AvatarImage src={counterParty.imageUrl ?? undefined} alt={counterPartyName} />
                               <AvatarFallback className="bg-zinc-800 text-violet-300 text-xs font-semibold">
@@ -489,7 +489,7 @@ export const CallSetup = ({
                               onValueChange={(val) => { void handleSelectCamera(val); }}
                               disabled={cameraDevices.length === 0}
                            >
-                              <SelectTrigger className="w-full bg-zinc-950/80 border-white/10 text-zinc-200 text-xs h-10">
+                              <SelectTrigger className="w-full bg-zinc-950/70 border-white/10 text-zinc-200 text-xs h-10">
                                  <SelectValue placeholder={cameraDevices.length ? 'Select camera' : 'No camera detected'} />
                               </SelectTrigger>
                               <SelectContent className="bg-zinc-900 border-white/10 text-zinc-200 text-xs">
@@ -524,7 +524,7 @@ export const CallSetup = ({
                               onValueChange={(val) => { void handleSelectMicrophone(val); }}
                               disabled={micDevices.length === 0}
                            >
-                              <SelectTrigger className="w-full bg-zinc-950/80 border-white/10 text-zinc-200 text-xs h-10">
+                              <SelectTrigger className="w-full bg-zinc-950/70 border-white/10 text-zinc-200 text-xs h-10">
                                  <SelectValue placeholder={micDevices.length ? 'Select microphone' : 'No microphone detected'} />
                               </SelectTrigger>
                               <SelectContent className="bg-zinc-900 border-white/10 text-zinc-200 text-xs">
@@ -566,7 +566,7 @@ export const CallSetup = ({
                                  value={selectedSpeaker || ''}
                                  onValueChange={(val) => { void handleSelectSpeaker(val); }}
                               >
-                                 <SelectTrigger className="w-full bg-zinc-950/80 border-white/10 text-zinc-200 text-xs h-10">
+                                 <SelectTrigger className="w-full bg-zinc-950/70 border-white/10 text-zinc-200 text-xs h-10">
                                     <SelectValue placeholder="Select speaker" />
                                  </SelectTrigger>
                                  <SelectContent className="bg-zinc-900 border-white/10 text-zinc-200 text-xs">
@@ -578,7 +578,7 @@ export const CallSetup = ({
                                  </SelectContent>
                               </Select>
                            ) : (
-                              <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-950/50 border border-white/5 text-xs text-zinc-400">
+                              <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-950/70 border border-white/5 text-xs text-zinc-400">
                                  <span>Default System Audio Output</span>
                                  <CheckCircle2 className="size-3.5 text-emerald-500" />
                               </div>
