@@ -8,7 +8,7 @@ interface HeaderTextProps {
 const HeaderText = ({ icon: Icon, text }: HeaderTextProps) => {
    return (
       <div
-         className='text-violet-300 font-lobster text-[15px] 2xl:text-lg gap-2 flex items-center'
+         className='text-violet-300 font-lobster text-base 2xl:text-xl gap-2 flex items-center'
       >
          {Icon && <Icon className='h-4 2xl:h-5 w-4 2xl:w-5' />}
          {text}

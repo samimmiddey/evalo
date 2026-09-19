@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit, Inter, MuseoModerno, Lobster_Two } from "next/font/google";
+import { Outfit, Inter, MuseoModerno, Lobster } from "next/font/google";
 import "./css/globals.css";
 import "./css/responsive.css";
 import "./css/external.css";
@@ -19,10 +19,10 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const lobster = Lobster_Two({
+const lobster = Lobster({
   variable: "--font-lobster",
   subsets: ["latin"],
-  weight: ['400', '700'],
+  weight: ['400'],
 });
 
 const musemoderno = MuseoModerno({
