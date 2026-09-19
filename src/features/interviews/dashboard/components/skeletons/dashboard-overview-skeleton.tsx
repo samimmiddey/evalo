@@ -17,7 +17,7 @@ export const DashboardOverviewSkeleton = () => {
             {Array.from({ length: 4 }).map((_, i) => (
                <CardLayout
                   key={i}
-                  className="p-5! space-y-3 bg-zinc-900/40! border-white/5! hover:shadow-none"
+                  className="p-5! space-y-3 border-white/5!"
                >
                   <div className="flex items-center justify-between">
                      <div className="h-3.5 w-24 rounded bg-zinc-800" />
@@ -33,7 +33,7 @@ export const DashboardOverviewSkeleton = () => {
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 2xl:gap-7 items-start">
             {/* Left Column: Next Up Session Card Skeleton */}
             <div className="lg:col-span-2 space-y-6">
-               <CardLayout className="p-5.5! space-y-5 bg-zinc-900/40! border-white/5! hover:shadow-none">
+               <CardLayout className="p-5.5! space-y-5 border-white/5!">
                   {/* Card Header */}
                   <div className="flex items-center justify-between">
                      <div className="h-5 w-40 rounded bg-zinc-800" />

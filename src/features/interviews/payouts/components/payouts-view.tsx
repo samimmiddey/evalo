@@ -57,7 +57,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
    return (
       <div className="space-y-6">
          {/* Wallet Card */}
-         <CardLayout className="space-y-6 2xl:p-7 p-5 bg-zinc-900/40! border-white/5! hover:shadow-none">
+         <CardLayout className="space-y-6 2xl:p-7 p-5 border-white/5!">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                <div className="flex items-start gap-3">
                   <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-300">

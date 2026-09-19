@@ -6,7 +6,7 @@ export const AvailabilitySkeleton = () => {
          {Array.from({ length: 2 }).map((_, groupIdx) => (
             <CardLayout
                key={groupIdx}
-               className="p-5! space-y-4"
+               className="p-5! space-y-4 border-white/5!"
             >
                {/* Date Group Header Bone */}
                <div className="flex items-center justify-between gap-2 border-b border-white/5 pb-3">

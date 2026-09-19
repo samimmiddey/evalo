@@ -7,7 +7,7 @@ interface InterviewCardSkeletonProps {
 
 const InterviewCardSkeleton = ({ view = 'list' }: InterviewCardSkeletonProps) => {
    return (
-      <CardLayout className="max-sm:p-0!">
+      <CardLayout className="max-sm:p-0! border-white/5!">
          {/* Layout container matching view structure */}
          <div className={`flex w-full ${view === 'grid' ? 'flex-col' : 'flex-col lg:flex-row lg:items-stretch'}`}>
 

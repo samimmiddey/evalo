@@ -4,7 +4,7 @@ export const PayoutsSkeleton = () => {
    return (
       <div className="space-y-6">
          {/* Wallet Card Skeleton */}
-         <CardLayout className="space-y-6 2xl:p-7 p-5">
+         <CardLayout className="space-y-6 2xl:p-7 p-5 border-white/5!">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-lg bg-zinc-800 animate-pulse border border-white/5 shrink-0" />

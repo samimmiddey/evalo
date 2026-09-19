@@ -114,7 +114,7 @@ export const AvailabilityView = () => {
                {groupedSlots.map((group) => (
                   <CardLayout
                      key={group.date}
-                     className="p-5! space-y-4 bg-zinc-900/40! border-white/5! hover:shadow-none"
+                     className="p-5! space-y-4 border-white/5!"
                   >
                      {/* Date Group Header */}
                      <div className="flex items-center justify-between gap-2 border-b border-white/5 pb-3">

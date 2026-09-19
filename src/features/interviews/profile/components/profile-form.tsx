@@ -82,7 +82,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
    return (
       <div className="space-y-6">
          {/* Form Card */}
-         <CardLayout className="bg-zinc-900/40! border-white/5! hover:shadow-none">
+         <CardLayout className="border-white/5!">
             <div className="flex items-start gap-2.5 pb-5 border-b border-white/5 mb-6">
                <div className="flex items-center justify-center w-8.5 h-8.5 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-400 shrink-0 mt-0.5">
                   <UserPen className="w-4 h-4" />

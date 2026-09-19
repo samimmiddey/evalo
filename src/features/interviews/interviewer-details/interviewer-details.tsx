@@ -51,7 +51,7 @@ const InterviewerDetails = ({ interviewer, feedback }: InterviewerDetailsProps) 
                {
                   interviewer.availabilities.length === 0 ? (
                      <GradientWrapper
-                        className="h-auto relative rounded-2xl shadow-2xl min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.15)]"
+                        className="h-auto relative rounded-2xl shadow-2xl min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30"
                         showGrid={false}
                      >
                         <div className="min-h-30 2xl:h-40 flex items-center justify-center">

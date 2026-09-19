@@ -28,7 +28,7 @@ export const DashboardQuickActions = ({ actions }: DashboardQuickActionsProps) =
                   <Link
                      key={action.title}
                      href={action.href}
-                     className="group block p-5 rounded-xl bg-zinc-900/40 border border-white/5 hover:border-white/15 transition-all duration-200"
+                     className="group block p-5 rounded-xl bg-zinc-900/40 border border-white/5 hover:border-white/10 transition-all duration-200"
                   >
                      <div className="flex items-start justify-between gap-3">
                         <div className="flex items-start gap-3.5">

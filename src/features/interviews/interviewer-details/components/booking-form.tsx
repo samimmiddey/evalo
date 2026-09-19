@@ -20,7 +20,7 @@ import { handleBookSession } from '../services/details.client.service';
 import { useMutation } from '@/hooks/use-mutation';
 import CustomSpinner from '@/components/common/custom-spinner';
 import { Badge } from '@/components/ui/badge';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface BookingFormProps {
    interviewer: InterviewerDetails;
@@ -52,8 +52,6 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
    const [isBooked, setIsBooked] = useState<boolean>(false);
 
    const { isPending, error, mutate: mutateBookSession } = useMutation(handleBookSession);
-
-   const router = useRouter();
 
    // Extract unique dates from availabilities
    useEffect(() => {
@@ -123,7 +121,6 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
       if (result) {
          toast.success("Your slot has been booked successfully!");
          setIsBooked(true);
-         router.push('/dashboard/appointments');
       }
    };
 
@@ -133,10 +130,24 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
       }
    }, [error]);
 
-   const wrapperClasses = 'min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.15)]';
+   // Reset back to step 1
+   const handleBookAnotherSession = () => {
+      setStep(1);
+      setIsBooked(false);
+      setSelectedDateSlot('');
+      setSelectedTimeSlot({
+         startTime: '',
+         endTime: '',
+         displayStart: '',
+         displayEnd: ''
+      });
+   };
+
+   const wrapperClasses = 'min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30';
+
    return (
       <GradientWrapper
-         className={`h-auto relative rounded-2xl shadow-2xl ${wrapperClasses}`}
+         className={`h-auto relative rounded-2xl ${wrapperClasses}`}
          showGrid={false}
       >
          {/* Success State Overlay */}
@@ -149,7 +160,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   className="absolute inset-0 z-20"
                >
                   <GradientWrapper
-                     className={`h-full w-full flex flex-col items-center justify-center p-6 2xl:p-8 text-center space-y-4 ${wrapperClasses}`}
+                     className={`h-full w-full flex flex-col items-center justify-center p-6 2xl:p-8 text-center space-y-4 border-none! ${wrapperClasses}`}
                      showGrid={false}
                   >
                      <motion.div
@@ -183,13 +194,22 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                         </div>
                      </div>
 
-                     <Button
-                        className="w-full bg-violet-600 hover:bg-violet-700 text-zinc-100 mt-2"
-                        size='lg'
-                        onClick={() => setStep(1)}
-                     >
-                        Book Another Session
-                     </Button>
+                     <div className="flex flex-col gap-2.5 w-full mt-1">
+                        <Button
+                           className="w-full bg-violet-600 hover:bg-violet-700 text-zinc-100 h-10"
+                           onClick={handleBookAnotherSession}
+                        >
+                           Book Another Session
+                        </Button>
+                        <Link href='/dashboard/appointments' className="w-full">
+                           <Button
+                              className="w-full h-10"
+                              variant='outline'
+                           >
+                              Check Appointments
+                           </Button>
+                        </Link>
+                     </div>
                   </GradientWrapper>
                </motion.div>
             )}
@@ -323,8 +343,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                   <Button
                      type="button"
                      variant="outline"
-                     size="lg"
-                     className="w-1/3"
+                     className="w-1/3 h-10"
                      onClick={handlePrevStep}
                   >
                      Back
@@ -334,8 +353,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                {step < 3 ? (
                   <Button
                      type="button"
-                     size="lg"
-                     className="bg-violet-600 hover:bg-violet-700 text-zinc-100 grow"
+                     className="bg-violet-600 hover:bg-violet-700 text-zinc-100 grow h-10"
                      onClick={handleNextStep}
                      disabled={(step === 1 && !selectedDateSlot) || (step === 2 && !selectedTimeSlot.startTime)}
                   >
@@ -344,8 +362,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                ) : (
                   <Button
                      type="button"
-                     size="lg"
-                     className="bg-emerald-600 hover:bg-emerald-700 text-zinc-100 grow flex items-center justify-center gap-2"
+                     className="bg-emerald-600 hover:bg-emerald-700 text-zinc-100 grow flex items-center justify-center gap-2 h-10"
                      onClick={() => {
                         void handleSubmit();
                      }}
