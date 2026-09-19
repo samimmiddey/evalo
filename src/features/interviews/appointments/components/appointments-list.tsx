@@ -17,18 +17,18 @@ interface AppointmentsListProps {
 }
 
 const AppointmentsList = ({ filterParams, view, onViewFeedback }: AppointmentsListProps) => {
-   const debouncedParams = useDebounce(filterParams, 500);
+   const debouncedSearch = useDebounce(filterParams.search, 500);
 
    const params = {
       page: 1,
       pageSize: 10,
-      search: debouncedParams.search,
-      status: debouncedParams.status
+      search: debouncedSearch,
+      status: filterParams.status
    };
 
    const { isLoading, data, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch: refetchInterviewList } = useInfiniteFetch(
       (page) => getAppointments({ ...params, page }),
-      [debouncedParams]
+      [debouncedSearch, filterParams.status]
    );
 
    const { ref: sentinelRef } = usePaginationTrigger({

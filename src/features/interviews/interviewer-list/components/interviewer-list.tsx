@@ -16,20 +16,20 @@ interface InterviewerListProps {
 }
 
 const InterviewerList = ({ view, filterParams }: InterviewerListProps) => {
-   const debouncedParams = useDebounce(filterParams, 500);
+   const debouncedSearch = useDebounce(filterParams.search, 500);
 
    const params = {
       page: 1,
       pageSize: 10,
-      search: debouncedParams.search,
-      expertise: debouncedParams.expertise,
-      experience: debouncedParams.experience
+      search: debouncedSearch,
+      expertise: filterParams.expertise,
+      experience: filterParams.experience
    };
 
    // Get all interviewers with pagination and filters
    const { isLoading, data, error, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteFetch(
       (page) => getInterviewers({ ...params, page }),
-      [debouncedParams]
+      [debouncedSearch, filterParams.expertise, filterParams.experience]
    );
 
    const { ref: sentinelRef } = usePaginationTrigger({
