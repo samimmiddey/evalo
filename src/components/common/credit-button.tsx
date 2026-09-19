@@ -2,25 +2,29 @@
 
 import { Button } from '@/components/ui/button';
 import { Coins } from 'lucide-react';
-import { useState } from 'react';
-import UpgradeModal from '@/components/common/upgrade-modal';
 import useMediaQuery from '@/hooks/use-media-query';
+import useUIStore from '@/store/ui-store';
 
 interface CreditButtonProps {
    role?: string;
    credits?: number;
+   onCloseSidebar?: (value: boolean) => void;
 }
 
-const CreditButton = ({ role, credits }: CreditButtonProps) => {
-   const [openModal, setOpenModal] = useState<boolean>(false);
+const CreditButton = ({ role, credits, onCloseSidebar }: CreditButtonProps) => {
+   const { setUpgradeModal } = useUIStore();
+
+   const lgWidth = useMediaQuery(1024);
 
    const handleButton = () => {
       if (role === 'INTERVIEWEE') {
-         setOpenModal(true);
+         setUpgradeModal(true);
+
+         if (lgWidth && onCloseSidebar) {
+            onCloseSidebar(false);
+         }
       }
    };
-
-   const lgWidth = useMediaQuery(1024);
 
    return (
       <>
@@ -34,7 +38,6 @@ const CreditButton = ({ role, credits }: CreditButtonProps) => {
                {credits} {!lgWidth && (role === 'INTERVIEWER' ? 'Earned' : 'Credits')}
             </span>
          </Button>
-         <UpgradeModal open={openModal} onClose={() => setOpenModal(prev => !prev)} />
       </>
    );
 };

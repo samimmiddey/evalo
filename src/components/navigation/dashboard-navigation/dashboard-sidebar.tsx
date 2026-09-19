@@ -61,6 +61,7 @@ const DashboardSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =>
                      <CreditButton
                         role={user?.role}
                         credits={user?.role === 'INTERVIEWER' ? user?.creditBalance : user?.credits}
+                        onCloseSidebar={setOpenMobile}
                      /> :
                      <div className='h-9 w-full rounded-md animate-pulse bg-zinc-800' />
                }
