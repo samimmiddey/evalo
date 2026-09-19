@@ -28,7 +28,7 @@ export const ErrorState = ({ error, onRetry }: ErrorStateProps) => {
             type="button"
             size="sm"
             onClick={onRetry}
-            className="mt-1 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-white/10 text-xs font-medium gap-1.5 cursor-pointer"
+            className="mt-1 h-8 rounded-lg bg-zinc-500/15 hover:bg-zinc-500/30 text-zinc-200 border border-white/10 text-xs font-medium gap-1.5 cursor-pointer"
          >
             <RotateCcw className="size-3.5" />
             <span>Try Again</span>
