@@ -22,6 +22,7 @@ import CustomSpinner from '@/components/common/custom-spinner';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { useAppUser } from '@/hooks/use-app-user';
+import { useRouter } from 'next/navigation';
 
 interface BookingFormProps {
    interviewer: InterviewerDetails;
@@ -53,6 +54,8 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
    const [isBooked, setIsBooked] = useState<boolean>(false);
 
    const { refetch: refetchUser } = useAppUser();
+
+   const router = useRouter();
 
    const { isPending, error, mutate: mutateBookSession } = useMutation(handleBookSession);
 
@@ -125,6 +128,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
          toast.success("Your slot has been booked successfully!");
          setIsBooked(true);
          await refetchUser();
+         router.refresh();
       }
    };
 
