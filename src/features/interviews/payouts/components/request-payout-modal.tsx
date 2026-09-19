@@ -89,7 +89,7 @@ export const RequestPayoutModal = ({
             onSubmit={(e) => {
                void handleSubmit((data) => void onSubmit(data))(e);
             }}
-            className="py-5 space-y-6 text-zinc-100 font-inter"
+            className="space-y-5 2xl:space-y-6 text-zinc-100 font-inter"
          >
             {/* Calculation Card */}
             <div className="p-4 rounded-xl bg-violet-950/20 border border-violet-500/20 space-y-3">

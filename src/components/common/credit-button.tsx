@@ -24,20 +24,16 @@ const CreditButton = ({ role, credits }: CreditButtonProps) => {
 
    return (
       <>
-         {
-            credits ?
-               <Button
-                  variant='white'
-                  className='rounded-md'
-                  onClick={handleButton}
-               >
-                  <Coins className='icon-size' />
-                  <span>
-                     {credits} {!lgWidth && (role === 'INTERVIEWER' ? 'Earned' : 'Credits')}
-                  </span>
-               </Button> :
-               <div className='h-9 w-full rounded-md animate-pulse bg-zinc-800' />
-         }
+         <Button
+            variant='white'
+            className='rounded-md'
+            onClick={handleButton}
+         >
+            <Coins className='icon-size' />
+            <span>
+               {credits} {!lgWidth && (role === 'INTERVIEWER' ? 'Earned' : 'Credits')}
+            </span>
+         </Button>
          <UpgradeModal open={openModal} onClose={() => setOpenModal(prev => !prev)} />
       </>
    );

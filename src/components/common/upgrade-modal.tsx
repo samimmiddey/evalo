@@ -31,11 +31,11 @@ const UpgradeModal = ({ open, onClose }: UpgradeModalProps) => {
                   <NoDataCard text="No plans available" />
                </div>
             ) : (
-               <div className="scale-none sm:scale-95 2xl:scale-90 max-sm:mt-7 max-2xl:mt-6">
+               <div className="scale-none sm:scale-95 2xl:scale-90 max-sm:mt-4 max-lg:mt-0 max-2xl:mt-4">
                   <PricingCardContainer
                      plans={plans}
                      disableAnimation={true}
-                     className='pb-7 sm:pb-8 2xl:pb-4'
+                     className='pb-2 lg:pb-6 2xl:pb-2'
                   />
                </div>
             )

@@ -105,7 +105,7 @@ export const FeedbackModal = ({
          description={modalDescription}
          headerIcon={<FileText className="w-4 h-4 text-violet-400" />}
       >
-         <div className="py-5 space-y-4 text-zinc-100">
+         <div className="space-y-4 text-zinc-100">
             {/* Top Overview Cards (2 Columns) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                {/* Overall Performance */}

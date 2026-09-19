@@ -56,10 +56,14 @@ const DashboardSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =>
          {/* Sidebar Footer */}
          <SidebarFooter className="p-3.5 border-t border-white/5 bg-zinc-900/40">
             <div className="w-full flex flex-col gap-2">
-               <CreditButton
-                  role={user?.role}
-                  credits={user?.role === 'INTERVIEWER' ? user?.creditBalance : user?.credits}
-               />
+               {
+                  user ?
+                     <CreditButton
+                        role={user?.role}
+                        credits={user?.role === 'INTERVIEWER' ? user?.creditBalance : user?.credits}
+                     /> :
+                     <div className='h-9 w-full rounded-md animate-pulse bg-zinc-800' />
+               }
             </div>
          </SidebarFooter>
       </Sidebar>

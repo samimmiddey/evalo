@@ -212,7 +212,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
          description="Choose a date and time window. The scheduler will automatically split your window into bookable slots."
          headerIcon={<ClockFading className="w-4 h-4 text-violet-400" />}
       >
-         <div className="py-5 space-y-6 text-zinc-100 font-inter">
+         <div className="space-y-5 2xl:space-y-6 text-zinc-100 font-inter">
             {/* Quick Presets */}
             <div className="space-y-2">
                <Label className="text-xs font-semibold uppercase text-zinc-400">Quick Presets</Label>

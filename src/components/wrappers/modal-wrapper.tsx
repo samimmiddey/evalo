@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTitle } from '../ui/dialog';
-import { Sparkles, X } from 'lucide-react';
+import { LayersPlus, X } from 'lucide-react';
 import { ReactNode } from 'react';
 
 interface ModalWrapperProps {
@@ -17,16 +17,16 @@ const ModalWrapper = ({ open, onClose, title, description, children, headerIcon 
          <DialogContent
             showCloseButton={false}
             className="flex flex-col gap-0 p-0 w-[calc(100%-2rem)] max-w-6xl max-h-[90vh]
-               rounded-2xl bg-[#0f0f12] shadow-2xl shadow-black/60
+               rounded-2xl bg-zinc-950 shadow-2xl shadow-black/60
                sm:max-w-6xl overflow-hidden z-9999"
          >
             {/* Header */}
-            <DialogTitle className="relative z-10 shrink-0 flex items-start justify-between gap-4 px-6 pt-6 pb-5 sm:px-7 sm:pt-7 border-b border-white/5">
+            <DialogTitle className="relative z-10 shrink-0 flex items-start justify-between gap-4 px-5 sm:px-6 pt-6 pb-5 2xl:pt-6.5 2xl:px-6.5 2xl:pb-5.5 border-b border-white/10">
                <div className="flex flex-col gap-1.5">
                   <div className="flex items-center gap-2.5 mb-1">
-                     <div className="flex items-center justify-center w-7 h-7 2xl:w-8 2xl:h-8 rounded-lg bg-violet-500/20 border border-violet-500/30">
+                     <div className="flex items-center justify-center w-7.5 h-7.5 2xl:w-8 2xl:h-8 rounded-lg bg-violet-500/20 border border-violet-500/30">
                         {
-                           headerIcon ? headerIcon : <Sparkles className="w-4 h-4 text-violet-400" />
+                           headerIcon ? headerIcon : <LayersPlus className="w-4 h-4 text-violet-400" />
                         }
                      </div>
                      <span className="text-xs 2xl:text-sm font-bold uppercase tracking-widest text-zinc-100">
@@ -51,7 +51,7 @@ const ModalWrapper = ({ open, onClose, title, description, children, headerIcon 
             </DialogTitle>
 
             {/* Scrollable body */}
-            <div className="relative z-10 flex-1 min-h-0 overflow-y-auto px-5 sm:px-6 lg:px-7
+            <div className="relative z-10 flex-1 min-h-0 overflow-y-auto p-5 2xl:p-6
                [scrollbar-width:thin] [scrollbar-color:rgba(113,113,122,0.3)_transparent]">
                {children}
             </div>
