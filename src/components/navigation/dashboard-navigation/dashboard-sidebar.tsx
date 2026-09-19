@@ -26,7 +26,7 @@ const DashboardSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =>
       <Sidebar
          {...props}
          collapsible="offcanvas"
-         className="border-r border-white/5 **:data-[sidebar=sidebar]:bg-zinc-900/40 **:data-[sidebar=sidebar]:border-r **:data-[sidebar=sidebar]:border-white/5"
+         className="border-r border-white/5 **:data-[sidebar=sidebar]:bg-zinc-900/40"
       >
          {/* Sidebar Header: Aligned height with DashboardNavbar */}
          <SidebarHeader className="h-14 px-4 border-b border-white/5 flex flex-row items-center justify-between">
