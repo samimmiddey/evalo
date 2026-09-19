@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from 'motion/react';
-import { Check, Sparkles } from 'lucide-react';
+import { Check, Gem } from 'lucide-react';
 import { CheckoutButton, useSubscription } from '@clerk/nextjs/experimental';
 import { Plan } from '../types/pricing.types';
 import { Button } from '@/components/ui/button';
@@ -53,7 +53,7 @@ const PricingCard = ({ i, plan, disableAnimation = false }: PricingCardProps) =>
          <div className="relative z-10 flex flex-col grow p-7 lg:p-7.5 2xl:p-9">
             {isPopular && (
                <div className="absolute top-0 right-8 -translate-y-1/2 px-3.5 2xl:px-4 py-1.5 bg-violet-500 text-zinc-100 text-[11px] 2xl:text-xs font-bold uppercase tracking-widest rounded-full shadow-lg flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" /> Most Popular
+                  <Gem className="w-3.5 h-3.5" /> Most Popular
                </div>
             )}
 
