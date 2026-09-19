@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/hooks/use-fetch";
-import { useDbUser } from "@/hooks/use-db-user";
+import { useAppUser } from "@/hooks/use-app-user";
 import { getAppointments, getAppointmentsStats } from "@/features/interviews/appointments/services/appointments.client.service";
 import { AppointmentsData, AppointmentsStatsData } from "@/features/interviews/appointments/types/appointments.types";
 import PageHeaderLayout from "@/components/layouts/page-header-layout";
@@ -18,7 +18,7 @@ import { Calendar, CheckCircle2, Compass, Flame, Video } from "lucide-react";
 import Link from "next/link";
 
 export const IntervieweeOverview = () => {
-   const { user } = useDbUser();
+   const { user } = useAppUser();
    const { isLoading: isStatsLoading, data: stats } = useFetch<AppointmentsStatsData>(() => getAppointmentsStats());
    const { isLoading: isAppointmentsLoading, data: appointmentsData } = useFetch<AppointmentsData>(() =>
       getAppointments({ page: 1, pageSize: 1, status: "SCHEDULED" })

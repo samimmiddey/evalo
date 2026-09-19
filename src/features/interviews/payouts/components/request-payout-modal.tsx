@@ -24,6 +24,7 @@ import {
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import { DollarSign, Wallet } from "lucide-react";
+import { useAppUser } from "@/hooks/use-app-user";
 
 interface RequestPayoutModalProps {
    open: boolean;
@@ -38,6 +39,8 @@ export const RequestPayoutModal = ({
    maxCredits,
    onSuccess
 }: RequestPayoutModalProps) => {
+   const { refetch: refetchUser } = useAppUser();
+
    const {
       register,
       handleSubmit,
@@ -70,11 +73,13 @@ export const RequestPayoutModal = ({
       }
 
       const res = await mutate(data);
+
       if (res?.success) {
          toast.success("Payout request submitted successfully. Processing will begin shortly.");
          reset();
          onSuccess();
          onClose();
+         await refetchUser();
       }
    };
 

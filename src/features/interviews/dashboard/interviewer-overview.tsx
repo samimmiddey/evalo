@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/hooks/use-fetch";
-import { useDbUser } from "@/hooks/use-db-user";
+import { useAppUser } from "@/hooks/use-app-user";
 import { getDashboardStats } from "./services/dashboard.client.service";
 import { DashboardStats as DashboardStatsType } from "./types/dashboard.types";
 import PageHeaderLayout from "@/components/layouts/page-header-layout";
@@ -18,7 +18,7 @@ import { Calendar, Clock, Coins, Star, Video } from "lucide-react";
 import Link from "next/link";
 
 export const InterviewerOverview = () => {
-   const { user } = useDbUser();
+   const { user } = useAppUser();
    const { isLoading: isStatsLoading, data: stats } = useFetch<DashboardStatsType>(() => getDashboardStats());
 
    if (isStatsLoading) {

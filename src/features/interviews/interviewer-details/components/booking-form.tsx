@@ -21,6 +21,7 @@ import { useMutation } from '@/hooks/use-mutation';
 import CustomSpinner from '@/components/common/custom-spinner';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { useAppUser } from '@/hooks/use-app-user';
 
 interface BookingFormProps {
    interviewer: InterviewerDetails;
@@ -50,6 +51,8 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
    });
    const [step, setStep] = useState<number>(1);
    const [isBooked, setIsBooked] = useState<boolean>(false);
+
+   const { refetch: refetchUser } = useAppUser();
 
    const { isPending, error, mutate: mutateBookSession } = useMutation(handleBookSession);
 
@@ -121,6 +124,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
       if (result) {
          toast.success("Your slot has been booked successfully!");
          setIsBooked(true);
+         await refetchUser();
       }
    };
 

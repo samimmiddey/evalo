@@ -1,14 +1,14 @@
 "use client";
 
-import { useDbUser } from "@/hooks/use-db-user";
+import { useAppUser } from "@/hooks/use-app-user";
 import IntervieweeOverview from "./interviewee-overview";
 import InterviewerOverview from "./interviewer-overview";
 import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview-skeleton";
 
 export const Dashboard = () => {
-   const { user, isLoading } = useDbUser();
+   const { user, isLoading } = useAppUser();
 
-   if (isLoading) {
+   if (isLoading || !user) {
       return <DashboardOverviewSkeleton />;
    }
 

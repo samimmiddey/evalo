@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import useMediaQuery from '@/hooks/use-media-query';
 import { authData } from '@/data/auth/auth.data';
-import { useDbUser } from '@/hooks/use-db-user';
+import { useAppUser } from '@/hooks/use-app-user';
 import Logo from '../../common/logo';
 
 interface NavbarProps {
@@ -17,7 +17,7 @@ interface NavbarProps {
 
 const Navbar = ({ onMenuClick }: NavbarProps) => {
    const { isLoaded } = useUser();
-   const { user } = useDbUser();
+   const { user } = useAppUser();
 
    const pathname = usePathname();
    const mdWidth = useMediaQuery(767);

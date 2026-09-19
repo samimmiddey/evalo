@@ -17,6 +17,7 @@ import CardLayout from '@/components/layouts/card-layout';
 import SecondaryTitle from '@/components/common/secondary-title';
 import PrimaryBody from '@/components/common/primary-body';
 import { handleCompleteCall } from '../services/call.client.service';
+import { useAppUser } from '@/hooks/use-app-user';
 
 interface CallInterfaceProps {
    callId: string;
@@ -47,6 +48,8 @@ const CallInterface = ({
    const { useCallCallingState } = useCallStateHooks();
    const call = useCall();
    const callingState = useCallCallingState();
+
+   const { refetch: refetchUser } = useAppUser();
 
    const [activeTab, setActiveTab] = useState<'chat' | 'video'>('video');
    const [chatChannel, setChatChannel] = useState<Channel | null>(null);
@@ -128,6 +131,7 @@ const CallInterface = ({
       if (isInterviewer) {
          await handleCompleteCall({ callId }).catch(() => { /* no-op */ });
          await call?.endCall().catch(() => { /* no-op */ });
+         await refetchUser();
       } else {
          await call?.leave().catch(() => { /* no-op */ });
       }

@@ -2,11 +2,11 @@
 
 import { Show, UserButton, useUser } from '@clerk/nextjs';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { useDbUser } from '@/hooks/use-db-user';
+import { useAppUser } from '@/hooks/use-app-user';
 
 const DashboardNavbar = () => {
    const { isLoaded } = useUser();
-   const { user } = useDbUser();
+   const { user } = useAppUser();
 
    const roleLabel = user?.role === 'INTERVIEWER' ? 'Interviewer' : 'Interviewee';
 

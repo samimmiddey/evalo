@@ -9,7 +9,7 @@ import {
 } from "../schema/profile.schema";
 import { updateInterviewerProfile } from "../services/profile.client.service";
 import { useMutation } from "@/hooks/use-mutation";
-import { useDbUser } from "@/hooks/use-db-user";
+import { useAppUser } from "@/hooks/use-app-user";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,7 +29,7 @@ interface ProfileFormProps {
 }
 
 export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
-   const { user, isLoading: isUserLoading, refetch } = useDbUser();
+   const { user, isLoading: isUserLoading, refetch: refetchUser } = useAppUser();
 
    const {
       register,
@@ -68,7 +68,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
       const res = await mutate(data);
       if (res) {
          toast.success("Profile updated successfully");
-         void refetch();
+         await refetchUser();
          if (onProfileUpdated) onProfileUpdated();
       }
    };

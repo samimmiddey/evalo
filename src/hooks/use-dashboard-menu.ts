@@ -1,8 +1,8 @@
 import { intervieweeNavigationData, interviewerNavigationData } from "@/data/navigation/dashboard.navigation.data";
-import { useDbUser } from "@/hooks/use-db-user";
+import { useAppUser } from "@/hooks/use-app-user";
 
 export const useDashboardMenu = () => {
-   const { user } = useDbUser();
+   const { user } = useAppUser();
 
    if (user?.role === 'INTERVIEWEE') {
       return intervieweeNavigationData;

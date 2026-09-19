@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { useEffect } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
 import Image from 'next/image';
+import { useAppUser } from '@/hooks/use-app-user';
 
 interface AppointmentCardProps {
    appointment: Interview;
@@ -23,6 +24,8 @@ interface AppointmentCardProps {
 
 const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewList }: AppointmentCardProps) => {
    const { interviewer, startTime, endTime, status, feedback, streamCallId, recordingUrl } = appointment;
+
+   const { refetch: refetchUser } = useAppUser();
 
    // Retry Stream Call
    const {
@@ -63,6 +66,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                : 'Booking cancelled successfully'
          );
          refetchInterviewList();
+         await refetchUser();
       }
    };
 

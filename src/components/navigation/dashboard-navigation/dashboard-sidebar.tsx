@@ -12,14 +12,14 @@ import Logo from "@/components/common/logo";
 import { useDashboardMenu } from "@/hooks/use-dashboard-menu";
 import MenuItemSkeleton from "./menuitem-skeleton";
 import CreditButton from "../../common/credit-button";
-import { useDbUser } from "@/hooks/use-db-user";
+import { useAppUser } from "@/hooks/use-app-user";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 
 const DashboardSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
    const menuItems = useDashboardMenu();
-   const { user } = useDbUser();
+   const { user } = useAppUser();
    const { setOpenMobile } = useSidebar();
 
    return (
