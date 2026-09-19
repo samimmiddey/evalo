@@ -923,7 +923,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               {selectedValues.length > responsiveSettings.maxCount && (
                                  <Badge
                                     className={cn(
-                                       "bg-zinc-500/20 text-zinc-300 border border-white/15 hover:bg-zinc-500/30",
+                                       "bg-zinc-500/15 text-zinc-300 border border-white/15 hover:bg-zinc-500/30",
                                        getBadgeAnimationClass(),
                                        multiSelectVariants({ variant }),
                                        responsiveSettings.compactMode &&

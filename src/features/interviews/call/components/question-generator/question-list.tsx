@@ -78,7 +78,7 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
          {/* Card Top Row */}
          <div className="flex items-center justify-between gap-2 mb-2">
             <div className="flex items-center gap-2 min-w-0">
-               <span className="flex items-center justify-center size-5 rounded-md bg-zinc-600/30 text-zinc-100 text-[11px] font-mono font-bold shrink-0">
+               <span className="flex items-center justify-center size-5 rounded-md bg-zinc-500/30 text-zinc-100 text-[11px] font-mono font-bold shrink-0">
                   {index}
                </span>
                <SecondaryTitle

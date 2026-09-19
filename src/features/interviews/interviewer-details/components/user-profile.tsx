@@ -80,7 +80,7 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
             </div>
          </div>
 
-         <Separator className='my-5 2xl:my-6 bg-zinc-400/10' />
+         <Separator className='my-5 2xl:my-6 bg-white/6' />
 
          <div className="space-y-3 2xl:space-y-4">
             <HeaderTitle
