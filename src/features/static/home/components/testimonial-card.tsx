@@ -41,11 +41,6 @@ const TestimonialCard = ({ testimonial, index = 0 }: TestimonialCardProps) => {
 
    return (
       <div className="group relative flex flex-col justify-between h-full px-6 py-7 sm:p-7 2xl:p-8 rounded-3xl bg-surface-dark border border-white/8 backdrop-blur-2xl overflow-hidden transition-colors duration-300 hover:border-violet-500/40 shadow-[0_12px_40px_rgba(0,0,0,0.6)] select-none">
-         {/* Top Border Shimmer */}
-         <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 group-hover:via-violet-400/50 to-transparent transition-colors duration-500 pointer-events-none" />
-
-         {/* Ambient Radial Glow Orb */}
-         <div className="pointer-events-none absolute -top-20 -right-20 w-48 h-48 rounded-full blur-[70px] bg-violet-500/8 group-hover:bg-violet-500/20 transition-all duration-700" />
 
          <div className="relative z-10 space-y-4">
             {/* Header: Avatar, Name & Role */}

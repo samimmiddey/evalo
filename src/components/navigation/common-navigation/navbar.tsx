@@ -75,7 +75,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                   {mdWidth && (
                      <button
                         onClick={onMenuClick}
-                        className='p-1.25 hover:bg-surface-light rounded-lg transition-colors md:hidden cursor-pointer'
+                        className='p-1.5 hover:bg-surface-light rounded-lg transition-colors md:hidden cursor-pointer'
                         aria-label="Toggle menu"
                      >
                         <Menu className='w-6 h-6 text-zinc-100' />
