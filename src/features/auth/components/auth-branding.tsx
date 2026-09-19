@@ -54,9 +54,9 @@ export default function AuthBranding() {
                <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-[#121520]/80">
                   <div className="flex items-center gap-3">
                      <div className="flex items-center gap-1.5">
-                        <span className="size-2 rounded-full bg-zinc-500/30" />
-                        <span className="size-2 rounded-full bg-zinc-500/30" />
-                        <span className="size-2 rounded-full bg-zinc-500/30" />
+                        <span className="size-2 rounded-full bg-surface-lighter" />
+                        <span className="size-2 rounded-full bg-surface-lighter" />
+                        <span className="size-2 rounded-full bg-surface-lighter" />
                      </div>
                      <span className="h-4 w-px bg-[#1e293b]" />
                      <span className="text-xs font-semibold text-zinc-300 tracking-wide">{data.dashboard.title}</span>
@@ -132,7 +132,7 @@ export default function AuthBranding() {
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
+                                 <span className="text-xs font-bold bg-surface-light px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -156,7 +156,7 @@ export default function AuthBranding() {
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
+                                 <span className="text-xs font-bold bg-surface-light px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -180,7 +180,7 @@ export default function AuthBranding() {
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-zinc-800/60 px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
+                                 <span className="text-xs font-bold bg-surface-light px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">

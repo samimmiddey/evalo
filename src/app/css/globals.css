@@ -49,6 +49,8 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   --color-surface-dark: #0f1016;
+  --color-surface-light: #222436;
+  --color-surface-lighter: #2e3246;
   --card-shadow-color: rgba(139, 92, 246, 0.15);
 }
 

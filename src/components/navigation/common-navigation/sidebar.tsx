@@ -40,7 +40,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                </Link>
                <button
                   onClick={onClose}
-                  className="p-1 hover:bg-zinc-800 rounded-lg transition-colors"
+                  className="p-1 hover:bg-surface-light rounded-lg transition-colors cursor-pointer"
                   aria-label="Close menu"
                >
                   <X className="w-5 h-5 text-zinc-400" />

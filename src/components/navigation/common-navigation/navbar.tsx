@@ -17,7 +17,7 @@ interface NavbarProps {
 
 const Navbar = ({ onMenuClick }: NavbarProps) => {
    const { isLoaded } = useUser();
-   const { isLoading: isUserLoading } = useDbUser();
+   const { user } = useDbUser();
 
    const pathname = usePathname();
    const mdWidth = useMediaQuery(767);
@@ -57,13 +57,12 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                   </div>
                   <div className="flex items-center gap-2 mr-1 lg:mr-2">
                      {
-                        isUserLoading ? <div className="h-8 w-25 rounded-sm bg-zinc-800 animate-pulse" /> : (
-                           <Show when='signed-in'>
-                              <Link href='/dashboard'>
-                                 <Button variant="ghost" size="lg">Dashboard</Button>
-                              </Link>
-                           </Show>
-                        )
+                        user &&
+                        <Show when='signed-in'>
+                           <Link href='/dashboard'>
+                              <Button variant="ghost" size="lg">Dashboard</Button>
+                           </Link>
+                        </Show>
                      }
                   </div>
                   {!isLoaded ? (
@@ -76,7 +75,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                   {mdWidth && (
                      <button
                         onClick={onMenuClick}
-                        className='p-1.25 hover:bg-zinc-800 rounded-lg transition-colors md:hidden cursor-pointer'
+                        className='p-1.25 hover:bg-surface-light rounded-lg transition-colors md:hidden cursor-pointer'
                         aria-label="Toggle menu"
                      >
                         <Menu className='w-6 h-6 text-zinc-100' />
