@@ -12,8 +12,8 @@ interface TransactionsHistoryProps {
 export const TransactionsHistory = ({ transactions }: TransactionsHistoryProps) => {
    if (transactions.length === 0) {
       return (
-         <div className="p-8 text-center bg-zinc-900/30 border border-dashed border-white/10 rounded-2xl">
-            <PrimaryBody text="No transaction records found." className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-500!" />
+         <div className="p-8 text-center bg-zinc-900/40 border border-dashed border-white/10 rounded-2xl">
+            <PrimaryBody text="No transaction records found." className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500!" />
          </div>
       );
    }

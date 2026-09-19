@@ -233,7 +233,7 @@ const CallInterface = ({
                'lg:flex lg:flex-col lg:w-[32%] lg:max-w-md lg:flex-none',
             ].join(' ')}>
                {chatError ? (
-                  <div className="flex flex-col items-center justify-center h-full p-6 text-center text-zinc-400 bg-zinc-900/50 rounded-2xl border border-white/10 m-2 sm:m-3 lg:m-4 lg:ml-0">
+                  <div className="flex flex-col items-center justify-center h-full p-6 text-center text-zinc-400 bg-zinc-900/80 rounded-2xl border border-white/10 m-2 sm:m-3 lg:m-4 lg:ml-0">
                      <SecondaryTitle
                         text="Chat Unavailable"
                         className="text-xs! 2xl:text-xs! font-medium! text-zinc-200!"
@@ -251,7 +251,7 @@ const CallInterface = ({
                      expertise={booking.interviewer.expertise}
                   />
                ) : (
-                  <div className="flex flex-col items-center justify-center h-full p-6 text-center text-zinc-400 bg-zinc-900/50 rounded-2xl border border-white/10 m-2 sm:m-3 lg:m-4 lg:ml-0">
+                  <div className="flex flex-col items-center justify-center h-full p-6 text-center text-zinc-400 bg-zinc-900/80 rounded-2xl border border-white/10 m-2 sm:m-3 lg:m-4 lg:ml-0">
                      <PrimaryBody
                         text="Connecting to interview chat..."
                         className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400!"

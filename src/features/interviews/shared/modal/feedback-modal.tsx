@@ -105,11 +105,11 @@ export const FeedbackModal = ({
          description={modalDescription}
          headerIcon={<FileText className="w-4 h-4 text-violet-400" />}
       >
-         <div className="py-5 space-y-4 text-zinc-100 font-inter">
+         <div className="py-5 space-y-4 text-zinc-100">
             {/* Top Overview Cards (2 Columns) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                {/* Overall Performance */}
-               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/50 flex flex-col justify-between gap-3">
+               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/40 flex flex-col justify-between gap-3">
                   <div>
                      <div className="flex items-center gap-2 mb-2">
                         <Award className="w-4 h-4 text-violet-400 shrink-0" />
@@ -133,7 +133,7 @@ export const FeedbackModal = ({
                </div>
 
                {/* Hiring Recommendation */}
-               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/50 flex flex-col justify-between gap-3">
+               <div className="p-5 rounded-xl border border-white/5 bg-zinc-900/40 flex flex-col justify-between gap-3">
                   <div>
                      <div className="flex items-center gap-2 mb-2">
                         <Target className="w-4 h-4 text-violet-400 shrink-0" />

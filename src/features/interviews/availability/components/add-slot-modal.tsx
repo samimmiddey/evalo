@@ -230,10 +230,10 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                            className={cn(
                               "px-3 py-1.5 rounded-md text-xs border transition-colors max-sm:w-full",
                               isExpired
-                                 ? "bg-zinc-900/20 text-zinc-600 border-white/5 cursor-not-allowed line-through"
+                                 ? "bg-zinc-900/40 text-zinc-600 border-white/5 cursor-not-allowed line-through"
                                  : isActive
                                     ? "bg-violet-500/15 border-violet-500/30 hover:bg-violet-500/20 text-violet-300 font-semibold shadow-xs"
-                                    : "bg-zinc-900/60 border-white/10 hover:border-violet-500/30 hover:bg-violet-500/15 text-zinc-300"
+                                    : "bg-zinc-900/80 border-white/10 hover:border-violet-500/30 hover:bg-violet-500/15 text-zinc-300"
                            )}
                         >
                            {preset.label}
@@ -398,7 +398,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                      })}
                   </div>
                ) : (
-                  <div className="p-4 rounded-xl bg-zinc-900/30 border border-white/5 text-center text-xs text-zinc-500">
+                  <div className="p-4 rounded-xl bg-zinc-900/40 border border-white/5 text-center text-xs 2xl:text-[13px] text-zinc-500">
                      No future slots generated. Check that the date and time window are in the future.
                   </div>
                )}

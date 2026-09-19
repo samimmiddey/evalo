@@ -14,7 +14,7 @@ interface TabSwitcherProps {
 
 const TabSwitcher = ({ activeTab, onTabChange }: TabSwitcherProps) => {
    return (
-      <div className="shrink-0 bg-zinc-900/60 border-b border-white/10 px-4 py-2.5 backdrop-blur-md">
+      <div className="shrink-0 bg-zinc-900/80 border-b border-white/10 px-4 py-2.5 backdrop-blur-md">
          <Tabs
             value={activeTab}
             onValueChange={(v) => onTabChange(v as 'chat' | 'video')}

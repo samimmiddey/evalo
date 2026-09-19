@@ -23,7 +23,7 @@ export const AvailabilitySkeleton = () => {
                   {Array.from({ length: groupIdx === 0 ? 4 : 3 }).map((_, slotIdx) => (
                      <div
                         key={slotIdx}
-                        className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-zinc-900/50 border border-white/5"
+                        className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-zinc-900/40 border border-white/5"
                      >
                         <div className="flex items-center gap-2.5">
                            <div className="w-4 h-4 rounded bg-zinc-800 animate-pulse shrink-0" />

@@ -250,7 +250,7 @@ export const CallSetup = ({
       <TooltipProvider>
          <div className="flex flex-col min-h-dvh bg-zinc-950 text-zinc-100 overflow-y-auto selection:bg-violet-500/30">
             {/* Top header bar */}
-            <header className="flex items-center justify-between p-4 border-b border-white/10 bg-zinc-900/60 backdrop-blur-md shrink-0">
+            <header className="flex items-center justify-between p-4 border-b border-white/10 bg-zinc-900/80 backdrop-blur-md shrink-0">
                <div className="flex items-center gap-3">
                   <div className="flex items-center justify-center size-9 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-300 shrink-0">
                      <Video className="size-5" />
@@ -296,7 +296,7 @@ export const CallSetup = ({
 
                   {/* Left Column: Video Preview & Quick Controls (7 cols on lg) */}
                   <div className="lg:col-span-7 flex flex-col gap-4">
-                     <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-zinc-900/90 border border-white/10 shadow-2xl shadow-violet-950/20 flex items-center justify-center group min-h-90 md:min-h-100">
+                     <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-zinc-900/80 border border-white/10 shadow-2xl shadow-violet-950/20 flex items-center justify-center group min-h-90 md:min-h-100">
 
                         {/* Live video or Avatar fallback */}
                         {!isCameraMute ? (
@@ -414,7 +414,7 @@ export const CallSetup = ({
                   <div className="lg:col-span-5 flex flex-col gap-4 lg:gap-5">
 
                      {/* Interview Summary Card */}
-                     <div className="p-5 rounded-2xl bg-zinc-900/70 border border-white/10 backdrop-blur-md flex flex-col gap-3.5 shadow-xl">
+                     <div className="p-5 rounded-2xl bg-zinc-900/80 border border-white/10 backdrop-blur-md flex flex-col gap-3.5 shadow-xl">
                         <div className="flex items-start justify-between gap-3">
                            <div className="min-w-0">
                               <span className="text-[11px] uppercase tracking-wider font-semibold text-zinc-300">
@@ -423,7 +423,7 @@ export const CallSetup = ({
                            </div>
                            <Badge
                               variant="outline"
-                              className="bg-zinc-500/15 border-zinc-500/30 text-zinc-300 text-xs shrink-0 p-2"
+                              className="bg-zinc-950/70 border-zinc-500/30 text-zinc-300 text-xs shrink-0 p-2.5"
                            >
                               {isInterviewer ? 'Interviewer' : 'Interviewee'}
                            </Badge>
@@ -459,7 +459,7 @@ export const CallSetup = ({
                      </div>
 
                      {/* Hardware Settings Card */}
-                     <div className="p-5 rounded-2xl bg-zinc-900/70 border border-white/10 backdrop-blur-md flex flex-col gap-4 shadow-xl">
+                     <div className="p-5 rounded-2xl bg-zinc-900/80 border border-white/10 backdrop-blur-md flex flex-col gap-4 shadow-xl">
                         <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
                            <div className="flex items-center gap-2">
                               <Camera className="size-4 text-zinc-400" />
@@ -622,7 +622,7 @@ export const CallSetup = ({
                            size="lg"
                            onClick={onCancel}
                            disabled={isJoining}
-                           className="w-full h-11 rounded-lg bg-zinc-900/60 border-white/10 text-zinc-300 hover:text-zinc-100 hover:bg-white/5 text-sm transition-colors"
+                           className="w-full h-11 rounded-lg bg-zinc-900/80 border-white/10 text-zinc-300 hover:text-zinc-100 hover:bg-white/5 text-sm transition-colors"
                         >
                            Cancel & Return
                         </Button>

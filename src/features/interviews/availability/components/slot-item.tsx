@@ -20,7 +20,7 @@ export const SlotItem = ({ slot, onDelete, isDeleting = false }: SlotItemProps) 
    const isBooked = status === "BOOKED";
 
    return (
-      <div className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-zinc-900/50 border border-white/5 hover:border-white/10 transition-colors">
+      <div className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-zinc-900/40 border border-white/5 hover:border-white/10 transition-colors">
          <div className="flex items-center gap-2.5">
             <Clock className="w-4 h-4 text-violet-400 shrink-0" />
             <span className="text-xs font-medium text-zinc-200">

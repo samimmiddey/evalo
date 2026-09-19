@@ -96,7 +96,7 @@ const CustomMessageUI = () => {
             {/* Quick Reaction Bar on Hover */}
             <div
                className={`absolute -top-4 ${isMe ? 'right-0' : 'left-0'
-                  } opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center gap-0.5 bg-zinc-900/95 border border-white/10 p-0.5 rounded-full shadow-lg backdrop-blur-md z-30`}
+                  } opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center gap-0.5 bg-zinc-900 border border-white/10 p-0.5 rounded-full shadow-lg backdrop-blur-md z-30`}
             >
                {QUICK_REACTIONS.map((type) => {
                   const isSelected = message.own_reactions?.some((r) => r.type === type);
@@ -164,7 +164,7 @@ const CustomMessageUI = () => {
                               download={att.title || 'attachment'}
                               className={`flex items-center gap-2.5 p-2 rounded-xl border transition-colors ${isMe
                                  ? 'bg-violet-700/60 border-violet-400/20 hover:bg-violet-700/80 text-white'
-                                 : 'bg-zinc-900/90 border-white/10 hover:bg-zinc-900 text-zinc-200'
+                                 : 'bg-zinc-900/80 border-white/10 hover:bg-zinc-900 text-zinc-200'
                                  }`}
                            >
                               <div className="flex items-center justify-center size-7 rounded-lg bg-white/10 shrink-0">
@@ -374,11 +374,11 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }
 
    return (
       <div className="flex flex-col h-full w-full p-2 sm:p-3 lg:p-4 lg:pl-0 bg-zinc-950">
-         <div className="relative flex-1 rounded-2xl overflow-hidden bg-zinc-900/90 border border-white/10 shadow-2xl shadow-violet-950/20 flex flex-col min-h-0">
+         <div className="relative flex-1 rounded-2xl overflow-hidden bg-zinc-900/80 border border-white/10 shadow-2xl shadow-violet-950/20 flex flex-col min-h-0">
             {/* Header / Tabs */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0 bg-zinc-950/70 backdrop-blur-md">
                {isInterviewer ? (
-                  <div className="flex items-center gap-1 p-1 bg-zinc-900/90 border border-white/10 rounded-xl">
+                  <div className="flex items-center gap-1 p-1 bg-zinc-900/80 border border-white/10 rounded-xl">
                      <button
                         type="button"
                         onClick={() => setActiveTab('chat')}

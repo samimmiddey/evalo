@@ -74,7 +74,7 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
       DIFFICULTY_STYLES.MEDIUM;
 
    return (
-      <div className="flex flex-col rounded-xl bg-zinc-900/90 border border-white/10 p-3.5 shadow-sm hover:border-white/15 transition-all">
+      <div className="flex flex-col rounded-xl bg-zinc-900/80 border border-white/5 p-3.5 shadow-sm hover:border-white/10 transition-all">
          {/* Card Top Row */}
          <div className="flex items-center justify-between gap-2 mb-2">
             <div className="flex items-center gap-2 min-w-0">

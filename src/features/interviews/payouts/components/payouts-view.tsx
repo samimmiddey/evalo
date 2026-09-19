@@ -91,15 +91,15 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
 
             {/* Quick Math Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/5 text-xs">
-               <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
+               <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
                   <PrimaryBody text="Rate Conversion" className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-500 mb-0.5" />
                   <PrimaryBody text={`$${ratePerCredit}.00 USD / Credit`} className="text-xs! lg:text-xs! 2xl:text-xs! font-semibold text-zinc-200" />
                </div>
-               <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
+               <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
                   <PrimaryBody text="Platform Service Fee" className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-500 mb-0.5" />
                   <PrimaryBody text={`${platformFeePercent}% on withdrawal`} className="text-xs! lg:text-xs! 2xl:text-xs! font-semibold text-zinc-200" />
                </div>
-               <div className="p-3 rounded-xl bg-zinc-900/60 border border-white/5">
+               <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
                   <PrimaryBody text="Est. Net Cash Value" className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-500 mb-0.5" />
                   <PrimaryBody text={`$${netEstimated.toFixed(2)} USD`} className="text-xs! lg:text-xs! 2xl:text-xs! font-bold text-emerald-400" />
                </div>

@@ -45,7 +45,7 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
    const scheduledEnd = format(new Date(booking.endTime), 'h:mm a');
 
    return (
-      <header className="flex items-center justify-between gap-3 px-4 lg:px-6 py-3 bg-zinc-900/60 border-b border-white/10 backdrop-blur-md shrink-0 z-30">
+      <header className="flex items-center justify-between gap-3 px-4 lg:px-6 py-3 bg-zinc-900/80 border-b border-white/10 backdrop-blur-md shrink-0 z-30">
          {/* Left: Branding + Topic & Status */}
          <div className="flex items-center gap-3 min-w-0">
             <div className="flex items-center justify-center size-9 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-300 shrink-0">

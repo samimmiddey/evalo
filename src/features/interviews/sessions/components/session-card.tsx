@@ -221,7 +221,7 @@ export const SessionCard = ({
             {/* Right Side: Schedule, Details & Actions */}
             <div className="flex-[1.25] flex flex-col justify-between">
                {/* Top Row of Right: Schedule info & Desktop Status Badge */}
-               <div className="p-6 2xl:p-7 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between flex-wrap gap-4 bg-zinc-900/10">
+               <div className="p-6 2xl:p-7 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between flex-wrap gap-4">
                   {/* Schedule info */}
                   <div className="flex justify-between md:items-center flex-wrap max-md:gap-x-5 max-md:gap-y-4 md:gap-7 text-zinc-300">
                      <div className="flex flex-col md:flex-row items-center gap-2">

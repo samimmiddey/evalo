@@ -104,7 +104,7 @@ const CallCountdown = ({
                ].map(({ label, value }) => (
                   <div
                      key={label}
-                     className="flex flex-col items-center justify-center py-3 px-2 rounded-xl bg-zinc-900/90 border border-white/10 shadow-inner"
+                     className="flex flex-col items-center justify-center py-3 px-2 rounded-xl bg-zinc-900/80 border border-white/10 shadow-inner"
                   >
                      <span className="text-xl sm:text-2xl font-bold font-mono text-zinc-100 tabular-nums">
                         {String(value).padStart(2, '0')}
@@ -129,7 +129,7 @@ const CallCountdown = ({
             </div>
 
             {/* Participants Pill */}
-            <div className="flex items-center justify-center gap-2 sm:gap-3 w-full py-2.5 px-3.5 rounded-xl bg-zinc-900/30 border border-white/5">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 w-full py-3 px-3.5 rounded-xl bg-zinc-900/40 border border-white/5">
                <div className="flex items-center gap-2">
                   <Avatar className="size-6 border border-white/20">
                      <AvatarImage src={interviewee.imageUrl ?? undefined} alt={intervieweeName} />

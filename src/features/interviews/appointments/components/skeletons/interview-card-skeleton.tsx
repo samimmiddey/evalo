@@ -45,7 +45,7 @@ const InterviewCardSkeleton = ({ view = 'list' }: InterviewCardSkeletonProps) =>
             <div className="flex-[1.25] flex flex-col justify-between">
 
                {/* Top Row: Schedule Bone */}
-               <div className="p-6 2xl:p-7 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between flex-wrap gap-4 bg-zinc-900/10">
+               <div className="p-6 2xl:p-7 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between flex-wrap gap-4">
                   <div className="flex justify-between md:items-center flex-wrap max-md:gap-x-5 max-md:gap-y-4 md:gap-7 w-full md:w-auto">
                      {/* Date */}
                      <div className="flex items-center gap-2">
@@ -69,7 +69,7 @@ const InterviewCardSkeleton = ({ view = 'list' }: InterviewCardSkeletonProps) =>
                </div>
 
                {/* Guidelines Skeleton */}
-               <div className="p-6 2xl:p-7 border-b border-white/5 bg-zinc-900/10">
+               <div className="p-6 2xl:p-7 border-b border-white/5">
                   <div className="flex max-sm:flex-col items-start gap-3.5">
                      {/* Icon Bone */}
                      <div className="h-8 w-8 rounded-lg bg-zinc-800 border border-white/5 shrink-0 animate-pulse" />

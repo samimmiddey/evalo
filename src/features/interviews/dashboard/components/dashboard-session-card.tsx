@@ -67,7 +67,7 @@ export const DashboardSessionCard = ({
          {session ? (
             <div className="space-y-4">
                {/* Counterpart Details Box */}
-               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl bg-white/2 border border-white/5">
+               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl bg-zinc-900/40 border border-white/5">
                   <div className="flex items-center gap-3.5">
                      <div className="relative size-12 rounded-full overflow-hidden border border-white/10 bg-zinc-800 shrink-0">
                         {session.counterpart.imageUrl ? (
@@ -98,7 +98,7 @@ export const DashboardSessionCard = ({
                   </div>
 
                   {/* Scheduled Date/Time */}
-                  <div className="flex items-center gap-3 text-xs text-zinc-300 bg-zinc-900/60 px-3 py-2 rounded-lg border border-white/5">
+                  <div className="flex items-center gap-3 text-xs text-zinc-300 bg-zinc-900/40 px-3 py-2 rounded-lg border border-white/5">
                      <div className="flex items-center gap-1.5 text-zinc-100 font-medium">
                         <Calendar className="size-3.5" />
                         <span>{format(new Date(session.startTime), "EEE, MMM d")}</span>

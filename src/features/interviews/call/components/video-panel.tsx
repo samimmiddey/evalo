@@ -241,7 +241,7 @@ const CustomCallControls = ({ onLeave }: { onLeave: () => void; }) => {
                side="top"
                align="center"
                sideOffset={10}
-               className="flex-row! flex-nowrap! w-auto! min-w-max! p-1.5 bg-zinc-900/95 border border-white/10 backdrop-blur-md rounded-2xl shadow-2xl shadow-violet-950/30 flex items-center gap-1"
+               className="flex-row! flex-nowrap! w-auto! min-w-max! p-1.5 bg-zinc-900 border border-white/10 backdrop-blur-md rounded-2xl shadow-2xl shadow-violet-950/30 flex items-center gap-1"
             >
                {EMOJI_REACTIONS.map((item) => (
                   <button
@@ -300,7 +300,7 @@ const CustomCallControls = ({ onLeave }: { onLeave: () => void; }) => {
 const VideoPanel = ({ onEndCall }: VideoPanelProps) => {
    return (
       <div className="flex flex-col h-full w-full p-2 sm:p-3 lg:p-4 bg-zinc-950">
-         <div className="relative flex-1 rounded-2xl overflow-hidden bg-zinc-900/90 border border-white/10 shadow-2xl shadow-violet-950/20 flex flex-col min-h-0">
+         <div className="relative flex-1 rounded-2xl overflow-hidden bg-zinc-900/80 border border-white/10 shadow-2xl shadow-violet-950/20 flex flex-col min-h-0">
             <StreamTheme className="relative h-full w-full flex-1 flex flex-col items-center justify-center min-h-0">
                <div className="flex-1 w-full h-full min-h-0 flex items-center justify-center relative overflow-hidden">
                   <SpeakerLayout participantsBarPosition="bottom" />
