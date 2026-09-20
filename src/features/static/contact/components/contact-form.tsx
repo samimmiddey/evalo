@@ -12,7 +12,7 @@ import {
    SelectTrigger,
    SelectValue,
 } from "@/components/ui/select";
-import { Send, ArrowUpRight, ShieldCheck, Clock } from "lucide-react";
+import { Send, ArrowUpRight, ShieldCheck, Clock, User, Mail, Phone, Tag, MessageSquare } from "lucide-react";
 import SecondaryTitle from "@/components/common/secondary-title";
 import PrimaryBody from "@/components/common/primary-body";
 import { toast } from "sonner";
@@ -111,7 +111,7 @@ const ContactForm = () => {
          </div>
 
          {/* Main Form Card */}
-         <div className="px-6 py-7 lg:p-8 2xl:p-10 rounded-3xl bg-surface-dark border border-white/8 shadow-2xl">
+         <div className="px-6 py-7 lg:p-8 2xl:p-10 rounded-3xl bg-surface-dark border border-white/8">
             <div className="mb-6 2xl:mb-8">
                <SecondaryTitle
                   text={formTitle}
@@ -127,7 +127,8 @@ const ContactForm = () => {
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 2xl:gap-6">
                   {/* Name */}
                   <div className="space-y-2">
-                     <Label htmlFor="contact-name" className="text-sm text-zinc-300">
+                     <Label htmlFor="contact-name" className="text-[13px] 2xl:text-sm text-zinc-100 flex items-center gap-1.5">
+                        <User className="w-3.5 h-3.5 text-violet-400" />
                         Full Name
                      </Label>
                      <Input
@@ -142,7 +143,8 @@ const ContactForm = () => {
 
                   {/* Email */}
                   <div className="space-y-2">
-                     <Label htmlFor="contact-email" className="text-sm text-zinc-300">
+                     <Label htmlFor="contact-email" className="text-[13px] 2xl:text-sm text-zinc-100 flex items-center gap-1.5">
+                        <Mail className="w-3.5 h-3.5 text-violet-400" />
                         Email Address
                      </Label>
                      <Input
@@ -160,7 +162,8 @@ const ContactForm = () => {
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 2xl:gap-6">
                   {/* Phone Number */}
                   <div className="space-y-2">
-                     <Label htmlFor="contact-phone" className="text-sm text-zinc-300">
+                     <Label htmlFor="contact-phone" className="text-[13px] 2xl:text-sm text-zinc-100 flex items-center gap-1.5">
+                        <Phone className="w-3.5 h-3.5 text-violet-400" />
                         Phone Number
                      </Label>
                      <Input
@@ -174,7 +177,8 @@ const ContactForm = () => {
 
                   {/* Subject */}
                   <div className="flex flex-col gap-2">
-                     <Label htmlFor="contact-subject" className="text-sm text-zinc-300">
+                     <Label htmlFor="contact-subject" className="text-[13px] 2xl:text-sm text-zinc-100 flex items-center gap-1.5">
+                        <Tag className="w-3.5 h-3.5 text-violet-400" />
                         Subject
                      </Label>
                      <Select name="subject" required>
@@ -199,7 +203,8 @@ const ContactForm = () => {
 
                {/* Message */}
                <div className="space-y-2">
-                  <Label htmlFor="contact-message" className="text-sm text-zinc-300">
+                  <Label htmlFor="contact-message" className="text-[13px] 2xl:text-sm text-zinc-100 flex items-center gap-1.5">
+                     <MessageSquare className="w-3.5 h-3.5 text-violet-400" />
                      Message
                   </Label>
                   <Textarea
