@@ -1,8 +1,8 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 interface PrimaryTitleProps {
-   text: string
-   className?: string
+   text: string;
+   className?: string;
 }
 
 const PrimaryTitle = ({
@@ -10,10 +10,10 @@ const PrimaryTitle = ({
    className,
 }: PrimaryTitleProps) => {
    return (
-      <h2 className={cn('font-outfit font-semibold text-3xl lg:text-[40px] 2xl:text-5xl', className)}>
+      <h2 className={cn('font-bricolage font-bold text-3xl lg:text-[40px] 2xl:text-5xl', className)}>
          {text}
       </h2>
-   )
-}
+   );
+};
 
-export default PrimaryTitle
+export default PrimaryTitle;

@@ -51,7 +51,7 @@ const RoleCard = ({ data }: RoleCardProps) => {
                               <Icon className={`w-5 h-5 ${role.theme.iconText}`} />
                            </div>
                            <div>
-                              <div className="text-xs sm:text-sm font-semibold text-zinc-200 uppercase tracking-wide group-hover:text-white transition-colors duration-200">
+                              <div className="text-xs sm:text-sm font-semibold text-zinc-200 uppercase tracking-wide group-hover:text-white transition-colors duration-200 font-geist">
                                  {role.tag}
                               </div>
                               <div className="text-xs font-mono font-medium tracking-wider text-zinc-400 uppercase mt-0.5 group-hover:text-zinc-300 transition-colors duration-200">
@@ -70,7 +70,7 @@ const RoleCard = ({ data }: RoleCardProps) => {
                      <div className="space-y-3">
                         <SecondaryTitle
                            text={role.title}
-                           className="text-2xl lg:text-3xl 2xl:text-3xl tracking-tight leading-snug group-hover:text-white transition-colors duration-200 font-bold font-outfit"
+                           className="text-2xl lg:text-3xl 2xl:text-3xl leading-snug group-hover:text-white transition-colors duration-200"
                         />
                         <PrimaryBody
                            text={role.description}
@@ -101,7 +101,7 @@ const RoleCard = ({ data }: RoleCardProps) => {
                                  {/* Point Text */}
                                  <PrimaryBody
                                     text={point}
-                                    className="text-zinc-300 text-sm sm:text-[15px] lg:text-[15px] 2xl:text-[15px] font-medium leading-snug group-hover:text-zinc-100 transition-colors duration-200 grow"
+                                    className="text-zinc-300 text-sm lg:text-[15px] 2xl:text-base font-medium leading-snug group-hover:text-zinc-100 transition-colors duration-200 grow font-geist"
                                  />
                               </div>
                            ))}

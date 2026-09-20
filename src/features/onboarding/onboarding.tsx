@@ -90,7 +90,7 @@ const Onboarding = () => {
                                     <TabsTrigger
                                        key={tab.value}
                                        value={tab.value}
-                                       className="h-full rounded-lg font-medium text-sm flex items-center justify-center gap-2 cursor-pointer data-[state=active]:bg-violet-500/20 data-[state=active]:text-violet-300 data-[state=active]:border-violet-500/40 transition-all"
+                                       className="h-full rounded-lg font-medium font-geist text-sm flex items-center justify-center gap-2 cursor-pointer data-[state=active]:bg-violet-500/20 data-[state=active]:text-violet-300 data-[state=active]:border-violet-500/40 transition-all"
                                     >
                                        <tab.icon className="w-4 h-4 text-violet-300" />
                                        <span>{tab.text}</span>

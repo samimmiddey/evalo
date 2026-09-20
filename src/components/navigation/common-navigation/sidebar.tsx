@@ -49,7 +49,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
             {/* Navigation */}
             <nav className="flex-1 px-3 py-4">
-               <p className="text-[11px] font-medium text-zinc-600 uppercase tracking-widest px-2 mb-3">
+               <p className="text-[13px] font-semibold text-zinc-600 uppercase tracking-wider px-2 mb-3 font-mono">
                   Menu
                </p>
                <div className="space-y-4">

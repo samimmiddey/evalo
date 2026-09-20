@@ -56,7 +56,7 @@ const Footer = () => {
 
                   <PrimaryBody
                      text={footerData.description}
-                     className="text-zinc-400 text-sm sm:text-[15px] 2xl:text-base leading-relaxed max-w-md font-inter"
+                     className="text-zinc-400 text-sm sm:text-[15px] 2xl:text-base leading-relaxed max-w-md"
                   />
 
                   {/* Social Icon Row */}
@@ -82,7 +82,7 @@ const Footer = () => {
                      <div key={idx} className="flex flex-col space-y-4">
                         <SecondaryTitle
                            text={section.title}
-                           className="text-sm 2xl:text-lg font-bold uppercase tracking-wider text-zinc-200 font-outfit"
+                           className="text-sm 2xl:text-lg font-semibold uppercase tracking-wider text-zinc-200"
                         />
                         <ul className="space-y-3">
                            {section.links.map((link, lIdx) => (
@@ -103,7 +103,7 @@ const Footer = () => {
 
             {/* Bottom Row: Copyright & Legal */}
             <div className="border-t border-white/6 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 2xl:gap-4 text-sm 2xl:text-[15px] text-zinc-500">
-               <p className="font-inter">
+               <p>
                   {footerData.copyright}
                </p>
 
@@ -123,7 +123,7 @@ const Footer = () => {
             {/* Centered Brand Watermark with Hairlines */}
             <div className="w-full flex items-center justify-center gap-4 sm:gap-8 pt-5 sm:pt-6 overflow-hidden select-none pointer-events-none">
                <div className="h-px bg-linear-to-l from-white/10 to-transparent grow min-w-8" />
-               <span className="font-musemoderno font-black text-[15vw] md:text-[10vw] tracking-tight uppercase leading-none bg-linear-to-b from-white/8 via-white/2 to-transparent bg-clip-text text-transparent block shrink-0">
+               <span className="font-geist font-black text-[15vw] md:text-[10vw] tracking-tight uppercase leading-none bg-linear-to-b from-white/8 via-white/2 to-transparent bg-clip-text text-transparent block shrink-0">
                   evalo
                </span>
                <div className="h-px bg-linear-to-r from-white/10 to-transparent grow min-w-8" />

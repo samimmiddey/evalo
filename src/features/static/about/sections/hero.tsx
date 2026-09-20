@@ -39,14 +39,14 @@ const Hero = () => {
                   </div>
 
                   {/* Main Title */}
-                  <h1 className="w-full text-5xl md:text-[54px] font-bold lg:text-6xl 2xl:text-[80px] text-zinc-100 font-outfit leading-[1.1] tracking-tight pb-2">
+                  <h1 className="w-full text-5xl md:text-[54px] font-bold lg:text-6xl 2xl:text-[80px] text-zinc-100 font-bricolage leading-[1.1] tracking-tight pb-1 2xl:pb-2">
                      {title}
                   </h1>
 
                   {/* Description using PrimaryBody */}
                   <PrimaryBody
                      text={description}
-                     className="max-w-full lg:max-w-2xl mt-1 py-4 text-[15px] lg:text-[15px] 2xl:text-lg text-zinc-300 leading-relaxed"
+                     className="max-w-full lg:max-w-2xl mt-0.5 py-4 text-[15px] lg:text-[15px] 2xl:text-lg text-zinc-300 leading-relaxed"
                   />
 
                   {/* Action Buttons */}
@@ -114,7 +114,7 @@ const Hero = () => {
                            />
                         </svg>
                         <div className="relative z-10 flex flex-col items-center justify-center w-28 h-28 min-[400px]:w-32 min-[400px]:h-32 rounded-full bg-surface border border-violet-500/40 shadow-[0_0_36px_rgba(139,92,246,0.35)] text-center p-3">
-                           <span className="font-outfit font-bold text-sm min-[400px]:text-base text-zinc-100 leading-tight">
+                           <span className="font-geist font-bold text-sm min-[400px]:text-base text-zinc-100 leading-tight">
                               {radarHub.title}
                            </span>
                         </div>
@@ -242,7 +242,7 @@ const Hero = () => {
 
                      {/* Central Hub Core */}
                      <div className="relative z-10 flex flex-col items-center justify-center w-26 h-26 sm:w-28 sm:h-28 rounded-full bg-surface border border-violet-500/40 shadow-[0_0_36px_rgba(139,92,246,0.3)] text-center p-3">
-                        <span className="font-outfit font-bold text-xs sm:text-sm text-zinc-100 leading-tight">
+                        <span className="font-geist font-bold text-xs sm:text-sm text-zinc-100 leading-tight">
                            {radarHub.title}
                         </span>
                      </div>
@@ -301,12 +301,12 @@ const Hero = () => {
                   >
 
                      <div className="relative z-10 flex flex-col gap-3">
-                        <span className="font-bold text-2xl lg:text-3xl text-violet-400/70 group-hover:text-violet-300 transition-colors duration-200 leading-none mb-1.5 2xl:mb-2">
+                        <span className="font-mono font-bold text-2xl lg:text-3xl text-violet-400/70 group-hover:text-violet-300 transition-colors duration-200 leading-none mb-1.5 2xl:mb-2">
                            {pillar.number}
                         </span>
                         <SecondaryTitle
                            text={pillar.title}
-                           className="font-outfit font-semibold text-lg lg:text-xl 2xl:text-xl text-zinc-100 tracking-tight group-hover:text-white transition-colors duration-200"
+                           className="font-semibold text-lg lg:text-xl 2xl:text-xl text-zinc-100 group-hover:text-white transition-colors duration-200"
                         />
                         <PrimaryBody
                            text={pillar.description}

@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Users, Video, FileText } from "lucide-react";
+import { CheckCircle2, Users, Video, FileText } from "lucide-react";
 import HeaderText from "@/components/common/header-text";
 import PrimaryBody from "@/components/common/primary-body";
 import PrimaryTitle from "@/components/common/primary-title";
@@ -48,10 +48,7 @@ const CTA = () => {
                      icon={homeData.cta.icon}
                      text={homeData.cta.header}
                   />
-                  <PrimaryTitle
-                     text={homeData.cta.title}
-                     className="text-left text-3xl sm:text-4xl lg:text-5xl 2xl:text-[56px] font-bold tracking-tight text-zinc-100 leading-[1.15]"
-                  />
+                  <PrimaryTitle text={homeData.cta.title} />
                   <PrimaryBody
                      text={homeData.cta.description}
                      className="text-left max-w-2xl"
@@ -64,19 +61,16 @@ const CTA = () => {
                      <Button
                         size="xxl"
                         variant="white"
-                        className="group/btn gap-2 font-semibold shadow-lg shadow-violet-500/15"
                      >
-                        <span>Get Started Free</span>
-                        <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                        <span>Get Started</span>
                      </Button>
                   </Link>
                   <Link href="/interviewers">
                      <Button
                         size="xxl"
                         variant="outline"
-                        className="border-white/10 hover:border-white/20 bg-white/3 hover:bg-white/6 text-zinc-200"
                      >
-                        <span>Browse Mentors</span>
+                        <span>Browse Experts</span>
                      </Button>
                   </Link>
                </div>
@@ -127,7 +121,7 @@ const CTA = () => {
                               <div className="flex items-center gap-2.5">
                                  <SecondaryTitle
                                     text={step.title}
-                                    className="text-lg lg:text-lg 2xl:text-xl font-semibold text-zinc-100 group-hover:text-white transition-colors duration-200 font-outfit"
+                                    className="text-[17px] lg:text-lg 2xl:text-xl font-semibold text-zinc-200 group-hover:text-white transition-colors duration-200"
                                  />
                                  <span
                                     className="text-xs font-mono px-2 py-0.5 rounded-full border bg-surface-dark text-zinc-400 border-white/10"

@@ -49,7 +49,7 @@ const TestimonialCard = ({ testimonial, index = 0 }: TestimonialCardProps) => {
                <div className="relative shrink-0">
                   <div
                      className={cn(
-                        "w-11 h-11 2xl:w-12 2xl:h-12 rounded-xl border flex items-center justify-center font-bold text-base 2xl:text-lg shadow-sm",
+                        "w-11 h-11 2xl:w-12 2xl:h-12 rounded-xl border flex items-center justify-center font-bold text-base 2xl:text-lg font-geist",
                         color.container
                      )}
                   >
@@ -64,7 +64,7 @@ const TestimonialCard = ({ testimonial, index = 0 }: TestimonialCardProps) => {
                <div className="min-w-0">
                   <SecondaryTitle
                      text={testimonial.name}
-                     className="text-[15px] sm:text-lg 2xl:text-[19px] tracking-tight group-hover:text-white transition-colors duration-200 truncate font-outfit"
+                     className="text-base sm:text-lg 2xl:text-xl tracking-tight group-hover:text-white transition-colors duration-200 truncate"
                   />
                   <PrimaryBody
                      text={testimonial.role}

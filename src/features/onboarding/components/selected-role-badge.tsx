@@ -18,7 +18,7 @@ const SelectedRoleBadge = ({ role, onChangeRole }: Props) => {
             <span className="text-zinc-400 font-medium">Selected Role:</span>
             <Badge
                variant="secondary"
-               className="capitalize text-xs font-semibold px-2.5 py-0.5 bg-violet-500/20 text-violet-300 border-violet-500/30 shadow-sm"
+               className="capitalize text-xs font-medium p-2.5 font-geist bg-violet-500/20 text-violet-300 border-violet-500/30"
             >
                {role}
             </Badge>

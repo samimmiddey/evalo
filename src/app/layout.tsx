@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit, Inter, MuseoModerno, Lobster } from "next/font/google";
+import { Bricolage_Grotesque, Inter, Lobster, Geist } from "next/font/google";
 import "./css/globals.css";
 import "./css/responsive.css";
 import "./css/external.css";
@@ -9,8 +9,13 @@ import { dark } from '@clerk/ui/themes';
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
+});
+
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
 });
 
@@ -23,11 +28,6 @@ const lobster = Lobster({
   variable: "--font-lobster",
   subsets: ["latin"],
   weight: ['400'],
-});
-
-const musemoderno = MuseoModerno({
-  variable: "--font-musemoderno",
-  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -43,7 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${inter.variable} ${lobster.variable} ${musemoderno.variable} h-full antialiased`}
+      className={`${bricolage.variable} ${geist.variable} ${inter.variable} ${lobster.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">

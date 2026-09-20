@@ -31,7 +31,7 @@ const Logo = ({ iconClassName, textClassName, containerClassName }: LogoProps) =
             <rect x="9" y="17" width="2" height="2" rx="1" />
             <rect x="13" y="17" width="2" height="2" rx="1" />
          </svg>
-         <h4 className={cn("font-musemoderno font-bold text-xl text-zinc-100", textClassName)}>
+         <h4 className={cn("font-geist font-bold text-xl text-zinc-100", textClassName)}>
             evalo
          </h4>
       </div>

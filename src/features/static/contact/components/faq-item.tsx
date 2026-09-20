@@ -16,7 +16,7 @@ const FaqItem = ({ item, index }: FaqItemProps) => {
    const indexStr = String(index + 1).padStart(2, "0");
 
    return (
-      <div className="border-b border-white/10 last:border-b-0 py-5 2xl:py-6">
+      <div className="border-b border-white/10 py-4.5 lg:py-5 2xl:py-6">
          <button
             type="button"
             onClick={() => setOpen((prev) => !prev)}
@@ -29,7 +29,7 @@ const FaqItem = ({ item, index }: FaqItemProps) => {
                <span className="font-mono text-sm 2xl:text-base text-zinc-500 font-medium shrink-0 mt-0.75 lg:mt-1 2xl:mt-0.5">
                   {indexStr}
                </span>
-               <h3 className="font-outfit font-medium text-base lg:text-lg 2xl:text-xl text-zinc-300 group-hover:text-white transition-colors">
+               <h3 className="font-geist font-medium text-base lg:text-lg 2xl:text-xl text-zinc-300 group-hover:text-white transition-colors">
                   {item.question}
                </h3>
             </div>

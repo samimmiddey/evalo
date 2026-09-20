@@ -36,7 +36,7 @@ export default function AuthBranding() {
          {/* Header Branding Area */}
          <div className="z-10 relative space-y-5">
             <div className="space-y-3 2xl:space-y-3.5 max-w-xl">
-               <h2 className="text-3xl 2xl:text-4xl font-bold tracking-tight text-zinc-100 leading-tight font-heading">
+               <h2 className="text-3xl 2xl:text-4xl font-bold text-zinc-100 leading-tight font-bricolage">
                   {data.header.titleNormal}<span className="bg-linear-to-r from-violet-400 via-violet-400 to-violet-300 bg-clip-text text-transparent">{data.header.titleHighlight}</span>
                </h2>
                <p className="text-zinc-400 text-sm leading-relaxed max-w-lg">
@@ -59,9 +59,9 @@ export default function AuthBranding() {
                         <span className="size-2 rounded-full bg-surface-lighter" />
                      </div>
                      <span className="h-4 w-px bg-[#1e293b]" />
-                     <span className="text-xs font-semibold text-zinc-300 tracking-wide">{data.dashboard.title}</span>
+                     <span className="text-xs 2xl:text-[13px] font-geist font-bold text-zinc-300">{data.dashboard.title}</span>
                   </div>
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold tracking-wide">
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-semibold tracking-wide">
                      {data.dashboard.status}
                   </span>
                </div>
@@ -81,19 +81,19 @@ export default function AuthBranding() {
                         <span className="absolute bottom-0 right-0 size-3 rounded-full bg-emerald-500 border-2 border-[#151926]" />
                      </div>
                      <div>
-                        <h4 className="text-sm font-bold text-zinc-100">{data.dashboard.candidate.name}</h4>
-                        <p className="text-xs text-zinc-400">{data.dashboard.candidate.role}</p>
+                        <h4 className="text-sm font-semibold font-geist text-zinc-100">{data.dashboard.candidate.name}</h4>
+                        <p className="text-xs text-zinc-400 mt-0.5">{data.dashboard.candidate.role}</p>
                      </div>
                   </div>
 
                   <div className="text-right">
-                     <div className="text-2xl font-black text-violet-400 leading-none">{data.dashboard.candidate.score}<span className="text-xs text-zinc-500 font-medium">{data.dashboard.candidate.scoreLabel}</span></div>
-                     <div className="text-[10px] text-zinc-400 font-medium mt-1">Evalo Score</div>
+                     <div className="text-2xl font-bold font-geist text-violet-400 leading-none">{data.dashboard.candidate.score}<span className="text-xs text-zinc-400 font-medium">{data.dashboard.candidate.scoreLabel}</span></div>
+                     <div className="text-[11px] uppercase tracking-wide font-mono text-zinc-400 font-medium mt-0.5">Evalo Score</div>
                   </div>
                </div>
 
                {/* Simulated Tabs */}
-               <div className="px-5 py-2.5 bg-[#121520]/50 border-b border-white/5 flex items-center gap-4 text-xs font-semibold">
+               <div className="px-5 py-2.5 bg-[#121520]/50 border-b border-white/5 flex items-center gap-4 text-xs font-semibold font-geist">
                   <button
                      onClick={() => setActiveTab("architecture")}
                      className={`pb-1 transition-all border-b-2 ${activeTab === "architecture" ? "border-violet-500 text-zinc-100" : "border-transparent text-zinc-400"}`}
@@ -128,11 +128,11 @@ export default function AuthBranding() {
                         >
                            {data.dashboard.tabs.architecture.checks.map((check, index) => (
                               <div key={index} className="flex items-center justify-between">
-                                 <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
+                                 <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5 font-geist">
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-surface-light px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
+                                 <span className="text-xs font-bold bg-surface-light px-2 py-0.5 rounded text-zinc-100 border border-white/5 font-geist">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -152,11 +152,11 @@ export default function AuthBranding() {
                         >
                            {data.dashboard.tabs.optimization.checks.map((check, index) => (
                               <div key={index} className="flex items-center justify-between">
-                                 <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
+                                 <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5 font-geist">
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-surface-light px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
+                                 <span className="text-xs font-bold bg-surface-light px-2 py-0.5 rounded text-zinc-100 border border-white/5 font-geist">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -176,11 +176,11 @@ export default function AuthBranding() {
                         >
                            {data.dashboard.tabs.quality.checks.map((check, index) => (
                               <div key={index} className="flex items-center justify-between">
-                                 <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
+                                 <span className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5 font-geist">
                                     <Check className="size-4 text-emerald-400" />
                                     {check.label}
                                  </span>
-                                 <span className="text-xs font-bold bg-surface-light px-2 py-0.5 rounded text-zinc-100 border border-white/5">{check.score}</span>
+                                 <span className="text-xs font-bold bg-surface-light px-2 py-0.5 rounded text-zinc-100 border border-white/5 font-geist">{check.score}</span>
                               </div>
                            ))}
                            <p className="text-[11px] text-zinc-400 leading-normal">
@@ -200,8 +200,8 @@ export default function AuthBranding() {
                   <BrainCircuit className="size-4" />
                </div>
                <div>
-                  <div className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider">{data.dashboard.aiRecommendation.label}</div>
-                  <div className="text-[11px] font-semibold flex items-center gap-1">
+                  <div className="text-[10px] font-mono text-zinc-400 font-bold uppercase tracking-wider">{data.dashboard.aiRecommendation.label}</div>
+                  <div className="text-xs font-geist font-semibold flex items-center gap-1">
                      {data.dashboard.aiRecommendation.text} <ArrowRight className="size-3 text-violet-400" />
                   </div>
                </div>

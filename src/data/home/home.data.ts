@@ -4,7 +4,7 @@ import { Video, BrainCircuit, Library, LineChart, CalendarClock, Zap, Shuffle, C
 export const homeData: HomeDataTypes = {
    hero: {
       header: "Evaluate Your True Potential",
-      title: "Ace your next interview with real experts",
+      title: "Ace Your Next Interview with Real Experts",
       description: "Get matched with experts for one-on-one mock interviews that go beyond generic advice. Receive personalized feedback and gain the confidence you need to succeed."
    },
    features: {
@@ -132,7 +132,7 @@ export const homeData: HomeDataTypes = {
          statusLabel: "PREPARATION ENGINE",
          workflowTitle: "CORE CAPABILITIES & WORKFLOW",
          index: "01",
-         title: "Land the role you deserve",
+         title: "Land the Role You Deserve",
          description:
             "Practice real interview scenarios, sharpen your problem-solving skills, and get evaluated through structured assessments designed to reflect hiring standards. Build confidence and improve with every attempt.",
          points: [
@@ -297,7 +297,7 @@ export const homeData: HomeDataTypes = {
    cta: {
       icon: Rocket,
       header: "Get Started",
-      title: "Ready to accelerate your career?",
+      title: "Ready to Accelerate Your Career?",
       description: "Join thousands of candidates and industry experts who are already using Evalo to sharpen their skills, gain valuable interview experience, connect with opportunities, and achieve their professional goals with confidence."
    }
 };

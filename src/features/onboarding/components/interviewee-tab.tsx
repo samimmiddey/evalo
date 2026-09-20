@@ -39,7 +39,7 @@ const IntervieweeTab = () => {
                   <data.contextCard.icon className="w-4 h-4" />
                </div>
                <div>
-                  <h4 className="text-sm font-semibold text-zinc-100">{data.contextCard.title}</h4>
+                  <h4 className="text-sm font-geist text-zinc-100 mb-px">{data.contextCard.title}</h4>
                   <p className="text-xs text-zinc-400">{data.contextCard.description}</p>
                </div>
             </div>

@@ -1,5 +1,5 @@
 import { OnboardingSchemaTypes } from "@/features/onboarding/schemas/onboarding.schemas";
-import { ArrowRight, Briefcase, ShieldCheck, Sparkles, User, Zap, Brain } from "lucide-react";
+import { ArrowRight, Briefcase, ShieldCheck, Flame, User, Zap, Brain } from "lucide-react";
 import { DomainsData, OnboardingData, YearsOfExperienceData } from "./onboardiong.types";
 
 export const onboardingData: OnboardingData = {
@@ -27,7 +27,7 @@ export const onboardingData: OnboardingData = {
          value: 'INTERVIEWER'
       },
       contextCard: {
-         icon: Sparkles,
+         icon: Flame,
          title: 'Interviewee Experience',
          description: 'Everything you need to practice and stand out',
          list: [

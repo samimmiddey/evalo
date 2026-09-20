@@ -75,11 +75,11 @@ const ContactForm = () => {
 
                         {/* Category & Title */}
                         <span
-                           className={`font-mono text-xs font-semibold uppercase tracking-wider ${theme.badgeText} block mb-1`}
+                           className={`font-mono text-xs font-semibold uppercase tracking-wider ${theme.badgeText} block mb-1.25`}
                         >
                            {item.tag}
                         </span>
-                        <h4 className="text-lg font-outfit font-semibold text-zinc-100 group-hover:text-white transition-colors">
+                        <h4 className="text-lg font-geist font-semibold text-zinc-100 group-hover:text-white transition-colors">
                            {item.title}
                         </h4>
                      </div>
@@ -115,7 +115,7 @@ const ContactForm = () => {
             <div className="mb-6 2xl:mb-8">
                <SecondaryTitle
                   text={formTitle}
-                  className="font-bold font-outfit mb-2 text-xl lg:text-2xl 2xl:text-3xl"
+                  className="font-semibold mb-2 text-xl lg:text-2xl 2xl:text-3xl"
                />
                <PrimaryBody
                   text={formDescription}

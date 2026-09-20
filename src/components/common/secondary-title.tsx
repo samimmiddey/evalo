@@ -10,7 +10,7 @@ const SecondaryTitle = ({
    className,
 }: SecondaryTitleProps) => {
    return (
-      <h2 className={cn('font-semibold text-zinc-100 text-lg 2xl:text-xl', className)}>
+      <h2 className={cn('font-geist font-semibold text-zinc-100 text-lg 2xl:text-xl', className)}>
          {text}
       </h2>
    );
