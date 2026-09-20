@@ -59,7 +59,7 @@ const DesktopSidebar = ({ filterParams, onFilterParams, onClear, isFiltersEnable
       <div className="flex flex-col gap-4 h-full pb-6 lg:pb-8">
 
          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-zinc-100 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-zinc-100 flex items-center gap-2 font-geist">
                <Filter className="w-4 h-4 text-violet-400" />
                Filters
             </h2>
@@ -151,7 +151,7 @@ const MobileSidebar = ({ open, onClose, filterParams, onFilterParams, onClear, i
             className="bg-zinc-950 border-t border-white/10 py-2 px-6 flex flex-col z-9999 overflow-hidden"
          >
             <DrawerHeader className='p-0! mb-4 mt-2 shrink-0'>
-               <DrawerTitle className="m-0 text-lg font-semibold text-zinc-100 flex items-center gap-2">
+               <DrawerTitle className="m-0 text-lg font-semibold text-zinc-100 flex items-center gap-2 font-geist">
                   <Filter className="w-4 h-4 text-violet-400" />
                   Filters
                </DrawerTitle>

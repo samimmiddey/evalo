@@ -32,7 +32,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
                   />
                </div>
                <div>
-                  <h3 className="text-lg font-semibold text-zinc-100">
+                  <h3 className="text-lg font-semibold text-zinc-100 font-geist">
                      {interviewer.firstName} {interviewer.lastName}
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5">

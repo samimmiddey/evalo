@@ -115,11 +115,11 @@ export const FeedbackModal = ({
                         <Award className="w-4 h-4 text-violet-400 shrink-0" />
                         <SecondaryTitle
                            text="Overall Performance"
-                           className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-zinc-400"
+                           className="text-xs! lg:text-xs! 2xl:text-sm! uppercase tracking-wider text-zinc-400"
                         />
                      </div>
                      <span
-                        className={`inline-flex items-center px-3 py-1 text-xs font-bold rounded-full border ${getOverallRatingStyle(
+                        className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border ${getOverallRatingStyle(
                            overallRating
                         )}`}
                      >
@@ -139,11 +139,11 @@ export const FeedbackModal = ({
                         <Target className="w-4 h-4 text-violet-400 shrink-0" />
                         <SecondaryTitle
                            text="Hiring Recommendation"
-                           className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-zinc-400"
+                           className="text-xs! lg:text-xs! 2xl:text-sm! uppercase tracking-wider text-zinc-400"
                         />
                      </div>
                      <span
-                        className={`inline-flex items-center px-2 py-1.5 text-xs font-bold rounded-lg border ${getRecommendationStyle(
+                        className={`inline-flex items-center px-2 py-1.5 text-xs font-semibold rounded-lg border ${getRecommendationStyle(
                            recommendation
                         )}`}
                      >
@@ -163,7 +163,7 @@ export const FeedbackModal = ({
                   <FileText className="w-4 h-4 text-violet-400 shrink-0" />
                   <SecondaryTitle
                      text="Executive Summary"
-                     className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-zinc-300"
+                     className="text-xs! lg:text-xs! 2xl:text-sm! uppercase tracking-wider text-zinc-400"
                   />
                </div>
                <PrimaryBody
@@ -180,7 +180,7 @@ export const FeedbackModal = ({
                      <Code className="w-4 h-4 text-sky-400 shrink-0" />
                      <SecondaryTitle
                         text="Technical Competency"
-                        className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-sky-400"
+                        className="text-xs! lg:text-xs! 2xl:text-sm! uppercase tracking-wider text-sky-400"
                      />
                   </div>
                   <PrimaryBody
@@ -195,7 +195,7 @@ export const FeedbackModal = ({
                      <Brain className="w-4 h-4 text-pink-400 shrink-0" />
                      <SecondaryTitle
                         text="Problem Solving"
-                        className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-pink-400"
+                        className="text-xs! lg:text-xs! 2xl:text-sm! uppercase tracking-wider text-pink-400"
                      />
                   </div>
                   <PrimaryBody
@@ -210,7 +210,7 @@ export const FeedbackModal = ({
                      <MessageSquare className="w-4 h-4 text-emerald-400 shrink-0" />
                      <SecondaryTitle
                         text="Communication & Clarity"
-                        className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-emerald-400"
+                        className="text-xs! lg:text-xs! 2xl:text-sm! uppercase tracking-wider text-emerald-400"
                      />
                   </div>
                   <PrimaryBody
@@ -228,7 +228,7 @@ export const FeedbackModal = ({
                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                      <SecondaryTitle
                         text="Key Strengths"
-                        className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-emerald-400"
+                        className="text-xs! lg:text-xs! 2xl:text-sm! uppercase tracking-wider text-emerald-400"
                      />
                   </div>
                   {strengths && strengths.length > 0 ? (
@@ -260,7 +260,7 @@ export const FeedbackModal = ({
                      <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
                      <SecondaryTitle
                         text="Areas for Improvement"
-                        className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold uppercase tracking-wider text-amber-400"
+                        className="text-xs! lg:text-xs! 2xl:text-sm! uppercase tracking-wider text-amber-400"
                      />
                   </div>
                   {improvements && improvements.length > 0 ? (

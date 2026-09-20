@@ -29,7 +29,7 @@ const UserFeedback = ({ feedback }: UserFeedbackProps) => {
                      <div key={item.id} className="p-4 rounded-xl bg-zinc-900 border border-white/5 space-y-3">
                         <div className="flex items-center justify-between">
                            <div>
-                              <h4 className="font-semibold text-zinc-200 text-sm mb-1">
+                              <h4 className="font-semibold text-zinc-200 text-sm mb-1 font-geist">
                                  {item.interviewee.firstName ?? ''} {item.interviewee.lastName ?? ''}
                               </h4>
                               <p className="text-xs text-zinc-400">{item.interviewee.designation ?? ''}</p>

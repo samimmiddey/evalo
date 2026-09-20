@@ -1,5 +1,4 @@
 import PrimaryBody from '@/components/common/primary-body';
-import PrimaryTitle from '@/components/common/primary-title';
 import CardLayout from '@/components/layouts/card-layout';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -8,6 +7,7 @@ import { Star, Briefcase, Coins } from 'lucide-react';
 import HeaderTitle from './header-title';
 import { InterviewerDetails } from '../types/details.types';
 import Image from 'next/image';
+import SecondaryTitle from '@/components/common/secondary-title';
 
 interface InterviewerProps {
    interviewer: InterviewerDetails;
@@ -31,13 +31,13 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
             <div className="space-y-4 grow">
                <div>
                   <div className="flex flex-wrap items-center gap-3">
-                     <PrimaryTitle
-                        className="text-2xl! 2xl:text-3xl! font-bold text-zinc-100"
+                     <SecondaryTitle
+                        className="text-2xl! 2xl:text-3xl! font-bold"
                         text={`${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`}
                      />
                      <Badge
                         variant="outline"
-                        className="h-5.5 px-2 bg-violet-500/15 text-violet-300 border-violet-500/30"
+                        className="h-5.5 px-2 bg-zinc-500/15 text-zinc-300 border-zinc-500/30"
                      >
                         Interviewer
                      </Badge>
@@ -57,7 +57,7 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
                      <span>({interviewer.totalRatings} ratings)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                     <Briefcase className="w-4 h-4 text-zinc-500" />
+                     <Briefcase className="w-4 h-4 text-violet-400" />
                      <span>{interviewer.experience ?? '0'}+ Years Experience</span>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -71,7 +71,7 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
                      <Badge
                         key={skill}
                         variant="outline"
-                        className="bg-white/5 border-white/5 hover:border-violet-500/30 text-zinc-300 px-2.5 text-xs h-6"
+                        className="bg-white/5 border-white/5 hover:border-violet-500/30 text-zinc-300 px-2.5 text-xs py-2.5"
                      >
                         {skill}
                      </Badge>

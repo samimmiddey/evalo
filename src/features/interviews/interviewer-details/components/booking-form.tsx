@@ -179,7 +179,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                         <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto" />
                      </motion.div>
                      <div className="space-y-2">
-                        <h3 className="text-xl font-bold text-zinc-100">Booking Confirmed!</h3>
+                        <h3 className="text-xl font-semibold text-zinc-100 font-geist">Booking Confirmed!</h3>
                         <p className="text-sm text-zinc-400 max-w-xs leading-relaxed">
                            Your mock session with {interviewer.firstName} has been scheduled.
                         </p>

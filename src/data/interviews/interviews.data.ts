@@ -93,7 +93,7 @@ export const interviewerDetailsData: InterviewerDetails = {
    },
    whatToExpect: {
       header: {
-         title: 'What to expect',
+         title: 'What to Expect',
          icon: Brain,
       }
    },

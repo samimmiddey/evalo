@@ -164,7 +164,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                <div className="space-y-2 grow">
                   <div className="flex flex-wrap items-start justify-between gap-3">
                      <div>
-                        <h4 className="text-lg font-bold text-zinc-100 group-hover:text-violet-400 transition-colors font-outfit">
+                        <h4 className="text-lg font-semibold text-zinc-100 group-hover:text-violet-400 transition-colors font-geist">
                            {interviewer.firstName} {interviewer.lastName}
                         </h4>
 
@@ -187,7 +187,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      </div>
                   </div>
 
-                  <p className="text-xs text-zinc-500 font-medium">
+                  <p className="text-xs 2xl:text-[13px] text-zinc-500 font-medium">
                      {interviewer.experience} years experience
                   </p>
 
@@ -218,7 +218,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                         <Calendar className="w-4 h-4 text-violet-400 shrink-0" />
                         <div className="text-center md:text-left">
                            <span className="block text-[10px] uppercase text-zinc-500 font-semibold tracking-wider md:hidden">Date</span>
-                           <span className="text-xs 2xl:text-sm font-semibold text-zinc-200">{format(new Date(startTime), 'MMM d, yyyy')}</span>
+                           <span className="text-xs 2xl:text-sm font-medium text-zinc-200">{format(new Date(startTime), 'MMM d, yyyy')}</span>
                         </div>
                      </div>
 
@@ -238,7 +238,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                         <Hourglass className="w-4 h-4 text-violet-400 shrink-0" />
                         <div className="text-center md:text-left">
                            <span className="block text-[10px] uppercase text-zinc-500 font-semibold tracking-wider md:hidden">Duration</span>
-                           <span className="text-xs 2xl:text-sm font-semibold text-zinc-300">{differenceInMinutes(
+                           <span className="text-xs 2xl:text-sm font-medium text-zinc-300">{differenceInMinutes(
                               new Date(endTime),
                               new Date(startTime)
                            )} mins</span>
@@ -261,7 +261,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                               <Info className="w-4 h-4" />
                            </div>
                            <div>
-                              <span className="text-xs font-bold text-amber-100 uppercase tracking-widest">
+                              <span className="text-xs font-semibold text-amber-100 uppercase tracking-widest">
                                  {appointsData.helpfulTips.header}
                               </span>
                               <p className="text-sm text-amber-200/80 leading-relaxed mt-2">
@@ -283,7 +283,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
 
                         <div className="space-y-3.5 w-full">
                            <div>
-                              <span className="text-xs font-bold text-violet-300 uppercase tracking-widest">
+                              <span className="text-xs font-semibold text-violet-300 uppercase tracking-widest">
                                  AI Feedback Evaluation
                               </span>
                               <p className="text-sm text-zinc-300 leading-relaxed mt-2">
@@ -296,7 +296,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                               <div className="flex flex-wrap justify-between items-center gap-4 w-full">
                                  <div className="flex items-center gap-2">
                                     <span className="text-xs text-zinc-500">Performance:</span>
-                                    <span className={`text-xs px-2.5 py-0.5 rounded-full border font-bold ${getPerformanceLevelColor(feedback.overallRating)}`}>
+                                    <span className={`text-xs px-2.5 py-0.5 rounded-full border font-semibold ${getPerformanceLevelColor(feedback.overallRating)}`}>
                                        {feedback.overallRating}
                                     </span>
                                  </div>
@@ -310,7 +310,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                                              style={{ width: `${(Number(feedback.sessionRating) / 5) * 100}%` }}
                                           />
                                        </div>
-                                       <span className="text-xs font-bold text-zinc-200 font-outfit">{(Number(feedback.sessionRating) / 5) * 100}/100</span>
+                                       <span className="text-xs font-semibold text-zinc-200">{(Number(feedback.sessionRating) / 5) * 100}/100</span>
                                     </div>
                                  </div>
                               </div>
