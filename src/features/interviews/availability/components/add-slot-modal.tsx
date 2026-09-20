@@ -212,10 +212,10 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
          description="Choose a date and time window. The scheduler will automatically split your window into bookable slots."
          headerIcon={<ClockFading className="w-4 h-4 text-violet-400" />}
       >
-         <div className="space-y-5 2xl:space-y-6 text-zinc-100 font-inter">
+         <div className="space-y-5 2xl:space-y-6 text-zinc-100">
             {/* Quick Presets */}
             <div className="space-y-2">
-               <Label className="text-xs font-semibold uppercase text-zinc-400">Quick Presets</Label>
+               <Label className="text-xs 2xl:text-[13px] font-medium text-zinc-300">Quick Presets</Label>
                <div className="flex flex-wrap gap-2">
                   {interviewerData.slotPresets.map((preset, idx) => {
                      const isExpired = isPresetExpired(preset, selectedDate, todayStr);
@@ -232,7 +232,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                               isExpired
                                  ? "bg-zinc-900/40 text-zinc-600 border-white/5 cursor-not-allowed line-through"
                                  : isActive
-                                    ? "bg-violet-500/15 border-violet-500/30 hover:bg-violet-500/20 text-violet-300 font-semibold shadow-xs"
+                                    ? "bg-violet-500/15 border-violet-500/30 hover:bg-violet-500/20 text-violet-300 font-semibold"
                                     : "bg-zinc-900/80 border-white/10 hover:border-violet-500/30 hover:bg-violet-500/15 text-zinc-300"
                            )}
                         >
@@ -247,7 +247,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                {/* Date Picker */}
                <div className="space-y-2">
-                  <Label htmlFor="slot-date" className="text-xs font-medium text-zinc-300">
+                  <Label htmlFor="slot-date" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
                      Date
                   </Label>
                   <div className="relative">
@@ -286,7 +286,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
 
                {/* Start Time */}
                <div className="space-y-2">
-                  <Label htmlFor="start-time" className="text-xs font-medium text-zinc-300">
+                  <Label htmlFor="start-time" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
                      Start Time
                   </Label>
                   <Input
@@ -303,7 +303,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
 
                {/* End Time */}
                <div className="space-y-2">
-                  <Label htmlFor="end-time" className="text-xs font-medium text-zinc-300">
+                  <Label htmlFor="end-time" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
                      End Time
                   </Label>
                   <Input
@@ -321,7 +321,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
 
             {/* Duration Selector */}
             <div className="space-y-2">
-               <Label className="text-xs font-medium text-zinc-300">Slot Duration</Label>
+               <Label className="text-xs 2xl:text-[13px] font-medium text-zinc-300">Slot Duration</Label>
                <div className="flex items-center gap-2.5">
                   <Badge
                      variant={slotDuration === 30 ? "default" : "outline"}
@@ -355,7 +355,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
             {/* Generated Slots Preview */}
             <div className="space-y-3 pt-2 border-t border-white/5">
                <div className="flex items-center justify-between">
-                  <Label className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                  <Label className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
                      Generated Slots Preview ({generatedSlots.filter((s) => s.selected).length} selected)
                   </Label>
                </div>

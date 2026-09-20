@@ -71,7 +71,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
                      <div className="flex items-center gap-2">
                         <SecondaryTitle
                            text={`${creditBalance}`}
-                           className="text-xl! font-extrabold! text-white!"
+                           className="text-xl! font-bold! text-zinc-100!"
                         />
                         <span className="text-sm font-medium text-violet-300">{`Credit${creditBalance > 1 ? 's' : ''}`}</span>
                      </div>
@@ -92,16 +92,16 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
             {/* Quick Math Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/5 text-xs">
                <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
-                  <PrimaryBody text="Rate Conversion" className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-500 mb-0.5" />
-                  <PrimaryBody text={`$${ratePerCredit}.00 USD / Credit`} className="text-xs! lg:text-xs! 2xl:text-xs! font-semibold text-zinc-200" />
+                  <PrimaryBody text="Rate Conversion" className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500 mb-0.5" />
+                  <PrimaryBody text={`$${ratePerCredit}.00 USD / Credit`} className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold text-zinc-100" />
                </div>
                <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
-                  <PrimaryBody text="Platform Service Fee" className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-500 mb-0.5" />
-                  <PrimaryBody text={`${platformFeePercent}% on withdrawal`} className="text-xs! lg:text-xs! 2xl:text-xs! font-semibold text-zinc-200" />
+                  <PrimaryBody text="Platform Service Fee" className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500 mb-0.5" />
+                  <PrimaryBody text={`${platformFeePercent}% on withdrawal`} className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold text-zinc-100" />
                </div>
                <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
-                  <PrimaryBody text="Est. Net Cash Value" className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-500 mb-0.5" />
-                  <PrimaryBody text={`$${netEstimated.toFixed(2)} USD`} className="text-xs! lg:text-xs! 2xl:text-xs! font-bold text-emerald-400" />
+                  <PrimaryBody text="Est. Net Cash Value" className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500 mb-0.5" />
+                  <PrimaryBody text={`$${netEstimated.toFixed(2)} USD`} className="text-xs! lg:text-xs! 2xl:text-sm! font-bold text-emerald-400" />
                </div>
             </div>
          </CardLayout>

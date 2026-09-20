@@ -86,15 +86,15 @@ export const AvailabilityView = () => {
    return (
       <div className="space-y-6">
          {/* Top Action Bar */}
-         <div className="flex items-center justify-between gap-4 p-2 sm:px-4 bg-zinc-900/40 border border-white/5 rounded-xl mb-7 2xl:mb-8 relative z-10 backdrop-blur-xl">
+         <div className="flex items-center justify-between gap-4 px-3 2xl:px-4 py-2 2xl:py-3 bg-zinc-900/40 border border-white/5 rounded-xl mb-7 2xl:mb-8 relative z-10 backdrop-blur-xl">
             <div>
                <SecondaryTitle
                   text="Configured Slots"
-                  className="text-base! font-semibold! text-zinc-100!"
+                  className="text-sm! 2xl:text-base!"
                />
                <PrimaryBody
                   text={slots ? `${slots.length} upcoming slots configured` : "Loading..."}
-                  className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400!"
+                  className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-400!"
                />
             </div>
             <Button
@@ -120,7 +120,7 @@ export const AvailabilityView = () => {
                      <div className="flex items-center justify-between gap-2 border-b border-white/5 pb-3">
                         <div className="flex items-center gap-2">
                            <Calendar className="w-4 h-4 text-violet-400" />
-                           <span className="font-semibold text-sm text-zinc-200">
+                           <span className="font-semibold text-sm text-zinc-200 font-geist">
                               {group.dayName}
                            </span>
                            <span className="text-xs text-zinc-500">• {group.displayDate}</span>

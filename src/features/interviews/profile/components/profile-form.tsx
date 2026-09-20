@@ -87,14 +87,14 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                <div className="flex items-center justify-center w-8.5 h-8.5 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-400 shrink-0 mt-0.5">
                   <UserPen className="w-4 h-4" />
                </div>
-               <div>
+               <div className="flex flex-col gap-px">
                   <SecondaryTitle
                      text="Interviewer Profile & Session Rates"
-                     className="text-base! font-semibold! text-zinc-100!"
+                     className="text-sm! 2xl:text-base!"
                   />
                   <PrimaryBody
                      text="Customize how your profile appears to candidates and configure your booking rate."
-                     className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400!"
+                     className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-400!"
                   />
                </div>
             </div>
@@ -110,7 +110,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                   <div className="space-y-2">
                      <Label
                         htmlFor="designation"
-                        className="text-xs font-medium text-zinc-300 flex items-center gap-1.5"
+                        className="text-xs 2xl:text-[13px] font-medium text-zinc-300 flex items-center gap-1.5"
                      >
                         <Briefcase className="w-3.5 h-3.5 text-violet-400" />
                         Designation / Role Title
@@ -122,14 +122,14 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                         className="bg-zinc-900 border-white/10 text-zinc-100 text-sm!"
                      />
                      {errors.designation && (
-                        <p className="text-xs text-rose-400">{errors.designation.message}</p>
+                        <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.designation.message}</p>
                      )}
                   </div>
 
                   <div className="space-y-2">
                      <Label
                         htmlFor="company"
-                        className="text-xs font-medium text-zinc-300 flex items-center gap-1.5"
+                        className="text-xs 2xl:text-[13px] font-medium text-zinc-300 flex items-center gap-1.5"
                      >
                         <Building2 className="w-3.5 h-3.5 text-violet-400" />
                         Current Company
@@ -141,7 +141,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                         className="bg-zinc-900 border-white/10 text-zinc-100 text-sm!"
                      />
                      {errors.company && (
-                        <p className="text-xs text-rose-400">{errors.company.message}</p>
+                        <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.company.message}</p>
                      )}
                   </div>
                </div>
@@ -151,7 +151,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                   <div className="space-y-2">
                      <Label
                         htmlFor="experience"
-                        className="text-xs font-medium text-zinc-300 flex items-center gap-1.5"
+                        className="text-xs 2xl:text-[13px] font-medium text-zinc-300 flex items-center gap-1.5"
                      >
                         <Flame className="w-3.5 h-3.5 text-violet-400" />
                         Years of Industry Experience
@@ -165,12 +165,12 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                         className="bg-zinc-900 border-white/10 text-zinc-100 text-sm!"
                      />
                      {errors.experience && (
-                        <p className="text-xs text-rose-400">{errors.experience.message}</p>
+                        <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.experience.message}</p>
                      )}
                   </div>
 
                   <div className="space-y-2">
-                     <Label className="text-xs font-medium text-zinc-300 flex items-center gap-1.5">
+                     <Label className="text-xs 2xl:text-[13px] font-medium text-zinc-300 flex items-center gap-1.5">
                         <Settings className="w-3.5 h-3.5 text-violet-400" />
                         Interview Domains & Technical Expertise
                      </Label>
@@ -190,7 +190,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                         maxCount={2}
                      />
                      {errors.expertise && (
-                        <p className="text-xs text-rose-400">{errors.expertise.message}</p>
+                        <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.expertise.message}</p>
                      )}
                   </div>
                </div>
@@ -199,7 +199,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                <div className="space-y-2">
                   <Label
                      htmlFor="bio"
-                     className="text-xs font-medium text-zinc-300 flex items-center gap-1.5"
+                     className="text-xs 2xl:text-[13px] font-medium text-zinc-300 flex items-center gap-1.5"
                   >
                      <User className="w-3.5 h-3.5 text-violet-400" />
                      About Me & Interview Style
@@ -211,7 +211,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                      {...register("bio")}
                      className="bg-zinc-900 border-white/10 text-zinc-100 text-sm resize-none h-25"
                   />
-                  {errors.bio && <p className="text-xs text-rose-400">{errors.bio.message}</p>}
+                  {errors.bio && <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.bio.message}</p>}
                </div>
 
                {/* Save Button */}

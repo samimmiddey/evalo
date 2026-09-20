@@ -191,11 +191,11 @@ export const SessionCard = ({
                      <div>
                         <SecondaryTitle
                            text={candidateFullName}
-                           className="text-lg! font-bold! text-zinc-100! group-hover:text-violet-400 transition-colors font-outfit"
+                           className="text-lg! group-hover:text-violet-400 transition-colors font-geist"
                         />
 
                         <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-zinc-400">
-                           <span className="flex items-center gap-1.5 text-sm text-zinc-400">
+                           <span className="flex items-center gap-1.5 text-xs 2xl:text-[13px] text-zinc-400">
                               <Mail className="w-3.5 h-3.5 text-violet-400/80" />
                               {candidate.email}
                            </span>
@@ -230,7 +230,7 @@ export const SessionCard = ({
                            <span className="block text-[10px] uppercase text-zinc-500 font-semibold tracking-wider md:hidden">
                               Date
                            </span>
-                           <span className="text-xs 2xl:text-sm font-semibold text-zinc-200">
+                           <span className="text-xs 2xl:text-sm font-medium text-zinc-200">
                               {format(startDate, "MMM d, yyyy")}
                            </span>
                         </div>
@@ -254,7 +254,7 @@ export const SessionCard = ({
                            <span className="block text-[10px] uppercase text-zinc-500 font-semibold tracking-wider md:hidden">
                               Duration
                            </span>
-                           <span className="text-xs 2xl:text-sm font-semibold text-zinc-300">
+                           <span className="text-xs 2xl:text-sm font-medium text-zinc-300">
                               {durationMins} mins
                            </span>
                         </div>
@@ -273,7 +273,7 @@ export const SessionCard = ({
                            <Info className="w-4 h-4" />
                         </div>
                         <div>
-                           <span className="text-xs font-bold text-violet-300 uppercase tracking-widest">
+                           <span className="text-xs font-semibold text-violet-300 uppercase tracking-widest">
                               Mock Interview Session
                            </span>
                            <PrimaryBody
@@ -294,7 +294,7 @@ export const SessionCard = ({
 
                         <div className="space-y-3.5 w-full">
                            <div>
-                              <span className="text-xs font-bold text-violet-300 uppercase tracking-widest">
+                              <span className="text-xs font-semibold text-violet-300 uppercase tracking-widest">
                                  AI Feedback Evaluation
                               </span>
                               <PrimaryBody
@@ -309,7 +309,7 @@ export const SessionCard = ({
                                  <div className="flex items-center gap-2">
                                     <span className="text-xs text-zinc-500">Performance:</span>
                                     <span
-                                       className={`text-xs px-2.5 py-0.5 rounded-full border font-bold ${getPerformanceLevelColor(
+                                       className={`text-xs px-2.5 py-0.5 rounded-full border font-semibold ${getPerformanceLevelColor(
                                           feedback.overallRating
                                        )}`}
                                     >
@@ -329,7 +329,7 @@ export const SessionCard = ({
                                                 }}
                                              />
                                           </div>
-                                          <span className="text-xs font-bold text-zinc-200 font-outfit">
+                                          <span className="text-xs font-semibold text-zinc-200">
                                              {(feedback.sessionRating / 5) * 100}/100
                                           </span>
                                        </div>

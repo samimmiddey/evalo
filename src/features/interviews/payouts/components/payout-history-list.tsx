@@ -51,19 +51,19 @@ export const PayoutHistoryList = ({ payouts }: PayoutHistoryListProps) => {
                      </div>
                      <PrimaryBody
                         text={`Via ${item.paymentMethod.replace("_", " ")} • ${item.paymentDetail}`}
-                        className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400!"
+                        className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-400!"
                      />
                   </div>
 
-                  <div className="text-left sm:text-right text-[11px] text-zinc-500">
+                  <div className="text-left sm:text-right text-zinc-500">
                      <PrimaryBody
                         text={`Requested: ${format(parseISO(item.createdAt), "PPp")}`}
-                        className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-zinc-500!"
+                        className="text-[11px]! lg:text-[11px]! 2xl:text-xs! text-zinc-500!"
                      />
                      {item.processedAt && (
                         <PrimaryBody
                            text={`Processed: ${format(parseISO(item.processedAt), "PPp")}`}
-                           className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-emerald-400/80!"
+                           className="text-[11px]! lg:text-[11px]! 2xl:text-xs! text-emerald-400/80!"
                         />
                      )}
                   </div>

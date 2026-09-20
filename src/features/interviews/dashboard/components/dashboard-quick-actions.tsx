@@ -38,7 +38,7 @@ export const DashboardQuickActions = ({ actions }: DashboardQuickActionsProps) =
                            <div className="space-y-1">
                               <SecondaryTitle
                                  text={action.title}
-                                 className="text-sm! font-semibold! text-zinc-200! group-hover:text-violet-300! transition-colors"
+                                 className="text-sm! group-hover:text-violet-300! transition-colors"
                               />
                               <PrimaryBody
                                  text={action.description}

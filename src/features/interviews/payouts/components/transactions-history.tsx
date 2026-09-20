@@ -61,7 +61,7 @@ export const TransactionsHistory = ({ transactions }: TransactionsHistoryProps) 
                      <div>
                         <SecondaryTitle
                            text={getTransactionLabel(tx.type)}
-                           className="text-xs! font-semibold! text-zinc-200!"
+                           className="text-xs! 2xl:text-sm! mb-px"
                         />
                         <PrimaryBody
                            text={format(parseISO(tx.createdAt), "PPp")}

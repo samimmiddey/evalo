@@ -29,11 +29,11 @@ const ModalWrapper = ({ open, onClose, title, description, children, headerIcon 
                            headerIcon ? headerIcon : <LayersPlus className="w-4 h-4 text-violet-400" />
                         }
                      </div>
-                     <span className="text-xs 2xl:text-sm font-bold uppercase tracking-widest text-zinc-100">
+                     <span className="text-xs 2xl:text-sm font-semibold uppercase tracking-widest text-zinc-100 font-geist">
                         {title}
                      </span>
                   </div>
-                  <p className="text-xs 2xl:text-sm text-zinc-400 font-inter max-w-xl leading-relaxed">
+                  <p className="text-xs 2xl:text-sm text-zinc-400 max-w-xl leading-relaxed">
                      {description}
                   </p>
                </div>

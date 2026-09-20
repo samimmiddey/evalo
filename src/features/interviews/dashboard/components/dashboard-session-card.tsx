@@ -49,7 +49,7 @@ export const DashboardSessionCard = ({
             <div className="flex items-center gap-2">
                <SecondaryTitle
                   text={title}
-                  className="text-base! font-semibold! text-zinc-100!"
+                  className="text-base!"
                />
             </div>
             {session && (
@@ -88,7 +88,7 @@ export const DashboardSessionCard = ({
                      <div className="space-y-1">
                         <SecondaryTitle
                            text={session.counterpart.name}
-                           className="text-sm! font-semibold! text-zinc-100!"
+                           className="text-sm!"
                         />
                         <PrimaryBody
                            text={session.counterpart.subtitle}

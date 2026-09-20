@@ -94,13 +94,13 @@ export const RequestPayoutModal = ({
             onSubmit={(e) => {
                void handleSubmit((data) => void onSubmit(data))(e);
             }}
-            className="space-y-5 2xl:space-y-6 text-zinc-100 font-inter"
+            className="space-y-5 2xl:space-y-6 text-zinc-100"
          >
             {/* Calculation Card */}
-            <div className="p-4 rounded-xl bg-violet-950/20 border border-violet-500/20 space-y-3">
+            <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/15 space-y-3">
                <div className="flex items-center justify-between text-xs text-zinc-400">
                   <span>Available Balance:</span>
-                  <span className="font-bold text-violet-300">{maxCredits} Credits</span>
+                  <span className="font-semibold text-zinc-300">{maxCredits} Credits</span>
                </div>
                <div className="flex items-center justify-between text-xs text-zinc-400">
                   <span>Conversion Rate:</span>
@@ -110,8 +110,8 @@ export const RequestPayoutModal = ({
                   <span>Platform Fee ({interviewerData.payout.platformFeePercent}%):</span>
                   <span className="text-rose-400">-${platformFee.toFixed(2)}</span>
                </div>
-               <div className="pt-2 border-t border-violet-500/20 flex items-center justify-between text-sm font-bold text-zinc-100">
-                  <span className="flex items-center gap-1.5 text-violet-300">
+               <div className="pt-2 border-t border-zinc-500/15 flex items-center justify-between text-sm font-semibold text-zinc-100">
+                  <span className="flex items-center gap-1.5 text-zinc-300">
                      <DollarSign className="w-4 h-4" /> Net Payout Amount:
                   </span>
                   <span className="text-emerald-400 text-base">${netAmount.toFixed(2)}</span>
@@ -123,7 +123,7 @@ export const RequestPayoutModal = ({
                {/* Credits to Withdraw */}
                <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                     <Label htmlFor="credits" className="text-xs font-medium text-zinc-300">
+                     <Label htmlFor="credits" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
                         Credits to Withdraw
                      </Label>
                      <button
@@ -143,13 +143,13 @@ export const RequestPayoutModal = ({
                      className="bg-zinc-900 border-white/10 text-zinc-100"
                   />
                   {errors.credits && (
-                     <p className="text-xs text-rose-400">{errors.credits.message}</p>
+                     <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.credits.message}</p>
                   )}
                </div>
 
                {/* Payment Method */}
                <div className="space-y-1.5">
-                  <Label htmlFor="paymentMethod" className="text-xs font-medium text-zinc-300">
+                  <Label htmlFor="paymentMethod" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
                      Payment Method
                   </Label>
                   <Select
@@ -168,18 +168,17 @@ export const RequestPayoutModal = ({
                      </SelectContent>
                   </Select>
                   {errors.paymentMethod && (
-                     <p className="text-xs text-rose-400">{errors.paymentMethod.message}</p>
+                     <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.paymentMethod.message}</p>
                   )}
                </div>
 
                {/* Payment Details */}
                <div className="space-y-1.5">
-                  <Label htmlFor="paymentDetail" className="text-xs font-medium text-zinc-300">
+                  <Label htmlFor="paymentDetail" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
                      Payment Account / Transfer Details
                   </Label>
                   <Textarea
                      id="paymentDetail"
-                     rows={3}
                      placeholder={
                         paymentMethodWatch === "BANK_TRANSFER"
                            ? "Bank Name, Account Number, Routing/IFSC Code, Account Holder Name"
@@ -188,10 +187,10 @@ export const RequestPayoutModal = ({
                               : "UPI ID / VPA (e.g., name@okaxis)"
                      }
                      {...register("paymentDetail")}
-                     className="bg-zinc-900 border-white/10 text-zinc-200 text-xs"
+                     className="bg-zinc-900 border-white/10 text-zinc-200 text-xs h-25"
                   />
                   {errors.paymentDetail && (
-                     <p className="text-xs text-rose-400">{errors.paymentDetail.message}</p>
+                     <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.paymentDetail.message}</p>
                   )}
                </div>
             </div>
@@ -203,14 +202,14 @@ export const RequestPayoutModal = ({
                   variant="ghost"
                   onClick={onClose}
                   disabled={isPending}
-                  className="cursor-pointer"
+                  className="text-xs rounded-lg h-9 px-4.5"
                >
                   Cancel
                </Button>
                <Button
                   type="submit"
                   disabled={isPending || maxCredits < 1}
-                  className="bg-violet-600 hover:bg-violet-500 text-white gap-2 shadow-lg shadow-violet-600/20 cursor-pointer"
+                  className="bg-violet-600 hover:bg-violet-500 text-white gap-2 text-xs rounded-lg h-9 px-4.5"
                >
                   {isPending ? <Spinner className="size-4" /> : <Wallet className="w-4 h-4" />}
                   Submit Request
