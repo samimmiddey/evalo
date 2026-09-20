@@ -48,7 +48,7 @@ export function DashboardSidebarMenu({ items }: DashboardSidebarMenuProps) {
                            className={cn(
                               "h-10 px-3 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer group",
                               isActive
-                                 ? "bg-violet-500/15! text-violet-200! font-semibold border border-violet-500/30"
+                                 ? "bg-violet-500/15! text-violet-200! border border-violet-500/30"
                                  : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
                            )}
                         >

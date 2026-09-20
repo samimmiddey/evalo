@@ -20,7 +20,7 @@ const DashboardNavbar = () => {
                <div className="h-4 w-px bg-white/10 hidden sm:block" />
 
                <div className="hidden sm:flex items-center gap-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400 font-geist">
                      {user?.role ? roleLabel : <div className='h-6 w-20 rounded-md bg-zinc-800 animate-pulse' />}
                   </span>
                </div>

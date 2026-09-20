@@ -180,7 +180,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                      </motion.div>
                      <div className="space-y-2">
                         <h3 className="text-xl font-semibold text-zinc-100 font-geist">Booking Confirmed!</h3>
-                        <p className="text-sm text-zinc-400 max-w-xs leading-relaxed">
+                        <p className="text-sm text-zinc-300 max-w-xs leading-relaxed">
                            Your mock session with {interviewer.firstName} has been scheduled.
                         </p>
                      </div>
@@ -231,7 +231,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                />
                <Badge
                   variant='outline'
-                  className='text-xs text-zinc-400 whitespace-nowrap p-3'>
+                  className='text-xs text-zinc-300 whitespace-nowrap p-3'>
                   {interviewer.creditRate} Credit/session
                </Badge>
             </div>
@@ -244,7 +244,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                      style={{ width: `${(step / 3) * 100}%` }}
                   />
                </div>
-               <div className="flex items-center gap-1 text-xs font-semibold text-zinc-400">
+               <div className="flex items-center gap-1 text-xs font-semibold text-zinc-300">
                   <span className={step === 1 ? 'text-violet-400' : ''}>Date</span>
                   <ChevronRight className="w-3.5 h-3.5" />
                   <span className={step === 2 ? 'text-violet-400' : ''}>Time</span>
@@ -259,7 +259,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                {/* Date Slot */}
                {step === 1 && (
                   <div className="space-y-4">
-                     <p className="text-sm text-zinc-400 flex items-center gap-2">
+                     <p className="text-sm text-zinc-300 flex items-center gap-2">
                         <CalendarIcon className="w-4 h-4 text-violet-400" />
                         Select available interview date:
                      </p>
@@ -278,7 +278,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                                     }`}
                               >
                                  <span className='text-[15px] 2xl:text-base font-bold'>{date.label}</span>
-                                 <span className='text-xs 2xl:text-sm text-zinc-400'>{date.startDate}</span>
+                                 <span className='text-xs 2xl:text-sm text-zinc-300'>{date.startDate}</span>
                               </Button>
                            );
                         })}
@@ -289,7 +289,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                {/* Time Slot */}
                {step === 2 && (
                   <div className="space-y-4">
-                     <p className="text-sm text-zinc-400 flex items-center gap-2">
+                     <p className="text-sm text-zinc-300 flex items-center gap-2">
                         <Clock className="w-4 h-4 text-violet-400" />
                         Select a time slot for {selectedDateSlot}:
                      </p>
@@ -318,7 +318,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
                {/* Review final selection */}
                {step === 3 && (
                   <div className="space-y-4">
-                     <p className="text-sm text-zinc-400">
+                     <p className="text-sm text-zinc-300">
                         Review your booking details:
                      </p>
 
