@@ -7,9 +7,7 @@ const About = () => {
    return (
       <>
          <Hero />
-         <div className="s-margin-t s-padding-b bg-surface-dark">
-            <Features />
-         </div>
+         <Features />
          <Roles />
          <CTA />
       </>
