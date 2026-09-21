@@ -135,7 +135,7 @@ const PricingCard = ({ i, plan, disableAnimation = false }: PricingCardProps) =>
                      disabled={isCurrentPlan || isUpcomingPlan}
                      className={`w-full h-auto py-3.25 2xl:py-3.75 rounded-xl font-semibold font-geist tracking-wide transition-all duration-300 mb-7 2xl:mb-8
     ${isCurrentPlan
-                           ? "bg-green-500/15 hover:bg-green-500/20 text-green-200 border border-green-500/30"
+                           ? "bg-emerald-500/15 hover:bg-emerald-500/20 text-emerald-200 border border-emerald-500/30"
                            : isUpcomingPlan
                               ? "bg-sky-500/15 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30"
                               : isPopular

@@ -371,7 +371,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                                  trigger={
                                     <Badge
                                        variant="outline"
-                                       className="flex items-center justify-center gap-1.5 shrink-0 p-3.25 font-medium w-full bg-green-900/30 border-green-500/30 text-green-600 line-through opacity-60"
+                                       className="flex items-center justify-center gap-1.5 shrink-0 p-3.25 font-medium w-full bg-emerald-900/30 border-emerald-500/30 text-emerald-600 line-through opacity-60"
                                     >
                                        <span>{slot.displayStart} - {slot.displayEnd}</span>
                                     </Badge>
@@ -387,7 +387,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                               onClick={() => toggleSlot(slot.startTime)}
                               className={`
                                  flex items-center justify-center gap-2 shrink-0 p-3.25 cursor-pointer transition-colors font-medium w-full
-                                 ${slot.selected ? 'bg-green-500/15 border-green-500/30 hover:bg-green-500/20 text-green-300' : 'bg-zinc-900 border-white/10 text-zinc-400 hover:text-zinc-100 hover:border-white/20'}
+                                 ${slot.selected ? 'bg-emerald-500/15 border-emerald-500/30 hover:bg-emerald-500/20 text-emerald-300' : 'bg-zinc-900 border-white/10 text-zinc-400 hover:text-zinc-100 hover:border-white/20'}
                               `}
                            >
                               <span>
