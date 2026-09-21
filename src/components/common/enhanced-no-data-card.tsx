@@ -14,7 +14,7 @@ interface EnhancedNoDataCardProps {
 
 const EnhancedNoDataCard = ({ title, body, showButton = false, buttonText, buttonLink }: EnhancedNoDataCardProps) => {
    return (
-      <div className="flex flex-col items-center justify-center text-center py-10 2xl:py-12 px-6 bg-zinc-900/40 border border-dashed border-white/10 rounded-2xl relative overflow-hidden">
+      <div className="flex flex-col items-center justify-center text-center py-8 sm:py-9 2xl:py-10 px-6 bg-zinc-900/40 border border-dashed border-white/10 rounded-2xl relative overflow-hidden">
 
          {/* Icon */}
          <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-zinc-900/80 border border-white/5 mb-6 shadow-inner">
@@ -30,7 +30,7 @@ const EnhancedNoDataCard = ({ title, body, showButton = false, buttonText, butto
          {/* Body */}
          <PrimaryBody
             text={body}
-            className='max-w-md text-sm! leading-relaxed'
+            className='max-w-md text-sm!'
          />
 
          {/* Button */}
