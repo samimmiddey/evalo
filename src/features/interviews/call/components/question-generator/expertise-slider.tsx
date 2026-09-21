@@ -37,7 +37,7 @@ export const ExpertiseSlider = ({
                         h-auto shrink-0 px-3 py-1 text-[11px] font-medium transition-all cursor-pointer select-none
                         ${disabled ? 'opacity-70! cursor-not-allowed! pointer-events-none!' : ''}
                         ${isSelected
-                           ? 'bg-violet-600 hover:bg-violet-600 border-violet-500 text-white shadow-sm shadow-violet-600/30 font-semibold'
+                           ? 'bg-violet-600 hover:bg-violet-600 border-violet-500 text-white shadow-sm shadow-violet-600/30 font-medium'
                            : 'bg-zinc-900/80 border-white/10 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 hover:border-white/20'
                         }
                      `}

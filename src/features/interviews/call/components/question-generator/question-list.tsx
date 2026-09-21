@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { GeneratedQuestion } from "../../types/call.types";
-import { Check, CheckCircle2, Copy, HelpCircle, RotateCcw } from "lucide-react";
+import { Check, CheckCircle2, Copy, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import SecondaryTitle from "@/components/common/secondary-title";
@@ -78,12 +78,12 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
          {/* Card Top Row */}
          <div className="flex items-center justify-between gap-2 mb-2">
             <div className="flex items-center gap-2 min-w-0">
-               <span className="flex items-center justify-center size-5 rounded-md bg-zinc-500/30 text-zinc-100 text-[11px] font-mono font-bold shrink-0">
+               <span className="flex items-center justify-center size-5 rounded-md bg-zinc-500/30 text-zinc-200 text-[11px] font-mono font-bold shrink-0">
                   {index}
                </span>
                <SecondaryTitle
                   text={question.title}
-                  className="text-[13px]! 2xl:text-[13px]! font-semibold! text-zinc-200! truncate"
+                  className="text-[13px]! 2xl:text-[13px]! text-zinc-200! truncate"
                />
             </div>
 
@@ -139,13 +139,12 @@ const QuestionCard = ({ question, index }: QuestionCardProps) => {
 
                      {question.followUpQuestion && (
                         <div className="pt-2 border-t border-white/5">
-                           <span className="text-[11px] uppercase font-semibold text-zinc-400 tracking-wider flex items-center gap-1">
-                              <HelpCircle className="size-3" />
+                           <span className="text-[11px] uppercase font-semibold text-zinc-400 tracking-wider">
                               Follow-Up Probe
                            </span>
                            <PrimaryBody
                               text={question.followUpQuestion}
-                              className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-300! mt-1 leading-relaxed italic"
+                              className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-300! mt-1 italic"
                            />
                         </div>
                      )}

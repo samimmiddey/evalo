@@ -17,7 +17,7 @@ export const ErrorState = ({ error, onRetry }: ErrorStateProps) => {
          <div>
             <SecondaryTitle
                text="Failed to Generate"
-               className="text-[15px]! font-semibold! text-zinc-200!"
+               className="text-sm! 2xl:text-[15px]! text-zinc-200!"
             />
             <PrimaryBody
                text={error || "An unexpected error occurred while generating questions."}

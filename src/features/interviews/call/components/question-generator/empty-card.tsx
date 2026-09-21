@@ -12,11 +12,11 @@ export const EmptyCard = () => {
          </div>
          <SecondaryTitle
             text="AI Question Generator"
-            className="text-sm! 2xl:text-[15px]! font-semibold! text-zinc-200!"
+            className="text-sm! 2xl:text-[15px]! text-zinc-200!"
          />
          <PrimaryBody
             text="Select an expertise domain above to generate tailored technical interview questions."
-            className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-400! mt-1 max-w-80 leading-relaxed w-full"
+            className="text-xs! lg:text-xs! 2xl:text-[13px]! mt-1 max-w-80 w-full"
          />
       </div>
    );

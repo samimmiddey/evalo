@@ -171,7 +171,7 @@ const CallInterface = ({
       const { badge, title, description, buttonText } = getEndSessionContent();
 
       return (
-         <div className="flex flex-col items-center justify-center min-h-dvh w-full p-4 sm:p-6 bg-zinc-950 text-zinc-100 selection:bg-violet-500/30">
+         <div className="flex flex-col items-center justify-center min-h-dvh w-full p-4 sm:p-6 bg-zinc-950 text-zinc-100">
             <CardLayout className='flex flex-col items-center text-center gap-2 max-w-125 w-full'>
                {/* Icon */}
                <div className="flex items-center justify-center size-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 mb-4 shadow-inner">

@@ -10,7 +10,7 @@ interface ErrorCardProps {
 
 const ErrorCard = ({ text, className }: ErrorCardProps) => {
    return (
-      <div className={cn("flex flex-col items-center justify-center py-8 2xl:py-10 px-6 bg-zinc-900/40 border border-dashed border-red-500/30 rounded-2xl w-full", className)}>
+      <div className={cn("flex flex-col items-center justify-center py-7 sm:py-8 2xl:py-10 px-6 bg-zinc-900/40 border border-dashed border-red-500/30 rounded-2xl w-full", className)}>
 
          {/* Icon */}
          <div className="h-12 w-12 rounded-full bg-red-500/15 flex items-center justify-center mb-4">

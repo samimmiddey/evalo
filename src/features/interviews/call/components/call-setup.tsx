@@ -10,7 +10,6 @@ import {
    Volume2,
    Play,
    Video,
-   ArrowRight,
    Info,
    CheckCircle2,
    AlertCircle,
@@ -248,7 +247,7 @@ export const CallSetup = ({
 
    return (
       <TooltipProvider>
-         <div className="flex flex-col min-h-dvh bg-zinc-950 text-zinc-100 overflow-y-auto selection:bg-violet-500/30">
+         <div className="flex flex-col min-h-dvh bg-zinc-950 text-zinc-100 overflow-y-auto">
             {/* Top header bar */}
             <header className="flex items-center justify-between p-4 border-b border-white/10 bg-zinc-900/80 backdrop-blur-md shrink-0">
                <div className="flex items-center gap-3">
@@ -259,7 +258,7 @@ export const CallSetup = ({
                      <div className="flex items-center gap-2">
                         <SecondaryTitle
                            text="Pre-Call Device Setup"
-                           className="text-sm! 2xl:text-sm! font-semibold! text-zinc-100!"
+                           className="text-sm! 2xl:text-sm!"
                         />
                         {
                            isRejoining &&
@@ -313,7 +312,7 @@ export const CallSetup = ({
                                     </AvatarFallback>
                                  </Avatar>
                               </div>
-                              <PrimaryBody
+                              <SecondaryTitle
                                  text={currentUserName}
                                  className="text-sm! lg:text-sm! 2xl:text-sm! font-medium! text-zinc-200!"
                               />
@@ -398,10 +397,10 @@ export const CallSetup = ({
                      </div>
 
                      {/* Reassurance tips under the preview */}
-                     <div className="hidden sm:flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-900/40 border border-white/5 text-xs text-zinc-400">
+                     <div className="hidden sm:flex items-center justify-between px-3 py-2 rounded-lg bg-zinc-900/40 border border-white/5 text-[11px] text-zinc-400">
                         <div className="flex items-center gap-2">
-                           <Info className="size-4 text-zinc-400 shrink-0" />
-                           <span>Tip: Position yourself in good lighting facing your camera</span>
+                           <Info className="size-3.5 text-emerald-500 shrink-0" />
+                           <span>Position yourself in good lighting facing your camera</span>
                         </div>
                         <div className="flex items-center gap-1 text-[11px] text-zinc-400">
                            <CheckCircle2 className="size-3.5 text-emerald-500" />
@@ -415,11 +414,12 @@ export const CallSetup = ({
 
                      {/* Interview Summary Card */}
                      <div className="p-5 rounded-2xl bg-zinc-900/80 border border-white/10 backdrop-blur-md flex flex-col gap-3.5 shadow-xl">
-                        <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center justify-between gap-3">
                            <div className="min-w-0">
-                              <span className="text-[11px] uppercase tracking-wider font-semibold text-zinc-300">
-                                 Technical Mock Interview
-                              </span>
+                              <SecondaryTitle
+                                 text="Technical Mock Interview"
+                                 className="text-xs! 2xl:text-xs! uppercase tracking-wider text-zinc-300!"
+                              />
                            </div>
                            <Badge
                               variant="outline"
@@ -439,7 +439,7 @@ export const CallSetup = ({
                            <div className="min-w-0 flex-1">
                               <PrimaryBody
                                  text="Meeting with"
-                                 className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400! leading-none!"
+                                 className="text-xs! lg:text-xs! 2xl:text-xs! text-violet-300! leading-none!"
                               />
                               <PrimaryBody
                                  text={counterPartyName}
@@ -452,8 +452,8 @@ export const CallSetup = ({
                            </div>
                         </div>
 
-                        <div className="flex items-center gap-2 text-xs text-zinc-400">
-                           <Clock className="size-3.5 text-zinc-500 shrink-0" />
+                        <div className="flex items-center gap-2 text-xs text-emerald-400">
+                           <Clock className="size-3.5 shrink-0" />
                            <span>{scheduledDate} &bull; {scheduledStart} – {scheduledEnd}</span>
                         </div>
                      </div>
@@ -461,13 +461,10 @@ export const CallSetup = ({
                      {/* Hardware Settings Card */}
                      <div className="p-5 rounded-2xl bg-zinc-900/80 border border-white/10 backdrop-blur-md flex flex-col gap-4 shadow-xl">
                         <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
-                           <div className="flex items-center gap-2">
-                              <Camera className="size-4 text-zinc-400" />
-                              <SecondaryTitle
-                                 text="Device Settings"
-                                 className="text-xs! 2xl:text-xs! font-semibold! uppercase tracking-wider text-zinc-300!"
-                              />
-                           </div>
+                           <SecondaryTitle
+                              text="Device Settings"
+                              className="text-xs! 2xl:text-xs! uppercase tracking-wider text-zinc-300!"
+                           />
                            <span className="text-[11px] text-zinc-500">Auto-detected</span>
                         </div>
 
@@ -610,8 +607,7 @@ export const CallSetup = ({
                               </>
                            ) : (
                               <>
-                                 <span>{isRejoining ? 'Rejoin Interview' : 'Join Interview Now'}</span>
-                                 <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
+                                 <span>{isRejoining ? 'Rejoin Interview' : 'Join Interview'}</span>
                               </>
                            )}
                         </Button>

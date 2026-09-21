@@ -56,7 +56,7 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
                <div className="flex items-center gap-2">
                   <SecondaryTitle
                      text="Technical Mock Interview"
-                     className="text-sm! 2xl:text-sm! font-semibold! text-zinc-100! truncate"
+                     className="text-sm! 2xl:text-sm! truncate"
                   />
                   <Badge variant="outline" className="hidden sm:inline-flex items-center gap-1.5 bg-red-500/15 text-red-300 border-red-500/30 text-[10px] font-medium px-2 py-0.5">
                      <span className="relative flex size-1.5">
@@ -68,7 +68,7 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
                </div>
                <PrimaryBody
                   text={`${scheduledStart} - ${scheduledEnd}`}
-                  className="text-xs! lg:text-xs! 2xl:text-xs! mt-0.5! text-zinc-500! truncate max-w-xs sm:max-w-md"
+                  className="text-xs! lg:text-xs! 2xl:text-xs! mt-0.5! text-zinc-400! truncate max-w-xs sm:max-w-md"
                />
             </div>
          </div>
@@ -78,18 +78,18 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
             <div className="flex items-center gap-2">
                <Avatar className="border border-white/20 size-7 shrink-0">
                   <AvatarImage src={interviewee.imageUrl ?? undefined} alt={intervieweeName} />
-                  <AvatarFallback className="bg-zinc-800 text-zinc-300 text-[10px] font-medium">
+                  <AvatarFallback className="bg-zinc-800 text-zinc-300 text-[11px] font-medium">
                      {getInitials(intervieweeName)}
                   </AvatarFallback>
                </Avatar>
                <div className="text-left">
                   <PrimaryBody
                      text={intervieweeName}
-                     className="text-xs! lg:text-xs! 2xl:text-xs! font-medium! text-zinc-200! leading-none!"
+                     className="text-xs! lg:text-xs! 2xl:text-xs! font-medium! text-zinc-100! leading-none!"
                   />
                   <PrimaryBody
                      text="Candidate"
-                     className="text-[10px]! lg:text-[10px]! 2xl:text-[10px]! text-zinc-400! mt-0.5"
+                     className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-zinc-400! mt-0.5"
                   />
                </div>
             </div>
@@ -99,18 +99,18 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
             <div className="flex items-center gap-2">
                <Avatar className="border border-violet-500/40 size-7 shrink-0">
                   <AvatarImage src={interviewer.imageUrl ?? undefined} alt={interviewerName} />
-                  <AvatarFallback className="bg-zinc-800 text-violet-300 text-[10px] font-medium">
+                  <AvatarFallback className="bg-zinc-800 text-violet-300 text-[11px] font-medium">
                      {getInitials(interviewerName)}
                   </AvatarFallback>
                </Avatar>
                <div className="text-left">
                   <PrimaryBody
                      text={interviewerName}
-                     className="text-xs! lg:text-xs! 2xl:text-xs! font-medium! text-zinc-200! leading-none!"
+                     className="text-xs! lg:text-xs! 2xl:text-xs! font-medium! text-zinc-100! leading-none!"
                   />
                   <PrimaryBody
                      text="Interviewer"
-                     className="text-[10px]! lg:text-[10px]! 2xl:text-[10px]! text-zinc-400! mt-0.5"
+                     className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-zinc-400! mt-0.5"
                   />
                </div>
             </div>
@@ -120,9 +120,9 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Badge
                variant="outline"
-               className="gap-1.5 font-mono tabular-nums bg-violet-500/15 border-violet-500/30 text-violet-300 text-xs p-2.5"
+               className="gap-1.5 font-mono tabular-nums bg-emerald-500/15 border-emerald-500/30 text-emerald-300 text-xs p-2.5"
             >
-               <Clock className="size-3.5 text-violet-400" />
+               <Clock className="size-3.5 text-emerald-400" />
                {formatDuration(elapsedSeconds)}
             </Badge>
          </div>

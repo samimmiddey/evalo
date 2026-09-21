@@ -86,11 +86,11 @@ const CallCountdown = ({
             <div className="space-y-1">
                <SecondaryTitle
                   text="Interview Not Started Yet"
-                  className="text-lg! 2xl:text-xl! font-semibold! text-zinc-100!"
+                  className="text-lg! 2xl:text-xl!"
                />
                <PrimaryBody
-                  text="The live interview room will open 10 minutes before the scheduled time."
-                  className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400! max-w-sm leading-relaxed"
+                  text="The interview room will open 10 minutes before the scheduled time."
+                  className="text-xs! lg:text-xs! 2xl:text-xs! max-w-sm leading-relaxed"
                />
             </div>
 
@@ -106,7 +106,7 @@ const CallCountdown = ({
                      key={label}
                      className="flex flex-col items-center justify-center py-3 px-2 rounded-xl bg-zinc-900/80 border border-white/10 shadow-inner"
                   >
-                     <span className="text-xl sm:text-2xl font-bold font-mono text-zinc-100 tabular-nums">
+                     <span className="text-xl sm:text-2xl font-bold font-mono text-zinc-200 tabular-nums">
                         {String(value).padStart(2, '0')}
                      </span>
                      <span className="text-[9px] sm:text-[10px] uppercase font-semibold text-zinc-500 tracking-wider mt-0.5">
@@ -117,14 +117,14 @@ const CallCountdown = ({
             </div>
 
             {/* Schedule Details Card */}
-            <div className="w-full bg-zinc-900/40 border border-white/5 rounded-xl p-3.5 text-left text-xs space-y-2.5 text-zinc-300">
-               <div className="flex items-center gap-2 text-zinc-400">
-                  <Calendar className="size-3.5 text-violet-400 shrink-0" />
-                  <span className="text-zinc-200 font-medium">{scheduledDate}</span>
+            <div className="w-full bg-zinc-900/40 border border-white/5 rounded-xl p-3.5 text-left text-xs space-y-2.5">
+               <div className="flex items-center gap-2">
+                  <Calendar className="size-3.5 text-zinc-400 shrink-0" />
+                  <span className="text-zinc-300 font-medium">{scheduledDate}</span>
                </div>
-               <div className="flex items-center gap-2 text-zinc-400">
-                  <Clock className="size-3.5 text-violet-400 shrink-0" />
-                  <span className="text-zinc-200 font-medium">{scheduledStart} – {scheduledEnd}</span>
+               <div className="flex items-center gap-2">
+                  <Clock className="size-3.5 text-zinc-400 shrink-0" />
+                  <span className="text-zinc-300 font-medium">{scheduledStart} – {scheduledEnd}</span>
                </div>
             </div>
 
@@ -133,11 +133,11 @@ const CallCountdown = ({
                <div className="flex items-center gap-2">
                   <Avatar className="size-6 border border-white/20">
                      <AvatarImage src={interviewee.imageUrl ?? undefined} alt={intervieweeName} />
-                     <AvatarFallback className="bg-zinc-800 text-zinc-300 text-[9px]">
+                     <AvatarFallback className="bg-zinc-800 text-zinc-200 text-[9px]">
                         {getInitials(intervieweeName)}
                      </AvatarFallback>
                   </Avatar>
-                  <span className="text-xs text-zinc-300 font-medium">{intervieweeName}</span>
+                  <span className="text-xs text-zinc-200 font-medium">{intervieweeName}</span>
                </div>
 
                <ArrowLeftRight className="size-3 text-zinc-600" />
@@ -149,7 +149,7 @@ const CallCountdown = ({
                         {getInitials(interviewerName)}
                      </AvatarFallback>
                   </Avatar>
-                  <span className="text-xs text-zinc-300 font-medium">{interviewerName}</span>
+                  <span className="text-xs text-zinc-200 font-medium">{interviewerName}</span>
                </div>
             </div>
 

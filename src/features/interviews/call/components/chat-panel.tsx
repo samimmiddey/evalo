@@ -88,7 +88,7 @@ const CustomMessageUI = () => {
       <div className={`w-full flex ${isMe ? 'justify-end' : 'justify-start'} my-2 px-1`}>
          <div className={`group relative flex flex-col max-w-[85%] sm:max-w-[78%] ${isMe ? 'items-end' : 'items-start'}`}>
             {!isMe && (
-               <span className="text-[11px] font-semibold text-zinc-400 px-1 mb-1 tracking-tight">
+               <span className="text-[11px] font-semibold text-zinc-400 mb-1 tracking-tight">
                   {userName}
                </span>
             )}
@@ -236,7 +236,7 @@ const EmptyChatState = () => (
       />
       <PrimaryBody
          text="Send a message to share links, notes, or questions during your interview."
-         className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400! mt-2 max-w-55 leading-relaxed"
+         className="text-xs! lg:text-xs! 2xl:text-xs! mt-2 max-w-55"
       />
    </div>
 );
@@ -404,17 +404,17 @@ const ChatPanel = ({ chatClient, chatChannel, isInterviewer = false, expertise }
                   </div>
                ) : (
                   <div className="flex items-center gap-2.5">
-                     <div className="flex items-center justify-center size-8 rounded-lg bg-violet-500/15 border-violet-500/30 text-violet-400 border">
+                     <div className="flex items-center justify-center size-8 rounded-lg bg-violet-500/15 border-violet-500/30 text-violet-300 border">
                         <MessageSquare className="size-4" />
                      </div>
                      <div>
                         <SecondaryTitle
                            text="Interview Chat"
-                           className="text-xs! 2xl:text-xs! font-semibold! text-zinc-100! flex items-center gap-1.5"
+                           className="text-xs! 2xl:text-sm! flex items-center gap-1.5"
                         />
                         <PrimaryBody
                            text="Live in-call messaging"
-                           className="text-[10px]! lg:text-[10px]! 2xl:text-[10px]! text-zinc-400!"
+                           className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]!"
                         />
                      </div>
                   </div>

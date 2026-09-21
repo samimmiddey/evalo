@@ -82,7 +82,7 @@ const CallExpired = ({
    };
 
    return (
-      <div className="flex flex-col items-center justify-center min-h-dvh w-full p-4 sm:p-6 bg-zinc-950 text-zinc-100 selection:bg-violet-500/30">
+      <div className="flex flex-col items-center justify-center min-h-dvh w-full p-4 sm:p-6 bg-zinc-950">
          <CardLayout className="flex flex-col items-center text-center gap-3 max-w-125 w-full">
             {getIcon()}
 
@@ -91,7 +91,7 @@ const CallExpired = ({
             <div className="space-y-1 mt-1 flex flex-col gap-1">
                <SecondaryTitle
                   text={getTitle()}
-                  className="text-lg! 2xl:text-lg! font-semibold! text-zinc-100!"
+                  className="text-base! 2xl:text-lg!"
                />
                <PrimaryBody
                   text={getDescription()}
@@ -104,7 +104,7 @@ const CallExpired = ({
                type="button"
                size="lg"
                onClick={onNavigateOut}
-               className="mt-4 w-full h-11 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-medium transition-all gap-2 group"
+               className="mt-3 w-full h-11 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-medium transition-all gap-2 group"
             >
                <span>{isInterviewer ? 'Return to Dashboard' : 'View Your Appointments'}</span>
                <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />

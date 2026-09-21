@@ -178,7 +178,11 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
 
    // Error
    if (error) {
-      return <ScreenError text={error} />;
+      return (
+         <div className='px-4'>
+            <ScreenError text={error} pt={false} className='min-h-screen' />
+         </div>
+      );
    }
 
    // Loader

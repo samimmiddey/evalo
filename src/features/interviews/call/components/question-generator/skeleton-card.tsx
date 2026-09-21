@@ -70,12 +70,12 @@ export const LoadingState = () => {
    return (
       <div className="flex flex-col gap-3 pb-2 w-full animate-in fade-in duration-300">
          {/* Thinking Status Pill */}
-         <div className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-zinc-900/80 border border-violet-500/20 shadow-inner">
+         <div className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-zinc-900/80 border border-white/10 shadow-inner">
             <div className="flex items-center gap-2 min-w-0">
                <div className="relative flex items-center justify-center size-5 rounded-md bg-violet-500/15 text-violet-300 shrink-0">
                   <PulsingBrain />
                </div>
-               <span className="text-xs font-medium text-zinc-300 truncate">
+               <span className="text-xs font-medium text-violet-300 truncate">
                   {THINKING_STEPS[stepIndex]}
                </span>
             </div>
