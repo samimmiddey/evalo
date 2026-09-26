@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppUser } from "@/hooks/use-app-user";
-import IntervieweeOverview from "./interviewee-overview";
+import CandidateOverview from "./candidate-overview";
 import InterviewerOverview from "./interviewer-overview";
 import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview-skeleton";
 
@@ -16,7 +16,7 @@ export const Dashboard = () => {
       return <InterviewerOverview />;
    }
 
-   return <IntervieweeOverview />;
+   return <CandidateOverview />;
 };
 
 export default Dashboard;

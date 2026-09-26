@@ -14,7 +14,7 @@ interface RoleCardProps {
 }
 
 const RoleCard = ({ data }: RoleCardProps) => {
-   const roles = [data.interviewee, data.interviewer];
+   const roles = [data.candidate, data.interviewer];
 
    return (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 2xl:gap-8 w-full">

@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Evalo is a two-sided platform that lets interviewees book mock technical interviews with vetted interviewer professionals. Interviewees browse and filter interviewers, book time slots using a credit system, and receive structured AI-assisted feedback. Interviewers set availability, conduct sessions, and earn credits that can be paid out.
+Evalo is a two-sided platform that lets candidates book mock technical interviews with vetted interviewer professionals. Candidates browse and filter interviewers, book time slots using a credit system, and receive structured AI-assisted feedback. Interviewers set availability, conduct sessions, and earn credits that can be paid out.
 
 ---
 
@@ -246,10 +246,10 @@ All must be present in `.env.local`. Missing any will cause runtime failures:
 ### RBAC Route Map
 | Role | Allowed routes | Fallback |
 |---|---|---|
-| `INTERVIEWEE` | `/interviewers(.*)`, `/appointments(.*)`, `call(.*)` | `/interviewers` |
+| `CANDIDATE` | `/interviewers(.*)`, `/appointments(.*)`, `call(.*)` | `/interviewers` |
 | `INTERVIEWER` | `/dashboard(.*)`, `call(.*)` | `/dashboard` |
 
-> `/call(.*)` is intentionally shared between both roles — both interviewers and interviewees enter the same live call room.
+> `/call(.*)` is intentionally shared between both roles — both interviewers and candidates enter the same live call room.
 
 Adding new role-gated routes requires updating the `roleRouteMap` array in `src/proxy.ts`.
 

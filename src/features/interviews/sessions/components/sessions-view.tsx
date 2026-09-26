@@ -171,7 +171,7 @@ export const SessionsView = () => {
                title="No Sessions Found"
                body={
                   statusFilter === "SCHEDULED"
-                     ? "You have no upcoming scheduled sessions. Set your availability slots so interviewees can book sessions with you."
+                     ? "You have no upcoming scheduled sessions. Set your availability slots so candidates can book sessions with you."
                      : "No session records match your selected filters."
                }
             />

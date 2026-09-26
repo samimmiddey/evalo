@@ -21,7 +21,7 @@ export interface FormFields {
    icon: LucideIcon;
 }
 
-export interface IntervieweeTab {
+export interface CandidateTab {
    selectedRoleBadge: {
       title: string;
       value: string;
@@ -49,7 +49,7 @@ export interface InterviewerTab {
 export interface OnboardingData {
    header: HeaderData;
    tabs: Tabs[];
-   intervieweeTab: IntervieweeTab;
+   candidateTab: CandidateTab;
    interviewerTab: InterviewerTab;
    formBtnText: string;
    formBtnIcon: LucideIcon;

@@ -125,7 +125,7 @@ export const homeData: HomeDataTypes = {
       header: "Two Sides. One Platform.",
       title: "Where Talent Meets Opportunity",
       description: "Where talent meets real opportunity through structured interviews, skill-based assessments, and meaningful evaluation that helps candidates grow and get discovered.",
-      interviewee: {
+      candidate: {
          icon: User,
          tag: "FOR CANDIDATES",
          trackLabel: "CANDIDATE PIPELINE",

@@ -8,7 +8,7 @@ const DashboardNavbar = () => {
    const { isLoaded } = useUser();
    const { user } = useAppUser();
 
-   const roleLabel = user?.role === 'INTERVIEWER' ? 'Interviewer' : 'Interviewee';
+   const roleLabel = user?.role === 'INTERVIEWER' ? 'Interviewer' : 'Candidate';
 
    return (
       <header className='sticky top-0 z-30 w-full h-14 border-b border-white/5 bg-zinc-900/40 backdrop-blur-xl transition-all'>

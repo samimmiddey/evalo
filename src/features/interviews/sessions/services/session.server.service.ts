@@ -25,7 +25,7 @@ export const getDashboardSessions = async (
 
       if (filters?.search?.trim()) {
          const searchTerm = filters.search.trim();
-         whereClause.interviewee = {
+         whereClause.candidate = {
             OR: [
                { firstName: { contains: searchTerm, mode: "insensitive" } },
                { lastName: { contains: searchTerm, mode: "insensitive" } },
@@ -42,7 +42,7 @@ export const getDashboardSessions = async (
             skip: (page - 1) * pageSize,
             take: pageSize,
             include: {
-               interviewee: {
+               candidate: {
                   select: {
                      id: true,
                      firstName: true,
@@ -66,11 +66,11 @@ export const getDashboardSessions = async (
          streamCallId: item.streamCallId,
          recordingUrl: item.recordingUrl,
          candidate: {
-            id: item.interviewee.id,
-            firstName: item.interviewee.firstName,
-            lastName: item.interviewee.lastName,
-            imageUrl: item.interviewee.imageUrl,
-            email: item.interviewee.email
+            id: item.candidate.id,
+            firstName: item.candidate.firstName,
+            lastName: item.candidate.lastName,
+            imageUrl: item.candidate.imageUrl,
+            email: item.candidate.email
          },
          feedback: item.feedback
             ? {

@@ -17,7 +17,7 @@ import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview
 import { Calendar, CheckCircle2, Compass, Flame, Video } from "lucide-react";
 import Link from "next/link";
 
-export const IntervieweeOverview = () => {
+export const CandidateOverview = () => {
    const { user } = useAppUser();
    const { isLoading: isStatsLoading, data: stats } = useFetch<AppointmentsStatsData>(() => getAppointmentsStats());
    const { isLoading: isAppointmentsLoading, data: appointmentsData } = useFetch<AppointmentsData>(() =>
@@ -117,11 +117,11 @@ export const IntervieweeOverview = () => {
 
             {/* Right Column: Wallet & Quick Actions */}
             <div>
-               <DashboardQuickActions actions={dashboardData.interviewee.quickActions} />
+               <DashboardQuickActions actions={dashboardData.candidate.quickActions} />
             </div>
          </div>
       </div>
    );
 };
 
-export default IntervieweeOverview;
+export default CandidateOverview;

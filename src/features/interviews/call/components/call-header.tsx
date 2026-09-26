@@ -38,9 +38,9 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
    }, []);
 
    const interviewer = booking.interviewer;
-   const interviewee = booking.interviewee;
+   const candidate = booking.candidate;
    const interviewerName = `${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`.trim() || 'Interviewer';
-   const intervieweeName = `${interviewee.firstName ?? ''} ${interviewee.lastName ?? ''}`.trim() || 'Candidate';
+   const candidateName = `${candidate.firstName ?? ''} ${candidate.lastName ?? ''}`.trim() || 'Candidate';
    const scheduledStart = format(new Date(booking.startTime), 'h:mm a');
    const scheduledEnd = format(new Date(booking.endTime), 'h:mm a');
 
@@ -77,14 +77,14 @@ const CallHeader = ({ booking }: CallHeaderProps) => {
          <div className="hidden md:flex items-center gap-3 px-3.5 py-1.5 rounded-xl bg-zinc-950/70 border border-white/5 shadow-inner">
             <div className="flex items-center gap-2">
                <Avatar className="border border-white/20 size-7 shrink-0">
-                  <AvatarImage src={interviewee.imageUrl ?? undefined} alt={intervieweeName} />
+                  <AvatarImage src={candidate.imageUrl ?? undefined} alt={candidateName} />
                   <AvatarFallback className="bg-zinc-800 text-zinc-300 text-[11px] font-medium">
-                     {getInitials(intervieweeName)}
+                     {getInitials(candidateName)}
                   </AvatarFallback>
                </Avatar>
                <div className="text-left">
                   <PrimaryBody
-                     text={intervieweeName}
+                     text={candidateName}
                      className="text-xs! lg:text-xs! 2xl:text-xs! font-medium! text-zinc-100! leading-none!"
                   />
                   <PrimaryBody

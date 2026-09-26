@@ -50,7 +50,7 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
             },
             orderBy: { startTime: "asc" },
             include: {
-               interviewee: {
+               candidate: {
                   select: {
                      id: true,
                      firstName: true,
@@ -75,11 +75,11 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
             streamCallId: nextBooking.streamCallId,
             recordingUrl: nextBooking.recordingUrl,
             candidate: {
-               id: nextBooking.interviewee.id,
-               firstName: nextBooking.interviewee.firstName,
-               lastName: nextBooking.interviewee.lastName,
-               imageUrl: nextBooking.interviewee.imageUrl,
-               email: nextBooking.interviewee.email
+               id: nextBooking.candidate.id,
+               firstName: nextBooking.candidate.firstName,
+               lastName: nextBooking.candidate.lastName,
+               imageUrl: nextBooking.candidate.imageUrl,
+               email: nextBooking.candidate.email
             },
             feedback: nextBooking.feedback
                ? {

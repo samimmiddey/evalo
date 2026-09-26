@@ -16,7 +16,7 @@ datasource db {
 
 enum UserRole {
   UNASSIGNED
-  INTERVIEWEE
+  CANDIDATE
   INTERVIEWER
 }
 
@@ -86,7 +86,7 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // interviewee only
+  // candidate only
   credits                  Int       @default(0)
   currentPlan              String    @default("free")
   creditsLastAllocatedAt   DateTime?
@@ -104,7 +104,7 @@ model User {
   totalRatings  Int                  @default(0)
 
   availabilities        Availability[]
-  bookingsAsInterviewee Booking[]           @relation("IntervieweeBookings")
+  bookingsAsCandidate   Booking[]           @relation("CandidateBookings")
   bookingsAsInterviewer Booking[]           @relation("InterviewerBookings")
   transactions          CreditTransaction[]
   payouts               Payout[]
@@ -127,8 +127,8 @@ model Availability {
 
 model Booking {
   id             String              @id @default(uuid())
-  intervieweeId  String
-  interviewee    User                @relation("IntervieweeBookings", fields: [intervieweeId], references: [id])
+  candidateId    String
+  candidate      User                @relation("CandidateBookings", fields: [candidateId], references: [id])
   interviewerId  String
   interviewer    User                @relation("InterviewerBookings", fields: [interviewerId], references: [id])
   startTime      DateTime
@@ -145,7 +145,7 @@ model Booking {
 
   @@index([status, createdAt])
   @@index([interviewerId, status])
-  @@index([intervieweeId, status])
+  @@index([candidateId, status])
 }
 
 // FEEDBACK

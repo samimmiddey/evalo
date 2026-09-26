@@ -11,7 +11,7 @@ export interface InterviewerDetails extends Interviewer {
    currentPlan: string;
 }
 
-export interface IntervieweeDetails {
+export interface CandidateDetails {
    firstName: string | null;
    lastName: string | null;
    imageUrl: string | null;
@@ -27,7 +27,7 @@ export interface FeedbackDetails {
 
 export interface FeedbackData {
    id: string;
-   interviewee: IntervieweeDetails;
+   candidate: CandidateDetails;
    feedback: FeedbackDetails | null;
 }
 

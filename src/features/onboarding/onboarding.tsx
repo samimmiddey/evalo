@@ -3,7 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import OnboardingContainer from './components/onboarding-container';
 import OnboardingHeader from './components/onboarding-header';
-import IntervieweeTab from './components/interviewee-tab';
+import CandidateTab from './components/candidate-tab';
 import InterviewerTab from './components/interviewer-tab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { onboardingSchema, OnboardingSchemaTypes } from './schemas/onboarding.schemas';
@@ -100,7 +100,7 @@ const Onboarding = () => {
                            }
                         </TabsList>
                         <TabsContent value={onboardingData.tabs[0].value} className="mt-0 mb-2 focus-visible:outline-none">
-                           <IntervieweeTab />
+                           <CandidateTab />
                         </TabsContent>
 
                         <TabsContent value={onboardingData.tabs[1].value} className="mt-0 mb-2 focus-visible:outline-none">

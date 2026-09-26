@@ -11,9 +11,9 @@ import InputError from '@/components/common/input-error';
 import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
 import { AssignedRole } from '@/types/user.types';
 
-const IntervieweeTab = () => {
+const CandidateTab = () => {
    const methods = useFormContext<OnboardingSchemaTypes>();
-   const data = onboardingData.intervieweeTab;
+   const data = onboardingData.candidateTab;
 
    if (!data) {
       return <NoDataCard text="No Data Available" />;
@@ -86,7 +86,4 @@ const IntervieweeTab = () => {
    );
 };
 
-export default IntervieweeTab;
-
-
-
+export default CandidateTab;

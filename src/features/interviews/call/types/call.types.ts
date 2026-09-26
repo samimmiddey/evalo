@@ -18,7 +18,7 @@ export interface CallInterviewer extends CallParticipant {
 export interface Booking {
    id: string;
    interviewer: CallInterviewer;
-   interviewee: CallParticipant;
+   candidate: CallParticipant;
    expertise: InterviewExpertise[];
    experience: number | null;
    designation: string | null;

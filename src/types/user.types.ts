@@ -8,7 +8,7 @@ export const PLAN_CREDITS: Record<PLAN, number> = {
    free: 1,
 };
 
-export type UserRole = 'INTERVIEWEE' | 'INTERVIEWER' | 'UNASSIGNED';
+export type UserRole = 'CANDIDATE' | 'INTERVIEWER' | 'UNASSIGNED';
 export type AssignedRole = Exclude<UserRole, 'UNASSIGNED'>;
 
 export interface UserServer {

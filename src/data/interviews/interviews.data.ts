@@ -245,7 +245,7 @@ export const interviewerData: InterviewerData = {
 };
 
 export const dashboardData: DashboardData = {
-   interviewee: {
+   candidate: {
       header: {
          title: "Overview",
          description: "Track your mock interview progress, upcoming sessions, and review your performance breakdown."
@@ -287,7 +287,7 @@ export const dashboardData: DashboardData = {
       quickActions: [
          {
             title: "Manage Availability",
-            description: "Set your weekly recurring time slots so interviewees can book sessions.",
+            description: "Set your weekly recurring time slots so candidates can book sessions.",
             href: "/dashboard/availability",
             icon: Clock,
             accent: "violet"

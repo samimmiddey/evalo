@@ -63,9 +63,9 @@ const CallCountdown = ({
    const seconds = secondsLeft % 60;
 
    const interviewer = booking.interviewer;
-   const interviewee = booking.interviewee;
+   const candidate = booking.candidate;
    const interviewerName = `${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`.trim() || 'Interviewer';
-   const intervieweeName = `${interviewee.firstName ?? ''} ${interviewee.lastName ?? ''}`.trim() || 'Candidate';
+   const candidateName = `${candidate.firstName ?? ''} ${candidate.lastName ?? ''}`.trim() || 'Candidate';
    const scheduledStart = format(new Date(booking.startTime), 'h:mm a');
    const scheduledEnd = format(new Date(booking.endTime), 'h:mm a');
    const scheduledDate = format(new Date(booking.startTime), 'EEEE, MMMM d, yyyy');
@@ -132,12 +132,12 @@ const CallCountdown = ({
             <div className="flex items-center justify-center gap-2 sm:gap-3 w-full py-3 px-3.5 rounded-xl bg-zinc-900/40 border border-white/5">
                <div className="flex items-center gap-2">
                   <Avatar className="size-6 border border-white/20">
-                     <AvatarImage src={interviewee.imageUrl ?? undefined} alt={intervieweeName} />
+                     <AvatarImage src={candidate.imageUrl ?? undefined} alt={candidateName} />
                      <AvatarFallback className="bg-zinc-800 text-zinc-200 text-[9px]">
-                        {getInitials(intervieweeName)}
+                        {getInitials(candidateName)}
                      </AvatarFallback>
                   </Avatar>
-                  <span className="text-xs text-zinc-200 font-medium">{intervieweeName}</span>
+                  <span className="text-xs text-zinc-200 font-medium">{candidateName}</span>
                </div>
 
                <ArrowLeftRight className="size-3 text-zinc-600" />

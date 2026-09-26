@@ -67,7 +67,7 @@ export const getFeedback = async (id: string): Promise<InterviewerFeedback> => {
                where: { status: "COMPLETED", feedback: { isNot: null } },
                select: {
                   id: true,
-                  interviewee: {
+                  candidate: {
                      select: {
                         firstName: true,
                         lastName: true,
@@ -148,9 +148,9 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
       db.user.findUnique({ where: { id: interviewerId } })
    ]);
 
-   // Check if interviewee exists
-   if (dbUser?.role !== 'INTERVIEWEE') {
-      throw new ForbiddenError("Only interviewees can book sessions");
+   // Check if candidate exists
+   if (dbUser?.role !== 'CANDIDATE') {
+      throw new ForbiddenError("Only candidates can book sessions");
    }
 
    // Check if interviewer exists
@@ -166,7 +166,7 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
    // Credit rate for the interviewer
    const credits = interviewer.creditRate;
 
-   // Check if interviewee has sufficient credit in his account or not
+   // Check if candidate has sufficient credit in his account or not
    if (dbUser.credits < credits) {
       throw new ValidationError("Insufficient credits. Please upgrade your plan.");
    }
@@ -212,7 +212,7 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
 
          const newBooking = await tx.booking.create({
             data: {
-               intervieweeId: dbUser.id,
+               candidateId: dbUser.id,
                interviewerId,
                startTime: startDate,
                endTime: endDate,
@@ -261,7 +261,7 @@ export const bookSession = async ({ interviewerId, startTime, endTime }: BookSes
       await streamClient.upsertUsers([
          {
             id: dbUser.clerkUserId,
-            name: dbUser.firstName && dbUser.lastName ? `${dbUser.firstName} ${dbUser.lastName}` : 'Interviewee',
+            name: dbUser.firstName && dbUser.lastName ? `${dbUser.firstName} ${dbUser.lastName}` : 'Candidate',
             image: dbUser.imageUrl ?? undefined,
             role: 'user'
          },

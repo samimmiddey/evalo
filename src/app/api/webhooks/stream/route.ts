@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
             interviewer: {
                select: { id: true, clerkUserId: true, firstName: true, lastName: true, expertise: true }
             },
-            interviewee: {
+            candidate: {
                select: { id: true, clerkUserId: true, firstName: true, lastName: true }
             },
             feedback: { select: { id: true } }
@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
 
          const speakerMap: Record<string, string> = {
             [booking.interviewer.clerkUserId]: `${booking.interviewer.firstName ?? ''} ${booking.interviewer.lastName ?? ''}`.trim() || 'Interviewer',
-            [booking.interviewee.clerkUserId]: `${booking.interviewee.firstName ?? ''} ${booking.interviewee.lastName ?? ''}`.trim() || 'Candidate'
+            [booking.candidate.clerkUserId]: `${booking.candidate.firstName ?? ''} ${booking.candidate.lastName ?? ''}`.trim() || 'Candidate'
          };
 
          const transcriptText = lines
@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
             
             Expertise area: ${expertise}
             Interviewer: ${booking.interviewer.firstName ?? ''} ${booking.interviewer.lastName ?? ''}
-            Candidate: ${booking.interviewee.firstName ?? ''} ${booking.interviewee.lastName ?? ''}
+            Candidate: ${booking.candidate.firstName ?? ''} ${booking.candidate.lastName ?? ''}
 
             TRANSCRIPT:
             ${transcriptText}

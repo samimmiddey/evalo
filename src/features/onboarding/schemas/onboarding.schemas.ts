@@ -1,6 +1,6 @@
 import z from "zod";
 
-const role = ['INTERVIEWEE', 'INTERVIEWER'] as const;
+const role = ['CANDIDATE', 'INTERVIEWER'] as const;
 const domainValue = ['FRONTEND', 'BACKEND', 'FULLSTACK', 'DEVOPS', 'DSA', 'SYSTEM_DESIGN', 'MOBILE', 'ML_AI', 'SECURITY', 'QA', 'CLOUD'] as const;
 
 export const onboardingSchema = z.object({

@@ -17,7 +17,7 @@ export const getCallData = async (callId: string): Promise<GetCallDataServerResp
    }
 
    try {
-      // Get booking details along with interviewer and interviewee details
+      // Get booking details along with interviewer and candidate details
       const booking = await db.booking.findUnique({
          where: {
             streamCallId: callId
@@ -35,7 +35,7 @@ export const getCallData = async (callId: string): Promise<GetCallDataServerResp
                   designation: true
                }
             },
-            interviewee: {
+            candidate: {
                select: {
                   id: true,
                   clerkUserId: true,
@@ -53,10 +53,10 @@ export const getCallData = async (callId: string): Promise<GetCallDataServerResp
       }
 
       const isInterviewer = booking.interviewer.clerkUserId === user.id;
-      const isInterviewee = booking.interviewee.clerkUserId === user.id;
+      const isCandidate = booking.candidate.clerkUserId === user.id;
 
       // Check if user is authorized to access this call
-      if (!isInterviewer && !isInterviewee) {
+      if (!isInterviewer && !isCandidate) {
          throw new ForbiddenError('User is not authorized to access this call');
       }
 
@@ -88,7 +88,7 @@ export const getCallData = async (callId: string): Promise<GetCallDataServerResp
          booking: {
             id: booking.id,
             interviewer: booking.interviewer,
-            interviewee: booking.interviewee,
+            candidate: booking.candidate,
             expertise: booking.interviewer.expertise,
             experience: booking.interviewer.experience,
             designation: booking.interviewer.designation,

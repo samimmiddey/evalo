@@ -24,15 +24,15 @@ const UserFeedback = ({ feedback }: UserFeedbackProps) => {
                   className='bg-transparent border-0'
                />
             ) : (
-               <div className="space-y-4">
+                <div className="space-y-4">
                   {feedback.bookingsAsInterviewer.map((item) => (
                      <div key={item.id} className="p-4 rounded-xl bg-zinc-900 border border-white/5 space-y-3">
                         <div className="flex items-center justify-between">
                            <div>
                               <h4 className="font-semibold text-zinc-200 text-sm mb-1 font-geist">
-                                 {item.interviewee.firstName ?? ''} {item.interviewee.lastName ?? ''}
+                                 {item.candidate.firstName ?? ''} {item.candidate.lastName ?? ''}
                               </h4>
-                              <p className="text-xs text-zinc-400">{item.interviewee.designation ?? ''}</p>
+                              <p className="text-xs text-zinc-400">{item.candidate.designation ?? ''}</p>
                            </div>
                            <div className="flex items-center gap-1">
                               {Array.from({ length: item.feedback?.sessionRating ?? 0 }).map((_, i) => (
@@ -43,7 +43,7 @@ const UserFeedback = ({ feedback }: UserFeedbackProps) => {
                         <p className="text-sm text-zinc-300 leading-relaxed font-light italic">
                            &ldquo;{item.feedback?.sessionComment ?? 'Unable to show comment'}&rdquo;
                         </p>
-                        <span className="text-[11px] text-zinc-500 block">{formatDate(item.interviewee.createdAt)}</span>
+                        <span className="text-[11px] text-zinc-500 block">{formatDate(item.candidate.createdAt)}</span>
                      </div>
                   ))}
                </div>

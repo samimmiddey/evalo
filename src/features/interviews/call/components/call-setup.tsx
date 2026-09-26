@@ -110,7 +110,7 @@ export const CallSetup = ({
    const [isPlayingTestSound, setIsPlayingTestSound] = useState(false);
 
    const currentUserName = `${currentUser.firstName ?? ''} ${currentUser.lastName ?? ''}`.trim() || 'You';
-   const counterParty = isInterviewer ? booking.interviewee : booking.interviewer;
+   const counterParty = isInterviewer ? booking.candidate : booking.interviewer;
    const counterPartyName = `${counterParty.firstName ?? ''} ${counterParty.lastName ?? ''}`.trim();
    const counterPartyRole = isInterviewer ? 'Candidate' : 'Interviewer';
 
@@ -425,7 +425,7 @@ export const CallSetup = ({
                               variant="outline"
                               className="bg-zinc-950/70 border-zinc-500/30 text-zinc-300 text-xs shrink-0 p-2.5"
                            >
-                              {isInterviewer ? 'Interviewer' : 'Interviewee'}
+                              {isInterviewer ? 'Interviewer' : 'Candidate'}
                            </Badge>
                         </div>
 

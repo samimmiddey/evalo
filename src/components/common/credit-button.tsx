@@ -17,7 +17,7 @@ const CreditButton = ({ role, credits, onCloseSidebar }: CreditButtonProps) => {
    const lgWidth = useMediaQuery(1024);
 
    const handleButton = () => {
-      if (role === 'INTERVIEWEE') {
+      if (role === 'CANDIDATE') {
          setUpgradeModal(true);
 
          if (lgWidth && onCloseSidebar) {

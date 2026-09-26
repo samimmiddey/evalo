@@ -98,7 +98,7 @@ export interface DashboardHeader {
    description: string;
 }
 
-export interface IntervieweeStatsLabels {
+export interface CandidateStatsLabels {
    total: string;
    scheduled: string;
    completed: string;
@@ -120,9 +120,9 @@ export interface DashboardQuickAction {
    accent: string;
 }
 
-export interface IntervieweeDashboardConfig {
+export interface CandidateDashboardConfig {
    header: DashboardHeader;
-   statsLabels: IntervieweeStatsLabels;
+   statsLabels: CandidateStatsLabels;
    quickActions: DashboardQuickAction[];
 }
 
@@ -133,6 +133,6 @@ export interface InterviewerDashboardConfig {
 }
 
 export interface DashboardData {
-   interviewee: IntervieweeDashboardConfig;
+   candidate: CandidateDashboardConfig;
    interviewer: InterviewerDashboardConfig;
 }

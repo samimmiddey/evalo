@@ -81,7 +81,7 @@ export interface RoleDataTypes {
    header: string;
    title: string;
    description: string;
-   interviewee: RoleCard;
+   candidate: RoleCard;
    interviewer: RoleCard;
 }
 

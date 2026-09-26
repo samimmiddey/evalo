@@ -68,7 +68,7 @@ const CallInterface = ({
       },
    });
 
-   const intervieweeId = booking.interviewee.clerkUserId;
+   const candidateId = booking.candidate.clerkUserId;
    const interviewerId = booking.interviewer.clerkUserId;
 
    useEffect(() => {
@@ -82,7 +82,7 @@ const CallInterface = ({
          try {
             const channel = clientAtEffectStart.channel('messaging', callId, {
                name: 'Interview Chat',
-               members: [intervieweeId, interviewerId],
+               members: [candidateId, interviewerId],
             } as ChannelData);
 
             await channel.watch();
@@ -111,7 +111,7 @@ const CallInterface = ({
          }
          setChatChannel(null);
       };
-   }, [chatClient, callId, intervieweeId, interviewerId]);
+   }, [chatClient, callId, candidateId, interviewerId]);
 
    // Listen for call.ended event emitted when host ends the call
    useEffect(() => {

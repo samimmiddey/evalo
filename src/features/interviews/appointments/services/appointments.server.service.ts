@@ -34,7 +34,7 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
       } = params;
 
       const andConditions: Prisma.BookingWhereInput[] = [
-         { intervieweeId: dbUser.id }
+         { candidateId: dbUser.id }
       ];
 
       // If search is present, add search condition
@@ -137,20 +137,20 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
       const [completedCount, scheduledCount, cancelledCount] = await Promise.all([
          db.booking.count({
             where: {
-               intervieweeId: dbUser.id,
+               candidateId: dbUser.id,
                status: "COMPLETED",
             },
          }),
          db.booking.count({
             where: {
-               intervieweeId: dbUser.id,
+               candidateId: dbUser.id,
                status: "SCHEDULED",
                endTime: { gte: now },
             },
          }),
          db.booking.count({
             where: {
-               intervieweeId: dbUser.id,
+               candidateId: dbUser.id,
                status: "CANCELLED",
             },
          }),
@@ -194,7 +194,7 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
          id: bookingId
       },
       include: {
-         interviewee: true,
+         candidate: true,
          interviewer: true
       }
    });
@@ -204,7 +204,7 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
    }
 
    // Make sure the booking belongs to the current user
-   if (booking.interviewee.clerkUserId !== user.id &&
+   if (booking.candidate.clerkUserId !== user.id &&
       booking.interviewer.clerkUserId !== user.id) {
       throw new UnauthorizedError('Unauthorized user');
    }
@@ -227,9 +227,9 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
       // Store users on stream
       await streamClient.upsertUsers([
          {
-            id: booking.interviewee.clerkUserId,
-            name: booking.interviewee.firstName && booking.interviewee.lastName ? `${booking.interviewee.firstName} ${booking.interviewee.lastName}` : 'Interviewee',
-            image: booking.interviewee.imageUrl ?? undefined,
+            id: booking.candidate.clerkUserId,
+            name: booking.candidate.firstName && booking.candidate.lastName ? `${booking.candidate.firstName} ${booking.candidate.lastName}` : 'Candidate',
+            image: booking.candidate.imageUrl ?? undefined,
             role: 'user'
          },
          {
@@ -245,9 +245,9 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
       // Create call
       await call.getOrCreate({
          data: {
-            created_by_id: booking.interviewee.clerkUserId,
+            created_by_id: booking.candidate.clerkUserId,
             members: [
-               { user_id: booking.interviewee.clerkUserId, role: 'host' },
+               { user_id: booking.candidate.clerkUserId, role: 'host' },
                { user_id: booking.interviewer.clerkUserId, role: 'host' },
             ],
             settings_override: {
@@ -276,7 +276,7 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
 };
 
 type BookingWithParties = Prisma.BookingGetPayload<{
-   include: { interviewee: true; interviewer: true; };
+   include: { candidate: true; interviewer: true; };
 }>;
 
 // Cancel interview booking
@@ -298,7 +298,7 @@ export const cancelBooking = async (bookingId: string): Promise<void> => {
             id: bookingId,
          },
          include: {
-            interviewee: true,
+            candidate: true,
             interviewer: true,
          },
       });
@@ -311,7 +311,7 @@ export const cancelBooking = async (bookingId: string): Promise<void> => {
 
       // Make sure the current user is part of this booking
       if (
-         booking.interviewee.clerkUserId !== user.id &&
+         booking.candidate.clerkUserId !== user.id &&
          booking.interviewer.clerkUserId !== user.id
       ) {
          throw new UnauthorizedError("Unauthorized user");
@@ -335,17 +335,17 @@ export const cancelBooking = async (bookingId: string): Promise<void> => {
          // Record transaction as refund
          await tx.creditTransaction.create({
             data: {
-               userId: booking.intervieweeId,
+               userId: booking.candidateId,
                amount: booking.creditsCharged,
                type: "BOOKING_REFUND",
                bookingId: booking.id,
             },
          });
 
-         // Add credits back to interviewee's balance
+         // Add credits back to candidate's balance
          await tx.user.update({
             where: {
-               id: booking.intervieweeId,
+               id: booking.candidateId,
             },
             data: {
                credits: {

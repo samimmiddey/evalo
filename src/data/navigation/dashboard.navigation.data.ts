@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { NavigationItem } from "./navigation.types";
 
-export const intervieweeNavigationData: NavigationItem[] = [
+export const candidateNavigationData: NavigationItem[] = [
    {
       name: 'Dashboard',
       href: '/dashboard',

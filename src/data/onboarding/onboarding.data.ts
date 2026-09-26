@@ -12,8 +12,8 @@ export const onboardingData: OnboardingData = {
    tabs: [
       {
          icon: User,
-         text: 'Interviewee',
-         value: 'INTERVIEWEE'
+         text: 'Candidate',
+         value: 'CANDIDATE'
       },
       {
          icon: Briefcase,
@@ -21,14 +21,14 @@ export const onboardingData: OnboardingData = {
          value: 'INTERVIEWER'
       }
    ],
-   intervieweeTab: {
+   candidateTab: {
       selectedRoleBadge: {
-         title: 'Interviewee',
+         title: 'Candidate',
          value: 'INTERVIEWER'
       },
       contextCard: {
          icon: Flame,
-         title: 'Interviewee Experience',
+         title: 'Candidate Experience',
          description: 'Everything you need to practice and stand out',
          list: [
             {
@@ -65,7 +65,7 @@ export const onboardingData: OnboardingData = {
    interviewerTab: {
       selectedRoleBadge: {
          title: 'Interviewer',
-         value: 'INTERVIEWEE'
+         value: 'CANDIDATE'
       },
       formFields: [
          {
@@ -124,7 +124,7 @@ export const onboardingData: OnboardingData = {
 };
 
 export const defaultValues: OnboardingSchemaTypes = {
-   role: 'INTERVIEWEE' as const,
+   role: 'CANDIDATE' as const,
    firstName: '',
    lastName: '',
    designation: '',

@@ -7,13 +7,13 @@ interface Props {
 }
 
 const SelectedRoleBadge = ({ role, onChangeRole }: Props) => {
-   const isInterviewee = role.toLowerCase() === 'interviewee';
+   const isCandidate = role.toLowerCase() === 'candidate';
 
    return (
       <div className="flex items-center justify-between text-xs">
          <div className="flex items-center gap-2.5">
             <div className="w-6 h-6 rounded-md bg-violet-500/15 flex items-center justify-center text-violet-400">
-               {isInterviewee ? <User className="w-3.5 h-3.5" /> : <Briefcase className="w-3.5 h-3.5" />}
+               {isCandidate ? <User className="w-3.5 h-3.5" /> : <Briefcase className="w-3.5 h-3.5" />}
             </div>
             <span className="text-zinc-400 font-medium">Selected Role:</span>
             <Badge
