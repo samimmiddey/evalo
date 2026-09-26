@@ -22,8 +22,9 @@ Evalo is a two-sided platform that lets candidates book mock technical interview
 - **Toasts**: Sonner
 - **Carousels**: Embla Carousel
 - **Video/Chat**: Stream (`@stream-io/video-react-sdk` + `@stream-io/node-sdk` for server, `stream-chat` + `stream-chat-react` for in-call chat)
+- **AI / LLM**: Google Gemini (`@google/generative-ai` with `gemini-3.6-flash` model for live technical question generation and automated transcript evaluation)
 - **Security**: Arcjet (`@arcjet/next`) — installed but currently **commented out** in `src/proxy.ts`
-- **Webhooks**: Svix (Clerk webhook verification)
+- **Webhooks**: Svix (Clerk webhook verification) + Stream Webhooks (recording/transcription ingestion)
 - **Utilities**: `date-fns` (date formatting), `uuid` (ID generation), `react-canvas-confetti` (celebration animations)
 - **Fonts**: Outfit (primary), Inter, MuseoModerno, Lobster Two — all via `next/font/google`
 - **Linting**: ESLint 9 + `typescript-eslint`
@@ -35,88 +36,101 @@ Evalo is a two-sided platform that lets candidates book mock technical interview
 
 ```
 src/
-├── app/                      # Next.js App Router
-│   ├── (auth)/               # Auth pages (sign-in, sign-up, forgot-password) — layout excluded from nav
-│   ├── (routes)/             # Application pages
-│   │   ├── (protected)/      # All routes that require auth + onboarding
-│   │   │   ├── layout.tsx    # Wraps children in OnboardingProtection > UserGate
-│   │   │   ├── user-gate.tsx # Server component: fetches DB user, enforces role gates
-│   │   │   ├── onboarding-protection.tsx
-│   │   │   ├── interviewers/ # Interviewee: browse interviewers list + detail page ([id]/)
-│   │   │   ├── appointments/ # Interviewee: view booked appointments
-│   │   │   ├── call/         # Live interview call room ([id]/) — accessible to both roles
-│   │   │   └── dashboard/    # Interviewer: manage availability, bookings, payouts
-│   │   └── (public)/         # Public marketing pages (home, about, pricing, contact)
-│   ├── api/                  # Route handlers (Next.js API routes)
-│   │   ├── interviewers/     # Interviewer-related endpoints
-│   │   │   ├── list/         # GET paginated interviewer list
-│   │   │   └── book-session/ # POST book a session with an interviewer
-│   │   ├── appointments/     # Appointment-related endpoints
-│   │   │   ├── list/         # GET paginated appointments list
-│   │   │   ├── stats/        # GET appointment stats
-│   │   │   ├── cancel-booking/ # POST cancel a booked appointment
-│   │   │   └── retry-booking/  # POST retry a failed booking
-│   │   ├── onboarding/       # Onboarding mutation endpoint
-│   │   ├── user/             # User data endpoint
+├── app/                              # Next.js App Router
+│   ├── (auth)/                       # Auth pages (sign-in, sign-up, forgot-password, sso-callback)
+│   ├── (routes)/                     # Application pages
+│   │   ├── (protected)/              # Protected role-gated routes
+│   │   │   ├── layout.tsx            # Wraps children in OnboardingProtection > UserGate
+│   │   │   ├── user-gate.tsx         # Server component: fetches DB user, enforces role gates
+│   │   │   ├── onboarding-protection.tsx # Enforces onboarding completion
+│   │   │   └── dashboard/            # Role dashboard parent
+│   │   │       ├── page.tsx          # Dynamic overview (CandidateOverview vs InterviewerOverview)
+│   │   │       ├── layout.tsx        # Dashboard layout with sidebar and navbar
+│   │   │       ├── appointments/     # Candidate: view scheduled, completed, and cancelled bookings
+│   │   │       ├── interviewers/     # Candidate: explore interviewers list + profile/booking ([id]/)
+│   │   │       ├── sessions/         # Interviewer: view conducted sessions & candidate feedback
+│   │   │       ├── availability/     # Interviewer: configure weekly recurring availability slots
+│   │   │       ├── payouts/          # Interviewer: view earnings, balance & submit payout requests
+│   │   │       └── profile/          # Interviewer: manage bio, designation, experience & domains
+│   │   └── (public)/                 # Public marketing pages (home, about, pricing, contact)
+│   ├── call/                         # Live video interview room
+│   │   └── [id]/                     # Live room ([id]/page.tsx) — accessible to both Candidate and Interviewer
+│   ├── onboarding/                   # Onboarding wizard page (Candidate vs Interviewer onboarding)
+│   ├── api/                          # Route handlers (Next.js API routes)
+│   │   ├── appointments/             # GET list, GET stats, POST cancel-booking, POST retry-booking
+│   │   ├── availability/             # GET availability, POST create slots, DELETE slots
+│   │   ├── call/                     # GET details, POST complete, POST generate-questions
+│   │   ├── dashboard/                # GET stats
+│   │   ├── interviewers/             # GET list, GET details, GET feedback, POST book-session
+│   │   ├── onboarding/               # POST complete onboarding mutation
+│   │   ├── payouts/                  # GET stats, GET list, POST request payout
+│   │   ├── profile/                  # POST update profile
+│   │   ├── sessions/                 # GET sessions list
+│   │   ├── user/                     # GET current DB user data
 │   │   └── webhooks/
-│   │       ├── billing/      # Billing/payment webhook
-│   │       └── clerk/        # Clerk user lifecycle webhook
-│   ├── onboarding/           # Onboarding page (outside protected layout)
-│   └── css/                  # Global CSS files (globals.css, responsive.css, external.css)
+│   │       ├── billing/              # Billing & subscription payment webhook
+│   │       └── clerk/                # Clerk user lifecycle webhook
+│   │       └── stream/               # Stream recording & transcription ready webhook (Gemini AI evaluation)
+│   └── css/                          # Global CSS files (globals.css, responsive.css, external.css)
 │
-├── features/                 # Domain logic — primary location for business code
-│   ├── auth/                 # Sign-in, sign-up, OTP, SSO callback, forgot-password components
-│   ├── interviews/           # All interview-related domain features
-│   │   ├── interviewer-list/ # Browse & filter interviewers: components, services, types
-│   │   ├── interviewer-details/ # Individual interviewer profile & booking: components, services, types
-│   │   ├── appointments/     # Booked appointments view: components, services, types
-│   │   ├── call/             # Live call room: call-room.tsx (client), components/, services/, types/
-│   │   └── shared/           # Shared types used across interview sub-features
-│   ├── onboarding/           # Onboarding form, tabs, schemas, services
-│   ├── special/              # Error / not-found / special UI screens
-│   └── static/               # Static marketing page feature modules
+├── features/                         # Domain logic — primary location for business code
+│   ├── auth/                         # Sign-in, sign-up, OTP, SSO callback, forgot-password components
+│   ├── interviews/                   # All interview-related domain features
+│   │   ├── appointments/             # Candidate appointments view: components, services, types
+│   │   ├── availability/             # Interviewer slot builder: components, services, types
+│   │   ├── call/                     # Live call room: call-room, setup lobby, chat panel, AI questions
+│   │   ├── dashboard/                # Dashboard overviews: CandidateOverview, InterviewerOverview, KPI stats
+│   │   ├── interviewer-details/      # Interviewer public profile & slot booking: components, services, types
+│   │   ├── interviewer-list/         # Browse & filter interviewers: components, services, types
+│   │   ├── payouts/                  # Interviewer earnings & payout modal: components, services, types
+│   │   ├── profile/                  # Interviewer profile settings form: components, services, types
+│   │   ├── sessions/                 # Interviewer session history & feedback viewer: components, services, types
+│   │   └── shared/                   # Shared types, feedback modal, card layouts used across interview sub-features
+│   ├── onboarding/                   # Onboarding form, candidate-tab, interviewer-tab, schemas, services
+│   ├── special/                      # Error screens, not-found screens, screen loaders
+│   └── static/                       # Static marketing pages (Hero, Role cards, Pricing, Testimonials, FAQ)
 │
-├── components/               # Shared, reusable UI only — no domain logic here
-│   ├── common/               # App-wide primitives (Logo, Spinner, ScreenLoader, etc.)
-│   ├── layouts/              # Layout wrappers
-│   ├── navigation/           # Navbar, sidebar navigation
-│   ├── providers/            # Context providers (ThemeProvider)
-│   ├── ui/                   # shadcn/ui generated components — DO NOT hand-edit these
-│   └── wrappers/             # Decorator components (GradientWrapper, etc.)
+├── components/                       # Shared, reusable UI only — no domain logic here
+│   ├── common/                       # App-wide primitives (Logo, Spinner, ScreenLoader, SearchBar, etc.)
+│   ├── layouts/                      # Layout wrappers (HeaderLayout, CardLayout, PageHeaderLayout)
+│   ├── navigation/                   # Navbar, sidebar navigation, dashboard header
+│   ├── providers/                    # Context providers (ThemeProvider)
+│   ├── ui/                           # shadcn/ui generated components — DO NOT hand-edit these
+│   └── wrappers/                     # Decorator components (GradientWrapper, etc.)
 │
-├── config/                   # App-wide constants
-│   └── query-urls.tsx        # All API path segments as named string constants
+├── config/                           # App-wide constants
+│   └── query-urls.tsx                # All API path segments as named string constants
 │
-├── data/                     # Static/seed data objects (e.g. onboarding form defaults)
-├── generated/                # Prisma generated client — DO NOT edit manually
-├── hooks/                    # Custom React hooks
-│   ├── use-fetch.ts          # Paginated data fetching
-│   ├── use-infinite-fetch.ts # Infinite scroll data fetching
-│   ├── use-mutation.ts       # Write operations (POST/PUT/DELETE)
-│   ├── use-db-user.ts        # Fetch current DB user record
-│   ├── use-debounce.ts       # Debounced value hook
-│   ├── use-media-query.ts    # Responsive breakpoint detection
-│   ├── use-pagination-trigger.ts # Intersection observer for pagination
-│   ├── use-role-based-redirect.ts # RBAC-aware navigation redirect
-│   ├── use-scroll-to-top.ts  # Scroll restoration on route change
-│   └── use-view.ts           # Toggle between view modes (list/grid)
-├── lib/                      # Shared server/client utilities
-│   ├── api.ts                # Configured ky instance (prefix="api", 10s timeout, 0 retries)
-│   ├── api-error.ts          # Client-side error normaliser (ky HTTPError → thrown Error)
-│   ├── api-response.ts       # Server: standard NextResponse.json shape { success, statusCode, data|error }
-│   ├── app-error.ts          # Typed error classes: AppError, UnauthorizedError, ForbiddenError,
-│   │                         #   NotFoundError, ValidationError, ConflictError, RateLimitError
-│   ├── prisma.ts             # Singleton Prisma client with pg connection pool
-│   ├── server-error.ts       # Server-side error normaliser (Prisma errors → user-safe messages)
-│   └── utils.ts              # cn() and other generic utils
-├── proxy.ts                  # Next.js middleware (Clerk auth, RBAC, onboarding redirect)
-├── security/                 # Security utilities
-│   └── arcjet.ts             # Arcjet rate-limiting / bot-detection client
-├── services/                 # Top-level cross-feature services
-│   └── server/               # Server-only service files
-├── store/                    # Zustand stores
-├── types/                    # Shared TypeScript types
-└── utils/                    # Pure utility functions (e.g. redirect URL sanitiser)
+├── data/                             # Static/seed data objects (e.g. navigation, onboarding defaults, mock data)
+├── generated/                        # Prisma generated client — DO NOT edit manually
+├── hooks/                            # Custom React hooks
+│   ├── use-app-user.ts               # Fetch current DB user with Clerk sync
+│   ├── use-dashboard-menu.ts         # RBAC-driven sidebar navigation items
+│   ├── use-debounce.ts               # Debounced input value hook
+│   ├── use-fetch.ts                  # Single-resource / paginated data fetching
+│   ├── use-infinite-fetch.ts         # Infinite scroll data fetching
+│   ├── use-media-query.ts            # Responsive breakpoint detection
+│   ├── use-mutation.ts               # Write operations (POST/PUT/DELETE)
+│   ├── use-pagination-trigger.ts     # Intersection observer for pagination
+│   ├── use-role-based-redirect.ts     # RBAC-aware navigation redirect
+│   ├── use-scroll-to-top.ts          # Scroll restoration on route change
+│   └── use-view.ts                   # Toggle between view modes (list/grid)
+├── lib/                              # Shared server/client utilities
+│   ├── api.ts                        # Configured ky instance (prefix="api", 10s timeout, 0 retries)
+│   ├── api-error.ts                  # Client-side error normaliser (ky HTTPError → thrown Error)
+│   ├── api-response.ts               # Server: standard NextResponse.json shape { success, statusCode, data|error }
+│   ├── app-error.ts                  # Typed error classes: AppError, UnauthorizedError, ForbiddenError,
+│   │                                 #   NotFoundError, ValidationError, ConflictError, RateLimitError
+│   ├── prisma.ts                     # Singleton Prisma client with pg connection pool
+│   ├── server-error.ts               # Server-side error normaliser (Prisma errors → user-safe messages)
+│   └── utils.ts                      # cn() and other generic utils
+├── proxy.ts                          # Next.js middleware (Clerk auth, RBAC, onboarding redirect)
+├── security/                         # Security utilities
+│   └── arcjet.ts                     # Arcjet rate-limiting / bot-detection client
+├── services/                         # Top-level cross-feature services
+├── store/                            # Zustand stores (UI modal state, active filters)
+├── types/                            # Shared TypeScript types
+└── utils/                            # Pure utility functions (e.g. redirect URL sanitiser, date formatters)
 ```
 
 **Rule**: Domain/business logic lives in `src/features/<domain>/`. `src/components/` is for UI primitives only. API route handlers in `src/app/api/` are thin — they parse params and delegate to a server service in `src/features/<domain>/services/server/`.
@@ -161,7 +175,7 @@ pnpm commitlint
 ## Conventions
 
 ### File & Folder Naming
-- All source files use **kebab-case**: `interviewer-details.tsx`, `explore.client.service.ts`.
+- All source files use **kebab-case**: `interviewer-details.tsx`, `candidate-tab.tsx`, `candidate-overview.tsx`.
 - Feature components live in `src/features/<domain>/<feature>/components/`.
 - Services are split strictly: `services/client/<name>.client.service.ts` (uses `ky` + `apiError`) and `services/server/<name>.server.service.ts` (uses `db` + `serverError`).
 - Schemas live in `<feature>/schemas/<name>.schemas.ts`; types in `<feature>/types/<name>.type.ts`.
@@ -200,7 +214,7 @@ pnpm commitlint
 
 ### Styling
 - Tailwind CSS v4 utility classes directly in JSX. No inline `style` props for layout.
-- Custom CSS utility classes (e.g. `s-margin-t`, `s-padding-t`, `container`) are defined in `src/app/css/globals.css` and `responsive.css`.
+- Custom CSS utility classes (e.g. `s-margin`, `s-margin-t`, `s-padding-t`, `container`) are defined in `src/app/css/globals.css` and `responsive.css`.
 - The app is **dark-first** — default theme is `dark`, root background is `bg-zinc-950`.
 - shadcn/ui components live in `src/components/ui/` — they are auto-generated, modify via `shadcn` CLI only.
 
@@ -229,6 +243,7 @@ All must be present in `.env.local`. Missing any will cause runtime failures:
 | `CLERK_WEBHOOK_BILLING_SECRET` | Billing webhook: `src/app/api/webhooks/billing/` |
 | `NEXT_PUBLIC_STREAM_API_KEY` | Stream Video/Chat client SDK (browser) |
 | `STREAM_SECRET_KEY` | Stream server SDK — token generation in `call.server.service.ts` |
+| `GEMINI_API_KEY` | Google Gemini AI — live question generation & transcript evaluation webhook |
 | `ARCJET_KEY` | Arcjet rate-limiting client (currently commented out) |
 | `ARCJET_ENV` | Arcjet environment (`development` / `production`) |
 
@@ -246,8 +261,8 @@ All must be present in `.env.local`. Missing any will cause runtime failures:
 ### RBAC Route Map
 | Role | Allowed routes | Fallback |
 |---|---|---|
-| `CANDIDATE` | `/interviewers(.*)`, `/appointments(.*)`, `call(.*)` | `/interviewers` |
-| `INTERVIEWER` | `/dashboard(.*)`, `call(.*)` | `/dashboard` |
+| `CANDIDATE` | `/dashboard/interviewers(.*)`, `/dashboard/appointments(.*)`, `/call(.*)` | `/dashboard/interviewers` |
+| `INTERVIEWER` | `/dashboard/sessions(.*)`, `/dashboard/availability(.*)`, `/dashboard/payouts(.*)`, `/dashboard/profile(.*)`, `/call(.*)` | `/dashboard` |
 
 > `/call(.*)` is intentionally shared between both roles — both interviewers and candidates enter the same live call room.
 
@@ -274,8 +289,9 @@ Adding new role-gated routes requires updating the `roleRouteMap` array in `src/
 - `serverError()` in `src/lib/server-error.ts` re-throws these as-is so the API route handler can map them to the correct status code.
 - Do **not** use plain `throw new Error("...")` for expected domain failures — use the typed subclass.
 
-### Svix / Webhooks
-- Clerk webhook events hit `src/app/api/webhooks/clerk/`. Svix signature verification must not be removed — removing it opens the endpoint to spoofed events.
+### Svix & Stream Webhooks
+- Clerk webhook events hit `src/app/api/webhooks/clerk/`. Svix signature verification must not be removed.
+- Stream webhook events hit `src/app/api/webhooks/stream/` to process `call.recording_ready` and `call.transcription_ready`, generating Gemini AI feedback reports.
 
 ### `pnpm` only
 - The project uses `pnpm`. Running `npm install` or `yarn` will create a mismatched lockfile. Always use `pnpm`.
