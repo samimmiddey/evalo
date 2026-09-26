@@ -7,7 +7,10 @@ interface User {
    isLoading: boolean;
    error: string | null;
    fetchUser: () => Promise<void>;
+   clearUser: () => void;
 }
+
+let fetchPromise: Promise<void> | null = null;
 
 const useUserStore = create<User>()(
    (set) => ({
@@ -15,13 +18,26 @@ const useUserStore = create<User>()(
       isLoading: false,
       error: null,
       fetchUser: async () => {
+         if (fetchPromise) return fetchPromise;
+
          set({ isLoading: true, error: null });
-         try {
-            const data = await getUser();
-            set({ user: data, isLoading: false });
-         } catch (error: unknown) {
-            set({ error: error instanceof Error ? error.message : "Failed to fetch user", isLoading: false });
-         }
+
+         fetchPromise = (async () => {
+            try {
+               const data = await getUser();
+               set({ user: data, isLoading: false });
+            } catch (error: unknown) {
+               set({ error: error instanceof Error ? error.message : "Failed to fetch user", isLoading: false });
+            } finally {
+               fetchPromise = null;
+            }
+         })();
+
+         return fetchPromise;
+      },
+      clearUser: () => {
+         fetchPromise = null;
+         set({ user: null, error: null, isLoading: false });
       }
    })
 );
