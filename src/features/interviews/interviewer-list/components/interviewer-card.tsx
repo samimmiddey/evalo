@@ -2,7 +2,7 @@ import PrimaryBody from '@/components/common/primary-body';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Briefcase, Building2, Star } from 'lucide-react';
+import { Briefcase, Building2, Star, Clock } from 'lucide-react';
 import { Interviewer } from '../../shared/types/shared.types';
 import { getImage } from '@/utils/get-image';
 import Link from 'next/link';
@@ -52,8 +52,10 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
             <div className="flex items-center gap-2 text-zinc-400 text-sm">
                <Building2 className="w-4 h-4 text-violet-400 shrink-0" />
                <span className="truncate">{interviewer.company}</span>
-               <span className="text-zinc-600">•</span>
-               <span>{interviewer.experience}+ yrs exp</span>
+            </div>
+            <div className="flex items-center gap-2 text-zinc-400 text-sm">
+               <Clock className="w-4 h-4 text-violet-400 shrink-0" />
+               <span>{interviewer.experience}+ Years of Experience</span>
             </div>
          </div>
 

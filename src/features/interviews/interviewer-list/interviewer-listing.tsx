@@ -40,7 +40,7 @@ const InterviewerListing = () => {
             onFilterParams={setFilterParams}
          />
 
-         <div className={`${hideFilters ? '' : 'grid grid-cols-1 lg:grid-cols-[2.75fr_9.25fr] gap-6 2xl:gap-8 items-start'}`}>
+         <div className={`${hideFilters ? '' : 'grid grid-cols-1 lg:grid-cols-[3fr_9fr] 2xl:grid-cols-[2.75fr_9.25fr] gap-6 2xl:gap-8 items-start'}`}>
 
             {/* Desktop Filter Sidebar */}
             {

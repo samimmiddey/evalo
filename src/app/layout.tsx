@@ -9,6 +9,7 @@ import { dark } from '@clerk/ui/themes';
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TopLoader } from "@/components/common/top-loader";
+import { PAGE_METADATA } from "@/constants/metadata";
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -32,8 +33,11 @@ const lobster = Lobster({
 });
 
 export const metadata: Metadata = {
-  title: "Evalo",
-  description: "Evaluate talent with clarity and confidence.",
+  title: {
+    default: 'Evalo - AI-Powered Mock Technical Interviews',
+    template: '%s - Evalo'
+  },
+  description: PAGE_METADATA.home.description
 };
 
 export default function RootLayout({

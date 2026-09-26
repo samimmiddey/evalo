@@ -1,7 +1,11 @@
+import type { Metadata } from 'next';
+import { PAGE_METADATA } from '@/constants/metadata';
 import ScreenError from '@/components/common/screen-error';
 import { InterviewerFeedback, InterviewerDetails as TInterviewerDetails } from '@/features/interviews/interviewer-details/types/details.types';
 import InterviewerDetails from '@/features/interviews/interviewer-details/interviewer-details';
 import { getFeedback, getInterviewerDetails } from '@/features/interviews/interviewer-details/services/details.server.service';
+
+export const metadata: Metadata = PAGE_METADATA.interviewerDetails;
 
 const InterviewerDetailsPage = async ({ params }: { params: Promise<{ id: string; }>; }) => {
    const { id } = await params;

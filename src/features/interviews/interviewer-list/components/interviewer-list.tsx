@@ -60,7 +60,7 @@ const InterviewerList = ({ view, filterParams }: InterviewerListProps) => {
 
    return (
       <div>
-         <div className={`grid gap-5 2xl:gap-6 ${view === 'list' ? 'md:grid-cols-1' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'}`}>
+         <div className={`grid gap-5 2xl:gap-6 ${view === 'list' ? 'md:grid-cols-1' : 'grid-cols-1 md:grid-cols-2 2xl:grid-cols-3'}`}>
 
             {/* Interviewers List */}
             {
@@ -94,7 +94,7 @@ const InterviewerList = ({ view, filterParams }: InterviewerListProps) => {
 };
 
 const SkeletonLoader = ({ view }: { view: ViewType; }) => (
-   <div className={`grid gap-5 2xl:gap-6 ${view === 'list' ? 'md:grid-cols-1' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'}`}>
+   <div className={`grid gap-5 2xl:gap-6 ${view === 'list' ? 'md:grid-cols-1' : 'grid-cols-1 md:grid-cols-2 2xl:grid-cols-3'}`}>
       {
          Array.from({ length: 6 }).map((_, i) => (
             <InterviewerCardSkeleton key={i} />
