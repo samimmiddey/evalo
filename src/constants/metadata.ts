@@ -88,7 +88,7 @@ export const PAGE_METADATA = {
          'Update your professional bio, technical domains, experience level, and hourly credit rate.'
    },
    call: {
-      title: 'Live Interview Call',
+      title: 'Live Call',
       description:
          'Join your scheduled live technical interview session with real-time video, coding chat, and AI assistance.'
    },

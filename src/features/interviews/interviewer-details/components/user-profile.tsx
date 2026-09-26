@@ -3,7 +3,7 @@ import CardLayout from '@/components/layouts/card-layout';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { interviewerDetailsData } from '@/data/interviews/interviews.data';
-import { Star, Briefcase, Coins } from 'lucide-react';
+import { Star, Award, Coins } from 'lucide-react';
 import HeaderTitle from './header-title';
 import { InterviewerDetails } from '../types/details.types';
 import Image from 'next/image';
@@ -57,7 +57,7 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
                      <span>({interviewer.totalRatings} ratings)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                     <Briefcase className="w-4 h-4 text-violet-400" />
+                     <Award className="w-4 h-4 text-violet-400" />
                      <span>{interviewer.experience ?? '0'}+ Years Experience</span>
                   </div>
                   <div className="flex items-center gap-1.5">
