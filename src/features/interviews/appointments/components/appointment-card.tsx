@@ -1,5 +1,5 @@
 import CardLayout from '@/components/layouts/card-layout';
-import { Briefcase, Building2, Calendar, Clock, FileText, Hourglass, Info, NotebookText, Play, Star, Video } from 'lucide-react';
+import { Briefcase, Building2, Calendar, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, Star, Video } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Feedback, Interview } from '../types/appointments.types';
@@ -15,6 +15,7 @@ import CustomSpinner from '@/components/common/custom-spinner';
 import Image from 'next/image';
 import { useAppUser } from '@/hooks/use-app-user';
 import ConfirmDialog from '@/components/common/confirm-dialog';
+import PrimaryBody from '@/components/common/primary-body';
 
 interface AppointmentCardProps {
    appointment: Interview;
@@ -278,6 +279,26 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      )
                   }
 
+                  {status === 'CANCELLED' && (
+                     <div className="p-6 2xl:p-7 border-b border-white/5">
+                        <div className="flex max-sm:flex-col items-start gap-3.5">
+                           <div className="flex items-center justify-center size-8 rounded-lg bg-white/5 border border-white/10 text-zinc-300 shrink-0 max-sm:mb-1 shadow-sm">
+                              <RotateCcw className="size-4" />
+                           </div>
+                           <div>
+                              <span className="text-xs font-semibold text-zinc-300 uppercase tracking-widest">
+                                 Session Cancelled & Refunded
+                              </span>
+                              <PrimaryBody
+                                 text="This interview session has been cancelled, and the full credit amount has been returned to your account balance. You can use your refunded credits anytime to schedule a new mock interview that better fits your timeline."
+                                 className="text-sm! mt-2"
+                              />
+                           </div>
+                        </div>
+                     </div>
+                  )}
+
+
                   {/* Bottom Row: AI Feedback summary (Only for COMPLETED) */}
                   {status === 'COMPLETED' && feedback && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
@@ -343,10 +364,10 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                            <Button
                               variant="ghost"
                               className="cursor-pointer text-amber-400 hover:text-amber-300 hover:bg-amber-500/15 text-xs rounded-lg h-9 max-sm:w-full"
-                              onClick={() => void handleCancelBooking(true)}
+                              onClick={() => setOpenDialogue(true)}
                               disabled={isCancelPending}
                            >
-                              {isCancelPending ? <CustomSpinner text="Refunding..." /> : "Claim Refund"}
+                              Claim Refund
                            </Button>
                            <Link href={`/dashboard/interviewers/${appointment.interviewer.id}`}>
                               <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
@@ -437,12 +458,16 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
          <ConfirmDialog
             open={openDialogue}
             onClose={() => setOpenDialogue(false)}
-            onConfirm={() => void handleCancelBooking()}
-            title="Cancel Session"
-            description="Are you sure you want to cancel the session? This action is permanent and irreversible."
+            onConfirm={() => void handleCancelBooking(isExpired)}
+            title={isExpired ? "Claim Refund" : "Cancel Session"}
+            description={
+               isExpired
+                  ? "Are you sure you want to claim your refund? The interview credits will be returned to your balance."
+                  : "Are you sure you want to cancel the session? This action is permanent and irreversible."
+            }
             isLoading={isCancelPending}
-            confirmText="Confirm"
-            variant="destructive"
+            confirmText={isExpired ? "Claim Refund" : "Confirm"}
+            variant={isExpired ? "warning" : "destructive"}
          />
       </>
    );
