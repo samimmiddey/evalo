@@ -18,7 +18,8 @@ import CustomSpinner from '@/components/common/custom-spinner';
 import { onboardUser } from './services/onboarding.client.service';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 import GradientWrapper from '@/components/wrappers/gradient-wrapper';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
 import { useSession } from '@clerk/nextjs';
 

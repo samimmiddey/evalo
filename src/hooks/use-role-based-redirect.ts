@@ -1,5 +1,5 @@
 import { useSession } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 
 export const useRoleBasedRedirect = () => {
    const { session } = useSession();

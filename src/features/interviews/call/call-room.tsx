@@ -2,7 +2,7 @@
 
 import ScreenLoader from '@/components/common/screen-loader';
 import { CallData } from '@/features/interviews/call/types/call.types';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { useCallback, useEffect, useState } from 'react';
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "stream-chat-react/dist/css/index.css";

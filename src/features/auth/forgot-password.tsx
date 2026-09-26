@@ -17,7 +17,8 @@ import ScreenLoader from '@/components/common/screen-loader';
 import { sendResetCode, submitNewPassword, verifyResetCode } from './services/auth.client.service';
 import InputError from '@/components/common/input-error';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
 
 export default function ForgotPassword() {

@@ -6,7 +6,7 @@ import { CheckoutButton, useSubscription } from '@clerk/nextjs/experimental';
 import { Plan } from '../types/pricing.types';
 import { Button } from '@/components/ui/button';
 import { Show } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface PricingCardProps {
    i: number;

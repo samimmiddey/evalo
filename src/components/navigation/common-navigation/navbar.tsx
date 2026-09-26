@@ -37,7 +37,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                         <Link
                            href={item.href}
                            key={item.href}
-                           className={`hover:text-violet-400 font-medium text-sm 2xl:text-[15px] py-1 px-3 transition-colors ${pathname === item.href ? 'text-violet-400' : 'text-zinc-100'}`}
+                           className={`hover:text-violet-300 font-medium text-sm 2xl:text-[15px] py-1 px-3 transition-colors ${pathname === item.href ? 'text-violet-300' : 'text-zinc-100'}`}
                         >
                            {item.name}
                         </Link>

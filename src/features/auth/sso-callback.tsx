@@ -2,7 +2,8 @@
 
 import ScreenLoader from '@/components/common/screen-loader';
 import { useClerk, useSignIn, useSignUp } from '@clerk/nextjs';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { useEffect, useRef } from 'react';
 import { ssoCallback } from './services/auth.client.service';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';

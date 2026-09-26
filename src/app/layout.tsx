@@ -8,6 +8,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from '@clerk/ui/themes';
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { TopLoader } from "@/components/common/top-loader";
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -53,6 +54,7 @@ export default function RootLayout({
             defaultTheme="dark"
             disableTransitionOnChange
           >
+            <TopLoader />
             <div className="bg-zinc-950">
               <TooltipProvider>{children}</TooltipProvider>
             </div>
