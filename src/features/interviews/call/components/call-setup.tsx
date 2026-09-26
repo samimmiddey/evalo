@@ -620,7 +620,7 @@ export const CallSetup = ({
                            disabled={isJoining}
                            className="w-full h-11 rounded-lg bg-zinc-900/80 border-white/10 text-zinc-300 hover:text-zinc-100 hover:bg-white/5 text-sm transition-colors"
                         >
-                           Cancel & Return
+                           Go Back
                         </Button>
                      </div>
                   </div>
