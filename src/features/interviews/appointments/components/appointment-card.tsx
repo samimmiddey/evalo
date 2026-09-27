@@ -1,5 +1,5 @@
 import CardLayout from '@/components/layouts/card-layout';
-import { Briefcase, Building2, Calendar, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, Star, Video } from 'lucide-react';
+import { Briefcase, Building2, Calendar, CalendarX, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, Star, Video } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Feedback, Interview } from '../types/appointments.types';
@@ -304,7 +304,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
                            <div className="flex items-center justify-center size-8 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-400 shrink-0 max-sm:mb-1 shadow-sm">
-                              <RotateCcw className="size-4" />
+                              <CalendarX className="size-4" />
                            </div>
                            <div>
                               <span className="text-xs font-semibold text-rose-300 uppercase tracking-widest">
