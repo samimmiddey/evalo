@@ -6,9 +6,25 @@ import {
    StreamWebhookBody,
    TranscriptSpeechEntry
 } from "@/types/stream.types";
+import { StreamClient } from "@stream-io/node-sdk";
 
 export async function POST(request: NextRequest) {
-   const body = (await request.json()) as StreamWebhookBody;
+   const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
+   const secretKey = process.env.STREAM_SECRET_KEY;
+
+   if (!apiKey || !secretKey) {
+      return new Response("Missing Stream credentials", { status: 500 });
+   }
+
+   const signature = request.headers.get("x-signature") ?? request.headers.get("x-signature-256") ?? "";
+   const rawBody = await request.text();
+
+   const streamClient = new StreamClient(apiKey, secretKey);
+   if (!signature || !streamClient.verifyWebhook(rawBody, signature)) {
+      return new Response("Invalid Signature", { status: 401 });
+   }
+
+   const body = JSON.parse(rawBody) as StreamWebhookBody;
    const eventType = body.type;
 
    if (
