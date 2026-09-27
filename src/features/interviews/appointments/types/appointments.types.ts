@@ -1,7 +1,7 @@
-import { InterviewExpertise, StreamStatus } from "@/generated/prisma/enums";
+import { BookingStatus, InterviewExpertise, StreamStatus } from "@/generated/prisma/enums";
 import { BaseResponse } from "@/types/api.types";
 
-export type InterviewStatus = 'SCHEDULED' | 'COMPLETED' | 'CANCELLED' | 'EXPIRED';
+export type InterviewStatus = BookingStatus;
 
 export interface GetAppointmentsParams {
    page?: number;

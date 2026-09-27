@@ -33,7 +33,7 @@ export const appointsData: AppointmentsData = {
             rating: 4.9,
             reviewsCount: 142
          },
-         status: 'completed',
+         status: 'COMPLETED',
          date: 'Aug 12, 2026',
          timeSlot: '10:00 AM - 11:00 AM',
          duration: '60 min',
@@ -61,7 +61,7 @@ export const appointsData: AppointmentsData = {
             rating: 5.0,
             reviewsCount: 98
          },
-         status: 'scheduled',
+         status: 'SCHEDULED',
          date: 'Aug 15, 2026',
          timeSlot: '02:00 PM - 03:00 PM',
          duration: '60 min'
@@ -79,7 +79,7 @@ export const appointsData: AppointmentsData = {
             rating: 4.8,
             reviewsCount: 210
          },
-         status: 'in-progress',
+         status: 'EXPIRED',
          date: 'Aug 09, 2026',
          timeSlot: '12:00 PM - 01:00 PM',
          duration: '60 min'
@@ -97,7 +97,7 @@ export const appointsData: AppointmentsData = {
             rating: 4.9,
             reviewsCount: 325
          },
-         status: 'completed',
+         status: 'COMPLETED',
          date: 'Aug 05, 2026',
          timeSlot: '04:00 PM - 05:00 PM',
          duration: '60 min',
@@ -125,7 +125,7 @@ export const appointsData: AppointmentsData = {
             rating: 4.7,
             reviewsCount: 74
          },
-         status: 'cancelled',
+         status: 'CANCELLED',
          date: 'Jul 28, 2026',
          timeSlot: '09:00 AM - 10:00 AM',
          duration: '60 min'

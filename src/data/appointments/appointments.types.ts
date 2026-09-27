@@ -1,3 +1,5 @@
+import { BookingStatus } from "@/generated/prisma/enums";
+
 export interface Appointment {
    id: string;
    interviewer: {
@@ -11,7 +13,7 @@ export interface Appointment {
       rating: number;
       reviewsCount: number;
    };
-   status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
+   status: BookingStatus;
    date: string;
    timeSlot: string;
    duration: string;
