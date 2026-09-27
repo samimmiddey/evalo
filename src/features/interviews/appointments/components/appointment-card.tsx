@@ -1,5 +1,5 @@
 import CardLayout from '@/components/layouts/card-layout';
-import { Briefcase, Building2, Calendar, CalendarX, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, Star, Video } from 'lucide-react';
+import { Briefcase, Building2, Calendar, CalendarX, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, Star, Video, VideoOff } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Feedback, Interview } from '../types/appointments.types';
@@ -290,9 +290,15 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                                  <span className="text-xs font-semibold text-blue-300 uppercase tracking-widest">
                                     {appointsData.helpfulTips.header}
                                  </span>
-                                 <p className="text-sm text-blue-200/90 leading-relaxed mt-2">
-                                    {appointsData.helpfulTips.body}
-                                 </p>
+                                 <ul className="flex flex-col list-disc pl-4!">
+                                    {
+                                       appointsData.helpfulTips.body.map(item => (
+                                          <li key={item} className="text-[13px] text-blue-200/90 leading-[1.4] mt-2">
+                                             {item}
+                                          </li>
+                                       ))
+                                    }
+                                 </ul>
                               </div>
                            </div>
                         </div>
@@ -319,7 +325,27 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      </div>
                   )}
 
-                  {/* Session Expired */}
+                  {/* Session Expired & Refund Pending (Amber) */}
+                  {isExpired && !isRefunded && (
+                     <div className="p-6 2xl:p-7 border-b border-white/5">
+                        <div className="flex max-sm:flex-col items-start gap-3.5">
+                           <div className="flex items-center justify-center size-8 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-400 shrink-0 max-sm:mb-1 shadow-sm">
+                              <VideoOff className="size-4" />
+                           </div>
+                           <div>
+                              <span className="text-xs font-semibold text-amber-200 uppercase tracking-widest">
+                                 Session Expired
+                              </span>
+                              <PrimaryBody
+                                 text="This interview session has expired because it was not conducted. You can claim your credits back below to schedule a new mock interview."
+                                 className="text-sm! mt-2 text-amber-100/90"
+                              />
+                           </div>
+                        </div>
+                     </div>
+                  )}
+
+                  {/* Session Expired & Refund Claimed (Zinc) */}
                   {status === 'EXPIRED' && isRefunded && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">

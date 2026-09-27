@@ -29,6 +29,7 @@ import { useAppUser } from "@/hooks/use-app-user";
 import { cancelBooking } from "@/features/interviews/appointments/services/appointments.client.service";
 import ConfirmDialog from "@/components/common/confirm-dialog";
 import { toast } from "sonner";
+import { sessionsData } from "@/data/sessions/sessions.data";
 
 interface SessionCardProps {
    session: DashboardSession;
@@ -310,12 +311,15 @@ export const SessionCard = ({
                            </div>
                            <div>
                               <span className="text-xs font-semibold text-blue-300 uppercase tracking-widest">
-                                 Mock Interview Session
+                                 {sessionsData.helpfulTips.header}
                               </span>
-                              <PrimaryBody
-                                 text="Be ready at the scheduled time. Ensure your camera and microphone are tested before entering the live call room."
-                                 className="text-sm! mt-2 text-blue-200/90"
-                              />
+                              <ul className="flex flex-col list-disc pl-4!">
+                                 {sessionsData.helpfulTips.body.map((item) => (
+                                    <li key={item} className="text-[13px] text-blue-200/90 leading-[1.4] mt-2">
+                                       {item}
+                                    </li>
+                                 ))}
+                              </ul>
                            </div>
                         </div>
                      </div>

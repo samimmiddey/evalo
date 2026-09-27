@@ -133,6 +133,14 @@ export const appointsData: AppointmentsData = {
    ],
    helpfulTips: {
       header: "Preparation Guidelines",
-      body: "All mock interviews are conducted using Evalo's integrated room with compiler and collaborative audio/video features. Make sure to join the session at least 10 minutes early to test your audio, video, and connection. AI feedback reports are generated within 10 minutes of completing a session."
+      body: [
+         "Room opens 10 minutes early to test audio, video, and connection.",
+         "The interview room remains accessible until the scheduled end time.",
+         "You can freely rejoin if disconnected while the session window is running.",
+         "Requires 50% simultaneous presence to receive the AI evaluation report and recording.",
+         "Cancel any scheduled session anytime for an instant 100% refund.",
+         "Unconducted sessions automatically flip to Expired once the time slot ends.",
+         "Expired sessions are eligible for an instant 100% credit refund to your balance."
+      ]
    }
 };

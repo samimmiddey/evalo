@@ -31,7 +31,7 @@ export interface Appointment {
 
 export interface HelpfulTips {
    header: string;
-   body: string;
+   body: string[];
 }
 
 export interface AppointmentsHeaderData {
