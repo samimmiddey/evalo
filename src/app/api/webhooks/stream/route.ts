@@ -1,39 +1,11 @@
 import { db } from "@/lib/prisma";
-import { FeedbackRating } from "@/generated/prisma/enums";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest } from "next/server";
-
-interface StreamRecording {
-   url: string;
-}
-
-interface StreamTranscription {
-   url: string;
-}
-
-interface StreamWebhookBody {
-   type: string;
-   call_cid?: string;
-   call_recording?: StreamRecording;
-   call_transcription?: StreamTranscription;
-}
-
-interface TranscriptSpeechEntry {
-   type: string;
-   speaker_id: string;
-   text: string;
-}
-
-interface FeedbackGeneratedData {
-   summary: string;
-   technical: string;
-   communication: string;
-   problemSolving: string;
-   recommendation: string;
-   strengths: string[];
-   improvements: string[];
-   overallRating: FeedbackRating;
-}
+import {
+   FeedbackGeneratedData,
+   StreamWebhookBody,
+   TranscriptSpeechEntry
+} from "@/types/stream.types";
 
 export async function POST(request: NextRequest) {
    const body = (await request.json()) as StreamWebhookBody;
@@ -71,7 +43,7 @@ export async function POST(request: NextRequest) {
          return new Response("Booking Not Found", { status: 404 });
       }
 
-      // Recording ready
+      // 1. Recording ready
       if (eventType === 'call.recording_ready') {
          const recordingUrl = body.call_recording?.url;
 
@@ -87,7 +59,7 @@ export async function POST(request: NextRequest) {
          return new Response("Recording URL Saved", { status: 200 });
       }
 
-      // Transcription ready
+      // 2. Transcription ready -> Generate Gemini Feedback
       if (eventType === 'call.transcription_ready') {
          if (booking.feedback) {
             return new Response("Feedback Already Generated", { status: 200 });
@@ -201,43 +173,11 @@ export async function POST(request: NextRequest) {
             }
          });
 
-         // Fallback safety net: if session was not already completed in UI, settle it now
-         await db.$transaction(async (tx) => {
-            const current = await tx.booking.findUnique({
-               where: { id: booking.id },
-               select: { status: true }
-            });
-
-            if (current?.status === 'COMPLETED') {
-               return;
-            }
-
-            await tx.booking.update({
-               where: { id: booking.id },
-               data: { status: 'COMPLETED' }
-            });
-
-            await tx.user.update({
-               where: { id: booking.interviewer.id },
-               data: {
-                  creditBalance: { increment: booking.creditsCharged }
-               }
-            });
-
-            await tx.creditTransaction.create({
-               data: {
-                  userId: booking.interviewer.id,
-                  amount: booking.creditsCharged,
-                  type: 'BOOKING_EARNING',
-                  bookingId: booking.id
-               }
-            });
-         });
-
-         return new Response("Feedback & Session Settled", { status: 200 });
+         return new Response("Feedback Generated", { status: 200 });
       }
    } catch (error) {
-      console.error('Failed to handle user.created:', error);
+      // eslint-disable-next-line no-console
+      console.error('Failed to handle stream media webhook:', error);
       return new Response("Internal Server Error", { status: 500 });
    }
 
