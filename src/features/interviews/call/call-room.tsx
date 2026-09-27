@@ -27,7 +27,6 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
    const startTimeMs = new Date(booking.startTime).getTime();
    const endTimeMs = new Date(booking.endTime).getTime();
    const earlyWindowMs = startTimeMs - 10 * 60 * 1000; // 10 minutes before start
-   const lateWindowMs = endTimeMs + 15 * 60 * 1000; // 15 minutes after end
 
    const getInitialWindowStatus = (): 'early' | 'active' | 'expired' => {
       if (booking.status === 'COMPLETED' || booking.status === 'CANCELLED') {
@@ -37,7 +36,7 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
       if (now < earlyWindowMs) {
          return 'early';
       }
-      if (now > lateWindowMs) {
+      if (now > endTimeMs) {
          return 'expired';
       }
       return 'active';
