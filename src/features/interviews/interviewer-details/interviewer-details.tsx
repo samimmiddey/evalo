@@ -4,17 +4,17 @@ import UserProfile from './components/user-profile';
 import WhatToExpect from './components/what-to-expect';
 import UserFeedback from './components/user-feedback';
 import BookingForm from './components/booking-form';
-import { InterviewerDetails as TInterviewerDetails, InterviewerFeedback } from './types/details.types';
+import { InterviewerDetails as TInterviewerDetails } from './types/details.types';
 import ScreenNoData from '@/components/common/screen-no-data';
 import GradientWrapper from '@/components/wrappers/gradient-wrapper';
 import NoDataCard from '@/components/common/no-data-card';
 
 interface InterviewerDetailsProps {
    interviewer: TInterviewerDetails;
-   feedback: InterviewerFeedback;
+   id: string;
 }
 
-const InterviewerDetails = ({ interviewer, feedback }: InterviewerDetailsProps) => {
+const InterviewerDetails = ({ interviewer, id }: InterviewerDetailsProps) => {
    if (!interviewer) {
       return (
          <ScreenNoData text='No interviewer found' />
@@ -43,7 +43,7 @@ const InterviewerDetails = ({ interviewer, feedback }: InterviewerDetailsProps) 
                <WhatToExpect currentPlan={interviewer.currentPlan} />
 
                {/* Testimonials Section */}
-               <UserFeedback feedback={feedback} />
+               <UserFeedback id={id} />
             </div>
 
             {/* RIGHT COLUMN: Interactive Booking Form */}

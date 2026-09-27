@@ -32,8 +32,22 @@ export interface FeedbackData {
 }
 
 export interface InterviewerFeedback {
-   bookingsAsInterviewer: FeedbackData[];
+   totalCount: number;
+   data: FeedbackData[];
+   page: number;
+   pageSize: number;
+   totalPages: number;
+   hasNextPage: boolean;
+   hasPrevPage: boolean;
 }
+
+export interface GetFeedbackParams {
+   id: string;
+   page?: number;
+   pageSize?: number;
+}
+
+export type InterviewerFeedbackResponse = BaseResponse<InterviewerFeedback>;
 
 export interface BookSessionParams {
    interviewerId: string;

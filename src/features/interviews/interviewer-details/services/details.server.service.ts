@@ -1,6 +1,6 @@
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
-import { BookSessionParams, BookSessionSetupResponse, InterviewerDetails, InterviewerFeedback } from "../types/details.types";
+import { BookSessionParams, BookSessionSetupResponse, GetFeedbackParams, InterviewerDetails, InterviewerFeedback } from "../types/details.types";
 import { currentUser } from "@clerk/nextjs/server";
 import { StreamClient } from "@stream-io/node-sdk";
 import { v4 as uuidv4 } from 'uuid';
@@ -58,41 +58,60 @@ export const getInterviewerDetails = async (id: string): Promise<InterviewerDeta
    }
 };
 
-export const getFeedback = async (id: string): Promise<InterviewerFeedback> => {
+export const getFeedback = async (params: GetFeedbackParams): Promise<InterviewerFeedback> => {
    try {
-      const feedback = await db.user.findUnique({
-         where: { id: id, role: 'INTERVIEWER' },
-         select: {
-            bookingsAsInterviewer: {
-               where: { status: "COMPLETED", feedback: { isNot: null } },
-               select: {
-                  id: true,
-                  candidate: {
-                     select: {
-                        firstName: true,
-                        lastName: true,
-                        imageUrl: true,
-                        designation: true,
-                        createdAt: true,
-                        company: true
-                     }
-                  },
-                  feedback: {
-                     select: {
-                        sessionRating: true,
-                        sessionComment: true
-                     }
+      const {
+         id,
+         page = 1,
+         pageSize = 10
+      } = params;
+
+      const whereClause = {
+         interviewerId: id,
+         status: "COMPLETED" as const,
+         feedback: { isNot: null }
+      };
+
+      const [totalCount, bookings] = await Promise.all([
+         db.booking.count({ where: whereClause }),
+         db.booking.findMany({
+            where: whereClause,
+            select: {
+               id: true,
+               candidate: {
+                  select: {
+                     firstName: true,
+                     lastName: true,
+                     imageUrl: true,
+                     designation: true,
+                     createdAt: true,
+                     company: true
+                  }
+               },
+               feedback: {
+                  select: {
+                     sessionRating: true,
+                     sessionComment: true
                   }
                }
-            }
-         }
-      });
+            },
+            orderBy: {
+               startTime: 'desc'
+            },
+            skip: (page - 1) * pageSize,
+            take: pageSize,
+         })
+      ]);
 
-      if (!feedback) {
-         throw new NotFoundError('Feedback not found');
-      }
-
-      return feedback;
+      return {
+         totalCount,
+         data: bookings,
+         page,
+         pageSize,
+         totalPages: Math.ceil(totalCount / pageSize),
+         hasNextPage: page * pageSize < totalCount,
+         hasPrevPage: page > 1
+      };
    } catch (error: unknown) {
       return serverError({
          error,

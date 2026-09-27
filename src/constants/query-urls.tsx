@@ -7,6 +7,7 @@ export const ONBOARDING_USER = '/onboarding';
 // Interviewers
 export const GET_INTERVIEWERS = '/interviewers/list';
 export const BOOK_SESSION = '/interviewers/book-session';
+export const GET_FEEDBACK = '/interviewers/feedback';
 
 // Appointments
 export const GET_APPOINTMENTS = '/appointments/list';
