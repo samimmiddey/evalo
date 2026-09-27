@@ -110,12 +110,12 @@ export const ConfirmDialog = ({
             showCloseButton={false}
             className={cn(
                "overflow-hidden z-9999 max-w-md w-[calc(100%-2rem)] p-0",
-               "bg-zinc-950 rounded-2xl shadow-2xl shadow-black/80 backdrop-blur-xl",
+               "bg-zinc-950 rounded-2xl shadow-2xl shadow-black/80 backdrop-blur-xl gap-0!",
                className
             )}
          >
 
-            <div className="relative z-10 p-6 2xl:p-7 space-y-4">
+            <div className="relative z-10 px-6 2xl:px-7 py-7 2xl:py-8">
                {/* Icon & Title Row */}
                <DialogHeader className="gap-3 sm:gap-3.5 text-center">
                   <div className="flex flex-col items-center gap-3.5">

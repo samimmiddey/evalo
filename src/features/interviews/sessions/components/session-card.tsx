@@ -16,23 +16,57 @@ import {
    Mail,
    NotebookText,
    Play,
+   RotateCcw,
    User,
    Video
 } from "lucide-react";
 import Link from "next/link";
 import { ViewType } from "@/types/ui.types";
+import { useState, useEffect } from "react";
+import { useMutation } from "@/hooks/use-mutation";
+import { useAppUser } from "@/hooks/use-app-user";
+import { cancelBooking } from "@/features/interviews/appointments/services/appointments.client.service";
+import ConfirmDialog from "@/components/common/confirm-dialog";
+import { toast } from "sonner";
 
 interface SessionCardProps {
    session: DashboardSession;
    view?: ViewType;
    onViewFeedback: (feedback: SessionFeedback, candidateName: string) => void;
+   refetchSessions?: () => void;
 }
 
 export const SessionCard = ({
    session,
    view = "list",
-   onViewFeedback
+   onViewFeedback,
+   refetchSessions
 }: SessionCardProps) => {
+   const [openDialogue, setOpenDialogue] = useState<boolean>(false);
+   const { refetch: refetchUser } = useAppUser();
+
+   const {
+      isPending: isCancelPending,
+      error: cancelError,
+      mutate: cancelMutation
+   } = useMutation(() => cancelBooking(session.id));
+
+   const handleCancelSession = async () => {
+      const res = await cancelMutation();
+
+      if (res?.success) {
+         toast.success("Session cancelled successfully. Candidate has been refunded.");
+         setOpenDialogue(false);
+         refetchSessions?.();
+         await refetchUser();
+      }
+   };
+
+   useEffect(() => {
+      if (cancelError) {
+         toast.error(cancelError);
+      }
+   }, [cancelError]);
    const {
       startTime,
       endTime,
@@ -162,7 +196,8 @@ export const SessionCard = ({
    };
 
    return (
-      <CardLayout className="max-sm:p-0!">
+      <>
+         <CardLayout className="max-sm:p-0!">
          {/* Responsive layout: Stacked in Grid view or mobile, Horizontal in List view on desktop */}
          <div
             className={`flex w-full ${view === "grid" ? "flex-col" : "flex-col lg:flex-row lg:items-stretch"
@@ -285,6 +320,25 @@ export const SessionCard = ({
                   </div>
                )}
 
+               {status === "CANCELLED" && (
+                  <div className="p-6 2xl:p-7 border-b border-white/5">
+                     <div className="flex max-sm:flex-col items-start gap-3.5">
+                        <div className="flex items-center justify-center size-8 rounded-lg bg-white/5 border border-white/10 text-zinc-300 shrink-0 max-sm:mb-1 shadow-sm">
+                           <RotateCcw className="size-4" />
+                        </div>
+                        <div>
+                           <span className="text-xs font-semibold text-zinc-300 uppercase tracking-widest">
+                              Session Cancelled & Refunded
+                           </span>
+                           <PrimaryBody
+                              text="This interview session has been cancelled, and the full credit amount has been returned to the candidate's account balance."
+                              className="text-sm! mt-2"
+                           />
+                        </div>
+                     </div>
+                  </div>
+               )}
+
                {status === "COMPLETED" && feedback && (
                   <div className="p-6 2xl:p-7 border-b border-white/5">
                      <div className="flex max-sm:flex-col items-start gap-3.5">
@@ -361,6 +415,18 @@ export const SessionCard = ({
 
                   {/* Right: Action Buttons */}
                   <div className="flex max-sm:flex-col sm:flex-wrap sm:items-center sm:justify-end gap-2.5 2xl:gap-3 max-sm:w-full">
+                     {/* Cancel session button for scheduled */}
+                     {status === "SCHEDULED" && !isExpired && (
+                        <Button
+                           variant="ghost"
+                           className="cursor-pointer text-zinc-400 hover:text-rose-400 hover:bg-rose-500/5 text-xs rounded-lg h-9 max-sm:w-full"
+                           onClick={() => setOpenDialogue(true)}
+                           disabled={isCancelPending}
+                        >
+                           Cancel Session
+                        </Button>
+                     )}
+
                      {/* Join call button for scheduled */}
                      {canJoinCall && (
                         <Link href={`/call/${streamCallId}`} className="max-sm:w-full">
@@ -414,7 +480,19 @@ export const SessionCard = ({
             </div>
          </div>
       </CardLayout>
-   );
+
+      <ConfirmDialog
+         open={openDialogue}
+         onClose={() => setOpenDialogue(false)}
+         onConfirm={() => void handleCancelSession()}
+         title="Cancel Session"
+         description="Are you sure you want to cancel the session? This action is permanent and irreversible. The candidate will be refunded their credits."
+         isLoading={isCancelPending}
+         confirmText="Confirm"
+         variant="destructive"
+      />
+   </>
+);
 };
 
 export default SessionCard;

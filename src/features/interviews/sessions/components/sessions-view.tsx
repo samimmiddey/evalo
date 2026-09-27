@@ -56,7 +56,8 @@ export const SessionsView = () => {
       data: sessions,
       error,
       hasNextPage,
-      fetchNextPage
+      fetchNextPage,
+      refetch: refetchSessions
    } = useInfiniteFetch<DashboardSession>(
       (page) =>
          getDashboardSessions({
@@ -145,6 +146,7 @@ export const SessionsView = () => {
                         onViewFeedback={(feedback, candidateName) =>
                            setSelectedFeedback({ feedback, candidateName })
                         }
+                        refetchSessions={() => void refetchSessions()}
                      />
                   ))}
                </div>
