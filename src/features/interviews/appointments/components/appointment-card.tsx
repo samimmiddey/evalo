@@ -8,7 +8,7 @@ import { appointsData } from '@/data/appointments/appointments.data';
 import { ViewType } from '@/types/ui.types';
 import Link from 'next/link';
 import { useMutation } from '@/hooks/use-mutation';
-import { cancelBooking, retryStreamCall } from '../services/appointments.client.service';
+import { cancelBooking, claimRefund, retryStreamCall } from '../services/appointments.client.service';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 import CustomSpinner from '@/components/common/custom-spinner';
@@ -27,7 +27,7 @@ interface AppointmentCardProps {
 const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewList }: AppointmentCardProps) => {
    const [openDialogue, setOpenDialogue] = useState<boolean>(false);
 
-   const { interviewer, startTime, endTime, status, feedback, streamCallId, recordingUrl } = appointment;
+   const { interviewer, startTime, endTime, status, feedback, streamCallId, recordingUrl, isRefunded } = appointment;
 
    const { refetch: refetchUser } = useAppUser();
 
@@ -44,10 +44,19 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
    const {
       isPending: isCancelPending,
       error: cancelError,
-      mutate: cancelMutation } =
-      useMutation(() =>
-         cancelBooking(appointment.id)
-      );
+      mutate: cancelMutation
+   } = useMutation(() =>
+      cancelBooking(appointment.id)
+   );
+
+   // Claim Refund
+   const {
+      isPending: isRefundPending,
+      error: refundError,
+      mutate: refundMutation
+   } = useMutation(() =>
+      claimRefund(appointment.id)
+   );
 
    // Handle retry call
    const handleRetryStreamCall = async () => {
@@ -59,16 +68,24 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
       }
    };
 
-   // Handle cancel / refund call
-   const handleCancelBooking = async (isRefund = false) => {
+   // Handle cancel call
+   const handleCancelBooking = async () => {
       const res = await cancelMutation();
 
       if (res?.success) {
-         toast.success(
-            isRefund
-               ? 'Session refunded successfully. Credits returned to your account.'
-               : 'Booking cancelled successfully'
-         );
+         toast.success('Booking cancelled successfully');
+         setOpenDialogue(false);
+         refetchInterviewList();
+         await refetchUser();
+      }
+   };
+
+   // Handle claim refund call
+   const handleClaimRefund = async () => {
+      const res = await refundMutation();
+
+      if (res?.success) {
+         toast.success('Session refunded successfully. Credits returned to your account.');
          setOpenDialogue(false);
          refetchInterviewList();
          await refetchUser();
@@ -83,13 +100,16 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
       if (cancelError) {
          toast.error(cancelError);
       }
-   }, [retryError, cancelError]);
+      if (refundError) {
+         toast.error(refundError);
+      }
+   }, [retryError, cancelError, refundError]);
 
-   const isExpired = status === 'SCHEDULED' && new Date() > new Date(endTime);
+   const isExpired = status === 'EXPIRED' || (status === 'SCHEDULED' && new Date() > new Date(endTime));
 
    // Status Badge Helper
    const renderStatusBadge = (status: Interview['status']) => {
-      if (status === 'SCHEDULED' && isExpired) {
+      if (status === 'EXPIRED' || (status === 'SCHEDULED' && isExpired)) {
          return (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/15 text-zinc-400 border border-white/10">
                <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
@@ -263,14 +283,14 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      status === 'SCHEDULED' && !isExpired && (
                         <div className="p-6 2xl:p-7 border-b border-white/5">
                            <div className="flex max-sm:flex-col items-start gap-3.5">
-                              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-400 shadow-sm shrink-0 max-sm:mb-1">
+                              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-400 shadow-sm shrink-0 max-sm:mb-1">
                                  <Info className="w-4 h-4" />
                               </div>
                               <div>
-                                 <span className="text-xs font-semibold text-amber-100 uppercase tracking-widest">
+                                 <span className="text-xs font-semibold text-blue-300 uppercase tracking-widest">
                                     {appointsData.helpfulTips.header}
                                  </span>
-                                 <p className="text-sm text-amber-200/80 leading-relaxed mt-2">
+                                 <p className="text-sm text-blue-200/90 leading-relaxed mt-2">
                                     {appointsData.helpfulTips.body}
                                  </p>
                               </div>
@@ -279,7 +299,28 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      )
                   }
 
+                  {/* Session Cancelled */}
                   {status === 'CANCELLED' && (
+                     <div className="p-6 2xl:p-7 border-b border-white/5">
+                        <div className="flex max-sm:flex-col items-start gap-3.5">
+                           <div className="flex items-center justify-center size-8 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-400 shrink-0 max-sm:mb-1 shadow-sm">
+                              <RotateCcw className="size-4" />
+                           </div>
+                           <div>
+                              <span className="text-xs font-semibold text-rose-300 uppercase tracking-widest">
+                                 Session Cancelled & Refunded
+                              </span>
+                              <PrimaryBody
+                                 text="This interview session has been cancelled, and the full credit amount has been returned to your account balance. You can use your refunded credits anytime to schedule a new mock interview that better fits your timeline."
+                                 className="text-sm! mt-2 text-rose-200/90"
+                              />
+                           </div>
+                        </div>
+                     </div>
+                  )}
+
+                  {/* Session Expired */}
+                  {status === 'EXPIRED' && isRefunded && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
                            <div className="flex items-center justify-center size-8 rounded-lg bg-white/5 border border-white/10 text-zinc-300 shrink-0 max-sm:mb-1 shadow-sm">
@@ -287,17 +328,16 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                            </div>
                            <div>
                               <span className="text-xs font-semibold text-zinc-300 uppercase tracking-widest">
-                                 Session Cancelled & Refunded
+                                 Session Expired & Refund Claimed
                               </span>
                               <PrimaryBody
-                                 text="This interview session has been cancelled, and the full credit amount has been returned to your account balance. You can use your refunded credits anytime to schedule a new mock interview that better fits your timeline."
+                                 text="This interview session has expired and refund has been claimed successfully. You can use your refunded credits anytime to schedule a new mock interview that better fits your timeline."
                                  className="text-sm! mt-2"
                               />
                            </div>
                         </div>
                      </div>
                   )}
-
 
                   {/* Bottom Row: AI Feedback summary (Only for COMPLETED) */}
                   {status === 'COMPLETED' && feedback && (
@@ -359,16 +399,19 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                   {/* Actions Area */}
                   <div className="p-6 2xl:p-7 flex max-sm:flex-col sm:flex-wrap sm:items-center sm:justify-end gap-2.5 2xl:gap-3">
 
-                     {status === 'SCHEDULED' && isExpired && (
+                     {isExpired && (
                         <>
-                           <Button
-                              variant="ghost"
-                              className="cursor-pointer text-amber-400 hover:text-amber-300 hover:bg-amber-500/15 text-xs rounded-lg h-9 max-sm:w-full"
-                              onClick={() => setOpenDialogue(true)}
-                              disabled={isCancelPending}
-                           >
-                              Claim Refund
-                           </Button>
+                           {
+                              !isRefunded &&
+                              <Button
+                                 variant="ghost"
+                                 className="cursor-pointer text-amber-300 hover:text-amber-400 hover:bg-amber-500/15 text-xs rounded-lg h-9 max-sm:w-full"
+                                 onClick={() => setOpenDialogue(true)}
+                                 disabled={isRefundPending}
+                              >
+                                 Claim Refund
+                              </Button>
+                           }
                            <Link href={`/dashboard/interviewers/${appointment.interviewer.id}`}>
                               <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                                  Book Again
@@ -458,14 +501,14 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
          <ConfirmDialog
             open={openDialogue}
             onClose={() => setOpenDialogue(false)}
-            onConfirm={() => void handleCancelBooking(isExpired)}
+            onConfirm={() => void (isExpired ? handleClaimRefund() : handleCancelBooking())}
             title={isExpired ? "Claim Refund" : "Cancel Session"}
             description={
                isExpired
                   ? "Are you sure you want to claim your refund? The interview credits will be returned to your balance."
                   : "Are you sure you want to cancel the session? This action is permanent and irreversible."
             }
-            isLoading={isCancelPending}
+            isLoading={isExpired ? isRefundPending : isCancelPending}
             confirmText={isExpired ? "Claim Refund" : "Confirm"}
             variant={isExpired ? "warning" : "destructive"}
          />

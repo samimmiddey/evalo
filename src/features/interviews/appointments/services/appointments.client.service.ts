@@ -1,9 +1,9 @@
 "use client";
 
 import { apiError } from "@/lib/api-error";
-import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams, AppointmentsStatsClientResponse, AppointmentsStatsData, CancelBookingClientResponse, RetryBookSessionClientResponse, RetryBookSession, CancelBookingData } from "../types/appointments.types";
+import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams, AppointmentsStatsClientResponse, AppointmentsStatsData, CancelBookingClientResponse, RetryBookSessionClientResponse, RetryBookSession, CancelBookingData, ClaimRefundClientResponse, ClaimRefundData } from "../types/appointments.types";
 import { api } from "@/lib/api";
-import { CANCEL_BOOKING, GET_APPOINTMENT_STATS, GET_APPOINTMENTS, RETRY_BOOKING } from "@/constants/query-urls";
+import { CANCEL_BOOKING, CLAIM_REFUND, GET_APPOINTMENT_STATS, GET_APPOINTMENTS, RETRY_BOOKING } from "@/constants/query-urls";
 
 // Get appointments
 export const getAppointments = async (params: GetAppointmentsParams): Promise<AppointmentsData> => {
@@ -95,6 +95,30 @@ export const retryStreamCall = async (bookingId: string): Promise<RetryBookSessi
       return apiError({
          error,
          fallbackMessage: "We couldn't prepare the meeting room. Please try again."
+      });
+   }
+};
+
+// Claim refund for expired booking
+export const claimRefund = async (bookingId: string): Promise<ClaimRefundData> => {
+   try {
+      if (!bookingId) {
+         throw new Error("Booking ID is required");
+      }
+
+      const res = await api.post(CLAIM_REFUND, { json: { bookingId } }).json<ClaimRefundClientResponse>();
+
+      if (!res.success) {
+         throw new Error(res.error);
+      }
+
+      return {
+         success: true
+      };
+   } catch (error: unknown) {
+      return apiError({
+         error,
+         fallbackMessage: "Failed to claim refund"
       });
    }
 };

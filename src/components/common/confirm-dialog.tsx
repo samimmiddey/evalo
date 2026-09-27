@@ -44,23 +44,23 @@ const variantStyles: Record<
       iconWrapper: "bg-rose-500/15 border-rose-500/30 text-rose-400 shadow-rose-950/40",
       glow: "from-rose-500/15 via-rose-500/5 to-transparent",
       confirmButton:
-         "bg-rose-600 hover:bg-rose-700 text-white shadow-lg shadow-rose-950/40 border border-rose-500/30 focus-visible:ring-rose-500",
+         "bg-rose-600 hover:bg-rose-700 text-white border border-rose-500/30",
       defaultIcon: <AlertTriangle className="size-4.5" />,
    },
    warning: {
       iconWrapper: "bg-amber-500/15 border-amber-500/30 text-amber-400 shadow-amber-950/40",
       glow: "from-amber-500/15 via-amber-500/5 to-transparent",
       confirmButton:
-         "bg-amber-600 hover:bg-amber-700 text-white shadow-lg shadow-amber-950/40 border border-amber-500/30 focus-visible:ring-amber-500",
+         "bg-amber-600 hover:bg-amber-700 text-white border border-amber-500/30",
       defaultIcon: <AlertCircle className="size-4.5" />,
    },
    default: {
       iconWrapper: "bg-violet-500/15 border-violet-500/30 text-violet-400 shadow-violet-950/40",
       glow: "from-violet-500/15 via-violet-500/5 to-transparent",
       confirmButton:
-         "bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-950/40 border border-violet-500/30 focus-visible:ring-violet-500",
+         "bg-violet-600 hover:bg-violet-700 text-white border border-violet-500/30",
       defaultIcon: <HelpCircle className="size-4.5" />,
-   },
+   }
 };
 
 export const ConfirmDialog = ({

@@ -4,7 +4,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import { GetAppointmentsParams, GetAppointmentsServerResponse, AppointmentsStatsServerResponse, RetryBookSessionServerResponse } from "../types/appointments.types";
 import { Prisma } from "@/generated/prisma/client";
 import { StreamClient } from "@stream-io/node-sdk";
-import { ForbiddenError, NotFoundError, UnauthorizedError } from "@/lib/app-error";
+import { ConflictError, ForbiddenError, NotFoundError, UnauthorizedError } from "@/lib/app-error";
+import { reconcileExpiredBookings } from "../../../../services/server/stream.server.service";
 
 export const getAppointments = async (params: GetAppointmentsParams = {}): Promise<GetAppointmentsServerResponse> => {
    const user = await currentUser();
@@ -87,7 +88,11 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
                      totalRatings: true
                   }
                },
-               feedback: true
+               feedback: true,
+               transactions: {
+                  where: { type: 'BOOKING_REFUND' },
+                  select: { id: true }
+               }
             },
             orderBy: {
                startTime: 'desc'
@@ -97,8 +102,13 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
          })
       ]);
 
+      const formattedAppointments = appointments.map((item) => ({
+         ...item,
+         isRefunded: item.transactions ? item.transactions.length > 0 : false
+      }));
+
       return {
-         data: appointments,
+         data: formattedAppointments,
          page,
          pageSize,
          totalCount,
@@ -400,5 +410,89 @@ export const cancelBooking = async (bookingId: string): Promise<void> => {
          // Booking is already cancelled in the DB. Stream cleanup failing
          // doesn't affect the outcome for the user — nothing to do here.
       }
+   }
+};
+
+// Claim refund for an expired interview booking
+export const claimRefund = async (bookingId: string): Promise<void> => {
+   const user = await currentUser();
+
+   if (!user) {
+      throw new UnauthorizedError("User not logged in");
+   }
+
+   try {
+      const dbUser = await db.user.findUnique({
+         where: { clerkUserId: user.id },
+         select: { id: true }
+      });
+
+      if (!dbUser) {
+         throw new NotFoundError("User not found");
+      }
+
+      // Reconcile any past-due bookings for this candidate
+      await reconcileExpiredBookings(dbUser.id, 'CANDIDATE');
+
+      const booking = await db.booking.findUnique({
+         where: { id: bookingId },
+         include: {
+            candidate: { select: { clerkUserId: true } },
+            transactions: { where: { type: 'BOOKING_REFUND' } }
+         }
+      });
+
+      if (!booking) {
+         throw new NotFoundError("Booking not found");
+      }
+
+      // Ensure user is the candidate for this booking
+      if (booking.candidate.clerkUserId !== user.id) {
+         throw new UnauthorizedError("Only the candidate can claim a refund for this session");
+      }
+
+      // Ensure booking is expired
+      const isPastDue = new Date() > new Date(booking.endTime);
+      if (booking.status !== "EXPIRED" && !(booking.status === "SCHEDULED" && isPastDue)) {
+         throw new ForbiddenError("Only expired bookings are eligible for refund claim");
+      }
+
+      // Ensure refund hasn't already been processed
+      if (booking.transactions && booking.transactions.length > 0) {
+         throw new ConflictError("Refund has already been claimed for this booking");
+      }
+
+      await db.$transaction(async (tx) => {
+         // Keep status as EXPIRED
+         await tx.booking.update({
+            where: { id: booking.id },
+            data: { status: "EXPIRED" }
+         });
+
+         // Record refund transaction
+         await tx.creditTransaction.create({
+            data: {
+               userId: booking.candidateId,
+               amount: booking.creditsCharged,
+               type: "BOOKING_REFUND",
+               bookingId: booking.id
+            }
+         });
+
+         // Add credits back to candidate's balance
+         await tx.user.update({
+            where: { id: booking.candidateId },
+            data: {
+               credits: {
+                  increment: booking.creditsCharged
+               }
+            }
+         });
+      });
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: "Failed to claim refund. Please try again later."
+      });
    }
 };

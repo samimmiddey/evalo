@@ -13,6 +13,7 @@ export const GET_FEEDBACK = '/interviewers/feedback';
 export const GET_APPOINTMENTS = '/appointments/list';
 export const GET_APPOINTMENT_STATS = '/appointments/stats';
 export const CANCEL_BOOKING = '/appointments/cancel-booking';
+export const CLAIM_REFUND = '/appointments/claim-refund';
 export const RETRY_BOOKING = '/appointments/retry-booking';
 
 // Call
