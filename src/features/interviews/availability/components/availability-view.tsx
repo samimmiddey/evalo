@@ -136,7 +136,7 @@ export const AvailabilityView = () => {
                            <SlotItem
                               key={slot.id}
                               slot={slot}
-                              onDelete={(slotId) => void handleDeleteSlot(slotId)}
+                              onDelete={handleDeleteSlot}
                               isDeleting={deletingId === slot.id}
                            />
                         ))}
