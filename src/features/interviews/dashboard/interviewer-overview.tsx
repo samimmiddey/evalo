@@ -2,8 +2,8 @@
 
 import { useFetch } from "@/hooks/use-fetch";
 import { useAppUser } from "@/hooks/use-app-user";
-import { getDashboardStats } from "./services/dashboard.client.service";
-import { DashboardStats as DashboardStatsType } from "./types/dashboard.types";
+import { getDashboardStats, getNextSession } from "./services/dashboard.client.service";
+import { DashboardNextSession, DashboardStats as DashboardStatsType } from "./types/dashboard.types";
 import PageHeaderLayout from "@/components/layouts/page-header-layout";
 import HeaderLayout from "@/components/layouts/header-layout";
 import PrimaryTitle from "@/components/common/primary-title";
@@ -20,13 +20,13 @@ import Link from "next/link";
 export const InterviewerOverview = () => {
    const { user } = useAppUser();
    const { isLoading: isStatsLoading, data: stats } = useFetch<DashboardStatsType>(() => getDashboardStats());
+   const { isLoading: isSessionLoading, data: nextSession } = useFetch<DashboardNextSession | null>(() => getNextSession());
 
-   if (isStatsLoading) {
+   if (isStatsLoading || isSessionLoading) {
       return <DashboardOverviewSkeleton />;
    }
 
    const firstName = user?.firstName ?? "there";
-   const nextSession = stats?.nextSession;
 
    const statItems: DashboardStatItem[] = [
       {
@@ -58,17 +58,6 @@ export const InterviewerOverview = () => {
          subtext: `${stats?.totalRatings ?? 0} total candidate reviews`
       }
    ];
-
-   const sessionData = nextSession ? {
-      startTime: nextSession.startTime,
-      streamCallId: nextSession.streamCallId,
-      counterpart: {
-         name: `${nextSession.candidate?.firstName} ${nextSession.candidate?.lastName}`,
-         imageUrl: nextSession.candidate?.imageUrl,
-         fallbackInitial: nextSession.candidate?.firstName?.[0] ?? "C",
-         subtitle: `Candidate • ${nextSession.creditsCharged} Credits Booked`
-      }
-   } : null;
 
    return (
       <div className="container s-margin space-y-6 2xl:space-y-7">
@@ -102,7 +91,7 @@ export const InterviewerOverview = () => {
             <div className="lg:col-span-2 space-y-6">
                <DashboardSessionCard
                   title="Upcoming Sessions"
-                  session={sessionData}
+                  session={nextSession}
                   viewAllHref="/dashboard/sessions"
                   viewAllLabel="View all sessions"
                   manageLabel="Manage Session"

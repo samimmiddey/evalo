@@ -2,8 +2,10 @@
 
 import { useFetch } from "@/hooks/use-fetch";
 import { useAppUser } from "@/hooks/use-app-user";
-import { getAppointments, getAppointmentsStats } from "@/features/interviews/appointments/services/appointments.client.service";
-import { AppointmentsData, AppointmentsStatsData } from "@/features/interviews/appointments/types/appointments.types";
+import { getAppointmentsStats } from "@/features/interviews/appointments/services/appointments.client.service";
+import { AppointmentsStatsData } from "@/features/interviews/appointments/types/appointments.types";
+import { getNextSession } from "./services/dashboard.client.service";
+import { DashboardNextSession } from "./types/dashboard.types";
 import PageHeaderLayout from "@/components/layouts/page-header-layout";
 import HeaderLayout from "@/components/layouts/header-layout";
 import PrimaryTitle from "@/components/common/primary-title";
@@ -20,16 +22,13 @@ import Link from "next/link";
 export const CandidateOverview = () => {
    const { user } = useAppUser();
    const { isLoading: isStatsLoading, data: stats } = useFetch<AppointmentsStatsData>(() => getAppointmentsStats());
-   const { isLoading: isAppointmentsLoading, data: appointmentsData } = useFetch<AppointmentsData>(() =>
-      getAppointments({ page: 1, pageSize: 1, status: "SCHEDULED" })
-   );
+   const { isLoading: isSessionLoading, data: nextSession } = useFetch<DashboardNextSession | null>(() => getNextSession());
 
-   if (isStatsLoading || isAppointmentsLoading) {
+   if (isStatsLoading || isSessionLoading) {
       return <DashboardOverviewSkeleton />;
    }
 
    const firstName = user?.firstName ?? "there";
-   const nextSession = appointmentsData?.data?.[0];
 
    const statItems: DashboardStatItem[] = [
       {
@@ -63,17 +62,6 @@ export const CandidateOverview = () => {
       }
    ];
 
-   const sessionData = nextSession ? {
-      startTime: nextSession.startTime,
-      streamCallId: nextSession.streamCallId,
-      counterpart: {
-         name: `${nextSession.interviewer?.firstName} ${nextSession.interviewer?.lastName}`,
-         imageUrl: nextSession.interviewer?.imageUrl,
-         fallbackInitial: nextSession.interviewer?.firstName?.[0] ?? "I",
-         subtitle: `${nextSession.interviewer?.designation} • ${nextSession.interviewer?.company}`
-      }
-   } : null;
-
    return (
       <div className="container s-margin space-y-6 2xl:space-y-7">
          {/* Hero Header */}
@@ -106,7 +94,7 @@ export const CandidateOverview = () => {
             <div className="lg:col-span-2 space-y-6">
                <DashboardSessionCard
                   title="Upcoming Interviews"
-                  session={sessionData}
+                  session={nextSession}
                   viewAllHref="/dashboard/appointments"
                   viewAllLabel="View all appointments"
                   manageLabel="Manage Booking"

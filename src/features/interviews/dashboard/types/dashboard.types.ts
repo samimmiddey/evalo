@@ -1,17 +1,31 @@
 import { BaseResponse } from "@/types/api.types";
-import { DashboardSession } from "../../shared/types/shared.types";
+import { BookingStatus, StreamStatus } from "@/generated/prisma/enums";
 
 export interface DashboardStats {
    totalSessions: number;
    completedSessions: number;
    scheduledSessions: number;
-   cancelledSessions: number;
-   totalEarnings: number;
    creditBalance: number;
    creditRate: number;
    averageRating: number | null;
    totalRatings: number;
-   nextSession: DashboardSession | null;
 }
 
 export type DashboardStatsResponse = BaseResponse<DashboardStats>;
+
+export interface DashboardNextSession {
+   id: string;
+   startTime: string;
+   endTime: string;
+   status: BookingStatus;
+   streamCallId: string | null;
+   streamStatus: StreamStatus;
+   counterpart: {
+      name: string;
+      imageUrl: string | null;
+      fallbackInitial: string;
+      subtitle: string;
+   };
+}
+
+export type DashboardNextSessionResponse = BaseResponse<DashboardNextSession | null>;

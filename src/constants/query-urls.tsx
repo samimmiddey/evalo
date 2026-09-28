@@ -22,6 +22,7 @@ export const COMPLETE_CALL = '/call/complete';
 
 // Dashboard
 export const GET_DASHBOARD_STATS = '/dashboard';
+export const GET_DASHBOARD_NEXT_SESSION = '/dashboard/next-session';
 
 // Interviewer
 export const GET_SESSIONS = '/sessions';

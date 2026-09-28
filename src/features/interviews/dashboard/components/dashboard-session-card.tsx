@@ -19,6 +19,8 @@ export interface SessionCounterpart {
 
 export interface DashboardSessionData {
    startTime: string | Date;
+   endTime?: string | Date;
+   status?: string;
    streamCallId?: string | null;
    counterpart: SessionCounterpart;
 }
@@ -55,11 +57,17 @@ export const DashboardSessionCard = ({
             {session && (
                <Badge
                   variant="outline"
-                  className="bg-blue-500/15 border-blue-500/30 text-blue-300 text-xs p-2.5"
+                  className={
+                     session.status === "COMPLETED"
+                        ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400 text-xs p-2.5"
+                        : "bg-blue-500/15 border-blue-500/30 text-blue-400 text-xs p-2.5"
+                  }
                >
-                  {isPast(new Date(session.startTime))
-                     ? "In progress"
-                     : `Starts ${formatDistanceToNow(new Date(session.startTime), { addSuffix: true })}`}
+                  {session.status === "COMPLETED"
+                     ? "Completed"
+                     : isPast(new Date(session.startTime))
+                        ? "In progress"
+                        : `Starts ${formatDistanceToNow(new Date(session.startTime), { addSuffix: true })}`}
                </Badge>
             )}
          </div>
@@ -122,7 +130,7 @@ export const DashboardSessionCard = ({
                      <Link href={`/call/${session.streamCallId}`} className="max-sm:w-full">
                         <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                            <Video className="w-3.5 h-3.5" />
-                           <span>Join Interview</span>
+                           <span>{session.status === "COMPLETED" ? "Rejoin Interview" : "Join Interview"}</span>
                         </Button>
                      </Link>
                   ) : (
