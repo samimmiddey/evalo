@@ -128,11 +128,11 @@ export const ConfirmDialog = ({
                         {icon ?? activeVariant.defaultIcon}
                      </div>
 
-                     <div className="space-y-1 pt-0.5">
+                     <div className="space-y-1.5 pt-0.5">
                         <DialogTitle className="text-base sm:text-lg font-semibold tracking-tight text-zinc-100 font-geist">
                            {title}
                         </DialogTitle>
-                        <DialogDescription className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
+                        <DialogDescription className="text-[13px] sm:text-sm text-zinc-400 leading-relaxed font-normal">
                            {description}
                         </DialogDescription>
                      </div>

@@ -451,10 +451,10 @@ export const claimRefund = async (bookingId: string): Promise<void> => {
          throw new UnauthorizedError("Only the candidate can claim a refund for this session");
       }
 
-      // Ensure booking is expired
-      const isPastDue = new Date() > new Date(booking.endTime);
+      // Ensure booking is expired (past endTime + 15 mins grace period)
+      const isPastDue = Date.now() > (new Date(booking.endTime).getTime() + 15 * 60 * 1000);
       if (booking.status !== "EXPIRED" && !(booking.status === "SCHEDULED" && isPastDue)) {
-         throw new ForbiddenError("Only expired bookings are eligible for refund claim");
+         throw new ForbiddenError("This session is still under review or active. Refunds can only be claimed after the 15-minute settlement window.");
       }
 
       // Ensure refund hasn't already been processed

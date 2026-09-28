@@ -4,6 +4,7 @@ import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
 import { StreamClient } from "@stream-io/node-sdk";
 import { CompleteCallData, GeneratedQuestion, GetCallDataServerResponse } from "../types/call.types";
+import { settleSuccessfulSession } from "../../../../services/server/stream.server.service";
 import { EXPERTISE_PROMPTS } from "@/data/interviews/interviews.data";
 import { InterviewExpertise } from "@/generated/prisma/enums";
 import { GoogleGenerativeAI, ResponseSchema, SchemaType } from '@google/generative-ai';
@@ -139,40 +140,7 @@ export const completeCall = async (callId: string): Promise<CompleteCallData> =>
       }
 
       await db.$transaction(async (tx) => {
-         const current = await tx.booking.findUnique({
-            where: { id: booking.id },
-            select: { status: true }
-         });
-
-         if (current?.status === 'COMPLETED') {
-            return;
-         }
-
-         // 1. Mark booking as completed
-         await tx.booking.update({
-            where: { id: booking.id },
-            data: { status: 'COMPLETED' }
-         });
-
-         // 2. Increment interviewer credit balance
-         await tx.user.update({
-            where: { id: booking.interviewer.id },
-            data: {
-               creditBalance: {
-                  increment: booking.creditsCharged
-               }
-            }
-         });
-
-         // 3. Create credit transaction record for interviewer earnings
-         await tx.creditTransaction.create({
-            data: {
-               userId: booking.interviewer.id,
-               amount: booking.creditsCharged,
-               type: 'BOOKING_EARNING',
-               bookingId: booking.id
-            }
-         });
+         await settleSuccessfulSession(booking.id, booking.creditsCharged, booking.interviewer.id, tx);
       });
 
       return {

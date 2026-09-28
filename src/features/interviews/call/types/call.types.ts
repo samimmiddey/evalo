@@ -1,4 +1,4 @@
-import { InterviewExpertise } from "@/generated/prisma/enums";
+import { BookingStatus, InterviewExpertise } from "@/generated/prisma/enums";
 import { BaseResponse } from "@/types/api.types";
 
 export interface CallParticipant {
@@ -24,7 +24,7 @@ export interface Booking {
    designation: string | null;
    startTime: string;
    endTime: string;
-   status: "SCHEDULED" | "COMPLETED" | "CANCELLED";
+   status: BookingStatus;
 }
 
 export interface CallCurrentUser {

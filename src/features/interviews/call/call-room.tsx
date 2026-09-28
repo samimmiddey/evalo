@@ -29,7 +29,8 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
    const earlyWindowMs = startTimeMs - 10 * 60 * 1000; // 10 minutes before start
 
    const getInitialWindowStatus = (): 'early' | 'active' | 'expired' => {
-      if (booking.status === 'COMPLETED' || booking.status === 'CANCELLED') {
+      // Cancelled or Expired bookings cannot be accessed
+      if (booking.status === 'CANCELLED' || booking.status === 'EXPIRED') {
          return 'expired';
       }
       const now = Date.now();

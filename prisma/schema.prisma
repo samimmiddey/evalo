@@ -24,6 +24,7 @@ enum BookingStatus {
   SCHEDULED
   COMPLETED
   CANCELLED
+  EXPIRED
 }
 
 enum StreamStatus {
@@ -140,6 +141,7 @@ model Booking {
   recordingUrl   String?
   feedback       Feedback?
   transactions   CreditTransaction[]
+  sessions       BookingSession[]
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
 
@@ -200,4 +202,19 @@ model Payout {
 
   @@index([status, createdAt])
   @@index([interviewerId, status])
+}
+
+// BOOKING SESSIONS
+
+model BookingSession {
+  id                String   @id @default(uuid())
+  bookingId         String
+  booking           Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  streamSessionId   String
+  coPresenceSeconds Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([bookingId, streamSessionId])
+  @@index([bookingId])
 }

@@ -105,10 +105,25 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
       }
    }, [retryError, cancelError, refundError]);
 
-   const isExpired = status === 'EXPIRED' || (status === 'SCHEDULED' && new Date() > new Date(endTime));
+   const [nowMs] = useState<number>(() => Date.now());
+   const endMs = new Date(endTime).getTime();
+   const GRACE_PERIOD_MS = 15 * 60 * 1000;
+
+   const isPastEndTime = nowMs > endMs;
+   const isWithinGracePeriod = status === 'SCHEDULED' && isPastEndTime && nowMs <= (endMs + GRACE_PERIOD_MS);
+   const isExpired = status === 'EXPIRED' || (status === 'SCHEDULED' && nowMs > (endMs + GRACE_PERIOD_MS));
 
    // Status Badge Helper
    const renderStatusBadge = (status: Interview['status']) => {
+      if (isWithinGracePeriod) {
+         return (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
+               <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+               Under Review
+            </span>
+         );
+      }
+
       if (status === 'EXPIRED' || (status === 'SCHEDULED' && isExpired)) {
          return (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/15 text-zinc-400 border border-white/10">
@@ -280,7 +295,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
 
                   {/* Guidelines */}
                   {
-                     status === 'SCHEDULED' && !isExpired && (
+                     (status === 'SCHEDULED' || status === 'COMPLETED') && !feedback && !isPastEndTime && (
                         <div className="p-6 2xl:p-7 border-b border-white/5">
                            <div className="flex max-sm:flex-col items-start gap-3.5">
                               <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-400 shadow-sm shrink-0 max-sm:mb-1">
@@ -325,7 +340,27 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      </div>
                   )}
 
-                  {/* Session Expired & Refund Pending (Amber) */}
+                  {/* Session Under Review (Grace Period) */}
+                  {isWithinGracePeriod && (
+                     <div className="p-6 2xl:p-7 border-b border-white/5">
+                        <div className="flex max-sm:flex-col items-start gap-3.5">
+                           <div className="flex items-center justify-center size-8 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-400 shrink-0 max-sm:mb-1 shadow-sm">
+                              <Hourglass className="size-4 animate-pulse" />
+                           </div>
+                           <div>
+                              <span className="text-xs font-semibold text-amber-200 uppercase tracking-widest">
+                                 Session Under Review
+                              </span>
+                              <PrimaryBody
+                                 text="The interview time slot has concluded. Attendance is currently being verified and AI feedback is generating. Please allow a few moments for final evaluation."
+                                 className="text-sm! mt-2 text-amber-100/90"
+                              />
+                           </div>
+                        </div>
+                     </div>
+                  )}
+
+                  {/* Session Expired & Refund Pending */}
                   {isExpired && !isRefunded && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
@@ -345,7 +380,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      </div>
                   )}
 
-                  {/* Session Expired & Refund Claimed (Zinc) */}
+                  {/* Session Expired & Refund Claimed */}
                   {status === 'EXPIRED' && isRefunded && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
@@ -365,7 +400,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      </div>
                   )}
 
-                  {/* Bottom Row: AI Feedback summary (Only for COMPLETED) */}
+                  {/* Session Completed and AI Feedback Summary */}
                   {status === 'COMPLETED' && feedback && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
@@ -413,9 +448,9 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                   )}
 
                   {/* Notice if COMPLETED without feedback */}
-                  {status === 'COMPLETED' && !feedback && (
+                  {status === 'COMPLETED' && !feedback && isPastEndTime && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
-                        <div className="flex items-center gap-3 text-zinc-400 text-xs">
+                        <div className="flex items-center gap-3 text-zinc-400 text-sm">
                            <Info className="w-4 h-4 text-zinc-500 shrink-0" />
                            <span>AI performance evaluation is unavailable for this session.</span>
                         </div>
@@ -446,7 +481,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                         </>
                      )}
 
-                     {status === 'SCHEDULED' && !isExpired && (
+                     {status === 'SCHEDULED' && !isPastEndTime && (
                         <>
                            <Button
                               variant="ghost"
@@ -456,15 +491,6 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                            >
                               Cancel Booking
                            </Button>
-
-                           {appointment.streamStatus === 'READY' && (
-                              <Link href={`/call/${streamCallId}`}>
-                                 <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
-                                    <Video className="w-3.5 h-3.5" />
-                                    Join Interview
-                                 </Button>
-                              </Link>
-                           )}
 
                            {appointment.streamStatus === 'PENDING' && (
                               <Button
@@ -485,6 +511,15 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                               </Button>
                            )}
                         </>
+                     )}
+
+                     {(status === 'SCHEDULED' || status === 'COMPLETED') && !isPastEndTime && appointment.streamStatus === 'READY' && (
+                        <Link href={`/call/${streamCallId}`}>
+                           <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
+                              <Video className="w-3.5 h-3.5" />
+                              {status === 'COMPLETED' ? 'Rejoin Interview' : 'Join Interview'}
+                           </Button>
+                        </Link>
                      )}
 
                      {status === "COMPLETED" && recordingUrl && (

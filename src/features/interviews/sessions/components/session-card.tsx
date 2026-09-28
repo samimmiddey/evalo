@@ -83,14 +83,13 @@ export const SessionCard = ({
 
    const startDate = new Date(startTime);
    const endDate = new Date(endTime);
-   const now = new Date();
+   const [nowMs] = useState<number>(() => Date.now());
+   const endMs = endDate.getTime();
+   const GRACE_PERIOD_MS = 15 * 60 * 1000;
 
-   const isExpired = status === "EXPIRED" || (status === "SCHEDULED" && now > endDate);
-   const canJoinCall =
-      status === "SCHEDULED" &&
-      streamCallId &&
-      streamStatus === "READY" &&
-      !isExpired;
+   const isPastEndTime = nowMs > endMs;
+   const isWithinGracePeriod = status === "SCHEDULED" && isPastEndTime && nowMs <= (endMs + GRACE_PERIOD_MS);
+   const isExpired = status === "EXPIRED" || (status === "SCHEDULED" && nowMs > (endMs + GRACE_PERIOD_MS));
 
    const candidateFullName =
       candidate.firstName || candidate.lastName
@@ -106,6 +105,15 @@ export const SessionCard = ({
 
    // Status Badge Helper matching appointment-card
    const renderStatusBadge = (sessionStatus: DashboardSession["status"]) => {
+      if (isWithinGracePeriod) {
+         return (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
+               <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+               Under Review
+            </span>
+         );
+      }
+
       if (sessionStatus === "EXPIRED" || (sessionStatus === "SCHEDULED" && isExpired)) {
          return (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-zinc-500/15 text-zinc-400 border border-white/10">
@@ -302,8 +310,8 @@ export const SessionCard = ({
                      <div className="hidden md:block">{renderStatusBadge(status)}</div>
                   </div>
 
-                  {/* Middle Row: Guideline if SCHEDULED / Feedback summary if COMPLETED */}
-                  {status === "SCHEDULED" && !isExpired && (
+                  {/* Guidelines */}
+                  {(status === "SCHEDULED" || status === "COMPLETED") && !feedback && !isPastEndTime && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
                            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-400 shadow-sm shrink-0 max-sm:mb-1">
@@ -325,6 +333,27 @@ export const SessionCard = ({
                      </div>
                   )}
 
+                  {/* Session Under Review (Grace Period) */}
+                  {isWithinGracePeriod && (
+                     <div className="p-6 2xl:p-7 border-b border-white/5">
+                        <div className="flex max-sm:flex-col items-start gap-3.5">
+                           <div className="flex items-center justify-center size-8 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-400 shrink-0 max-sm:mb-1 shadow-sm">
+                              <Hourglass className="size-4 animate-pulse" />
+                           </div>
+                           <div>
+                              <span className="text-xs font-semibold text-amber-200 uppercase tracking-widest">
+                                 Session Under Review
+                              </span>
+                              <PrimaryBody
+                                 text="The interview time slot has concluded. Session attendance is being verified and interviewer compensation is processing. Please allow a few moments."
+                                 className="text-sm! mt-2 text-amber-100/90"
+                              />
+                           </div>
+                        </div>
+                     </div>
+                  )}
+
+                  {/* Session Cancelled */}
                   {status === "CANCELLED" && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
@@ -364,6 +393,7 @@ export const SessionCard = ({
                      </div>
                   )}
 
+                  {/* Session Completed and AI Feedback Summary */}
                   {status === "COMPLETED" && feedback && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
@@ -422,9 +452,9 @@ export const SessionCard = ({
                   )}
 
                   {/* Notice if COMPLETED without feedback */}
-                  {status === "COMPLETED" && !feedback && (
+                  {status === "COMPLETED" && !feedback && isPastEndTime && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
-                        <div className="flex items-center gap-3 text-zinc-400 text-xs">
+                        <div className="flex items-center gap-3 text-zinc-400 text-sm">
                            <Info className="w-4 h-4 text-zinc-500 shrink-0" />
                            <span>AI performance evaluation is unavailable for this session.</span>
                         </div>
@@ -441,7 +471,7 @@ export const SessionCard = ({
                      {/* Right: Action Buttons */}
                      <div className="flex max-sm:flex-col sm:flex-wrap sm:items-center sm:justify-end gap-2.5 2xl:gap-3 max-sm:w-full">
                         {/* Cancel session button for scheduled */}
-                        {status === "SCHEDULED" && !isExpired && (
+                        {status === "SCHEDULED" && !isPastEndTime && (
                            <Button
                               variant="ghost"
                               className="cursor-pointer text-zinc-400 hover:text-rose-400 hover:bg-rose-500/5 text-xs rounded-lg h-9 max-sm:w-full"
@@ -452,12 +482,12 @@ export const SessionCard = ({
                            </Button>
                         )}
 
-                        {/* Join call button for scheduled */}
-                        {canJoinCall && (
+                        {/* Join / Rejoin call button */}
+                        {(status === "SCHEDULED" || status === "COMPLETED") && !isPastEndTime && streamCallId && streamStatus === "READY" && (
                            <Link href={`/call/${streamCallId}`} className="max-sm:w-full">
                               <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                                  <Video className="w-3.5 h-3.5" />
-                                 Join Interview
+                                 {status === "COMPLETED" ? "Rejoin Interview" : "Join Interview"}
                               </Button>
                            </Link>
                         )}

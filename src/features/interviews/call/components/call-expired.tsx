@@ -6,11 +6,12 @@ import { Button } from '@/components/ui/button';
 import CardLayout from '@/components/layouts/card-layout';
 import SecondaryTitle from '@/components/common/secondary-title';
 import PrimaryBody from '@/components/common/primary-body';
+import { BookingStatus } from '@/generated/prisma/enums';
 
 interface CallExpiredProps {
    isInterviewer: boolean;
    onNavigateOut: () => void;
-   status?: 'SCHEDULED' | 'COMPLETED' | 'CANCELLED';
+   status?: BookingStatus;
 }
 
 const CallExpired = ({
