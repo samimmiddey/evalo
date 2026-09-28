@@ -139,6 +139,7 @@ model Booking {
   creditsCharged Int
   streamCallId   String?             @unique
   recordingUrl   String?
+  isRefunded     Boolean             @default(false)
   feedback       Feedback?
   transactions   CreditTransaction[]
   sessions       BookingSession[]

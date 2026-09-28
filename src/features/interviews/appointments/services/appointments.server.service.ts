@@ -88,11 +88,7 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
                      totalRatings: true
                   }
                },
-               feedback: true,
-               transactions: {
-                  where: { type: 'BOOKING_REFUND' },
-                  select: { id: true }
-               }
+               feedback: true
             },
             orderBy: {
                startTime: 'desc'
@@ -102,13 +98,8 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
          })
       ]);
 
-      const formattedAppointments = appointments.map((item) => ({
-         ...item,
-         isRefunded: item.transactions ? item.transactions.length > 0 : false
-      }));
-
       return {
-         data: formattedAppointments,
+         data: appointments,
          page,
          pageSize,
          totalCount,
@@ -327,20 +318,29 @@ export const cancelBooking = async (bookingId: string): Promise<void> => {
          throw new UnauthorizedError("Unauthorized user");
       }
 
-      // Only scheduled bookings can be cancelled
-      if (booking.status !== "SCHEDULED") {
-         throw new ForbiddenError("This booking cannot be cancelled");
+      // Only scheduled bookings before slot end time can be cancelled
+      if (booking.status !== "SCHEDULED" || new Date(booking.endTime) <= new Date()) {
+         throw new ForbiddenError("Bookings cannot be cancelled after the session end time");
       }
 
+      const now = new Date();
       await db.$transaction(async (tx) => {
-         await tx.booking.update({
+         const { count } = await tx.booking.updateMany({
             where: {
                id: booking.id,
+               status: "SCHEDULED",
+               isRefunded: false,
+               endTime: { gt: now }
             },
             data: {
                status: "CANCELLED",
+               isRefunded: true
             },
          });
+
+         if (count === 0) {
+            throw new ConflictError("This booking cannot be cancelled or was already processed");
+         }
 
          // Record transaction as refund
          await tx.creditTransaction.create({
@@ -458,16 +458,27 @@ export const claimRefund = async (bookingId: string): Promise<void> => {
       }
 
       // Ensure refund hasn't already been processed
-      if (booking.transactions && booking.transactions.length > 0) {
+      if (booking.isRefunded || (booking.transactions && booking.transactions.length > 0)) {
          throw new ConflictError("Refund has already been claimed for this booking");
       }
 
       await db.$transaction(async (tx) => {
-         // Keep status as EXPIRED
-         await tx.booking.update({
-            where: { id: booking.id },
-            data: { status: "EXPIRED" }
+         // Database-level concurrency guard: atomically check isRefunded: false and status, flipping to EXPIRED and isRefunded: true
+         const { count } = await tx.booking.updateMany({
+            where: {
+               id: booking.id,
+               isRefunded: false,
+               status: { in: ["SCHEDULED", "EXPIRED"] }
+            },
+            data: {
+               status: "EXPIRED",
+               isRefunded: true
+            }
          });
+
+         if (count === 0) {
+            throw new ConflictError("This booking was already refunded, completed, or cancelled");
+         }
 
          // Record refund transaction
          await tx.creditTransaction.create({
