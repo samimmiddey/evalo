@@ -1,4 +1,4 @@
-import { ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "@/lib/app-error";
+import { ConflictError, ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "@/lib/app-error";
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
@@ -139,9 +139,21 @@ export const completeCall = async (callId: string): Promise<CompleteCallData> =>
          throw new ForbiddenError('Only the host can mark the call as completed');
       }
 
+      let settled = false;
       await db.$transaction(async (tx) => {
-         await settleSuccessfulSession(booking.id, booking.creditsCharged, booking.interviewer.id, tx);
+         settled = await settleSuccessfulSession(booking.id, booking.creditsCharged, booking.interviewer.id, tx);
       });
+
+      if (!settled) {
+         const current = await db.booking.findUnique({
+            where: { id: booking.id },
+            select: { status: true, isRefunded: true }
+         });
+
+         if (current?.status !== 'COMPLETED') {
+            throw new ConflictError('This booking has already been cancelled, refunded, or expired');
+         }
+      }
 
       return {
          bookingId: booking.id,

@@ -76,7 +76,7 @@ export const settleSuccessfulSession = async (
    creditsCharged: number,
    interviewerId: string,
    prismaClient: Prisma.TransactionClient = db
-): Promise<void> => {
+): Promise<boolean> => {
    // Atomic status update: only updates if booking is currently SCHEDULED
    const { count } = await prismaClient.booking.updateMany({
       where: { id: bookingId, status: 'SCHEDULED' },
@@ -85,7 +85,7 @@ export const settleSuccessfulSession = async (
 
    // If already completed, cancelled, or expired, safely abort to prevent double-crediting
    if (count === 0) {
-      return;
+      return false;
    }
 
    await prismaClient.user.update({
@@ -105,6 +105,8 @@ export const settleSuccessfulSession = async (
          bookingId
       }
    });
+
+   return true;
 };
 
 // Atomically marks a booking as EXPIRED
