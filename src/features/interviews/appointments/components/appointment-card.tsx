@@ -118,7 +118,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
       if (isWithinGracePeriod) {
          return (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
-               <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+               <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
                Under Review
             </span>
          );
@@ -345,7 +345,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
                            <div className="flex items-center justify-center size-8 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-400 shrink-0 max-sm:mb-1 shadow-sm">
-                              <Hourglass className="size-4 animate-pulse" />
+                              <Hourglass className="size-4" />
                            </div>
                            <div>
                               <span className="text-xs font-semibold text-amber-200 uppercase tracking-widest">
