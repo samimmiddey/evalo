@@ -229,7 +229,7 @@ export const processStreamBusinessWebhook = async (
       });
 
       if (count === 0) {
-         await db.bookingSession.createMany({
+         const { count: createdCount } = await db.bookingSession.createMany({
             data: [
                {
                   bookingId: booking.id,
@@ -239,6 +239,18 @@ export const processStreamBusinessWebhook = async (
             ],
             skipDuplicates: true
          });
+
+         // If concurrent insertion occurred, retry update so higher value wins
+         if (createdCount === 0) {
+            await db.bookingSession.updateMany({
+               where: {
+                  bookingId: booking.id,
+                  streamSessionId: sessionId,
+                  coPresenceSeconds: { lt: sessionCoPresence }
+               },
+               data: { coPresenceSeconds: sessionCoPresence }
+            });
+         }
       }
 
       // Sum all recorded sessions for this booking
