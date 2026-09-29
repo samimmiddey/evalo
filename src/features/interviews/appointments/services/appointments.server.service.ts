@@ -438,6 +438,11 @@ export const claimRefund = async (bookingId: string): Promise<void> => {
          throw new UnauthorizedError("Only the candidate can claim a refund for this session");
       }
 
+      // Ensure booking is not completed, cancelled, or settled with a completion reason
+      if (booking.status === "COMPLETED" || booking.status === "CANCELLED" || booking.completionReason !== null) {
+         throw new ForbiddenError("Completed, cancelled, or no-show compensated sessions cannot be refunded.");
+      }
+
       // Ensure booking is expired (past endTime + 15 mins grace period)
       const isPastDue = Date.now() > (new Date(booking.endTime).getTime() + 15 * 60 * 1000);
       if (booking.status !== "EXPIRED" && !(booking.status === "SCHEDULED" && isPastDue)) {
@@ -450,11 +455,12 @@ export const claimRefund = async (bookingId: string): Promise<void> => {
       }
 
       await db.$transaction(async (tx) => {
-         // Database-level concurrency guard: atomically check isRefunded: false and status, flipping to EXPIRED and isRefunded: true
+         // Database-level concurrency guard: atomically check isRefunded: false, status, and completionReason is null
          const { count } = await tx.booking.updateMany({
             where: {
                id: booking.id,
                isRefunded: false,
+               completionReason: null,
                status: { in: ["SCHEDULED", "EXPIRED"] }
             },
             data: {

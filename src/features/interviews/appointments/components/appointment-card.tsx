@@ -1,5 +1,5 @@
 import CardLayout from '@/components/layouts/card-layout';
-import { Briefcase, Building2, Calendar, CalendarX, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, Star, Video, VideoOff } from 'lucide-react';
+import { Briefcase, Building2, Calendar, CalendarX, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, Star, UserX, Video, VideoOff } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Feedback, Interview } from '../types/appointments.types';
@@ -27,7 +27,7 @@ interface AppointmentCardProps {
 const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewList }: AppointmentCardProps) => {
    const [openDialogue, setOpenDialogue] = useState<boolean>(false);
 
-   const { interviewer, startTime, endTime, status, feedback, streamCallId, recordingUrl, isRefunded } = appointment;
+   const { interviewer, startTime, endTime, status, completionReason, feedback, streamCallId, recordingUrl, isRefunded } = appointment;
 
    const { refetch: refetchUser } = useAppUser();
 
@@ -115,6 +115,15 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
 
    // Status Badge Helper
    const renderStatusBadge = (status: Interview['status']) => {
+      if (status === 'COMPLETED' && completionReason === 'CANDIDATE_NO_SHOW') {
+         return (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/30">
+               <span className="h-1.5 w-1.5 rounded-full bg-rose-400" />
+               Missed (No-Show)
+            </span>
+         );
+      }
+
       if (isWithinGracePeriod) {
          return (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
@@ -447,8 +456,27 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      </div>
                   )}
 
-                  {/* Notice if COMPLETED without feedback */}
-                  {status === 'COMPLETED' && !feedback && isPastEndTime && (
+                  {/* Session Missed (Candidate No-Show) */}
+                  {status === 'COMPLETED' && completionReason === 'CANDIDATE_NO_SHOW' && (
+                     <div className="p-6 2xl:p-7 border-b border-white/5">
+                        <div className="flex max-sm:flex-col items-start gap-3.5">
+                           <div className="flex items-center justify-center size-8 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-400 shrink-0 max-sm:mb-1 shadow-sm">
+                              <UserX className="size-4" />
+                           </div>
+                           <div>
+                              <span className="text-xs font-semibold text-rose-300 uppercase tracking-widest">
+                                 Session Missed (Candidate No-Show)
+                              </span>
+                              <PrimaryBody
+                                 text="You did not attend this interview session. The full credit amount was forfeited to compensate the interviewer for reserving and waiting during your scheduled time slot."
+                                 className="text-[13px]! mt-2 text-rose-200/90"
+                              />
+                           </div>
+                        </div>
+                     </div>
+                  )}
+
+                  {status === 'COMPLETED' && completionReason !== 'CANDIDATE_NO_SHOW' && !feedback && isPastEndTime && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex items-center gap-3 text-zinc-400 text-[13px]">
                            <Info className="w-4 h-4 text-zinc-500 shrink-0" />
@@ -459,6 +487,14 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
 
                   {/* Actions Area */}
                   <div className="p-6 2xl:p-7 flex max-sm:flex-col sm:flex-wrap sm:items-center sm:justify-end gap-2.5 2xl:gap-3">
+
+                     {status === 'COMPLETED' && completionReason === 'CANDIDATE_NO_SHOW' && (
+                        <Link href={`/dashboard/interviewers/${appointment.interviewer.id}`}>
+                           <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
+                              Book Again
+                           </Button>
+                        </Link>
+                     )}
 
                      {isExpired && (
                         <>

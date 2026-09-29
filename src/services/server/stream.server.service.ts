@@ -1,8 +1,47 @@
 import { db } from "@/lib/prisma";
-import { MINIMUM_PRESENCE_RATIO } from "@/constants/interviews";
 import { StreamParticipantSessionRecord, StreamWebhookBody, WebhookProcessResult } from "@/types/stream.types";
+import { CompletionReason } from "@/generated/prisma/enums";
 import { Prisma } from "@/generated/prisma/client";
 import { StreamClient } from "@stream-io/node-sdk";
+import {
+   CANDIDATE_NO_SHOW_MAX_RATIO,
+   HOST_WAIT_RATIO,
+   MINIMUM_PRESENCE_RATIO
+} from "@/constants/interviews";
+
+export interface SettlementDecisionParams {
+   scheduledDurationSeconds: number;
+   totalCoPresence: number;
+   totalInterviewer: number;
+   totalCandidate: number;
+   presenceVerified: boolean;
+   effectiveEnd: number | null;
+   bookingEndTimeMs: number;
+}
+
+// Pure decision function to determine settlement qualification for an interview booking
+export const determineSettlementOutcome = (
+   params: SettlementDecisionParams
+): CompletionReason | null => {
+   // Case 1: Mutual Session Completion (>= 50% simultaneous co-presence) -> 'MUTUAL'
+   if (params.totalCoPresence >= params.scheduledDurationSeconds * MINIMUM_PRESENCE_RATIO) {
+      return CompletionReason.MUTUAL;
+   }
+
+   // Case 2: Candidate No-Show Host Compensation (Slot finished, host waited >= 85%, candidate <= 5%, presence verified) -> 'CANDIDATE_NO_SHOW'
+   const isPastSlotEnd = params.effectiveEnd !== null && params.effectiveEnd >= params.bookingEndTimeMs;
+   if (
+      isPastSlotEnd &&
+      params.presenceVerified &&
+      params.totalInterviewer >= params.scheduledDurationSeconds * HOST_WAIT_RATIO &&
+      params.totalCandidate <= params.scheduledDurationSeconds * CANDIDATE_NO_SHOW_MAX_RATIO
+   ) {
+      return CompletionReason.CANDIDATE_NO_SHOW;
+   }
+
+   // 3. Indeterminate / Incomplete -> null (Session remains SCHEDULED)
+   return null;
+};
 
 export interface TimeInterval {
    start: number;
@@ -70,17 +109,25 @@ export const computeIntersectionSeconds = (
    return Math.floor(totalOverlapMs / 1000);
 };
 
+// Sum total seconds across an array of time intervals
+export const sumIntervalSeconds = (intervals: TimeInterval[]): number =>
+   intervals.reduce((acc, { start, end }) => acc + Math.floor((end - start) / 1000), 0);
+
 // Atomically marks a booking as COMPLETED and credits the interviewer
 export const settleSuccessfulSession = async (
    bookingId: string,
    creditsCharged: number,
    interviewerId: string,
+   reason: CompletionReason = CompletionReason.MUTUAL,
    prismaClient: Prisma.TransactionClient = db
 ): Promise<boolean> => {
    // Atomic status update: only updates if booking is currently SCHEDULED
    const { count } = await prismaClient.booking.updateMany({
       where: { id: bookingId, status: 'SCHEDULED' },
-      data: { status: 'COMPLETED' }
+      data: {
+         status: 'COMPLETED',
+         completionReason: reason
+      }
    });
 
    // If already completed, cancelled, or expired, safely abort to prevent double-crediting
@@ -102,6 +149,7 @@ export const settleSuccessfulSession = async (
          userId: interviewerId,
          amount: creditsCharged,
          type: 'BOOKING_EARNING',
+         reason,
          bookingId
       }
    });
@@ -214,71 +262,126 @@ export const processStreamBusinessWebhook = async (
             .filter((i): i is TimeInterval => i !== null)
       );
 
+      const sessionInterviewerSeconds = sumIntervalSeconds(interviewerIntervals);
+      const sessionCandidateSeconds = sumIntervalSeconds(candidateIntervals);
       const sessionCoPresence = computeIntersectionSeconds(interviewerIntervals, candidateIntervals);
 
-      // Atomic monotonic write: update only if new value is higher, insert if missing
-      const { count } = await db.bookingSession.updateMany({
-         where: {
-            bookingId: booking.id,
-            streamSessionId: sessionId,
-            coPresenceSeconds: { lt: sessionCoPresence }
-         },
-         data: {
-            coPresenceSeconds: sessionCoPresence
-         }
-      });
+      // Verify participant identity matching sanity
+      const interviewerClerkId = booking.interviewer.clerkUserId;
+      const candidateClerkId = booking.candidate.clerkUserId;
 
-      if (count === 0) {
-         const { count: createdCount } = await db.bookingSession.createMany({
-            data: [
-               {
-                  bookingId: booking.id,
-                  streamSessionId: sessionId,
-                  coPresenceSeconds: sessionCoPresence
-               }
-            ],
-            skipDuplicates: true
-         });
+      const unmatchedCount = allParticipants.filter((p) => {
+         const id = getParticipantUserId(p);
+         return id !== interviewerClerkId && id !== candidateClerkId;
+      }).length;
 
-         // If concurrent insertion occurred, retry update so higher value wins
-         if (createdCount === 0) {
-            await db.bookingSession.updateMany({
-               where: {
-                  bookingId: booking.id,
-                  streamSessionId: sessionId,
-                  coPresenceSeconds: { lt: sessionCoPresence }
-               },
-               data: { coPresenceSeconds: sessionCoPresence }
-            });
-         }
+      const presenceVerified = interviewerIntervals.length > 0 && unmatchedCount === 0;
+
+      if (unmatchedCount > 0) {
+         // eslint-disable-next-line no-console
+         console.warn(
+            `[Stream Webhook] ${unmatchedCount} unmatched participant(s) for booking ${booking.id}, session ${sessionId}. No-show branch blocked.`
+         );
       }
+
+      // Deterministic effectiveEnd calculation
+      const maxLeftAt = allParticipants
+         .map((p) => (p.left_at ? new Date(p.left_at).getTime() : 0))
+         .reduce((max, t) => Math.max(max, t), 0);
+
+      const effectiveEnd: number | null = sessionEndedAt
+         ? new Date(sessionEndedAt).getTime()
+         : maxLeftAt > 0
+            ? maxLeftAt
+            : null;
+
+      if (effectiveEnd === null) {
+         // eslint-disable-next-line no-console
+         console.warn(
+            `[Stream Webhook] effectiveEnd is indeterminate for booking ${booking.id}, session ${sessionId}. Host no-show decision will fail closed until slot conclusion is verified.`
+         );
+      }
+
+      // Atomic 3-column monotonic upsert using PostgreSQL's GREATEST
+      await db.$executeRaw`
+         INSERT INTO "BookingSession" (
+            "id",
+            "bookingId",
+            "streamSessionId",
+            "coPresenceSeconds",
+            "interviewerPresenceSeconds",
+            "candidatePresenceSeconds",
+            "updatedAt"
+         )
+         VALUES (
+            ${crypto.randomUUID()},
+            ${booking.id},
+            ${sessionId},
+            ${sessionCoPresence},
+            ${sessionInterviewerSeconds},
+            ${sessionCandidateSeconds},
+            NOW()
+         )
+         ON CONFLICT ("bookingId", "streamSessionId") DO UPDATE SET
+            "coPresenceSeconds" = GREATEST("BookingSession"."coPresenceSeconds", EXCLUDED."coPresenceSeconds"),
+            "interviewerPresenceSeconds" = GREATEST("BookingSession"."interviewerPresenceSeconds", EXCLUDED."interviewerPresenceSeconds"),
+            "candidatePresenceSeconds" = GREATEST("BookingSession"."candidatePresenceSeconds", EXCLUDED."candidatePresenceSeconds"),
+            "updatedAt" = NOW()
+      `;
 
       // Sum all recorded sessions for this booking
       const totals = await db.bookingSession.aggregate({
          where: { bookingId: booking.id },
-         _sum: { coPresenceSeconds: true }
+         _sum: {
+            coPresenceSeconds: true,
+            interviewerPresenceSeconds: true,
+            candidatePresenceSeconds: true
+         }
       });
 
-      const totalCoPresenceSeconds = totals._sum.coPresenceSeconds ?? 0;
       const scheduledDurationSeconds = Math.max(
          60,
          Math.floor((booking.endTime.getTime() - booking.startTime.getTime()) / 1000)
       );
-      const requiredPresenceSeconds = scheduledDurationSeconds * MINIMUM_PRESENCE_RATIO;
 
-      // Settlement Check: if accumulated presence meets threshold, settle immediately
-      if (totalCoPresenceSeconds >= requiredPresenceSeconds) {
+      const cap = (val: number | null) => Math.min(val ?? 0, scheduledDurationSeconds);
+
+      const totalCoPresence = cap(totals._sum.coPresenceSeconds);
+      const totalInterviewer = cap(totals._sum.interviewerPresenceSeconds);
+      const totalCandidate = cap(totals._sum.candidatePresenceSeconds);
+
+      // Determine settlement outcome via pure decision function
+      const outcome = determineSettlementOutcome({
+         scheduledDurationSeconds,
+         totalCoPresence,
+         totalInterviewer,
+         totalCandidate,
+         presenceVerified,
+         effectiveEnd,
+         bookingEndTimeMs: booking.endTime.getTime()
+      });
+
+      if (outcome) {
          await db.$transaction(async (tx) => {
-            await settleSuccessfulSession(booking.id, booking.creditsCharged, booking.interviewer.id, tx);
+            await settleSuccessfulSession(
+               booking.id,
+               booking.creditsCharged,
+               booking.interviewer.id,
+               outcome,
+               tx
+            );
          });
          return {
-            message: `Session qualified (${totalCoPresenceSeconds}s >= ${requiredPresenceSeconds}s) and settled as COMPLETED`,
+            message:
+               outcome === CompletionReason.MUTUAL
+                  ? `Session qualified as MUTUAL (${totalCoPresence}s co-presence) and settled as COMPLETED`
+                  : `Session qualified as CANDIDATE_NO_SHOW (Host: ${totalInterviewer}s / Candidate: ${totalCandidate}s) and settled as COMPLETED`,
             statusCode: 200
          };
       }
 
       return {
-         message: `Session recorded with ${sessionCoPresence}s (total: ${totalCoPresenceSeconds}s / required: ${requiredPresenceSeconds}s). Remains SCHEDULED.`,
+         message: `Session recorded (co-presence: ${totalCoPresence}s, interviewer: ${totalInterviewer}s, candidate: ${totalCandidate}s). Remains SCHEDULED.`,
          statusCode: 200
       };
    } catch (error) {

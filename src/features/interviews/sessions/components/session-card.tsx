@@ -73,6 +73,7 @@ export const SessionCard = ({
       startTime,
       endTime,
       status,
+      completionReason,
       streamStatus,
       creditsCharged,
       streamCallId,
@@ -105,6 +106,15 @@ export const SessionCard = ({
 
    // Status Badge Helper matching appointment-card
    const renderStatusBadge = (sessionStatus: DashboardSession["status"]) => {
+      if (sessionStatus === "COMPLETED" && completionReason === "CANDIDATE_NO_SHOW") {
+         return (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+               Compensated (No-Show)
+            </span>
+         );
+      }
+
       if (isWithinGracePeriod) {
          return (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
@@ -171,10 +181,11 @@ export const SessionCard = ({
    // Refined Credits Charged Badge
    const getCreditsChargedBadge = () => {
       if (status === "COMPLETED") {
+         const suffix = completionReason === "CANDIDATE_NO_SHOW" ? "Earned (No-Show)" : "Earned";
          return (
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                <Coins className="w-3.5 h-3.5" />
-               <span>{`+${creditsCharged} Earned`}</span>
+               <span>{`+${creditsCharged} Credit ${suffix}`}</span>
             </div>
          );
       }
@@ -451,8 +462,28 @@ export const SessionCard = ({
                      </div>
                   )}
 
+                  {/* Candidate No-Show Host Compensated Notice */}
+                  {status === "COMPLETED" && completionReason === "CANDIDATE_NO_SHOW" && (
+                     <div className="p-6 2xl:p-7 border-b border-white/5">
+                        <div className="flex max-sm:flex-col items-start gap-3.5">
+                           <div className="flex items-center justify-center size-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 shrink-0 max-sm:mb-1 shadow-sm">
+                              <Coins className="size-4" />
+                           </div>
+                           <div>
+                              <span className="text-xs font-semibold text-emerald-300 uppercase tracking-widest">
+                                 Candidate No-Show (Compensated)
+                              </span>
+                              <PrimaryBody
+                                 text="The candidate did not attend the scheduled interview session. You have been fully compensated for reserving your time slot."
+                                 className="text-[13px]! mt-2 text-emerald-200/90"
+                              />
+                           </div>
+                        </div>
+                     </div>
+                  )}
+
                   {/* Notice if COMPLETED without feedback */}
-                  {status === "COMPLETED" && !feedback && isPastEndTime && (
+                  {status === "COMPLETED" && completionReason !== "CANDIDATE_NO_SHOW" && !feedback && isPastEndTime && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex items-center gap-3 text-zinc-400 text-[13px]">
                            <Info className="w-4 h-4 text-zinc-500 shrink-0" />

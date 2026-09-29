@@ -1,4 +1,4 @@
-import { BookingStatus, FeedbackRating, StreamStatus } from "@/generated/prisma/enums";
+import { BookingStatus, CompletionReason, FeedbackRating, StreamStatus } from "@/generated/prisma/enums";
 
 export interface Availability {
    startTime: Date | string;
@@ -49,6 +49,7 @@ export interface DashboardSession {
    startTime: string;
    endTime: string;
    status: BookingStatus;
+   completionReason: CompletionReason | null;
    streamStatus: StreamStatus;
    creditsCharged: number;
    streamCallId: string | null;

@@ -139,8 +139,8 @@ export const appointsData: AppointmentsData = {
          "You can freely rejoin if disconnected while the session window is running.",
          "Requires 50% simultaneous presence to receive the AI evaluation report and recording.",
          "Cancel any scheduled session anytime for an instant 100% refund.",
-         "Unconducted sessions automatically flip to Expired once the time slot ends.",
-         "Expired sessions are eligible for an instant 100% credit refund to your balance."
+         "Expired sessions are eligible for an instant 100% credit refund to your balance.",
+         "Failing to attend without prior cancellation forfeits credits to compensate the interviewer."
       ]
    }
 };

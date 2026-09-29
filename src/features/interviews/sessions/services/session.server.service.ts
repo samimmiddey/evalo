@@ -61,6 +61,7 @@ export const getDashboardSessions = async (
          startTime: item.startTime.toISOString(),
          endTime: item.endTime.toISOString(),
          status: item.status,
+         completionReason: item.completionReason,
          streamStatus: item.streamStatus,
          creditsCharged: item.creditsCharged,
          streamCallId: item.streamCallId,

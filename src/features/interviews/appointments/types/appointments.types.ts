@@ -1,4 +1,4 @@
-import { BookingStatus, InterviewExpertise, StreamStatus } from "@/generated/prisma/enums";
+import { BookingStatus, CompletionReason, InterviewExpertise, StreamStatus } from "@/generated/prisma/enums";
 import { BaseResponse } from "@/types/api.types";
 
 export type InterviewStatus = BookingStatus;
@@ -46,6 +46,7 @@ export interface Interview {
    startTime: string | Date;
    endTime: string | Date;
    status: InterviewStatus;
+   completionReason: CompletionReason | null;
    streamCallId: string | null;
    streamStatus: StreamStatus;
    interviewer: Interviewer;
