@@ -43,17 +43,6 @@ export interface CallData {
 
 export type GetCallDataServerResponse = CallData;
 
-export interface CompleteCallParams {
-   callId: string;
-}
-
-export interface CompleteCallData {
-   bookingId: string;
-   status: "COMPLETED";
-}
-
-export type CompleteCallResponse = BaseResponse<CompleteCallData>;
-
 export interface GeneratedQuestion {
    id: string;
    title: string;

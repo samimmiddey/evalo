@@ -206,7 +206,7 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
                   callId={callId}
                   isInterviewer={isInterviewer}
                   booking={booking}
-                  onEndCall={() => { void handleEndCall(); }}
+                  onEndCall={handleEndCall}
                   onNavigateOut={handleRedirect}
                   apiKey={apiKey || ''}
                   token={token}

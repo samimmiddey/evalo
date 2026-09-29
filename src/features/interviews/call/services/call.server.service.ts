@@ -1,10 +1,9 @@
-import { ConflictError, ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "@/lib/app-error";
+import { ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "@/lib/app-error";
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
 import { StreamClient } from "@stream-io/node-sdk";
-import { CompleteCallData, GeneratedQuestion, GetCallDataServerResponse } from "../types/call.types";
-import { settleSuccessfulSession } from "../../../../services/server/stream.server.service";
+import { GeneratedQuestion, GetCallDataServerResponse } from "../types/call.types";
 import { EXPERTISE_PROMPTS } from "@/data/interviews/interviews.data";
 import { InterviewExpertise } from "@/generated/prisma/enums";
 import { GoogleGenerativeAI, ResponseSchema, SchemaType } from '@google/generative-ai';
@@ -102,67 +101,6 @@ export const getCallData = async (callId: string): Promise<GetCallDataServerResp
       return serverError({
          error,
          fallbackMessage: 'Failed to fetch call data'
-      });
-   }
-};
-
-// Complete call session (host only)
-export const completeCall = async (callId: string): Promise<CompleteCallData> => {
-   const user = await currentUser();
-
-   if (!user) {
-      throw new UnauthorizedError('Unauthenticated user');
-   }
-
-   try {
-      const booking = await db.booking.findUnique({
-         where: {
-            streamCallId: callId
-         },
-         include: {
-            interviewer: {
-               select: {
-                  id: true,
-                  clerkUserId: true
-               }
-            }
-         }
-      });
-
-      if (!booking) {
-         throw new NotFoundError('Call not found');
-      }
-
-      const isInterviewer = booking.interviewer.clerkUserId === user.id;
-
-      if (!isInterviewer) {
-         throw new ForbiddenError('Only the host can mark the call as completed');
-      }
-
-      let settled = false;
-      await db.$transaction(async (tx) => {
-         settled = await settleSuccessfulSession(booking.id, booking.creditsCharged, booking.interviewer.id, tx);
-      });
-
-      if (!settled) {
-         const current = await db.booking.findUnique({
-            where: { id: booking.id },
-            select: { status: true, isRefunded: true }
-         });
-
-         if (current?.status !== 'COMPLETED') {
-            throw new ConflictError('This booking has already been cancelled, refunded, or expired');
-         }
-      }
-
-      return {
-         bookingId: booking.id,
-         status: 'COMPLETED'
-      };
-   } catch (error: unknown) {
-      return serverError({
-         error,
-         fallbackMessage: 'Failed to complete call'
       });
    }
 };
