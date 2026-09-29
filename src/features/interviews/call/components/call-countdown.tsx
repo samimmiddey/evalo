@@ -90,7 +90,7 @@ const CallCountdown = ({
                />
                <PrimaryBody
                   text="The interview room will open 10 minutes before the scheduled time."
-                  className="text-xs! lg:text-xs! 2xl:text-xs! max-w-sm leading-relaxed"
+                  className="text-xs! lg:text-xs! 2xl:text-[13px]! leading-relaxed"
                />
             </div>
 
@@ -160,7 +160,7 @@ const CallCountdown = ({
                onClick={onCancel}
                className="mt-2 w-full h-11 rounded-lg bg-violet-600 hover:bg-violet-700 text-zinc-100 border-0 font-medium transition-all gap-2 group"
             >
-               <span>{isInterviewer ? 'Return to Dashboard' : 'View Your Appointments'}</span>
+               <span>{isInterviewer ? 'Return to Sessions' : 'View Your Appointments'}</span>
                <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
             </Button>
          </CardLayout>

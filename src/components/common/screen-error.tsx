@@ -10,9 +10,9 @@ interface ScreenErrorProps {
 const ScreenError = ({ text, className, pt = true }: ScreenErrorProps) => {
    return (
       <div className={pt ? "s-padding-t" : ''}>
-         <div className={cn("w-full flex items-center justify-center min-h-[56vh]", className)}>
+         <div className={cn("w-full flex items-center justify-center min-h-[56vh] px-4", className)}>
             <div
-               className='flex items-center w-max'
+               className='flex items-center max-w-sm w-full'
             >
                <ErrorCard text={text} />
             </div>

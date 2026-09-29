@@ -74,7 +74,7 @@ const CallExpired = ({
 
    const getDescription = () => {
       if (isCompleted) {
-         return 'This interview call has already ended. Feedback and performance notes are available in your account.';
+         return 'This interview session has ended. Any generated recording or feedback summary will be accessible from your account.';
       }
       if (isCancelled) {
          return 'This interview appointment was cancelled. You can browse available interviewers to book a new session.';
@@ -96,7 +96,7 @@ const CallExpired = ({
                />
                <PrimaryBody
                   text={getDescription()}
-                  className="text-xs! lg:text-xs! 2xl:text-sm! text-zinc-400! leading-relaxed"
+                  className="text-[13px]! 2xl:text-sm! text-zinc-400! leading-relaxed"
                />
             </div>
 
@@ -107,7 +107,7 @@ const CallExpired = ({
                onClick={onNavigateOut}
                className="mt-3 w-full h-11 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-medium transition-all gap-2 group"
             >
-               <span>{isInterviewer ? 'Return to Dashboard' : 'View Your Appointments'}</span>
+               <span>{isInterviewer ? 'Return to Sessions' : 'View Your Appointments'}</span>
                <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
             </Button>
          </CardLayout>

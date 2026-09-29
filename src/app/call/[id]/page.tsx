@@ -15,7 +15,11 @@ const CallPage = async ({ params }: { params: Promise<{ id: string; }>; }) => {
    try {
       callData = await getCallData(id);
    } catch (error: unknown) {
-      return <ScreenError text={error instanceof Error ? error.message : 'Failed to fetch call data'} />;
+      return <ScreenError
+         pt={false}
+         className='min-h-screen'
+         text={error instanceof Error ? error.message : 'Failed to fetch call data'}
+      />;
    }
 
    return (

@@ -150,7 +150,7 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
       if (typeof window !== 'undefined') {
          sessionStorage.removeItem(`evalo_joined_${booking.id}`);
       }
-      router.push(isInterviewer ? '/dashboard' : '/dashboard/appointments');
+      router.push(isInterviewer ? '/dashboard/sessions' : '/dashboard/appointments');
    }, [isInterviewer, router, booking.id]);
 
    // Early countdown screen
@@ -179,9 +179,7 @@ const CallRoom = ({ callData, callId }: CallRoomProps) => {
    // Error
    if (error) {
       return (
-         <div className='px-4'>
-            <ScreenError text={error} pt={false} className='min-h-screen' />
-         </div>
+         <ScreenError text={error} pt={false} className='min-h-screen' />
       );
    }
 

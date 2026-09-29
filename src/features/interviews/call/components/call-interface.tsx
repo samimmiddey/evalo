@@ -135,7 +135,7 @@ const CallInterface = ({
             badge: 'Session Ended',
             title: 'Interview Concluded',
             description: 'Your session has ended. If the required interview duration was met, your credits will be settled automatically shortly.',
-            buttonText: 'Return to Dashboard',
+            buttonText: 'Return to Sessions',
          };
       }
 
@@ -151,7 +151,7 @@ const CallInterface = ({
       return {
          badge: 'Left Session',
          title: 'You Left the Interview',
-         description: 'You have left the interview room. You can review your session status, recording, and feedback on your appointments page.',
+         description: 'You have left the interview room. Your session status and any processed recording or generated AI feedback will be available on your appointments page.',
          buttonText: 'View Your Appointments',
       };
    };
@@ -164,7 +164,7 @@ const CallInterface = ({
          <div className="flex flex-col items-center justify-center min-h-dvh w-full p-4 sm:p-6 bg-zinc-950 text-zinc-100">
             <CardLayout className='flex flex-col items-center text-center gap-2 max-w-125 w-full'>
                {/* Icon */}
-               <div className="flex items-center justify-center size-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 mb-4 shadow-inner">
+               <div className="flex items-center justify-center size-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 mb-4 shadow-inner">
                   <CheckCircle2 className="size-6" />
                </div>
 
@@ -179,7 +179,7 @@ const CallInterface = ({
                />
                <PrimaryBody
                   text={description}
-                  className="text-xs! lg:text-xs! 2xl:text-xs! text-zinc-400! max-w-xs leading-relaxed"
+                  className="text-[13px]! 2xl:text-sm! text-zinc-400! leading-relaxed"
                />
 
                {/* Action Button */}
