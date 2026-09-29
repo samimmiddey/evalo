@@ -5,7 +5,6 @@ import { GetAppointmentsParams, GetAppointmentsServerResponse, AppointmentsStats
 import { Prisma } from "@/generated/prisma/client";
 import { StreamClient } from "@stream-io/node-sdk";
 import { ConflictError, ForbiddenError, NotFoundError, UnauthorizedError } from "@/lib/app-error";
-import { reconcileExpiredBookings } from "../../../../services/server/stream.server.service";
 
 export const getAppointments = async (params: GetAppointmentsParams = {}): Promise<GetAppointmentsServerResponse> => {
    const user = await currentUser();
@@ -422,18 +421,6 @@ export const claimRefund = async (bookingId: string): Promise<void> => {
    }
 
    try {
-      const dbUser = await db.user.findUnique({
-         where: { clerkUserId: user.id },
-         select: { id: true }
-      });
-
-      if (!dbUser) {
-         throw new NotFoundError("User not found");
-      }
-
-      // Reconcile any past-due bookings for this candidate
-      await reconcileExpiredBookings(dbUser.id, 'CANDIDATE');
-
       const booking = await db.booking.findUnique({
          where: { id: bookingId },
          include: {

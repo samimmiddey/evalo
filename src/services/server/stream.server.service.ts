@@ -171,7 +171,7 @@ export const processStreamBusinessWebhook = async (
             session: sessionId,
             limit: 100,
             ...(nextCursor ? { next: nextCursor } : {})
-         }) as { participants_sessions?: StreamParticipantSessionRecord[]; next?: string };
+         }) as { participants_sessions?: StreamParticipantSessionRecord[]; next?: string; };
          const items = res.participants_sessions ?? [];
          allParticipants.push(...items);
          nextCursor = res.next;
@@ -285,31 +285,5 @@ export const processStreamBusinessWebhook = async (
       // eslint-disable-next-line no-console
       console.error("Failed to process stream webhook:", error);
       return { message: "Internal Server Error", statusCode: 500 };
-   }
-};
-
-// Reconciles any past-due bookings for a user by flipping expired scheduled bookings' status to EXPIRED after 15 minutes grace period
-export const reconcileExpiredBookings = async (
-   userId: string,
-   role: 'CANDIDATE' | 'INTERVIEWER'
-): Promise<void> => {
-   try {
-      // Only expire bookings where the 15-minute post-slot grace period has passed
-      const expiryThreshold = new Date(Date.now() - 15 * 60 * 1000);
-      const whereCondition: Prisma.BookingWhereInput = {
-         status: 'SCHEDULED',
-         endTime: { lt: expiryThreshold },
-         ...(role === 'CANDIDATE' ? { candidateId: userId } : { interviewerId: userId })
-      };
-
-      await db.booking.updateMany({
-         where: whereCondition,
-         data: {
-            status: 'EXPIRED'
-         }
-      });
-   } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Lazy reconciliation error:", error);
    }
 };
