@@ -346,7 +346,7 @@ export const SessionCard = ({
                               </span>
                               <PrimaryBody
                                  text="The interview time slot has concluded. Session attendance is being verified and interviewer compensation is processing. Please allow a few moments."
-                                 className="text-sm! mt-2 text-amber-100/90"
+                                 className="text-[13px]! mt-2 text-amber-100/90"
                               />
                            </div>
                         </div>
@@ -366,7 +366,7 @@ export const SessionCard = ({
                               </span>
                               <PrimaryBody
                                  text="This interview session has been cancelled, and the full credit amount has been returned to the candidate's account balance."
-                                 className="text-sm! mt-2 text-rose-200/90"
+                                 className="text-[13px]! mt-2 text-rose-200/90"
                               />
                            </div>
                         </div>
@@ -386,7 +386,7 @@ export const SessionCard = ({
                               </span>
                               <PrimaryBody
                                  text="This interview session has expired and was not conducted. No credits were earned for this session."
-                                 className="text-sm! mt-2 text-zinc-400"
+                                 className="text-[13px]! mt-2 text-zinc-400"
                               />
                            </div>
                         </div>
@@ -408,7 +408,7 @@ export const SessionCard = ({
                                  </span>
                                  <PrimaryBody
                                     text={feedback.summary}
-                                    className="text-sm! lg:text-sm! 2xl:text-sm! text-zinc-300! leading-relaxed mt-1"
+                                    className="text-[13px]! text-zinc-300! leading-relaxed mt-1"
                                  />
                               </div>
 
@@ -454,7 +454,7 @@ export const SessionCard = ({
                   {/* Notice if COMPLETED without feedback */}
                   {status === "COMPLETED" && !feedback && isPastEndTime && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
-                        <div className="flex items-center gap-3 text-zinc-400 text-sm">
+                        <div className="flex items-center gap-3 text-zinc-400 text-[13px]">
                            <Info className="w-4 h-4 text-zinc-500 shrink-0" />
                            <span>AI performance evaluation is unavailable for this session.</span>
                         </div>

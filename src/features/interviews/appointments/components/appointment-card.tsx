@@ -333,7 +333,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                               </span>
                               <PrimaryBody
                                  text="This interview session has been cancelled, and the full credit amount has been returned to your account balance. You can use your refunded credits anytime to schedule a new mock interview that better fits your timeline."
-                                 className="text-sm! mt-2 text-rose-200/90"
+                                 className="text-[13px]! mt-2 text-rose-200/90"
                               />
                            </div>
                         </div>
@@ -353,7 +353,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                               </span>
                               <PrimaryBody
                                  text="The interview time slot has concluded. Attendance is currently being verified and AI feedback is generating. Please allow a few moments for final evaluation."
-                                 className="text-sm! mt-2 text-amber-100/90"
+                                 className="text-[13px]! mt-2 text-amber-100/90"
                               />
                            </div>
                         </div>
@@ -373,7 +373,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                               </span>
                               <PrimaryBody
                                  text="This interview session has expired because it was not conducted. You can claim your credits back below to schedule a new mock interview."
-                                 className="text-sm! mt-2 text-amber-100/90"
+                                 className="text-[13px]! mt-2 text-amber-100/90"
                               />
                            </div>
                         </div>
@@ -393,7 +393,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                               </span>
                               <PrimaryBody
                                  text="This interview session has expired and refund has been claimed successfully. You can use your refunded credits anytime to schedule a new mock interview that better fits your timeline."
-                                 className="text-sm! mt-2"
+                                 className="text-[13px]! mt-2"
                               />
                            </div>
                         </div>
@@ -413,7 +413,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                                  <span className="text-xs font-semibold text-violet-300 uppercase tracking-widest">
                                     AI Feedback Evaluation
                                  </span>
-                                 <p className="text-sm text-zinc-300 leading-relaxed mt-2">
+                                 <p className="text-[13px] text-zinc-300 leading-relaxed mt-2">
                                     {feedback.summary}
                                  </p>
                               </div>
@@ -450,7 +450,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                   {/* Notice if COMPLETED without feedback */}
                   {status === 'COMPLETED' && !feedback && isPastEndTime && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
-                        <div className="flex items-center gap-3 text-zinc-400 text-sm">
+                        <div className="flex items-center gap-3 text-zinc-400 text-[13px]">
                            <Info className="w-4 h-4 text-zinc-500 shrink-0" />
                            <span>AI performance evaluation is unavailable for this session.</span>
                         </div>
