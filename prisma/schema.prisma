@@ -228,3 +228,16 @@ model BookingSession {
   @@unique([bookingId, streamSessionId])
   @@index([bookingId])
 }
+
+// PLATFORM CONFIG
+
+model PlatformConfig {
+  id                 String   @id @default(uuid())
+  creditPayoutRate   Float
+  platformFeePercent Float
+  minPayoutCredits   Int
+  currency           String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
