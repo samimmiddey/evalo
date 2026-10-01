@@ -18,14 +18,25 @@ import { dashboardData } from "@/data/interviews/interviews.data";
 import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview-skeleton";
 import { Calendar, CheckCircle2, Compass, Flame, Video } from "lucide-react";
 import Link from "next/link";
+import ErrorCard from "@/components/common/error-card";
 
 export const CandidateOverview = () => {
    const { user } = useAppUser();
-   const { isLoading: isStatsLoading, data: stats } = useFetch<AppointmentsStatsData>(() => getAppointmentsStats());
-   const { isLoading: isSessionLoading, data: nextSession } = useFetch<DashboardNextSession | null>(() => getNextSession());
+   const { isLoading: isStatsLoading, data: stats, error: statsError } = useFetch<AppointmentsStatsData>(() => getAppointmentsStats());
+   const { isLoading: isSessionLoading, data: nextSession, error: nextSessionError } = useFetch<DashboardNextSession | null>(() => getNextSession());
 
+   // Loading State
    if (isStatsLoading || isSessionLoading) {
       return <DashboardOverviewSkeleton />;
+   }
+
+   // Error State
+   if (statsError || nextSessionError) {
+      return (
+         <div className="container s-margin">
+            <ErrorCard text={statsError ?? nextSessionError ?? ''} />
+         </div>
+      );
    }
 
    const firstName = user?.firstName ?? "there";

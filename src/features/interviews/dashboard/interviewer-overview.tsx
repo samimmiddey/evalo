@@ -16,14 +16,28 @@ import { dashboardData } from "@/data/interviews/interviews.data";
 import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview-skeleton";
 import { Calendar, Clock, Coins, Star, Video } from "lucide-react";
 import Link from "next/link";
+import { usePlatformConfig } from "@/hooks/use-config";
+import ErrorCard from "@/components/common/error-card";
 
 export const InterviewerOverview = () => {
    const { user } = useAppUser();
-   const { isLoading: isStatsLoading, data: stats } = useFetch<DashboardStatsType>(() => getDashboardStats());
-   const { isLoading: isSessionLoading, data: nextSession } = useFetch<DashboardNextSession | null>(() => getNextSession());
+   const { isLoading: isStatsLoading, data: stats, error: statsError } = useFetch<DashboardStatsType>(() => getDashboardStats());
+   const { isLoading: isSessionLoading, data: nextSession, error: nextSessionError } = useFetch<DashboardNextSession | null>(() => getNextSession());
 
-   if (isStatsLoading || isSessionLoading) {
+   const { config, isLoading: isConfigLoading, error: configError } = usePlatformConfig();
+
+   // Loading State
+   if (isStatsLoading || isSessionLoading || isConfigLoading) {
       return <DashboardOverviewSkeleton />;
+   }
+
+   // Error State
+   if (statsError || nextSessionError || configError) {
+      return (
+         <div className="container s-margin">
+            <ErrorCard text={statsError ?? nextSessionError ?? configError ?? ''} />
+         </div>
+      );
    }
 
    const firstName = user?.firstName ?? "there";
@@ -48,7 +62,9 @@ export const InterviewerOverview = () => {
          value: stats?.creditBalance ?? 0,
          icon: Coins,
          accent: "text-emerald-400 bg-emerald-500/15 border-emerald-500/30",
-         subtext: `≈ $${(stats?.creditBalance ?? 0) * (stats?.creditRate ?? 25)} USD value`
+         subtext: config
+            ? `$${(stats?.creditBalance ?? 0) * config.creditPayoutRate} ${config.currency} value`
+            : "N/A"
       },
       {
          label: "Rating",

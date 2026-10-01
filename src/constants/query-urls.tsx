@@ -29,3 +29,6 @@ export const INTERVIEWER_AVAILABILITY = '/availability';
 export const GET_PAYOUTS = '/payouts';
 export const REQUEST_PAYOUT = '/payouts/request';
 export const UPDATE_PROFILE = '/profile';
+
+// Config
+export const GET_PLATFORM_CONFIG = '/platform-config';
