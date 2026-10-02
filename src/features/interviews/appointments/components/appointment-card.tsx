@@ -1,5 +1,5 @@
 import CardLayout from '@/components/layouts/card-layout';
-import { Briefcase, Building2, Calendar, CalendarX, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, Star, UserX, Video, VideoOff } from 'lucide-react';
+import { Briefcase, Building2, Calendar, CalendarX, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, UserX, Video, VideoOff } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Feedback, Interview } from '../types/appointments.types';
@@ -202,12 +202,6 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                            className="object-cover scale-100 group-hover:scale-105 transition-transform duration-500"
                            unoptimized
                         />
-                     </div>
-
-                     {/* Overall mini-rating badge */}
-                     <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold rounded-md bg-zinc-950 border border-white/10 text-amber-400 shadow-md">
-                        <Star className="w-2.5 h-2.5 fill-amber-500 text-amber-500" />
-                        <span>{interviewer.averageRating ?? 0.0}</span>
                      </div>
                   </div>
 

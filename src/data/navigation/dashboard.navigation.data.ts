@@ -16,7 +16,7 @@ export const candidateNavigationData: NavigationItem[] = [
       icon: LayoutDashboard
    },
    {
-      name: 'Explore Interviewers',
+      name: 'Interviewers',
       href: '/dashboard/interviewers',
       icon: UserStar
    },
