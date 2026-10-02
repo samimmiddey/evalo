@@ -199,8 +199,6 @@ model Payout {
   credits       Int
   platformFee   Float
   netAmount     Float
-  paymentMethod String
-  paymentDetail String
   status        PayoutStatus @default(PROCESSING)
   adminNote     String?
   createdAt     DateTime     @default(now())

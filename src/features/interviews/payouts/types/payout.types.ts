@@ -6,8 +6,6 @@ export interface PayoutRecord {
    credits: number;
    platformFee: number;
    netAmount: number;
-   paymentMethod: string;
-   paymentDetail: string;
    status: PayoutStatus;
    adminNote: string | null;
    createdAt: string;

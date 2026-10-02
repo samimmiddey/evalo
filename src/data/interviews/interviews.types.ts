@@ -66,18 +66,6 @@ export interface SectionHeader {
    description: string;
 }
 
-export interface PaymentMethodOption {
-   value: string;
-   label: string;
-}
-
-export interface PayoutConfig {
-   ratePerCredit: number;
-   platformFeePercent: number;
-   minCredits: number;
-   paymentMethods: PaymentMethodOption[];
-}
-
 export interface SlotPreset {
    label: string;
    start: string;
@@ -89,7 +77,6 @@ export interface InterviewerData {
    availability: SectionHeader;
    payouts: SectionHeader;
    profile: SectionHeader;
-   payout: PayoutConfig;
    slotPresets: SlotPreset[];
 }
 

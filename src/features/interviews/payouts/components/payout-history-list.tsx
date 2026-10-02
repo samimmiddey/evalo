@@ -50,7 +50,7 @@ export const PayoutHistoryList = ({ payouts }: PayoutHistoryListProps) => {
                         )}
                      </div>
                      <PrimaryBody
-                        text={`Via ${item.paymentMethod.replace("_", " ")} • ${item.paymentDetail}`}
+                        text={`Platform fee: $${item.platformFee.toFixed(2)}${item.adminNote ? ` • ${item.adminNote}` : ''}`}
                         className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-400!"
                      />
                   </div>

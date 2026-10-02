@@ -160,6 +160,8 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
             open={openRequestModal}
             onClose={() => setOpenRequestModal(false)}
             maxCredits={creditBalance}
+            ratePerCredit={ratePerCredit}
+            platformFeePercent={platformFeePercent}
             onSuccess={handleSuccess}
          />
       </div>

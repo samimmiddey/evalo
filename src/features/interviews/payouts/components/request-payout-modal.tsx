@@ -6,15 +6,6 @@ import ModalWrapper from "@/components/wrappers/modal-wrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { interviewerData } from "@/data/interviews/interviews.data";
 import { useMutation } from "@/hooks/use-mutation";
 import { requestPayout } from "../services/payout.client.service";
 import {
@@ -30,6 +21,8 @@ interface RequestPayoutModalProps {
    open: boolean;
    onClose: () => void;
    maxCredits: number;
+   ratePerCredit: number;
+   platformFeePercent: number;
    onSuccess: () => void;
 }
 
@@ -37,6 +30,8 @@ export const RequestPayoutModal = ({
    open,
    onClose,
    maxCredits,
+   ratePerCredit,
+   platformFeePercent,
    onSuccess
 }: RequestPayoutModalProps) => {
    const { refetch: refetchUser } = useAppUser();
@@ -51,17 +46,14 @@ export const RequestPayoutModal = ({
    } = useForm<RequestPayoutSchemaTypes>({
       resolver: zodResolver(requestPayoutSchema),
       defaultValues: {
-         credits: Math.min(maxCredits, 5),
-         paymentMethod: "BANK_TRANSFER",
-         paymentDetail: ""
+         credits: maxCredits
       }
    });
 
    const creditsWatch = watch("credits") || 0;
-   const paymentMethodWatch = watch("paymentMethod");
 
-   const grossAmount = creditsWatch * interviewerData.payout.ratePerCredit;
-   const platformFee = grossAmount * (interviewerData.payout.platformFeePercent / 100);
+   const grossAmount = creditsWatch * ratePerCredit;
+   const platformFee = grossAmount * (platformFeePercent / 100);
    const netAmount = Math.max(0, grossAmount - platformFee);
 
    const { isPending, mutate } = useMutation(requestPayout);
@@ -104,10 +96,10 @@ export const RequestPayoutModal = ({
                </div>
                <div className="flex items-center justify-between text-xs text-zinc-400">
                   <span>Conversion Rate:</span>
-                  <span>${interviewerData.payout.ratePerCredit} / credit</span>
+                  <span>${ratePerCredit} / credit</span>
                </div>
                <div className="flex items-center justify-between text-xs text-zinc-400">
-                  <span>Platform Fee ({interviewerData.payout.platformFeePercent}%):</span>
+                  <span>Platform Fee ({platformFeePercent}%):</span>
                   <span className="text-rose-400">-${platformFee.toFixed(2)}</span>
                </div>
                <div className="pt-2 border-t border-zinc-500/15 flex items-center justify-between text-sm font-semibold text-zinc-100">
@@ -144,53 +136,6 @@ export const RequestPayoutModal = ({
                   />
                   {errors.credits && (
                      <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.credits.message}</p>
-                  )}
-               </div>
-
-               {/* Payment Method */}
-               <div className="space-y-1.5">
-                  <Label htmlFor="paymentMethod" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
-                     Payment Method
-                  </Label>
-                  <Select
-                     value={paymentMethodWatch}
-                     onValueChange={(val) => setValue("paymentMethod", val, { shouldValidate: true })}
-                  >
-                     <SelectTrigger className="w-full bg-zinc-900 border-white/10 text-zinc-200">
-                        <SelectValue placeholder="Select payment method" />
-                     </SelectTrigger>
-                     <SelectContent className="bg-zinc-900 border-white/10 text-zinc-200">
-                        {interviewerData.payout.paymentMethods.map((m) => (
-                           <SelectItem key={m.value} value={m.value}>
-                              {m.label}
-                           </SelectItem>
-                        ))}
-                     </SelectContent>
-                  </Select>
-                  {errors.paymentMethod && (
-                     <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.paymentMethod.message}</p>
-                  )}
-               </div>
-
-               {/* Payment Details */}
-               <div className="space-y-1.5">
-                  <Label htmlFor="paymentDetail" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
-                     Payment Account / Transfer Details
-                  </Label>
-                  <Textarea
-                     id="paymentDetail"
-                     placeholder={
-                        paymentMethodWatch === "BANK_TRANSFER"
-                           ? "Bank Name, Account Number, Routing/IFSC Code, Account Holder Name"
-                           : paymentMethodWatch === "PAYPAL"
-                              ? "PayPal Email Address"
-                              : "UPI ID / VPA (e.g., name@okaxis)"
-                     }
-                     {...register("paymentDetail")}
-                     className="bg-zinc-900 border-white/10 text-zinc-200 text-xs h-25"
-                  />
-                  {errors.paymentDetail && (
-                     <p className="text-xs 2xl:text-[13px] text-rose-400">{errors.paymentDetail.message}</p>
                   )}
                </div>
             </div>

@@ -1,4 +1,4 @@
-import { ValidationError } from "@/lib/app-error";
+import { NotFoundError, ValidationError } from "@/lib/app-error";
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import {
@@ -8,7 +8,6 @@ import {
    RequestPayoutSchemaTypes,
    requestPayoutSchema
 } from "../schemas/payout.schemas";
-import { interviewerData } from "@/data/interviews/interviews.data";
 import { getAuthenticatedInterviewer } from "@/features/interviews/shared/services/shared.server.service";
 
 // Get Payouts & Credit Transactions
@@ -34,8 +33,6 @@ export const getPayoutsAndTransactions = async (): Promise<PayoutsData> => {
             credits: p.credits,
             platformFee: p.platformFee,
             netAmount: p.netAmount,
-            paymentMethod: p.paymentMethod,
-            paymentDetail: p.paymentDetail,
             status: p.status,
             adminNote: p.adminNote,
             createdAt: p.createdAt.toISOString(),
@@ -63,7 +60,7 @@ export const requestPayout = async (
 ): Promise<{ success: boolean; payoutId: string; }> => {
    try {
       const interviewer = await getAuthenticatedInterviewer();
-      const { credits, paymentMethod, paymentDetail } = requestPayoutSchema.parse(data);
+      const { credits } = requestPayoutSchema.parse(data);
 
       if (interviewer.creditBalance < credits) {
          throw new ValidationError(
@@ -71,8 +68,16 @@ export const requestPayout = async (
          );
       }
 
-      const grossAmount = credits * interviewerData.payout.ratePerCredit;
-      const platformFee = grossAmount * (interviewerData.payout.platformFeePercent / 100);
+      const config = await db.platformConfig.findFirst({
+         orderBy: { createdAt: "desc" }
+      });
+
+      if (!config) {
+         throw new NotFoundError("Platform configuration not found");
+      }
+
+      const grossAmount = credits * config.creditPayoutRate;
+      const platformFee = grossAmount * (config.platformFeePercent / 100);
       const netAmount = grossAmount - platformFee;
 
       const payout = await db.$transaction(async (tx) => {
@@ -93,8 +98,6 @@ export const requestPayout = async (
                credits,
                platformFee,
                netAmount,
-               paymentMethod,
-               paymentDetail,
                status: "PROCESSING"
             }
          });
