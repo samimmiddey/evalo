@@ -69,7 +69,7 @@ export const getFeedback = async (params: GetFeedbackParams): Promise<Interviewe
       const whereClause = {
          interviewerId: id,
          status: "COMPLETED" as const,
-         feedback: { isNot: null }
+         review: { isNot: null }
       };
 
       const [totalCount, bookings] = await Promise.all([
@@ -88,10 +88,11 @@ export const getFeedback = async (params: GetFeedbackParams): Promise<Interviewe
                      company: true
                   }
                },
-               feedback: {
+               review: {
                   select: {
-                     sessionRating: true,
-                     sessionComment: true
+                     rating: true,
+                     comment: true,
+                     createdAt: true
                   }
                }
             },

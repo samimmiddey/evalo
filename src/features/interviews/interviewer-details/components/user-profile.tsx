@@ -54,7 +54,7 @@ const UserProfile = ({ interviewer }: InterviewerProps) => {
                   <div className="flex items-center gap-1.5">
                      <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
                      <span className="font-semibold text-zinc-200">{interviewer.averageRating?.toFixed(1) || '0.0'}</span>
-                     <span>({interviewer.totalRatings} ratings)</span>
+                     <span>({interviewer.totalRatings} {interviewer.totalRatings > 1 ? 'ratings' : 'rating'})</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                      <Award className="w-4 h-4 text-violet-400" />

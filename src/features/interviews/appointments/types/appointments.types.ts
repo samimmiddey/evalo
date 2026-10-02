@@ -36,10 +36,16 @@ export interface Feedback {
    strengths: string[];
    improvements: string[];
    overallRating: 'EXCELLENT' | 'GOOD' | 'AVERAGE' | 'POOR';
-   sessionRating: number | null;
-   sessionComment: string | null;
    createdAt: Date;
-};
+}
+
+export interface Review {
+   id: string;
+   bookingId: string;
+   rating: number;
+   comment: string | null;
+   createdAt: Date | string;
+}
 
 export interface Interview {
    id: string;
@@ -51,6 +57,7 @@ export interface Interview {
    streamStatus: StreamStatus;
    interviewer: Interviewer;
    feedback: Feedback | null;
+   review: Review | null;
    recordingUrl: string | null;
    isRefunded: boolean;
 }
@@ -109,3 +116,9 @@ export interface ClaimRefundParams {
 }
 
 export type ClaimRefundClientResponse = BaseResponse<null>;
+
+export interface RateInterviewerData {
+   success: true;
+}
+
+export type RateInterviewerClientResponse = BaseResponse<RateInterviewerData>;

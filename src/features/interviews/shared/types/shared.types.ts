@@ -39,8 +39,13 @@ export interface SessionFeedback {
    strengths: string[];
    improvements: string[];
    overallRating: FeedbackRating;
-   sessionRating: number | null;
-   sessionComment: string | null;
+   createdAt: string;
+}
+
+export interface SessionReview {
+   id: string;
+   rating: number;
+   comment: string | null;
    createdAt: string;
 }
 
@@ -56,5 +61,6 @@ export interface DashboardSession {
    recordingUrl: string | null;
    candidate: CandidateInfo;
    feedback: SessionFeedback | null;
+   review: SessionReview | null;
    createdAt: string;
 }

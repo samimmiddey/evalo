@@ -148,6 +148,7 @@ model Booking {
   recordingUrl   String?
   isRefunded     Boolean             @default(false)
   feedback       Feedback?
+  review         Review?
   transactions   CreditTransaction[]
   sessions       BookingSession[]
   createdAt      DateTime            @default(now())
@@ -158,7 +159,7 @@ model Booking {
   @@index([candidateId, status])
 }
 
-// FEEDBACK
+// FEEDBACK (Gemini AI Evaluation)
 
 model Feedback {
   id             String         @id @default(uuid())
@@ -172,9 +173,18 @@ model Feedback {
   strengths      String[]
   improvements   String[]
   overallRating  FeedbackRating
-  sessionRating  Int?
-  sessionComment String?        @db.Text
   createdAt      DateTime       @default(now())
+}
+
+// REVIEWS (Candidate review/rating of Interviewer)
+
+model Review {
+  id        String   @id @default(uuid())
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  rating    Int
+  comment   String?  @db.Text
+  createdAt DateTime @default(now())
 }
 
 // CREDIT TRANSACTIONS

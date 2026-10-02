@@ -37,8 +37,12 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
                      <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
-                     <span className="text-sm font-medium text-zinc-300">{interviewer.totalRatings ?? '0'}</span>
-                     <span className="text-xs text-zinc-500">({interviewer.averageRating ?? '0.0'})</span>
+                     <span className="text-sm font-semibold text-zinc-300">
+                        {interviewer.averageRating?.toFixed(1) || '0.0'}
+                     </span>
+                     <span className="text-sm text-zinc-400">
+                        ({interviewer.totalRatings ?? '0'} {interviewer.totalRatings > 1 ? 'ratings' : 'rating'})
+                     </span>
                   </div>
                </div>
             </div>

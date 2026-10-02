@@ -20,15 +20,16 @@ export interface CandidateDetails {
    createdAt: Date;
 }
 
-export interface FeedbackDetails {
-   sessionRating: number | null;
-   sessionComment: string | null;
+export interface ReviewDetails {
+   rating: number;
+   comment: string | null;
+   createdAt?: Date | string;
 }
 
 export interface FeedbackData {
    id: string;
    candidate: CandidateDetails;
-   feedback: FeedbackDetails | null;
+   review: ReviewDetails | null;
 }
 
 export interface InterviewerFeedback {

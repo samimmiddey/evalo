@@ -51,7 +51,8 @@ export const getDashboardSessions = async (
                      email: true
                   }
                },
-               feedback: true
+               feedback: true,
+               review: true
             }
          })
       ]);
@@ -84,9 +85,15 @@ export const getDashboardSessions = async (
                strengths: item.feedback.strengths,
                improvements: item.feedback.improvements,
                overallRating: item.feedback.overallRating,
-               sessionRating: item.feedback.sessionRating,
-               sessionComment: item.feedback.sessionComment,
                createdAt: item.feedback.createdAt.toISOString()
+            }
+            : null,
+         review: item.review
+            ? {
+               id: item.review.id,
+               rating: item.review.rating,
+               comment: item.review.comment,
+               createdAt: item.review.createdAt.toISOString()
             }
             : null,
          createdAt: item.createdAt.toISOString()

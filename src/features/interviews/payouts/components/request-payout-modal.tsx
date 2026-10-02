@@ -81,6 +81,7 @@ export const RequestPayoutModal = ({
          onClose={onClose}
          title="Request Credit Payout"
          description="Convert your earned interview credits to cash. Payouts are processed within 2-3 business days."
+         className="max-w-3xl!"
       >
          <form
             onSubmit={(e) => {

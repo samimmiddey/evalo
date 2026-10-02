@@ -1,5 +1,5 @@
 import CardLayout from '@/components/layouts/card-layout';
-import { Briefcase, Building2, Calendar, CalendarX, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, UserX, Video, VideoOff } from 'lucide-react';
+import { Briefcase, Building2, Calendar, CalendarX, Clock, FileText, Hourglass, Info, NotebookText, Play, RotateCcw, Star, UserX, Video, VideoOff } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Feedback, Interview } from '../types/appointments.types';
@@ -16,6 +16,7 @@ import Image from 'next/image';
 import { useAppUser } from '@/hooks/use-app-user';
 import ConfirmDialog from '@/components/common/confirm-dialog';
 import PrimaryBody from '@/components/common/primary-body';
+import RateInterviewerModal from './rate-interviewer-modal';
 
 interface AppointmentCardProps {
    appointment: Interview;
@@ -26,8 +27,9 @@ interface AppointmentCardProps {
 
 const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewList }: AppointmentCardProps) => {
    const [openDialogue, setOpenDialogue] = useState<boolean>(false);
+   const [openRateModal, setOpenRateModal] = useState<boolean>(false);
 
-   const { interviewer, startTime, endTime, status, completionReason, feedback, streamCallId, recordingUrl, isRefunded } = appointment;
+   const { interviewer, startTime, endTime, status, completionReason, feedback, review, streamCallId, recordingUrl, isRefunded } = appointment;
 
    const { refetch: refetchUser } = useAppUser();
 
@@ -167,7 +169,6 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
       }
    };
 
-   // Performance Color Helper
    const getPerformanceLevelColor = (level: string) => {
       const upper = level?.toUpperCase() || '';
       if (upper === 'OUTSTANDING' || upper === 'EXCELLENT') {
@@ -185,6 +186,29 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
       return 'text-zinc-400 border-white/10 bg-zinc-500/15';
    };
 
+   const getOverallScore = (rating: string) => {
+      switch (rating?.toUpperCase()) {
+         case 'EXCELLENT':
+            return 100;
+         case 'GOOD':
+            return 75;
+         case 'AVERAGE':
+            return 50;
+         case 'POOR':
+            return 25;
+         default:
+            return 0;
+      }
+   };
+
+   const showBookAgain =
+      status === 'CANCELLED' ||
+      isExpired ||
+      (status === 'COMPLETED' && (
+         completionReason === 'CANDIDATE_NO_SHOW' ||
+         (!feedback && !recordingUrl && isPastEndTime)
+      ));
+
    return (
       <>
          <CardLayout className='max-sm:p-0!'>
@@ -192,66 +216,112 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
             <div className={`flex w-full ${view === 'grid' ? 'flex-col' : 'flex-col lg:flex-row lg:items-stretch'}`}>
 
                {/* Left Side: Interviewer Identity */}
-               <div className={`flex-1 p-6 2xl:p-7 flex flex-col md:flex-row md:items-start gap-5 border-white/5 ${view === 'grid' ? 'border-b' : 'lg:border-r border-b lg:border-b-0'}`}>
-                  <div className="w-16 md:w-20 relative shrink-0">
-                     <div className="relative h-16 w-16 md:h-20 md:w-20 rounded-2xl overflow-hidden border border-white/10 group-hover:border-violet-500/25 transition-colors bg-zinc-900 shadow-xl">
-                        <Image
-                           src={interviewer.imageUrl ?? '/user.png'}
-                           alt={`${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`}
-                           fill
-                           className="object-cover scale-100 group-hover:scale-105 transition-transform duration-500"
-                           unoptimized
-                        />
+               <div className={`flex-1 flex flex-col justify-between gap-2 lg:gap-6 2xl:gap-7 border-white/5 ${view === 'grid' ? 'border-b' : 'lg:border-r border-b lg:border-b-0'}`}>
+                  <div className='flex flex-col md:flex-row md:items-start gap-5 p-6 2xl:p-7'>
+                     <div className="w-16 md:w-20 relative shrink-0">
+                        <div className="relative h-16 w-16 md:h-20 md:w-20 rounded-2xl overflow-hidden border border-white/10 group-hover:border-violet-500/25 transition-colors bg-zinc-900 shadow-xl">
+                           <Image
+                              src={interviewer.imageUrl ?? '/user.png'}
+                              alt={`${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`}
+                              fill
+                              className="object-cover scale-100 group-hover:scale-105 transition-transform duration-500"
+                              unoptimized
+                           />
+                        </div>
                      </div>
-                  </div>
 
-                  <div className="space-y-2 grow">
-                     <div className="flex flex-wrap items-start justify-between gap-3">
-                        <div>
-                           <h4 className="text-lg font-semibold text-zinc-100 group-hover:text-violet-400 transition-colors font-geist">
-                              {interviewer.firstName} {interviewer.lastName}
-                           </h4>
+                     <div className="space-y-2 grow">
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                           <div>
+                              <h4 className="text-lg font-semibold text-zinc-100 group-hover:text-violet-400 transition-colors font-geist">
+                                 {interviewer.firstName} {interviewer.lastName}
+                              </h4>
 
-                           <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-zinc-400">
-                              <span className="flex items-center gap-1.5">
-                                 <Briefcase className="w-3.5 h-3.5 text-violet-400/80" />
-                                 {interviewer.designation}
-                              </span>
-                              <span className="text-zinc-700">•</span>
-                              <span className="flex items-center gap-1.5">
-                                 <Building2 className="w-3.5 h-3.5 text-violet-400/80" />
-                                 {interviewer.company}
-                              </span>
+                              <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-zinc-400">
+                                 <span className="flex items-center gap-1.5">
+                                    <Briefcase className="w-3.5 h-3.5 text-violet-400/80" />
+                                    {interviewer.designation}
+                                 </span>
+                                 <span className="text-zinc-700">•</span>
+                                 <span className="flex items-center gap-1.5">
+                                    <Building2 className="w-3.5 h-3.5 text-violet-400/80" />
+                                    {interviewer.company}
+                                 </span>
+                              </div>
+                           </div>
+
+                           {/* Status Badge (visible on mobile next to title) */}
+                           <div className="md:hidden">
+                              {renderStatusBadge(status)}
                            </div>
                         </div>
 
-                        {/* Status Badge (visible on mobile next to title) */}
-                        <div className="md:hidden">
-                           {renderStatusBadge(status)}
+                        <p className="text-xs 2xl:text-[13px] text-zinc-500 font-medium">
+                           {interviewer.experience} years experience
+                        </p>
+
+                        {/* Expertise Badges */}
+                        <div className="flex flex-wrap gap-1.5 pt-2">
+                           {interviewer?.expertise?.map((skill) => (
+                              <Badge
+                                 key={skill}
+                                 variant="outline"
+                                 className="bg-zinc-900 border-white/10 text-zinc-400 shrink-0 p-3 cursor-pointer transition-colors font-medium"
+                              >
+                                 {skill}
+                              </Badge>
+                           ))}
                         </div>
-                     </div>
 
-                     <p className="text-xs 2xl:text-[13px] text-zinc-500 font-medium">
-                        {interviewer.experience} years experience
-                     </p>
-
-                     {/* Expertise Badges */}
-                     <div className="flex flex-wrap gap-1.5 pt-2">
-                        {interviewer?.expertise?.map((skill) => (
-                           <Badge
-                              key={skill}
-                              variant="outline"
-                              className="bg-zinc-900 border-white/10 text-zinc-400 shrink-0 p-3 cursor-pointer transition-colors font-medium"
-                           >
-                              {skill}
-                           </Badge>
-                        ))}
                      </div>
                   </div>
+
+                  {/* Candidate Rating on Left Bottom for COMPLETED Appointments */}
+                  {status === 'COMPLETED' && completionReason !== 'CANDIDATE_NO_SHOW' && (
+                     <div className='p-6 2xl:p-7 border-t border-white/5'>
+                        {review?.rating ? (
+                           <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                 <div className="flex items-center gap-0.5">
+                                    {[1, 2, 3, 4, 5].map((s) => (
+                                       <Star
+                                          key={s}
+                                          className={`w-3.5 h-3.5 ${s <= (review.rating ?? 0)
+                                             ? "text-amber-400 fill-amber-400"
+                                             : "text-zinc-700"
+                                             }`}
+                                       />
+                                    ))}
+                                 </div>
+                                 <span className="text-sm font-semibold text-zinc-200">
+                                    {review.rating}.0
+                                 </span>
+                              </div>
+                              {review.comment && (
+                                 <PrimaryBody
+                                    text={review.comment}
+                                    className="text-xs! italic line-clamp-2 mt-2"
+                                 />
+                              )}
+                           </div>
+                        ) : (
+                           <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              onClick={() => setOpenRateModal(true)}
+                              className="h-9 px-4.5 text-xs text-amber-300! gap-1.5 rounded-lg cursor-pointer transition-all"
+                           >
+                              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                              Write a Review
+                           </Button>
+                        )}
+                     </div>
+                  )}
                </div>
 
                {/* Right Side: Schedule, Actions & AI Feedback details */}
-               <div className="flex-[1.25] flex flex-col justify-between">
+               <div className="flex-[1.25] flex flex-col">
 
                   {/* Top Row of Right: Status & Schedule (hidden status on mobile as it is above) */}
                   <div className="p-6 2xl:p-7 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between flex-wrap gap-4">
@@ -437,10 +507,10 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                                           <div className="h-2 w-20 bg-zinc-800 rounded-full overflow-hidden">
                                              <div
                                                 className="h-full bg-linear-to-r from-violet-500 to-indigo-500 rounded-full"
-                                                style={{ width: `${(Number(feedback.sessionRating) / 5) * 100}%` }}
+                                                style={{ width: `${getOverallScore(feedback.overallRating)}%` }}
                                              />
                                           </div>
-                                          <span className="text-xs font-semibold text-zinc-200">{(Number(feedback.sessionRating) / 5) * 100}/100</span>
+                                          <span className="text-xs font-semibold text-zinc-200">{getOverallScore(feedback.overallRating)}/100</span>
                                        </div>
                                     </div>
                                  </div>
@@ -482,33 +552,15 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                   {/* Actions Area */}
                   <div className="p-6 2xl:p-7 flex max-sm:flex-col sm:flex-wrap sm:items-center sm:justify-end gap-2.5 2xl:gap-3">
 
-                     {status === 'COMPLETED' && completionReason === 'CANDIDATE_NO_SHOW' && (
-                        <Link href={`/dashboard/interviewers/${appointment.interviewer.id}`}>
-                           <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
-                              Book Again
-                           </Button>
-                        </Link>
-                     )}
-
-                     {isExpired && (
-                        <>
-                           {
-                              !isRefunded &&
-                              <Button
-                                 variant="ghost"
-                                 className="cursor-pointer text-amber-300 hover:text-amber-400 hover:bg-amber-500/15 text-xs rounded-lg h-9 max-sm:w-full"
-                                 onClick={() => setOpenDialogue(true)}
-                                 disabled={isRefundPending}
-                              >
-                                 Claim Refund
-                              </Button>
-                           }
-                           <Link href={`/dashboard/interviewers/${appointment.interviewer.id}`}>
-                              <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
-                                 Book Again
-                              </Button>
-                           </Link>
-                        </>
+                     {isExpired && !isRefunded && (
+                        <Button
+                           variant="ghost"
+                           className="cursor-pointer text-amber-300 hover:text-amber-400 hover:bg-amber-500/15 text-xs rounded-lg h-9 max-sm:w-full"
+                           onClick={() => setOpenDialogue(true)}
+                           disabled={isRefundPending}
+                        >
+                           Claim Refund
+                        </Button>
                      )}
 
                      {status === 'SCHEDULED' && !isPastEndTime && (
@@ -555,7 +607,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      {status === "COMPLETED" && recordingUrl && (
                         <a href={recordingUrl} target="_blank" rel="noopener noreferrer">
                            <Button variant="outline" className="cursor-pointer border-white/5 bg-zinc-900 text-zinc-300 hover:bg-zinc-800 text-xs rounded-lg h-9 flex items-center gap-1.5 max-sm:w-full">
-                              <Play className="w-3 h-3 text-violet-400 fill-violet-400" />
+                              <Play className="w-3.5 h-3.5 text-violet-400 fill-violet-400" />
                               View Recording
                            </Button>
                         </a>
@@ -575,7 +627,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                         </Button>
                      )}
 
-                     {status === 'CANCELLED' && (
+                     {showBookAgain && (
                         <Link href={`/dashboard/interviewers/${appointment.interviewer.id}`}>
                            <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                               Book Again
@@ -589,6 +641,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
             </div>
          </CardLayout>
 
+         {/* Claim Refund and Cancellation Dialogue */}
          <ConfirmDialog
             open={openDialogue}
             onClose={() => setOpenDialogue(false)}
@@ -602,6 +655,15 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
             isLoading={isExpired ? isRefundPending : isCancelPending}
             confirmText={isExpired ? "Claim Refund" : "Confirm"}
             variant={isExpired ? "warning" : "destructive"}
+         />
+
+         {/* Rate Interviewer Modal */}
+         <RateInterviewerModal
+            open={openRateModal}
+            onClose={() => setOpenRateModal(false)}
+            bookingId={appointment.id}
+            interviewerName={`${interviewer.firstName ?? ''} ${interviewer.lastName ?? ''}`.trim() || 'Interviewer'}
+            onSuccess={refetchInterviewList}
          />
       </>
    );

@@ -15,6 +15,7 @@ export const GET_APPOINTMENT_STATS = '/appointments/stats';
 export const CANCEL_BOOKING = '/appointments/cancel-booking';
 export const CLAIM_REFUND = '/appointments/claim-refund';
 export const RETRY_BOOKING = '/appointments/retry-booking';
+export const RATE_INTERVIEWER = '/appointments/rate-interviewer';
 
 // Call
 export const GENERATE_QUESTIONS = '/call/generate-questions';

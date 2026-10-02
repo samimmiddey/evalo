@@ -24,8 +24,6 @@ export interface SharedFeedback {
    strengths: string[];
    improvements: string[];
    overallRating: string;
-   sessionRating?: number | null;
-   sessionComment?: string | null;
 }
 
 export interface FeedbackModalProps {

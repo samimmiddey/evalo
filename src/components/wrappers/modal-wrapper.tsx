@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogTitle } from '../ui/dialog';
 import { LayersPlus, X } from 'lucide-react';
 import { ReactNode } from 'react';
@@ -9,16 +10,15 @@ interface ModalWrapperProps {
    description: string;
    children: ReactNode;
    headerIcon?: React.ReactNode;
+   className?: string;
 }
 
-const ModalWrapper = ({ open, onClose, title, description, children, headerIcon }: ModalWrapperProps) => {
+const ModalWrapper = ({ open, onClose, title, description, children, headerIcon, className }: ModalWrapperProps) => {
    return (
       <Dialog open={open} onOpenChange={onClose}>
          <DialogContent
             showCloseButton={false}
-            className="flex flex-col gap-0 p-0 w-[calc(100%-2rem)] max-w-6xl max-h-[90vh]
-               rounded-2xl bg-zinc-950 shadow-2xl shadow-black/60
-               sm:max-w-6xl overflow-hidden z-9999"
+            className={cn("flex flex-col gap-0 p-0 w-[calc(100%-2rem)] max-w-6xl max-h-[90vh] rounded-2xl bg-zinc-950 shadow-2xl shadow-black/60 sm:max-w-6xl overflow-hidden z-9999", className)}
          >
             {/* Header */}
             <DialogTitle className="relative z-10 shrink-0 flex items-start justify-between gap-4 px-5 sm:px-6 pt-6 pb-5 2xl:pt-6.5 2xl:px-6.5 2xl:pb-5.5 border-b border-white/10">

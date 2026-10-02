@@ -58,15 +58,17 @@ const UserFeedback = ({ id }: { id: string; }) => {
                                        <p className="text-xs text-zinc-400">{item.candidate.designation ?? ''}</p>
                                     </div>
                                     <div className="flex items-center gap-1">
-                                       {Array.from({ length: item.feedback?.sessionRating ?? 0 }).map((_, i) => (
+                                       {Array.from({ length: item.review?.rating ?? 0 }).map((_, i) => (
                                           <Star key={i} className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                                        ))}
                                     </div>
                                  </div>
                                  <p className="text-sm text-zinc-300 leading-relaxed font-light italic">
-                                    &ldquo;{item.feedback?.sessionComment ?? 'Unable to show comment'}&rdquo;
+                                    {item.review?.comment ?? 'N/A'}
                                  </p>
-                                 <span className="text-[11px] text-zinc-500 block">{formatDate(item.candidate.createdAt)}</span>
+                                 <span className="text-[11px] text-zinc-500 block">
+                                    {item.review?.createdAt ? formatDate(item.review.createdAt) : 'N/A'}
+                                 </span>
                               </div>
                            ))}
                         </div>

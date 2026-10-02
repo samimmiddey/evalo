@@ -4,7 +4,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import { GetAppointmentsParams, GetAppointmentsServerResponse, AppointmentsStatsServerResponse, RetryBookSessionServerResponse } from "../types/appointments.types";
 import { Prisma } from "@/generated/prisma/client";
 import { StreamClient } from "@stream-io/node-sdk";
-import { ConflictError, ForbiddenError, NotFoundError, UnauthorizedError } from "@/lib/app-error";
+import { ConflictError, ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "@/lib/app-error";
+import { rateInterviewerSchema, RateInterviewerSchemaTypes } from "../schemas/appointments.schemas";
 
 export const getAppointments = async (params: GetAppointmentsParams = {}): Promise<GetAppointmentsServerResponse> => {
    const user = await currentUser();
@@ -87,7 +88,8 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
                      totalRatings: true
                   }
                },
-               feedback: true
+               feedback: true,
+               review: true
             },
             orderBy: {
                startTime: 'desc'
@@ -497,6 +499,94 @@ export const claimRefund = async (bookingId: string): Promise<void> => {
       return serverError({
          error,
          fallbackMessage: "Failed to claim refund. Please try again later."
+      });
+   }
+};
+
+// Rate interviewer session
+export const rateInterviewer = async (
+   data: RateInterviewerSchemaTypes
+): Promise<{ success: true; }> => {
+   const user = await currentUser();
+
+   if (!user) {
+      throw new UnauthorizedError("User not logged in");
+   }
+
+   try {
+      const { bookingId, rating, comment } = rateInterviewerSchema.parse(data);
+
+      const dbUser = await db.user.findUnique({
+         where: { clerkUserId: user.id },
+         select: { id: true }
+      });
+
+      if (!dbUser) {
+         throw new NotFoundError("User not found");
+      }
+
+      const booking = await db.booking.findUnique({
+         where: { id: bookingId },
+         include: {
+            review: true
+         }
+      });
+
+      if (!booking) {
+         throw new NotFoundError("Booking not found");
+      }
+
+      if (booking.candidateId !== dbUser.id) {
+         throw new ForbiddenError("You are not authorized to rate this session");
+      }
+
+      if (booking.status !== "COMPLETED") {
+         throw new ValidationError("You can only rate completed interview sessions");
+      }
+
+      if (booking.review) {
+         throw new ConflictError("This session has already been rated");
+      }
+
+      await db.$transaction(async (tx) => {
+         // Create review record with rating & comment
+         await tx.review.create({
+            data: {
+               bookingId: booking.id,
+               rating,
+               comment: comment?.trim() || null
+            }
+         });
+
+         // Recalculate average rating & total count for the interviewer
+         const reviewList = await tx.review.findMany({
+            where: {
+               booking: {
+                  interviewerId: booking.interviewerId,
+                  status: "COMPLETED"
+               }
+            },
+            select: { rating: true }
+         });
+
+         const totalRatings = reviewList.length;
+         const totalScore = reviewList.reduce((acc, r) => acc + r.rating, 0);
+         const averageRating = totalRatings > 0 ? parseFloat((totalScore / totalRatings).toFixed(1)) : null;
+
+         await tx.user.update({
+            where: { id: booking.interviewerId },
+            data: {
+               averageRating,
+               totalRatings
+            }
+         });
+      });
+
+      return { success: true };
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: "Failed to submit rating. Please try again later."
       });
    }
 };

@@ -18,6 +18,7 @@ import {
    NotebookText,
    Play,
    RotateCcw,
+   Star,
    User,
    Video
 } from "lucide-react";
@@ -79,7 +80,8 @@ export const SessionCard = ({
       streamCallId,
       recordingUrl,
       candidate,
-      feedback
+      feedback,
+      review
    } = session;
 
    const startDate = new Date(startTime);
@@ -178,6 +180,21 @@ export const SessionCard = ({
       return "text-zinc-400 border-white/10 bg-zinc-500/15";
    };
 
+   const getOverallScore = (rating: string) => {
+      switch (rating?.toUpperCase()) {
+         case 'EXCELLENT':
+            return 100;
+         case 'GOOD':
+            return 75;
+         case 'AVERAGE':
+            return 50;
+         case 'POOR':
+            return 25;
+         default:
+            return 0;
+      }
+   };
+
    // Refined Credits Charged Badge
    const getCreditsChargedBadge = () => {
       if (status === "COMPLETED") {
@@ -226,52 +243,84 @@ export const SessionCard = ({
             >
                {/* Left Side: Candidate Identity */}
                <div
-                  className={`flex-1 p-6 2xl:p-7 flex flex-col md:flex-row md:items-start gap-5 border-white/5 ${view === "grid" ? "border-b" : "lg:border-r border-b lg:border-b-0"
+                  className={`flex-1 flex flex-col justify-between gap-2 lg:gap-6 2xl:gap-7 border-white/5 ${view === "grid" ? "border-b" : "lg:border-r border-b lg:border-b-0"
                      }`}
                >
-                  <div className="w-16 md:w-20 relative shrink-0">
-                     <Avatar className="h-16 w-16 md:h-20 md:w-20 rounded-2xl border border-white/10 bg-zinc-900 shadow-xl after:rounded-2xl after:border-none">
-                        <AvatarImage
-                           src={candidate.imageUrl ?? ""}
-                           alt={candidateFullName}
-                           className="rounded-2xl"
-                        />
-                        <AvatarFallback className="bg-violet-950 text-violet-300 font-bold text-base md:text-lg rounded-2xl">
-                           {initials}
-                        </AvatarFallback>
-                     </Avatar>
-                  </div>
-
-                  <div className="space-y-2 grow">
-                     <div className="flex flex-wrap items-start justify-between gap-3">
-                        <div>
-                           <SecondaryTitle
-                              text={candidateFullName}
-                              className="text-lg! group-hover:text-violet-400 transition-colors font-geist"
+                  <div className="flex flex-col md:flex-row md:items-start gap-5 p-6 2xl:p-7">
+                     <div className="w-16 md:w-20 relative shrink-0">
+                        <Avatar className="h-16 w-16 md:h-20 md:w-20 rounded-2xl border border-white/10 bg-zinc-900 shadow-xl after:rounded-2xl after:border-none">
+                           <AvatarImage
+                              src={candidate.imageUrl ?? ""}
+                              alt={candidateFullName}
+                              className="rounded-2xl"
                            />
+                           <AvatarFallback className="bg-violet-950 text-violet-300 font-bold text-base md:text-lg rounded-2xl">
+                              {initials}
+                           </AvatarFallback>
+                        </Avatar>
+                     </div>
 
-                           <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-zinc-400">
-                              <span className="flex items-center gap-1.5 text-xs 2xl:text-[13px] text-zinc-400">
-                                 <Mail className="w-3.5 h-3.5 text-violet-400/80" />
-                                 {candidate.email}
-                              </span>
+                     <div className="space-y-2 grow">
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                           <div>
+                              <SecondaryTitle
+                                 text={candidateFullName}
+                                 className="text-lg! group-hover:text-violet-400 transition-colors font-geist"
+                              />
+
+                              <div className="flex flex-wrap items-center gap-2 mt-1 text-sm text-zinc-400">
+                                 <span className="flex items-center gap-1.5 text-xs 2xl:text-[13px] text-zinc-400">
+                                    <Mail className="w-3.5 h-3.5 text-violet-400/80" />
+                                    {candidate.email}
+                                 </span>
+                              </div>
                            </div>
+
+                           {/* Status Badge (visible on mobile next to title) */}
+                           <div className="md:hidden">{renderStatusBadge(status)}</div>
                         </div>
 
-                        {/* Status Badge (visible on mobile next to title) */}
-                        <div className="md:hidden">{renderStatusBadge(status)}</div>
-                     </div>
-
-                     <div className="flex items-center gap-2 pt-1">
-                        <Badge
-                           variant="outline"
-                           className="bg-zinc-900 border-white/10 text-zinc-400 shrink-0 p-3 cursor-pointer transition-colors font-medium"
-                        >
-                           <User className="w-3 h-3 mr-1 text-violet-400" />
-                           Candidate
-                        </Badge>
+                        <div className="flex items-center gap-2 pt-1">
+                           <Badge
+                              variant="outline"
+                              className="bg-zinc-900 border-white/10 text-zinc-400 shrink-0 p-3 cursor-pointer transition-colors font-medium"
+                           >
+                              <User className="w-3 h-3 mr-1 text-violet-400" />
+                              Candidate
+                           </Badge>
+                        </div>
                      </div>
                   </div>
+
+                  {/* Candidate Rating & Review on Left Bottom for COMPLETED Sessions */}
+                  {status === "COMPLETED" && completionReason !== "CANDIDATE_NO_SHOW" && review?.rating && (
+                     <div className="p-6 2xl:p-7 border-t border-white/5">
+                        <div className="space-y-1">
+                           <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-0.5">
+                                 {[1, 2, 3, 4, 5].map((s) => (
+                                    <Star
+                                       key={s}
+                                       className={`w-3.5 h-3.5 ${s <= (review.rating ?? 0)
+                                          ? "text-amber-400 fill-amber-400"
+                                          : "text-zinc-700"
+                                          }`}
+                                    />
+                                 ))}
+                              </div>
+                              <span className="text-sm font-semibold text-zinc-200">
+                                 {review.rating}.0
+                              </span>
+                           </div>
+                           {review.comment && (
+                              <PrimaryBody
+                                 text={review.comment}
+                                 className="text-xs! italic line-clamp-2 mt-2"
+                              />
+                           )}
+                        </div>
+                     </div>
+                  )}
                </div>
 
                {/* Right Side: Schedule, Details & Actions */}
@@ -437,24 +486,22 @@ export const SessionCard = ({
                                        </span>
                                     </div>
 
-                                    {feedback.sessionRating && (
-                                       <div className="flex items-center gap-2.5">
-                                          <span className="text-xs text-zinc-500">Score:</span>
-                                          <div className="flex items-center gap-2">
-                                             <div className="h-2 w-20 bg-zinc-800 rounded-full overflow-hidden">
-                                                <div
-                                                   className="h-full bg-linear-to-r from-violet-500 to-indigo-500 rounded-full"
-                                                   style={{
-                                                      width: `${(feedback.sessionRating / 5) * 100}%`
-                                                   }}
-                                                />
-                                             </div>
-                                             <span className="text-xs font-semibold text-zinc-200">
-                                                {(feedback.sessionRating / 5) * 100}/100
-                                             </span>
+                                    <div className="flex items-center gap-2.5">
+                                       <span className="text-xs text-zinc-500">Overall Score:</span>
+                                       <div className="flex items-center gap-2">
+                                          <div className="h-2 w-20 bg-zinc-800 rounded-full overflow-hidden">
+                                             <div
+                                                className="h-full bg-linear-to-r from-violet-500 to-indigo-500 rounded-full"
+                                                style={{
+                                                   width: `${getOverallScore(feedback.overallRating)}%`
+                                                }}
+                                             />
                                           </div>
+                                          <span className="text-xs font-semibold text-zinc-200">
+                                             {getOverallScore(feedback.overallRating)}/100
+                                          </span>
                                        </div>
-                                    )}
+                                    </div>
                                  </div>
                               </div>
                            </div>

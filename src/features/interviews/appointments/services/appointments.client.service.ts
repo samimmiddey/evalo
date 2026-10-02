@@ -1,9 +1,10 @@
 "use client";
 
 import { apiError } from "@/lib/api-error";
-import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams, AppointmentsStatsClientResponse, AppointmentsStatsData, CancelBookingClientResponse, RetryBookSessionClientResponse, RetryBookSession, CancelBookingData, ClaimRefundClientResponse, ClaimRefundData } from "../types/appointments.types";
+import { AppointmentsData, GetAppointmentsClientResponse, GetAppointmentsParams, AppointmentsStatsClientResponse, AppointmentsStatsData, CancelBookingClientResponse, RetryBookSessionClientResponse, RetryBookSession, CancelBookingData, ClaimRefundClientResponse, ClaimRefundData, RateInterviewerData, RateInterviewerClientResponse } from "../types/appointments.types";
 import { api } from "@/lib/api";
-import { CANCEL_BOOKING, CLAIM_REFUND, GET_APPOINTMENT_STATS, GET_APPOINTMENTS, RETRY_BOOKING } from "@/constants/query-urls";
+import { CANCEL_BOOKING, CLAIM_REFUND, GET_APPOINTMENT_STATS, GET_APPOINTMENTS, RATE_INTERVIEWER, RETRY_BOOKING } from "@/constants/query-urls";
+import { RateInterviewerSchemaTypes } from "../schemas/appointments.schemas";
 
 // Get appointments
 export const getAppointments = async (params: GetAppointmentsParams): Promise<AppointmentsData> => {
@@ -119,6 +120,24 @@ export const claimRefund = async (bookingId: string): Promise<ClaimRefundData> =
       return apiError({
          error,
          fallbackMessage: "Failed to claim refund"
+      });
+   }
+};
+
+// Rate interviewer
+export const rateInterviewer = async (data: RateInterviewerSchemaTypes): Promise<RateInterviewerData> => {
+   try {
+      const res = await api.post(RATE_INTERVIEWER, { json: data }).json<RateInterviewerClientResponse>();
+
+      if (!res.success) {
+         throw new Error(res.error);
+      }
+
+      return res.data;
+   } catch (error: unknown) {
+      return apiError({
+         error,
+         fallbackMessage: "Failed to submit rating"
       });
    }
 };
