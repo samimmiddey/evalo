@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFetch } from "@/hooks/use-fetch";
 import { getPayoutsData } from "../services/payout.client.service";
 import { PayoutsData } from "../types/payout.types";
@@ -9,7 +9,6 @@ import { TransactionsHistory } from "./transactions-history";
 import { RequestPayoutModal } from "./request-payout-modal";
 import { PayoutsSkeleton } from "./skeletons/payouts-skeleton";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { Coins, History, Layers, Wallet } from "lucide-react";
 import CardLayout from "@/components/layouts/card-layout";
 import PrimaryBody from "@/components/common/primary-body";
@@ -20,6 +19,9 @@ import {
    TabsList,
    TabsTrigger
 } from "@/components/ui/tabs";
+import { usePlatformConfig } from "@/hooks/use-config";
+import ErrorCard from "@/components/common/error-card";
+import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 
 export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }) => {
    const [openRequestModal, setOpenRequestModal] = useState(false);
@@ -32,19 +34,33 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
       refetch
    } = useFetch<PayoutsData>(() => getPayoutsData());
 
-   useEffect(() => {
-      if (error) {
-         toast.error(error);
-      }
-   }, [error]);
+   const { config, isLoading: isConfigLoading, error: isConfigError } = usePlatformConfig();
 
-   if (isLoading) {
+   // Loading State
+   if (isLoading || isConfigLoading) {
       return <PayoutsSkeleton />;
    }
 
-   const creditBalance = data?.creditBalance ?? 0;
-   const ratePerCredit = data?.ratePerCredit ?? 25;
-   const platformFeePercent = data?.platformFeePercent ?? 10;
+   // Error State
+   if (error || isConfigError) {
+      return (
+         <ErrorCard text={error ?? isConfigError ?? "Unable to load payout configuration"} />
+      );
+   }
+
+   // No Data State
+   if (!data || !config) {
+      return (
+         <EnhancedNoDataCard
+            title='Payout Details Unavailable'
+            body='Unable to load your credit wallet and conversion rates at this time.'
+         />
+      );
+   }
+
+   const creditBalance = data.creditBalance;
+   const ratePerCredit = config.creditPayoutRate;
+   const platformFeePercent = config.platformFeePercent;
 
    const grossEstimated = creditBalance * ratePerCredit;
    const netEstimated = grossEstimated * (1 - platformFeePercent / 100);

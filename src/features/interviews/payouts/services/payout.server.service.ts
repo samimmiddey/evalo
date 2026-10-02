@@ -29,8 +29,6 @@ export const getPayoutsAndTransactions = async (): Promise<PayoutsData> => {
 
       return {
          creditBalance: interviewer.creditBalance,
-         ratePerCredit: interviewerData.payout.ratePerCredit,
-         platformFeePercent: interviewerData.payout.platformFeePercent,
          payouts: payouts.map((p) => ({
             id: p.id,
             credits: p.credits,

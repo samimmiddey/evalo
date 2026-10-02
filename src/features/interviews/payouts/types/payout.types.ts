@@ -24,8 +24,6 @@ export interface CreditTransactionRecord {
 
 export interface PayoutsData {
    creditBalance: number;
-   ratePerCredit: number;
-   platformFeePercent: number;
    payouts: PayoutRecord[];
    transactions: CreditTransactionRecord[];
 }
