@@ -216,7 +216,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
             <div className={`flex w-full ${view === 'grid' ? 'flex-col' : 'flex-col lg:flex-row lg:items-stretch'}`}>
 
                {/* Left Side: Interviewer Identity */}
-               <div className={`flex-1 flex flex-col justify-between gap-2 lg:gap-6 2xl:gap-7 border-white/5 ${view === 'grid' ? 'border-b' : 'lg:border-r border-b lg:border-b-0'}`}>
+               <div className={`flex-1 flex flex-col justify-between gap-2 lg:gap-3 2xl:gap-4 border-white/5 ${view === 'grid' ? 'border-b' : 'lg:border-r border-b lg:border-b-0'}`}>
                   <div className='flex flex-col md:flex-row md:items-start gap-5 p-6 2xl:p-7'>
                      <div className="w-16 md:w-20 relative shrink-0">
                         <div className="relative h-16 w-16 md:h-20 md:w-20 rounded-2xl overflow-hidden border border-white/10 group-hover:border-violet-500/25 transition-colors bg-zinc-900 shadow-xl">
@@ -257,7 +257,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                         </div>
 
                         <p className="text-xs 2xl:text-[13px] text-zinc-500 font-medium">
-                           {interviewer.experience} years experience
+                           {interviewer.experience}+ Years of Experience
                         </p>
 
                         {/* Expertise Badges */}

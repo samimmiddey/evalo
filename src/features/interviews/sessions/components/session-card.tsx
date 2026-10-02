@@ -243,7 +243,7 @@ export const SessionCard = ({
             >
                {/* Left Side: Candidate Identity */}
                <div
-                  className={`flex-1 flex flex-col justify-between gap-2 lg:gap-6 2xl:gap-7 border-white/5 ${view === "grid" ? "border-b" : "lg:border-r border-b lg:border-b-0"
+                  className={`flex-1 flex flex-col justify-between gap-2 lg:gap-3 2xl:gap-4 border-white/5 ${view === "grid" ? "border-b" : "lg:border-r border-b lg:border-b-0"
                      }`}
                >
                   <div className="flex flex-col md:flex-row md:items-start gap-5 p-6 2xl:p-7">
@@ -324,7 +324,7 @@ export const SessionCard = ({
                </div>
 
                {/* Right Side: Schedule, Details & Actions */}
-               <div className="flex-[1.25] flex flex-col justify-between">
+               <div className="flex-[1.25] flex flex-col">
                   {/* Top Row of Right: Schedule info & Desktop Status Badge */}
                   <div className="p-6 2xl:p-7 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between flex-wrap gap-4">
                      {/* Schedule info */}

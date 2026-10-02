@@ -3,40 +3,52 @@ import { ViewType } from '@/types/ui.types';
 
 interface InterviewCardSkeletonProps {
    view?: ViewType;
+   isSession?: boolean;
 }
 
-const InterviewCardSkeleton = ({ view = 'list' }: InterviewCardSkeletonProps) => {
+const InterviewCardSkeleton = ({ view = 'list', isSession = false }: InterviewCardSkeletonProps) => {
    return (
       <CardLayout className="max-sm:p-0! border-white/5!">
          {/* Layout container matching view structure */}
          <div className={`flex w-full ${view === 'grid' ? 'flex-col' : 'flex-col lg:flex-row lg:items-stretch'}`}>
 
-            {/* Left Side: Interviewer Identity Skeleton */}
-            <div className={`flex-1 p-6 2xl:p-7 flex flex-col md:flex-row md:items-start gap-5 border-white/5 ${view === 'grid' ? 'border-b' : 'lg:border-r border-b lg:border-b-0'}`}>
-               {/* Avatar Bone */}
-               <div className="w-16 md:w-20 relative shrink-0">
-                  <div className="h-16 w-16 md:h-20 md:w-20 rounded-2xl bg-zinc-800 border border-white/5 shadow-xl animate-pulse" />
-               </div>
-
-               {/* Bio/Expertise Bone */}
-               <div className="space-y-3.5 grow w-full">
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                     <div className="space-y-2 w-full max-w-50">
-                        {/* Name */}
-                        <div className="h-5 w-4/5 bg-zinc-800 rounded-md animate-pulse" />
-                        {/* Designation & Company */}
-                        <div className="h-4 w-11/12 bg-zinc-800/60 rounded-md animate-pulse" />
-                     </div>
+            {/* Left Side: Identity Skeleton */}
+            <div className={`flex-1 flex flex-col justify-between gap-2 lg:gap-3 2xl:gap-4 border-white/5 ${view === 'grid' ? 'border-b' : 'lg:border-r border-b lg:border-b-0'}`}>
+               <div className="flex flex-col md:flex-row md:items-start gap-5 p-6 2xl:p-7">
+                  {/* Avatar Bone */}
+                  <div className="w-16 md:w-20 relative shrink-0">
+                     <div className="h-16 w-16 md:h-20 md:w-20 rounded-2xl bg-zinc-800 border border-white/5 shadow-xl animate-pulse" />
                   </div>
 
-                  {/* Experience text */}
-                  <div className="h-3 w-1/3 bg-zinc-800/60 rounded-md animate-pulse" />
+                  {/* Bio/Info Bone */}
+                  <div className="space-y-3.5 grow w-full">
+                     <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="space-y-2 w-full max-w-50">
+                           {/* Name */}
+                           <div className="h-5 w-4/5 bg-zinc-800 rounded-md animate-pulse" />
+                           {/* Subtitle / Email */}
+                           <div className="h-4 w-11/12 bg-zinc-800/60 rounded-md animate-pulse" />
+                        </div>
+                     </div>
 
-                  {/* Expertise Badges */}
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                     <div className="h-8 w-20 bg-zinc-800/60 rounded-lg animate-pulse" />
-                     <div className="h-8 w-24 bg-zinc-800/60 rounded-lg animate-pulse" />
-                     <div className="h-8 w-16 bg-zinc-800/60 rounded-lg animate-pulse" />
+                     {isSession ? (
+                        /* Candidate Badge */
+                        <div className="pt-1">
+                           <div className="h-7 w-24 bg-zinc-800/60 rounded-3xl animate-pulse" />
+                        </div>
+                     ) : (
+                        <>
+                           {/* Experience text */}
+                           <div className="h-3 w-1/3 bg-zinc-800/60 rounded-md animate-pulse" />
+
+                           {/* Expertise Badges */}
+                           <div className="flex flex-wrap gap-1.5 pt-2">
+                              <div className="h-7 w-20 bg-zinc-800/60 rounded-3xl animate-pulse" />
+                              <div className="h-7 w-24 bg-zinc-800/60 rounded-3xl animate-pulse" />
+                              <div className="h-7 w-16 bg-zinc-800/60 rounded-3xl animate-pulse" />
+                           </div>
+                        </>
+                     )}
                   </div>
                </div>
             </div>
@@ -87,9 +99,14 @@ const InterviewCardSkeleton = ({ view = 'list' }: InterviewCardSkeletonProps) =>
                </div>
 
                {/* Bottom Row / Actions Bone */}
-               <div className="p-6 2xl:p-7 flex flex-wrap items-center justify-end gap-2.5 2xl:gap-3">
-                  <div className="h-9 w-28 bg-zinc-800/60 rounded-lg animate-pulse" />
-                  <div className="h-9 w-36 bg-zinc-800 rounded-lg animate-pulse" />
+               <div className={`p-6 2xl:p-7 flex max-sm:flex-col sm:flex-wrap sm:items-center gap-2.5 2xl:gap-3 ${isSession ? "sm:justify-between" : "sm:justify-end"}`}>
+                  {isSession && (
+                     <div className="h-7 w-28 bg-zinc-800/60 rounded-lg animate-pulse" />
+                  )}
+                  <div className="flex max-sm:flex-col sm:flex-wrap sm:items-center gap-2.5 2xl:gap-3">
+                     <div className="h-9 w-28 bg-zinc-800/60 rounded-lg animate-pulse" />
+                     <div className="h-9 w-36 bg-zinc-800 rounded-lg animate-pulse" />
+                  </div>
                </div>
 
             </div>

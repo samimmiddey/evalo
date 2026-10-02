@@ -1,5 +1,6 @@
 "use client";
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CardLayout from '@/components/layouts/card-layout';
 import { interviewerDetailsData } from '@/data/interviews/interviews.data';
 import { Star } from 'lucide-react';
@@ -51,11 +52,21 @@ const UserFeedback = ({ id }: { id: string; }) => {
                            {data.map((item) => (
                               <div key={item.id} className="p-4 rounded-xl bg-zinc-900 border border-white/5 space-y-3">
                                  <div className="flex items-center justify-between">
-                                    <div>
-                                       <h4 className="font-semibold text-zinc-200 text-sm mb-1 font-geist">
+                                    <div className="flex items-center gap-3">
+                                       <Avatar className="h-9 w-9 rounded-full border-2 border-white/10 bg-zinc-800 shrink-0">
+                                          <AvatarImage
+                                             src={item.candidate.imageUrl ?? ''}
+                                             alt={`${item.candidate.firstName ?? ''} ${item.candidate.lastName ?? ''}`.trim() || 'Candidate'}
+                                          />
+                                          <AvatarFallback className="bg-violet-950 text-violet-300 font-bold text-xs rounded-full">
+                                             {item.candidate.firstName && item.candidate.lastName
+                                                ? `${item.candidate.firstName[0]}${item.candidate.lastName[0]}`.toUpperCase()
+                                                : (item.candidate.firstName?.[0] ?? 'C').toUpperCase()}
+                                          </AvatarFallback>
+                                       </Avatar>
+                                       <h4 className="font-semibold text-zinc-200 text-sm font-geist">
                                           {item.candidate.firstName ?? ''} {item.candidate.lastName ?? ''}
                                        </h4>
-                                       <p className="text-xs text-zinc-400">{item.candidate.designation ?? ''}</p>
                                     </div>
                                     <div className="flex items-center gap-1">
                                        {Array.from({ length: item.review?.rating ?? 0 }).map((_, i) => (

@@ -16,7 +16,7 @@ export const SessionSkeleton = ({
             }`}
       >
          {Array.from({ length: count }).map((_, i) => (
-            <InterviewCardSkeleton key={i} view={view} />
+            <InterviewCardSkeleton key={i} view={view} isSession={true} />
          ))}
       </div>
    );
