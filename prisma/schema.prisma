@@ -47,6 +47,7 @@ enum AvailabilityStatus {
 enum PayoutStatus {
   PROCESSING
   PROCESSED
+  REJECTED
 }
 
 enum InterviewExpertise {

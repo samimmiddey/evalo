@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { PayoutRecord } from "../types/payout.types";
 import { format, parseISO } from "date-fns";
-import { CheckCircle2, Clock } from "lucide-react";
 import PrimaryBody from "@/components/common/primary-body";
 
 interface PayoutHistoryListProps {
@@ -20,7 +19,6 @@ export const PayoutHistoryList = ({ payouts }: PayoutHistoryListProps) => {
    return (
       <div className="space-y-3">
          {payouts.map((item) => {
-            const isProcessed = item.status === "PROCESSED";
 
             return (
                <div
@@ -33,19 +31,28 @@ export const PayoutHistoryList = ({ payouts }: PayoutHistoryListProps) => {
                            ${item.netAmount.toFixed(2)}
                         </span>
                         <span className="text-xs text-zinc-400">({item.credits} credits)</span>
-                        {isProcessed ? (
+                        {item.status === "PROCESSED" && (
                            <Badge
                               variant="outline"
-                              className="bg-emerald-500/15 text-emerald-400 border-emerald-500/30 text-[11px] gap-1"
+                              className="bg-emerald-500/15 text-emerald-400 border-emerald-500/30 text-[11px]"
                            >
-                              <CheckCircle2 className="w-3 h-3" /> Processed
+                              Processed
                            </Badge>
-                        ) : (
+                        )}
+                        {item.status === "PROCESSING" && (
                            <Badge
                               variant="outline"
-                              className="bg-amber-500/15 text-amber-400 border-amber-500/30 text-[11px] gap-1"
+                              className="bg-amber-500/15 text-amber-400 border-amber-500/30 text-[11px]"
                            >
-                              <Clock className="w-3 h-3" /> Processing
+                              Processing
+                           </Badge>
+                        )}
+                        {item.status === "REJECTED" && (
+                           <Badge
+                              variant="outline"
+                              className="bg-rose-500/15 text-rose-400 border-rose-500/30 text-[11px]"
+                           >
+                              Rejected
                            </Badge>
                         )}
                      </div>
