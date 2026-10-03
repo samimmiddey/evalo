@@ -11,9 +11,10 @@ interface ModalWrapperProps {
    children: ReactNode;
    headerIcon?: React.ReactNode;
    className?: string;
+   bodyClassName?: string;
 }
 
-const ModalWrapper = ({ open, onClose, title, description, children, headerIcon, className }: ModalWrapperProps) => {
+const ModalWrapper = ({ open, onClose, title, description, children, headerIcon, className, bodyClassName }: ModalWrapperProps) => {
    return (
       <Dialog open={open} onOpenChange={onClose}>
          <DialogContent
@@ -51,8 +52,7 @@ const ModalWrapper = ({ open, onClose, title, description, children, headerIcon,
             </DialogTitle>
 
             {/* Scrollable body */}
-            <div className="relative z-10 flex-1 min-h-0 overflow-y-auto p-5 2xl:p-6
-               [scrollbar-width:thin] [scrollbar-color:rgba(113,113,122,0.3)_transparent]">
+            <div className={cn("relative z-10 flex-1 min-h-0 overflow-y-auto p-5 2xl:p-6 [scrollbar-width:thin] [scrollbar-color:rgba(113,113,122,0.3)_transparent]", bodyClassName)}>
                {children}
             </div>
          </DialogContent>

@@ -23,9 +23,11 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { useAppUser } from '@/hooks/use-app-user';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 interface BookingFormProps {
    interviewer: InterviewerDetails;
+   className?: string;
 }
 
 interface AvailableDates {
@@ -40,7 +42,7 @@ interface TimeSlot {
    displayEnd: string;
 }
 
-const BookingForm = ({ interviewer }: BookingFormProps) => {
+const BookingForm = ({ interviewer, className }: BookingFormProps) => {
    const [availableDates, setAvailableDates] = useState<AvailableDates[]>([]);
    const [availableTimes, setAvailableTimes] = useState<TimeSlot[]>([]);
    const [selectedDateSlot, setSelectedDateSlot] = useState<string>('');
@@ -151,7 +153,7 @@ const BookingForm = ({ interviewer }: BookingFormProps) => {
       });
    };
 
-   const wrapperClasses = 'min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30';
+   const wrapperClasses = cn('min-h-auto transition-all duration-300 border border-white/5 hover:border-violet-500/30', className);
 
    return (
       <GradientWrapper

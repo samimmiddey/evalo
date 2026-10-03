@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 import { interviewerDetailsData } from '@/data/interviews/interviews.data';
 import UserProfile from './components/user-profile';
@@ -8,6 +10,9 @@ import { InterviewerDetails as TInterviewerDetails } from './types/details.types
 import ScreenNoData from '@/components/common/screen-no-data';
 import GradientWrapper from '@/components/wrappers/gradient-wrapper';
 import NoDataCard from '@/components/common/no-data-card';
+import ModalWrapper from '@/components/wrappers/modal-wrapper';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 interface InterviewerDetailsProps {
    interviewer: TInterviewerDetails;
@@ -15,6 +20,8 @@ interface InterviewerDetailsProps {
 }
 
 const InterviewerDetails = ({ interviewer, id }: InterviewerDetailsProps) => {
+   const [openBooking, setOpenBooking] = useState<boolean>(false);
+
    if (!interviewer) {
       return (
          <ScreenNoData text='No interviewer found' />
@@ -23,14 +30,25 @@ const InterviewerDetails = ({ interviewer, id }: InterviewerDetailsProps) => {
 
    return (
       <div className="container s-margin px-4 md:px-6 max-w-7xl mx-auto">
-         {/* Navigation Link */}
-         <Link
-            href="/dashboard/interviewers"
-            className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-100 transition-colors mb-6 group"
-         >
-            <interviewerDetailsData.backBtn.icon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            {interviewerDetailsData.backBtn.title}
-         </Link>
+         <div className="flex items-center gap-4 flex-wrap justify-between mb-6">
+            {/* Navigation Link */}
+            <Link
+               href="/dashboard/interviewers"
+               className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-100 transition-colors group"
+            >
+               <interviewerDetailsData.backBtn.icon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+               {interviewerDetailsData.backBtn.title}
+            </Link>
+            {/* Book an Appointment Button */}
+            <Button
+               variant='default'
+               size='lg'
+               className="block lg:hidden bg-violet-600 hover:bg-violet-700 text-zinc-100 border-0 transition-all"
+               onClick={() => setOpenBooking(true)}
+            >
+               Schedule Interview
+            </Button>
+         </div>
 
          <div className="grid grid-cols-1 lg:grid-cols-[7.5fr_4.5fr] gap-5 lg:gap-6 2xl:gap-8 items-start">
             {/* LEFT COLUMN: Profile Details */}
@@ -42,12 +60,43 @@ const InterviewerDetails = ({ interviewer, id }: InterviewerDetailsProps) => {
                {/* What to Expect Section */}
                <WhatToExpect currentPlan={interviewer.currentPlan} />
 
-               {/* Testimonials Section */}
+               {/* User Feedback Section */}
                <UserFeedback id={id} />
             </div>
 
             {/* RIGHT COLUMN: Interactive Booking Form */}
-            <div className="lg:sticky lg:top-22 space-y-6">
+            <div className="lg:hidden block">
+               <ModalWrapper
+                  open={openBooking}
+                  onClose={() => setOpenBooking(false)}
+                  title='Appointment Form'
+                  description='Choose your preferred date and time to reserve your interview.'
+                  bodyClassName='p-0!'
+               >
+                  {
+                     interviewer.availabilities.length === 0 ? (
+                        <GradientWrapper
+                           className="h-auto relative shadow-2xl min-h-auto transition-all duration-300 border-none"
+                           showGrid={false}
+                        >
+                           <div className="min-h-30 2xl:h-40 flex items-center justify-center">
+                              <NoDataCard
+                                 text='No available slots'
+                                 className='w-full bg-transparent border-transparent flex-col'
+                                 iconClassName='size-6'
+                              />
+                           </div>
+                        </GradientWrapper>
+                     ) : (
+                        <BookingForm
+                           interviewer={interviewer}
+                           className='rounded-none! border-none!'
+                        />
+                     )
+                  }
+               </ModalWrapper>
+            </div>
+            <div className="max-lg:hidden lg:sticky lg:top-22 space-y-6">
                {
                   interviewer.availabilities.length === 0 ? (
                      <GradientWrapper
