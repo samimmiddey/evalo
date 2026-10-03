@@ -398,3 +398,9 @@
 [data-sidebar="sidebar"][data-mobile="true"] {
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
+
+/* Custom Clerk Styling */
+.cl-internal-57atez,
+.cl-internal-95w9vp {
+  display: none !important;
+}

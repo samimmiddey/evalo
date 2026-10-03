@@ -3,7 +3,7 @@
 import { Show, UserButton, useUser } from '@clerk/nextjs';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAppUser } from '@/hooks/use-app-user';
-import { userButtonAppearance } from '@/constants/clerk-appearance';
+import { userButtonAppearance, userProfileAppearance } from '@/constants/clerk-appearance';
 
 const DashboardNavbar = () => {
    const { isLoaded } = useUser();
@@ -34,7 +34,12 @@ const DashboardNavbar = () => {
                ) : (
                   <Show when="signed-in">
                      <div className="flex items-center gap-3">
-                        <UserButton appearance={userButtonAppearance} />
+                        <UserButton
+                           appearance={userButtonAppearance}
+                           userProfileProps={{
+                              appearance: userProfileAppearance,
+                           }}
+                        />
                      </div>
                   </Show>
                )}
