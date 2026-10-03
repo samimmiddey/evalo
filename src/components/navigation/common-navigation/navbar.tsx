@@ -10,6 +10,7 @@ import useMediaQuery from '@/hooks/use-media-query';
 import { authData } from '@/data/auth/auth.data';
 import { useAppUser } from '@/hooks/use-app-user';
 import Logo from '../../common/logo';
+import { userButtonAppearance } from '@/constants/clerk-appearance';
 
 interface NavbarProps {
    onMenuClick: () => void;
@@ -69,7 +70,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                      <div className="h-8 w-8 rounded-full bg-zinc-800 animate-pulse" />
                   ) : (
                      <Show when="signed-in">
-                        <UserButton />
+                        <UserButton appearance={userButtonAppearance} />
                      </Show>
                   )}
                   {mdWidth && (
