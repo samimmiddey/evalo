@@ -1,7 +1,7 @@
 "use client";
 
 import useUserStore from "@/store/user-store";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useUser } from "@clerk/nextjs";
 
 export const useAppUser = () => {
@@ -33,7 +33,19 @@ export const useAppUser = () => {
       }
    }, [user, clerkUserId, fetchUser, isLoaded, isSignedIn, clerkUser, clearUser, error, isLoading]);
 
-   const effectiveUser = isMismatch ? null : user;
+   const effectiveUser = useMemo(() => {
+      if (isMismatch || !user) return null;
+
+      // Clerk not ready, fall back to DB values
+      if (!clerkUser) return user;
+
+      return {
+         ...user,
+         firstName: clerkUser.firstName,
+         lastName: clerkUser.lastName,
+         imageUrl: clerkUser.imageUrl,
+      };
+   }, [isMismatch, user, clerkUser]);
    const effectiveLoading = !isLoaded || isLoading || isMismatch;
 
    return {
