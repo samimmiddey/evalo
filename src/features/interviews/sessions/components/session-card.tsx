@@ -311,6 +311,11 @@ export const SessionCard = ({
                               <span className="text-sm font-semibold text-zinc-200">
                                  {review.rating}.0
                               </span>
+                              <div className="mx-1 h-1 w-1 rounded-full bg-zinc-500" />
+                              <PrimaryBody
+                                 text="Candidate Rating"
+                                 className="text-xs! text-zinc-500"
+                              />
                            </div>
                            {review.comment && (
                               <PrimaryBody

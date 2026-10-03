@@ -93,8 +93,11 @@ const UserFeedback = ({ id }: { id: string; }) => {
 
             {/* Empty state */}
             {!hasNextPage && data?.length > 0 && (
-               <div className='mt-8 2xl:mt-10'>
-                  <ListEndMessage text="You've reached the end of the list" />
+               <div className='mt-6 2xl:mt-8'>
+                  <ListEndMessage
+                     text="You've reached the end of the list"
+                     className='p-0! border-none!'
+                  />
                </div>
             )}
 
