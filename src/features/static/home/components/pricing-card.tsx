@@ -96,8 +96,8 @@ const PricingCard = ({ i, plan, disableAnimation = false }: PricingCardProps) =>
                   for="user"
                   planId={plan.id}
                   planPeriod="month"
-                  onSubscriptionComplete={async () => {
-                     await revalidate();
+                  onSubscriptionComplete={() => {
+                     void revalidate();
                   }}
                   checkoutProps={{
                      appearance: {

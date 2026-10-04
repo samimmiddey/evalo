@@ -88,6 +88,7 @@ export async function POST(req: Request) {
 
    const secret = process.env.CLERK_WEBHOOK_BILLING_SECRET;
    if (!secret) {
+      // eslint-disable-next-line no-console
       console.error('Missing CLERK_WEBHOOK_BILLING_SECRET');
       return new Response('Server misconfigured', { status: 500 });
    }
@@ -130,6 +131,7 @@ export async function POST(req: Request) {
 
       const periodStart = new Date(data.period_start);
       if (Number.isNaN(periodStart.getTime())) {
+         // eslint-disable-next-line no-console
          console.error('Invalid period_start in billing webhook:', data.period_start);
          return new Response('OK', { status: 200 });
       }
@@ -160,6 +162,7 @@ export async function POST(req: Request) {
             creditsToGrant,
          });
       } catch (error) {
+         // eslint-disable-next-line no-console
          console.error(`Failed to handle ${eventType}:`, error);
          return new Response('Database error', { status: 500 });
       }
@@ -188,6 +191,7 @@ export async function POST(req: Request) {
             data: { currentPlan: 'free' },
          });
       } catch (error) {
+         // eslint-disable-next-line no-console
          console.error('Failed to handle subscriptionItem.ended:', error);
          return new Response('Database error', { status: 500 });
       }
