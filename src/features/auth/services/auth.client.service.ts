@@ -103,7 +103,7 @@ export const signInWithPassword = async ({
       return { success: true };
    }
 
-   if (signIn.status === "needs_second_factor") {
+   if (signIn.status === "needs_second_factor" || signIn.status === "needs_client_trust") {
       const { error: sendCodeError } = await signIn.mfa.sendEmailCode();
       if (sendCodeError) {
          return { success: false, message: getClerkErrorMessage(sendCodeError) };

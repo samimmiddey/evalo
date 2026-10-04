@@ -141,8 +141,8 @@ const SignIn = () => {
       );
    }
 
-   // Show OTP form when second factor is needed
-   if (signIn.status === 'needs_second_factor') {
+   // Show OTP form when second factor or device trust is needed
+   if (signIn.status === 'needs_second_factor' || signIn.status === 'needs_client_trust') {
       return (
          <OTP
             handleVerify={handleVerify}
