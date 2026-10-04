@@ -59,6 +59,7 @@ export async function POST(req: Request) {
             },
          });
       } catch (error) {
+         // eslint-disable-next-line no-console
          console.error(`Failed to handle ${evt.type}:`, error);
          return new Response('Database error', { status: 500 });
       }

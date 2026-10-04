@@ -553,6 +553,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             const action = deduplicateOptions
                ? "automatically removed"
                : "detected";
+            // eslint-disable-next-line no-console
             console.warn(
                `MultiSelect: Duplicate option values ${action}: ${duplicates.join(
                   ", "
@@ -570,6 +571,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
          (value: string): MultiSelectOption | undefined => {
             const option = getAllOptions().find((option) => option.value === value);
             if (!option && process.env.NODE_ENV === "development") {
+               // eslint-disable-next-line no-console
                console.warn(
                   `MultiSelect: Option with value "${value}" not found in options list`
                );
