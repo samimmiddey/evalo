@@ -36,7 +36,9 @@ const aj = arcjet({
          mode: "LIVE",
          allow: [
             "CATEGORY:SEARCH_ENGINE",
-            "CATEGORY:PREVIEW"
+            "CATEGORY:PREVIEW",
+            "CATEGORY:OPTIMIZER",
+            "CATEGORY:GOOGLE"
          ]
       })
    ]
