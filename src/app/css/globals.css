@@ -52,7 +52,7 @@
   --color-surface-light: #222436;
   --color-surface-lighter: #2e3246;
   --card-shadow-color: rgba(139, 92, 246, 0.15);
-  --breakpoint-xs: 480px;
+  --breakpoint-xs: 460px;
 }
 
 :root {
