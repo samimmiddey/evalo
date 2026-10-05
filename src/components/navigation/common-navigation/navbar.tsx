@@ -21,7 +21,8 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
    const { user } = useAppUser();
 
    const pathname = usePathname();
-   const mdWidth = useMediaQuery(767);
+   const mdWidth = useMediaQuery(768);
+   const xsWidth = useMediaQuery(460);
 
    return (
       <div className='fixed top-0 left-0 right-0 h-15 2xl:h-16 border-b border-violet-100/7 backdrop-blur-xl z-999'>
@@ -46,17 +47,20 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                   }
                </div>
                <div className='flex items-center gap-2'>
-                  <div className="max-md:-mr-2">
+                  <div className='max-md:-mr-2'>
                      <Show when="signed-out">
-                        <Link href={authData.signUp.footer.linkUrl}>
-                           <Button variant="ghost" size="lg">Sign In</Button>
-                        </Link>
+                        {
+                           !xsWidth &&
+                           <Link href={authData.signUp.footer.linkUrl} className='mr-1'>
+                              <Button variant="ghost" size="lg">Sign In</Button>
+                           </Link>
+                        }
                         <Link href={authData.signIn.footer.linkUrl}>
                            <Button variant="white" size="lg">Get Started</Button>
                         </Link>
                      </Show>
                   </div>
-                  <div className="flex items-center gap-2 mr-1 lg:mr-2">
+                  <div className="flex items-center lg:mr-1">
                      {
                         user &&
                         <Show when='signed-in'>
@@ -81,7 +85,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                   {mdWidth && (
                      <button
                         onClick={onMenuClick}
-                        className='p-1.5 hover:bg-surface-light rounded-lg transition-colors md:hidden cursor-pointer'
+                        className='p-1.5 hover:bg-zinc-800 rounded-lg transition-colors md:hidden cursor-pointer'
                         aria-label="Toggle menu"
                      >
                         <Menu className='w-6 h-6 text-zinc-100' />

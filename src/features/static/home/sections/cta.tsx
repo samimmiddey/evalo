@@ -118,13 +118,13 @@ const CTA = () => {
 
                            {/* Step Details */}
                            <div className="space-y-1 min-w-0 pt-0.5">
-                              <div className="flex items-center gap-2.5">
+                              <div className="flex max-xs:flex-col xs:items-center gap-2.5">
                                  <SecondaryTitle
                                     text={step.title}
                                     className="text-[17px] lg:text-lg 2xl:text-xl font-semibold text-zinc-200 group-hover:text-white transition-colors duration-200"
                                  />
                                  <span
-                                    className="text-xs font-mono px-2 py-0.5 rounded-full border bg-surface-dark text-zinc-400 border-white/10"
+                                    className="text-xs font-mono px-2 py-0.5 rounded-full border bg-surface-dark text-zinc-400 border-white/10 shrink-0 w-max max-xs:mb-2"
                                  >
                                     {step.tag}
                                  </span>

@@ -19,9 +19,9 @@ export const DashboardOverviewSkeleton = () => {
                   key={i}
                   className="p-5! space-y-3 border-white/5!"
                >
-                  <div className="flex items-center justify-between">
-                     <div className="h-3.5 w-24 rounded bg-zinc-800" />
-                     <div className="size-8 rounded-lg bg-zinc-800" />
+                  <div className="flex max-xs:flex-col-reverse xs:items-center justify-between gap-3 xs:gap-2">
+                     <div className="h-4 w-24 rounded bg-zinc-800" />
+                     <div className="size-8 rounded-lg bg-zinc-800 shrink-0" />
                   </div>
                   <div className="h-7 w-16 rounded-md bg-zinc-800" />
                   <div className="h-3 w-28 rounded bg-zinc-800/60" />
