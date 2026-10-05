@@ -26,12 +26,12 @@ export const DashboardStats = ({ items }: DashboardStatsProps) => {
                   key={item.label}
                   className="p-5! space-y-3"
                >
-                  <div className="flex items-center justify-between">
+                  <div className="flex max-xs:flex-col-reverse xs:items-center justify-between max-xs:gap-3">
                      <PrimaryBody
                         text={item.label}
                         className="text-xs! lg:text-xs! 2xl:text-xs! font-semibold! uppercase tracking-wider text-zinc-400!"
                      />
-                     <div className={`p-2 rounded-lg border ${item.accent}`}>
+                     <div className={`p-2 rounded-lg border w-max ${item.accent}`}>
                         <Icon className="size-4" />
                      </div>
                   </div>

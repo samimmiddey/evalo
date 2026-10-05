@@ -30,17 +30,17 @@ export const footerData: FooterDataTypes = {
       {
          title: "Product",
          links: [
-            { name: "About", href: "/#about" },
-            { name: "Pricing", href: "/#pricing" },
-            { name: "Testimonials", href: "/#testimonials" },
+            { name: "How It Works", href: "/about" },
+            { name: "Live Room", href: "/dashboard" },
+            { name: "Pricing", href: "/pricing" },
          ]
       },
       {
          title: "Company",
          links: [
             { name: "About Us", href: "/about" },
-            { name: "Careers", href: "/careers" },
             { name: "Contact", href: "/contact" },
+            { name: "FAQ", href: "/contact" },
          ]
       }
    ],

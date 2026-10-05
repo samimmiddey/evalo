@@ -83,14 +83,14 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
       <div className="space-y-6">
          {/* Form Card */}
          <CardLayout className="border-white/5!">
-            <div className="flex items-start gap-2.5 pb-5 border-b border-white/5 mb-6">
+            <div className="flex max-sm:flex-col items-start gap-4 sm:gap-3 pb-5 border-b border-white/5 mb-6">
                <div className="flex items-center justify-center w-8.5 h-8.5 rounded-lg bg-violet-500/15 border border-violet-500/30 text-violet-400 shrink-0 mt-0.5">
                   <UserPen className="w-4 h-4" />
                </div>
-               <div className="flex flex-col gap-px">
+               <div className="flex flex-col gap-1.5 sm:gap-0.5">
                   <SecondaryTitle
                      text="Interviewer Profile & Session Rates"
-                     className="text-sm! 2xl:text-base!"
+                     className="text-base! 2xl:text-lg!"
                   />
                   <PrimaryBody
                      text="Customize how your profile appears to candidates and configure your booking rate."
@@ -186,7 +186,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                         }
                         placeholder="Select expertise domains..."
                         variant="inverted"
-                        className="rounded-lg border border-white/15 bg-zinc-900 px-3 h-11 text-sm focus-visible:border-violet-500 hover:bg-zinc-900"
+                        className="rounded-lg border border-white/15 bg-zinc-900 px-3 min-h-11 text-sm focus-visible:border-violet-500 hover:bg-zinc-900"
                         maxCount={2}
                      />
                      {errors.expertise && (

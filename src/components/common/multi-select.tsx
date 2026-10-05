@@ -819,7 +819,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         <div className="flex justify-between items-center w-full">
                            <div
                               className={cn(
-                                 "flex items-center gap-1",
+                                 "flex items-center gap-px xs:gap-0.5",
                                  singleLine
                                     ? "overflow-x-auto multiselect-singleline-scroll"
                                     : "flex-wrap",
