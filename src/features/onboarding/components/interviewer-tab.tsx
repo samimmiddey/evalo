@@ -100,7 +100,7 @@ const InterviewerTab = () => {
                                  onValueChange={(val) => methods.setValue(field.name as keyof OnboardingSchemaTypes, val as DomainValue[], { shouldValidate: true })}
                                  placeholder="Choose expertise..."
                                  variant="inverted"
-                                 className="rounded-lg border border-input bg-transparent dark:bg-input/30 px-2.5 h-10 2xl:h-11 text-sm 2xl:text-base focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-expanded:border-ring aria-expanded:ring-3 aria-expanded:ring-ring/50 transition-all hover:bg-input/30 hover:translate-y-0"
+                                 className="rounded-lg border border-input bg-transparent dark:bg-input/30 px-2.5 min-h-10 2xl:min-h-11 text-sm 2xl:text-base focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-expanded:border-ring aria-expanded:ring-3 aria-expanded:ring-ring/50 transition-all hover:bg-input/30 hover:translate-y-0"
                                  maxCount={1}
                               />
                            )

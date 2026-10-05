@@ -39,14 +39,14 @@ const Hero = () => {
                   </div>
 
                   {/* Main Title */}
-                  <h1 className="w-full text-5xl md:text-[54px] font-bold lg:text-6xl 2xl:text-[80px] text-zinc-100 font-bricolage leading-[1.1] tracking-tight pb-1 2xl:pb-2">
+                  <h1 className="w-full text-[42px] xs:text-5xl md:text-[54px] font-bold lg:text-6xl 2xl:text-[80px] text-zinc-100 font-bricolage leading-[1.1] tracking-tight pb-1 2xl:pb-2">
                      {title}
                   </h1>
 
                   {/* Description using PrimaryBody */}
                   <PrimaryBody
                      text={description}
-                     className="max-w-full lg:max-w-2xl mt-0.5 py-4 text-[15px] lg:text-[15px] 2xl:text-lg text-zinc-300 leading-relaxed"
+                     className="max-w-full lg:max-w-2xl xs:mt-0.5 py-4 text-[15px] lg:text-[15px] 2xl:text-lg text-zinc-300 leading-relaxed"
                   />
 
                   {/* Action Buttons */}
