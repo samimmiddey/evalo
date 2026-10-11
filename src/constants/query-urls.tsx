@@ -33,3 +33,6 @@ export const UPDATE_PROFILE = '/profile';
 
 // Config
 export const GET_PLATFORM_CONFIG = '/platform-config';
+
+// Cashfree
+export const GET_PLANS = '/cashfree/plans';
