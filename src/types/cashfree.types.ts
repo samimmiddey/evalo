@@ -25,3 +25,14 @@ export interface CashfreeError {
 }
 
 export type PlansClientResponse = BaseResponse<PlansResponse>;
+
+export interface CreateSubscriptionParams {
+   id: string;
+   name: string;
+}
+
+export interface CreateSubscriptionResponse {
+   subscription_session_id: string;
+}
+
+export type CreateSubscriptionClientResponse = BaseResponse<CreateSubscriptionResponse>;

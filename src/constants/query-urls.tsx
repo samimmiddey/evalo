@@ -36,3 +36,4 @@ export const GET_PLATFORM_CONFIG = '/platform-config';
 
 // Cashfree
 export const GET_PLANS = '/cashfree/plans';
+export const CREATE_SUBSCRIPTION = '/cashfree/create-subscription';

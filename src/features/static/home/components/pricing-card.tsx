@@ -6,6 +6,11 @@ import { CustomPlan } from '../types/pricing.types';
 import { Button } from '@/components/ui/button';
 import { Show } from '@clerk/nextjs';
 import { useRouter } from 'nextjs-toploader/app';
+import { useMutation } from '@/hooks/use-mutation';
+import { createSubscription } from '@/services/client/cashfree.client.service';
+import { toast } from 'sonner';
+import CustomSpinner from '@/components/common/custom-spinner';
+import { useEffect } from 'react';
 
 interface PricingCardProps {
    i: number;
@@ -21,6 +26,35 @@ const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: P
    const hasActivePaidPlan = Boolean(currentPlan && currentPlan.toLowerCase() !== 'free');
    const isCurrentPlan = currentPlan?.toLowerCase() === plan.name.toLowerCase();
    const isPopular = plan.name === "Starter";
+
+   const { isPending, error, mutate } = useMutation(createSubscription);
+
+   const handleSubmit = async () => {
+      const res = await mutate({
+         id: plan.id,
+         name: plan.name
+      });
+
+      if (res?.subscription_session_id && window.Cashfree) {
+         toast.success("Redirecting to checkout...");
+
+         const cashfree = window.Cashfree({
+            mode: 'sandbox'
+         });
+
+         await cashfree.subscriptionsCheckout({
+            subsSessionId: res.subscription_session_id,
+            redirectTarget: "_self"
+         });
+      }
+   };
+
+   // Show error
+   useEffect(() => {
+      if (error) {
+         toast.error('Failed to initialize subscription');
+      }
+   }, [error]);
 
    return (
       <motion.div
@@ -83,7 +117,7 @@ const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: P
             {/* Checkout Button when signed in */}
             <Show when="signed-in">
                <Button
-                  disabled={isCurrentPlan || plan.id === 'free' || role === 'INTERVIEWER'}
+                  disabled={isCurrentPlan || plan.id === 'free' || role === 'INTERVIEWER' || isPending}
                   className={`w-full h-auto py-3.25 2xl:py-3.75 rounded-xl font-semibold font-geist tracking-wide transition-all duration-300 mb-7 2xl:mb-8
                   ${isCurrentPlan
                         ? "bg-emerald-500/15 hover:bg-emerald-500/20 text-emerald-200 border border-emerald-500/30"
@@ -91,12 +125,17 @@ const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: P
                            ? "bg-violet-600 hover:bg-violet-500 text-zinc-100"
                            : "bg-white/5 hover:bg-white/10 text-zinc-200 border border-white/10"
                      }`}
+                  onClick={() => void handleSubmit()}
                >
-                  {isCurrentPlan
-                     ? "Current Plan"
-                     : hasActivePaidPlan
-                        ? "Switch Plan"
-                        : "Subscribe"}
+                  {
+                     isPending ?
+                        <CustomSpinner text='Connecting...' /> :
+                        isCurrentPlan
+                           ? "Current Plan"
+                           : hasActivePaidPlan
+                              ? "Switch Plan"
+                              : "Subscribe"
+                  }
                </Button>
             </Show>
 
