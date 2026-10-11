@@ -1,3 +1,4 @@
+import { SubscriptionStatus } from "@/generated/prisma/enums";
 import { BaseResponse } from "./api.types";
 
 export interface Plan {
@@ -65,3 +66,10 @@ export interface CashfreeSubscriptionWebhookPayload {
       };
    };
 }
+
+export interface SubscriptionResponse {
+   subscription_status: SubscriptionStatus;
+   subscription_id: string;
+}
+
+export type SubscriptionClientResponse = BaseResponse<SubscriptionResponse>;

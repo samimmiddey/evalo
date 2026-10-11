@@ -92,4 +92,9 @@ export const PAGE_METADATA = {
       description:
          'Join your scheduled live technical interview session with real-time video, coding chat, and AI assistance.'
    },
+   success: {
+      title: 'Payment Successful',
+      description:
+         'Your subscription has been activated and your mock interview credits are ready.'
+   },
 } as const satisfies Record<string, Metadata>;

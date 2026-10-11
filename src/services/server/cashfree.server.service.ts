@@ -11,6 +11,7 @@ import {
    CreateSubscriptionResponse,
    Plan,
    PlansResponse,
+   SubscriptionResponse
 } from "@/types/cashfree.types";
 import { PLAN, PLAN_CREDITS } from "@/types/user.types";
 import { SubscriptionStatus } from "@/generated/prisma/enums";
@@ -72,8 +73,9 @@ export const createSubscription = async (plan: CreateSubscriptionParams): Promis
    }
 
    try {
+      const subscriptionId = `sub_${user.id.slice(-8)}_${Date.now()}`;
       const payload = {
-         subscription_id: `sub_${user.id.slice(-8)}_${Date.now()}`,
+         subscription_id: subscriptionId,
          customer_details: {
             customer_name: `${user.firstName} ${user.lastName}`,
             customer_email: user.email,
@@ -85,10 +87,10 @@ export const createSubscription = async (plan: CreateSubscriptionParams): Promis
          authorization_details: {
             authorization_amount: 1,
             authorization_amount_refund: false,
-            payment_methods: ['enach', 'upi', 'card']
+            payment_methods: ['upi', 'card']
          },
          subscription_meta: {
-            return_url: 'http://localhost:3000/payment-success',
+            return_url: `${process.env.NEXT_PUBLIC_CASHFREE_REDIRECT_URL}/${subscriptionId}`,
             notification_channel: ['EMAIL']
          }
       };
@@ -99,7 +101,9 @@ export const createSubscription = async (plan: CreateSubscriptionParams): Promis
          throw new ValidationError(res.message);
       }
 
-      return res;
+      return {
+         subscription_session_id: res.subscription_session_id
+      };
    } catch (error: unknown) {
       return serverError({
          error,
@@ -364,5 +368,38 @@ export const handleCashfreeSubscriptionWebhook = async (
          });
       });
       return;
+   }
+};
+
+// Get subscription details
+export const getSubscription = async (id: string): Promise<SubscriptionResponse> => {
+   const user = await checkUser();
+
+   // Check if user exists
+   if (!user) {
+      throw new UnauthorizedError('Unauthenticated user');
+   }
+
+   // Check if user is a candidate
+   if (user.role !== 'CANDIDATE') {
+      throw new ForbiddenError("Only a candidate can view subscription details");
+   }
+
+   try {
+      const res = await apiCashfree.get(`/subscriptions/${id}`).json<SubscriptionResponse | CashfreeError>();
+
+      if ('code' in res) {
+         throw new ValidationError(res.message);
+      }
+
+      return {
+         subscription_status: res.subscription_status,
+         subscription_id: res.subscription_id
+      };
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: 'Failed to fetch subscription details'
+      });
    }
 };
