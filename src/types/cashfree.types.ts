@@ -36,3 +36,32 @@ export interface CreateSubscriptionResponse {
 }
 
 export type CreateSubscriptionClientResponse = BaseResponse<CreateSubscriptionResponse>;
+
+export interface CashfreeSubscriptionWebhookPayload {
+   type: string;
+   event_time?: string;
+   data: {
+      subscription_details?: {
+         subscription_id: string;
+         subscription_status: string;
+         cf_subscription_id?: string;
+         current_cycle?: number;
+      };
+      customer_details?: {
+         customer_email?: string;
+         customer_name?: string | null;
+         customer_phone?: string | null;
+      };
+      plan_details?: {
+         plan_id?: string;
+         plan_name?: string;
+         plan_type?: string;
+      };
+      payment_details?: {
+         payment_id?: string;
+         payment_status?: string;
+         payment_amount?: number;
+         payment_time?: string;
+      };
+   };
+}

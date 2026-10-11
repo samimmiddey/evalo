@@ -80,6 +80,17 @@ enum TransactionType {
   BOOKING_REVERSAL
 }
 
+enum SubscriptionStatus {
+  INITIALIZED
+  BANK_APPROVAL_PENDING
+  ACTIVE
+  ON_HOLD
+  PAUSED
+  CANCELLED
+  COMPLETED
+  EXPIRED
+}
+
 // USER
 
 model User {
@@ -115,6 +126,27 @@ model User {
   bookingsAsInterviewer Booking[]           @relation("InterviewerBookings")
   transactions          CreditTransaction[]
   payouts               Payout[]
+  subscriptions         Subscription[]
+}
+
+// SUBSCRIPTION (Cashfree Mandates)
+
+model Subscription {
+  id                 String             @id @default(cuid())
+  userId             String
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cashfreeSubId      String             @unique
+  cashfreePlanId     String
+  planSlug           String
+  status             SubscriptionStatus @default(INITIALIZED)
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  customerPhone      String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  @@index([userId, status])
+  @@index([cashfreeSubId])
 }
 
 // AVAILABILITY
