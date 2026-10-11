@@ -91,8 +91,8 @@ const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: P
 
             <div className="mb-5 lg:mb-5.5 2xl:mb-6">
                <div className="flex items-end gap-1">
-                  <span className="text-3xl 2xl:text-[42px] font-bold font-geist text-zinc-100 flex items-center">
-                     <IndianRupee className='h-9 w-9' />{plan.amount}
+                  <span className="text-3xl 2xl:text-[42px] font-bold font-geist text-zinc-100 flex items-center gap-px">
+                     <IndianRupee className='h-6.5 2xl:h-9 w-6.5 2xl:w-9' />{plan.amount}
                   </span>
                   <span className="text-zinc-400 mb-1 2xl:mb-1.5 font-medium text-sm 2xl:text-base">/month</span>
                </div>
