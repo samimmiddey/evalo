@@ -38,7 +38,7 @@ Evalo is a two-sided mock technical interview platform. Candidates book sessions
   - `/call/[id]`: Live video/chat room (shared by candidate and interviewer)
   - `/onboarding`: Onboarding wizard for candidates and interviewers
   - `api/`: API route handlers (`appointments/`, `availability/`, `call/`, `dashboard/`, `interviewers/`, `onboarding/`, `payouts/`, `platform-config/`, `profile/`, `sessions/`, `user/`)
-  - `api/webhooks/`: Webhooks (`billing/`, `clerk/`, `stream/`, `stream-business/`)
+  - `api/webhooks/`: Webhooks (`clerk/`, `stream/`, `stream-business/`)
 - `src/features/`: Domain logic divided by feature (`auth/`, `interviews/`, `onboarding/`, `special/`, `static/`)
   - Features contain subfolders: `components/`, `schemas/`, `services/`, `types/`
 - `src/components/`: Reusable presentation primitives only (`common/`, `layouts/`, `navigation/`, `providers/`, `ui/`, `wrappers/`)
@@ -131,7 +131,7 @@ Before considering work complete:
   - Arcjet bot detection is commented out in `src/proxy.ts`.
   - `bookingLimiter` is active in `src/features/interviews/interviewer-details/services/details.server.service.ts` (rate limits bookings per user).
 - **Webhook Handlers**:
-  - Svix verifies Clerk user (`CLERK_WEBHOOK_USER_SECRET`) and billing (`CLERK_WEBHOOK_BILLING_SECRET`) webhooks.
+  - Svix verifies Clerk user (`CLERK_WEBHOOK_USER_SECRET`) webhook.
   - Stream verifies `x-signature` (`STREAM_SECRET_KEY`) for `stream` and `stream-business` webhooks.
 
 ---

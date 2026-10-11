@@ -25,7 +25,7 @@ graph TD
     ExternalWebhooks["External Webhooks (Clerk, Stream)"] -->|"Pass-through (/api is public in proxy)"| ApiRoutes
 
     ApiRoutes -->|"User Auth: currentUser() / auth()"| ServerServices["Domain Server Services (src/features/*/services)"]
-    ApiRoutes -->|"Webhook Signatures: Svix / Stream HMAC"| WebhookProcessors["Webhook Processors (billing, clerk, stream)"]
+    ApiRoutes -->|"Webhook Signatures: Svix / Stream HMAC"| WebhookProcessors["Webhook Processors (clerk, stream)"]
 
     ServerServices --> Prisma["Prisma ORM (@prisma/adapter-pg)"]
     WebhookProcessors --> Prisma
@@ -110,11 +110,11 @@ In [src/app/(routes)/(protected)/user-gate.tsx](src/app/(routes)/(protected)/use
 
 | Provider | Purpose | Authentication / Security | Failure Handling |
 |---|---|---|---|
-| **Clerk** | Identity, authentication, user metadata, plan billing. | API keys + Svix signature verification (`CLERK_WEBHOOK_USER_SECRET`, `CLERK_WEBHOOK_BILLING_SECRET`). | Webhooks return HTTP 400 on signature failure; retry-friendly HTTP 500 on database error. |
+| **Clerk** | Identity, authentication, user metadata. | API keys + Svix signature verification (`CLERK_WEBHOOK_USER_SECRET`). | Webhooks return HTTP 400 on signature failure; retry-friendly HTTP 500 on database error. |
 | **Stream Video & Chat** | WebRTC live video calls, live chat, call recording, audio transcription. | `STREAM_SECRET_KEY` server signing; `x-signature` verification for webhooks. | Call creation failure falls back to `streamStatus: "FAILED"` without rolling back user booking credits (retriable via `retryBooking`). |
 | **Google Gemini** | Technical question generation and automated candidate transcript evaluations. | `GEMINI_API_KEY` via `@google/generative-ai` (`gemini-3.6-flash`). | Questions fall back to structured prompts; transcript evaluations return HTTP 500 on error so webhooks can retry. |
 | **Supabase** | Managed PostgreSQL database. | Pooler connection string (`DATABASE_URL`, port 6543) and direct connection (`DIRECT_URL`, port 5432). | Singleton client with `@prisma/adapter-pg` driver adapter. |
-| **Razorpay (Planned)** | Subscription payments and automated interviewer payouts. | API keys, webhook signatures, payout transfers API. | Will replace manual payout processing and Clerk billing once implemented. |
+| **Cashfree** | Subscription payments and automated interviewer payouts. | API keys (`CASHFREE_APP_ID`, `CASHFREE_SECRET_KEY`), webhook signatures. | Error responses return standard API errors; webhooks handle retries. |
 
 ---
 
