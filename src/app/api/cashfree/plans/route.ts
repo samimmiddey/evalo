@@ -1,5 +1,5 @@
 import { apiErrorResponse, apiResponse } from "@/lib/api-response";
-import { fetchPlans } from "@/services/server/global.server.service";
+import { fetchPlans } from "@/services/server/cashfree.server.service";
 
 export async function GET() {
    try {

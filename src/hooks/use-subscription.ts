@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useFetch } from './use-fetch';
-import { fetchPlans } from '@/services/client/global.client.service';
+import { fetchPlans } from '@/services/client/cashfree.client.service';
 import { homeData } from '@/data/home/home.data';
 
 // Helper function to sort plans according to the rank
