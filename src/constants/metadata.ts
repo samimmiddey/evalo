@@ -97,4 +97,9 @@ export const PAGE_METADATA = {
       description:
          'Your subscription has been activated and your mock interview credits are ready.'
    },
+   checkout: {
+      title: 'Checkout & Subscription',
+      description:
+         'Review your subscription plan details, credits allocation, and billing breakdown before authorizing payment.'
+   },
 } as const satisfies Record<string, Metadata>;

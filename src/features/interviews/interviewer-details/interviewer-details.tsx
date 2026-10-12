@@ -1,6 +1,5 @@
 "use client";
 
-import Link from 'next/link';
 import { interviewerDetailsData } from '@/data/interviews/interviews.data';
 import UserProfile from './components/user-profile';
 import WhatToExpect from './components/what-to-expect';
@@ -13,6 +12,7 @@ import NoDataCard from '@/components/common/no-data-card';
 import ModalWrapper from '@/components/wrappers/modal-wrapper';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import BackButton from '@/components/common/back-button';
 
 interface InterviewerDetailsProps {
    interviewer: TInterviewerDetails;
@@ -32,13 +32,11 @@ const InterviewerDetails = ({ interviewer, id }: InterviewerDetailsProps) => {
       <div className="container s-margin px-4 md:px-6 max-w-7xl mx-auto">
          <div className="flex items-center gap-4 flex-wrap justify-between mb-6">
             {/* Navigation Link */}
-            <Link
-               href="/dashboard/interviewers"
-               className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-100 transition-colors group"
-            >
-               <interviewerDetailsData.backBtn.icon className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-               {interviewerDetailsData.backBtn.title}
-            </Link>
+            <BackButton
+               link="/dashboard/interviewers"
+               title={interviewerDetailsData.backBtn.title}
+               Icon={interviewerDetailsData.backBtn.icon}
+            />
             {/* Book an Appointment Button */}
             <Button
                variant='default'

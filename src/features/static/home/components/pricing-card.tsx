@@ -6,11 +6,7 @@ import { CustomPlan } from '../types/pricing.types';
 import { Button } from '@/components/ui/button';
 import { Show } from '@clerk/nextjs';
 import { useRouter } from 'nextjs-toploader/app';
-import { useMutation } from '@/hooks/use-mutation';
-import { createSubscription } from '@/services/client/cashfree.client.service';
-import { toast } from 'sonner';
-import CustomSpinner from '@/components/common/custom-spinner';
-import { useEffect } from 'react';
+import { useAppUser } from '@/hooks/use-app-user';
 
 interface PricingCardProps {
    i: number;
@@ -21,40 +17,32 @@ interface PricingCardProps {
 }
 
 const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: PricingCardProps) => {
+   const { user } = useAppUser();
    const router = useRouter();
 
    const hasActivePaidPlan = Boolean(currentPlan && currentPlan.toLowerCase() !== 'free');
    const isCurrentPlan = currentPlan?.toLowerCase() === plan.name.toLowerCase();
    const isPopular = plan.name === "Starter";
 
-   const { isPending, error, mutate } = useMutation(createSubscription);
+   const handleRedirect = () => {
+      const userRole = role || user?.role;
 
-   const handleSubmit = async () => {
-      const res = await mutate({
-         id: plan.id,
-         name: plan.name
-      });
+      // Return if plan ID is free
+      if (plan.id === 'free') return;
 
-      if (res?.subscription_session_id && window.Cashfree) {
-         toast.success("Redirecting to checkout...");
+      // Return if role is INTERVIEWER
+      if (userRole === 'INTERVIEWER') return;
 
-         const cashfree = window.Cashfree({
-            mode: 'sandbox'
-         });
+      // Redirect to checkout if user exists and user is a CANDIDATE
+      if (userRole === 'CANDIDATE') {
+         router.push(`/checkout/${plan.id}`);
+      }
 
-         await cashfree.subscriptionsCheckout({
-            subsSessionId: res.subscription_session_id,
-            redirectTarget: "_self"
-         });
+      // If user does not exist, redirect to sign in with redirect url
+      if (!user) {
+         router.push(`/sign-in?redirect_url=/checkout/${plan.id}`);
       }
    };
-
-   // Show error
-   useEffect(() => {
-      if (error) {
-         toast.error('Failed to initialize subscription');
-      }
-   }, [error]);
 
    return (
       <motion.div
@@ -107,7 +95,11 @@ const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: P
                         : "bg-white/5 hover:bg-white/10 text-zinc-200 border border-white/10"
                      }`}
                   onClick={() => {
-                     router.push('/sign-in');
+                     if (plan.id !== 'free') {
+                        router.push(`/sign-in?redirect_url=/checkout/${plan.id}`);
+                     } else {
+                        router.push('/sign-in');
+                     }
                   }}
                >
                   Get Started
@@ -117,7 +109,7 @@ const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: P
             {/* Checkout Button when signed in */}
             <Show when="signed-in">
                <Button
-                  disabled={isCurrentPlan || plan.id === 'free' || role === 'INTERVIEWER' || isPending}
+                  disabled={isCurrentPlan || plan.id === 'free' || role === 'INTERVIEWER'}
                   className={`w-full h-auto py-3.25 2xl:py-3.75 rounded-xl font-semibold font-geist tracking-wide transition-all duration-300 mb-7 2xl:mb-8
                   ${isCurrentPlan
                         ? "bg-emerald-500/15 hover:bg-emerald-500/20 text-emerald-200 border border-emerald-500/30"
@@ -125,16 +117,14 @@ const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: P
                            ? "bg-violet-600 hover:bg-violet-500 text-zinc-100"
                            : "bg-white/5 hover:bg-white/10 text-zinc-200 border border-white/10"
                      }`}
-                  onClick={() => void handleSubmit()}
+                  onClick={handleRedirect}
                >
                   {
-                     isPending ?
-                        <CustomSpinner text='Connecting...' /> :
-                        isCurrentPlan
-                           ? "Current Plan"
-                           : hasActivePaidPlan
-                              ? "Switch Plan"
-                              : "Subscribe"
+                     isCurrentPlan
+                        ? "Current Plan"
+                        : hasActivePaidPlan
+                           ? (plan.id === "free" ? "Free Tier" : "Switch Plan")
+                           : "Subscribe"
                   }
                </Button>
             </Show>
