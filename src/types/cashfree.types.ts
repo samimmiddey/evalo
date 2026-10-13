@@ -42,6 +42,9 @@ export interface CashfreeSubscriptionWebhookPayload {
    type: string;
    event_time?: string;
    data: {
+      subscription_id?: string;
+      cf_subscription_id?: string;
+      subscription_status?: string;
       subscription_details?: {
          subscription_id: string;
          subscription_status: string;
@@ -58,6 +61,12 @@ export interface CashfreeSubscriptionWebhookPayload {
          plan_name?: string;
          plan_type?: string;
       };
+      payment_id?: string;
+      cf_payment_id?: string;
+      payment_status?: string;
+      payment_type?: string;
+      payment_amount?: number;
+      payment_time?: string;
       payment_details?: {
          payment_id?: string;
          payment_status?: string;

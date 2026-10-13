@@ -195,18 +195,18 @@ export const handleCashfreeSubscriptionWebhook = async (
    const planDetails = payload.data?.plan_details;
    const paymentDetails = payload.data?.payment_details;
 
-   // Guard: Ignore events lacking a valid subscription identifier
-   if (!subDetails?.subscription_id) {
+   // Guard: Resolve subscription identifier with fallback
+   const subscriptionId = subDetails?.subscription_id ?? payload.data?.subscription_id;
+   if (!subscriptionId) {
       // eslint-disable-next-line no-console
       console.warn("Cashfree webhook ignored: missing subscription_id in payload");
       return;
    }
-   const subscriptionId = subDetails.subscription_id;
 
    // EVENT 1: SUBSCRIPTION_STATUS_CHANGED
    // Triggered when mandate status changes: INITIALIZED -> ACTIVE, CANCELLED, etc.
    if (eventType === 'SUBSCRIPTION_STATUS_CHANGED') {
-      const rawStatus = (subDetails.subscription_status ?? '').toUpperCase();
+      const rawStatus = (subDetails?.subscription_status ?? payload.data?.subscription_status ?? '').toUpperCase();
       const planSlug = resolvePlanSlug(planDetails?.plan_id, planDetails?.plan_name);
       let subsToCancelInCashfree: string[] = [];
 
@@ -408,19 +408,28 @@ export const handleCashfreeSubscriptionWebhook = async (
                }
             }
          }
-         // Sub-flow C: Intermediate or hold states (e.g., eNACH bank approval pending or user paused)
+         // Sub-flow C: Intermediate or hold states (e.g., eNACH bank approval pending, user paused, or card expired)
          else if (
             rawStatus === SubscriptionStatus.BANK_APPROVAL_PENDING ||
             rawStatus === SubscriptionStatus.ON_HOLD ||
-            rawStatus === SubscriptionStatus.PAUSED
+            rawStatus === SubscriptionStatus.PAUSED ||
+            rawStatus === 'CUSTOMER_PAUSED' ||
+            rawStatus === 'CARD_EXPIRED'
          ) {
+            const mappedStatus =
+               rawStatus === 'CUSTOMER_PAUSED'
+                  ? SubscriptionStatus.PAUSED
+                  : rawStatus === 'CARD_EXPIRED'
+                     ? SubscriptionStatus.ON_HOLD
+                     : (rawStatus as SubscriptionStatus);
+
             // Guard: Never overwrite a terminal subscription back to ON_HOLD or PAUSED
             await tx.subscription.updateMany({
                where: {
                   cashfreeSubId: subscriptionId,
                   status: { notIn: TERMINAL_STATUSES }
                },
-               data: { status: rawStatus }
+               data: { status: mappedStatus }
             });
          }
       });
@@ -477,22 +486,32 @@ export const handleCashfreeSubscriptionWebhook = async (
    // EVENT 2: SUBSCRIPTION_PAYMENT_SUCCESS
    // Triggered on recurring billing cycles (month 2, month 3, etc.)
    if (eventType === 'SUBSCRIPTION_PAYMENT_SUCCESS') {
-      if (!paymentDetails?.payment_time) {
-         // eslint-disable-next-line no-console
-         console.warn(`Payment success missing payment_time: ${subscriptionId}`);
-         throw new Error(`Missing payment_time in SUBSCRIPTION_PAYMENT_SUCCESS for ${subscriptionId}`);
+      const paymentType = (payload.data?.payment_type ?? '').toUpperCase();
+      // Guard: Ignore authorization payments (e.g. ₹1 mandate setup), only process real charges
+      if (paymentType === 'AUTH') {
+         return;
       }
 
-      const paymentTime = new Date(paymentDetails.payment_time);
+      const rawPaymentTime =
+         payload.event_time ??
+         payload.data?.payment_time ??
+         paymentDetails?.payment_time;
+
+      const paymentTime = rawPaymentTime ? new Date(rawPaymentTime) : new Date();
       if (isNaN(paymentTime.getTime())) {
          // eslint-disable-next-line no-console
-         console.warn(`Payment success invalid payment_time: ${paymentDetails.payment_time}`);
+         console.warn(`Payment success invalid payment_time: ${rawPaymentTime}`);
          throw new Error(`Invalid payment_time in SUBSCRIPTION_PAYMENT_SUCCESS for ${subscriptionId}`);
       }
 
+      const resolvedPaymentId =
+         payload.data?.payment_id ??
+         payload.data?.cf_payment_id ??
+         paymentDetails?.payment_id;
+
       // Generate a deterministic reference key for this payment
-      const paymentRef = paymentDetails.payment_id
-         ? `pay_${paymentDetails.payment_id}`
+      const paymentRef = resolvedPaymentId
+         ? `pay_${resolvedPaymentId}`
          : `pay_${subscriptionId}_${paymentTime.getTime()}`;
 
       await db.$transaction(async (tx) => {
@@ -582,6 +601,12 @@ export const handleCashfreeSubscriptionWebhook = async (
    // EVENT 3: SUBSCRIPTION_PAYMENT_FAILED
    // Triggered when a recurring charge fails (e.g., insufficient bank funds)
    if (eventType === 'SUBSCRIPTION_PAYMENT_FAILED') {
+      const paymentType = (payload.data?.payment_type ?? '').toUpperCase();
+      // Guard: Ignore authorization failures (mandate setup), only handle recurring charge failures
+      if (paymentType === 'AUTH') {
+         return;
+      }
+
       await db.$transaction(async (tx) => {
          const sub = await tx.subscription.findUnique({
             where: { cashfreeSubId: subscriptionId }
