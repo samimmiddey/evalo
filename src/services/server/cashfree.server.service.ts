@@ -62,6 +62,11 @@ export const createSubscription = async (plan: CreateSubscriptionParams): Promis
       throw new UnauthorizedError("Unauthenticated user");
    }
 
+   // Check if phone number exists
+   if (!user.phone) {
+      throw new ValidationError("A valid phone number is required to subscribe");
+   }
+
    // Allow candidate to subscribe only
    if (user.role !== 'CANDIDATE') {
       throw new ForbiddenError("Only a candidate can subscribe to a plan");
@@ -79,7 +84,7 @@ export const createSubscription = async (plan: CreateSubscriptionParams): Promis
          customer_details: {
             customer_name: `${user.firstName} ${user.lastName}`,
             customer_email: user.email,
-            customer_phone: '9051461078'
+            customer_phone: user.phone
          },
          plan_details: {
             plan_id: plan.id

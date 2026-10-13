@@ -32,6 +32,7 @@ export interface UserServer {
    expertise: string[];
    creditRate: number;
    creditBalance: number;
+   phone: string | null;
 }
 
 export type UserClient = Omit<

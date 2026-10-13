@@ -54,7 +54,7 @@ const CandidateTab = () => {
             {
                data.formFields.map((field) => {
                   return (
-                     <div key={field.name} className="flex flex-col gap-2">
+                     <div key={field.name} className={`flex flex-col gap-2 ${field.name === 'phone' ? 'sm:col-span-2' : ''}`}>
                         <Label htmlFor={field.name} className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
                            <field.icon className="w-3.5 h-3.5 text-violet-400" />
                            {field.label}

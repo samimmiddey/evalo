@@ -39,7 +39,7 @@ const InterviewerTab = () => {
                   data.formFields.map((field) => (
                      <div
                         key={field.name}
-                        className={`flex flex-col gap-2 ${field.type === "textarea"
+                        className={`flex flex-col gap-2 ${(field.name === "bio" || field.name === 'phone')
                            ? "sm:col-span-2"
                            : ""
                            }`}
