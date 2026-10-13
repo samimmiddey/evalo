@@ -143,11 +143,42 @@ export const verifyCashfreeWebhookSignature = ({
    return crypto.timingSafeEqual(sigBuffer, expBuffer);
 };
 
+// Terminal subscription statuses in Cashfree / DB that can never transition back to ACTIVE
+const TERMINAL_STATUSES: SubscriptionStatus[] = [
+   SubscriptionStatus.CANCELLED,
+   SubscriptionStatus.EXPIRED,
+   SubscriptionStatus.COMPLETED
+];
+
+// Helper to detect if Cashfree rejected cancel because the mandate is already in a terminal/cancelled state or non-existent
+const isAlreadyCancelledOrTerminal = (status: number, data: unknown): boolean => {
+   // HTTP 404 means the subscription does not exist in Cashfree (terminal / deleted)
+   if (status === 404) return true;
+   if (typeof data !== 'object' || data === null) return false;
+   const record = data as Record<string, unknown>;
+   const message = typeof record.message === 'string' ? record.message.toLowerCase() : '';
+   const code = typeof record.code === 'string' ? record.code.toLowerCase() : '';
+   return (
+      code.includes('cancelled') ||
+      code.includes('inactive') ||
+      code.includes('not_active') ||
+      code.includes('not_found') ||
+      message.includes('already cancelled') ||
+      message.includes('not active') ||
+      message.includes('cannot be cancelled') ||
+      message.includes('already completed') ||
+      message.includes('already expired') ||
+      message.includes('does not exist')
+   );
+};
+
 // Helper to normalize and map Cashfree plan identifiers to local PLAN types ('starter' | 'pro' | 'free')
 const resolvePlanSlug = (planId?: string, planName?: string): PLAN => {
+   if (planId === STARTER) return 'starter';
+   if (planId === PRO) return 'pro';
    const text = `${planId ?? ''} ${planName ?? ''}`.toLowerCase();
-   if (text.includes('pro')) return 'pro';
    if (text.includes('starter')) return 'starter';
+   if (text.includes('pro')) return 'pro';
    return 'free';
 };
 
@@ -165,7 +196,11 @@ export const handleCashfreeSubscriptionWebhook = async (
    const paymentDetails = payload.data?.payment_details;
 
    // Guard: Ignore events lacking a valid subscription identifier
-   if (!subDetails?.subscription_id) return;
+   if (!subDetails?.subscription_id) {
+      // eslint-disable-next-line no-console
+      console.warn("Cashfree webhook ignored: missing subscription_id in payload");
+      return;
+   }
    const subscriptionId = subDetails.subscription_id;
 
    // EVENT 1: SUBSCRIPTION_STATUS_CHANGED
@@ -173,36 +208,73 @@ export const handleCashfreeSubscriptionWebhook = async (
    if (eventType === 'SUBSCRIPTION_STATUS_CHANGED') {
       const rawStatus = (subDetails.subscription_status ?? '').toUpperCase();
       const planSlug = resolvePlanSlug(planDetails?.plan_id, planDetails?.plan_name);
+      let subsToCancelInCashfree: string[] = [];
 
       await db.$transaction(async (tx) => {
          // Sub-flow A: Subscription is ACTIVE (New authorization approved or mandate active)
          if (rawStatus === SubscriptionStatus.ACTIVE) {
-            // Step 1: Resolve the user by customer email provided in webhook
-            let user = null;
-            if (custDetails?.customer_email) {
+            // Guard: Never let a paid ACTIVE event silently become free
+            if (planSlug === 'free') {
+               // eslint-disable-next-line no-console
+               console.error(`Unmapped plan on ACTIVE subscription ${subscriptionId}: ${planDetails?.plan_id}`);
+               throw new Error(`Unmapped plan on ACTIVE subscription ${subscriptionId}: ${planDetails?.plan_id}`);
+            }
+
+            // Step 1: Resolve the user via existing subscription record first, then fallback to email
+            const existingSub = await tx.subscription.findUnique({
+               where: { cashfreeSubId: subscriptionId }
+            });
+
+            let user = existingSub
+               ? await tx.user.findUnique({ where: { id: existingSub.userId } })
+               : null;
+
+            if (!user && custDetails?.customer_email) {
                user = await tx.user.findUnique({
                   where: { email: custDetails.customer_email }
                });
             }
 
-            // Fallback: If email lookup fails, look up the existing subscription's linked user
+            // If user cannot be found, throw so Cashfree retries the webhook
             if (!user) {
-               const existing = await tx.subscription.findUnique({
-                  where: { cashfreeSubId: subscriptionId }
-               });
-               if (existing) {
-                  user = await tx.user.findUnique({ where: { id: existing.userId } });
-               }
+               // eslint-disable-next-line no-console
+               console.error(`User not found for active subscription ${subscriptionId}`);
+               throw new Error(`User not found for subscription ${subscriptionId}`);
             }
 
             // Safety guard: only candidate accounts can hold subscriptions
-            if (user?.role !== 'CANDIDATE') return;
+            if (user.role !== 'CANDIDATE') {
+               // eslint-disable-next-line no-console
+               console.warn(`User ${user.id} is not a candidate (role: ${user.role})`);
+               return;
+            }
 
-            // Step 2: Determine if this is the initial activation (to prevent duplicate first-cycle credits)
-            const existingSub = await tx.subscription.findUnique({
-               where: { cashfreeSubId: subscriptionId }
-            });
-            const isFirstActivation = existingSub?.status !== SubscriptionStatus.ACTIVE;
+            // Concurrency lock: serialize concurrent webhooks for this candidate
+            await tx.$executeRaw`SELECT id FROM "User" WHERE id = ${user.id} FOR UPDATE`;
+
+            // Step 2: Check existing subscription state
+            // CRITICAL GUARD: Never reactivate a subscription that is already in a terminal state (e.g. cancelled after upgrading). Prevents delayed ACTIVE webhooks from resurrecting an old plan and cancelling the candidate's new active plan.
+            if (existingSub && TERMINAL_STATUSES.includes(existingSub.status)) {
+               // Check if the candidate currently has another active subscription. If so, make sure this old mandate is cancelled in Cashfree so it doesn't linger as an unmanaged live mandate!
+               const otherActive = await tx.subscription.findFirst({
+                  where: {
+                     userId: user.id,
+                     status: SubscriptionStatus.ACTIVE,
+                     cashfreeSubId: { not: subscriptionId }
+                  }
+               });
+
+               if (otherActive) {
+                  subsToCancelInCashfree.push(subscriptionId);
+               }
+
+               // eslint-disable-next-line no-console
+               console.warn(`Ignoring ACTIVE event for already terminal subscription ${subscriptionId}`);
+               return;
+            }
+
+            // Determine if this is the initial activation (currentPeriodStart set on first activation only)
+            const isFirstActivation = existingSub?.currentPeriodStart == null;
 
             // Step 3: Upsert the subscription model in the database
             await tx.subscription.upsert({
@@ -219,33 +291,69 @@ export const handleCashfreeSubscriptionWebhook = async (
                update: {
                   status: SubscriptionStatus.ACTIVE,
                   planSlug,
-                  currentPeriodStart: new Date(),
+                  currentPeriodStart: existingSub?.currentPeriodStart ?? new Date(),
                }
             });
 
-            // Step 4: Allocate initial plan credits if this is the first activation
-            if (isFirstActivation && planSlug !== 'free') {
+            // Step 4: Collect previous live/held/paused subscriptions to cancel in Cashfree
+            // Only mandates that were actually live/paused should be cancelled via Cashfree manage API.
+            const staleSubsToCancelApi = await tx.subscription.findMany({
+               where: {
+                  userId: user.id,
+                  cashfreeSubId: { not: subscriptionId },
+                  status: {
+                     in: [
+                        SubscriptionStatus.ACTIVE,
+                        SubscriptionStatus.ON_HOLD,
+                        SubscriptionStatus.PAUSED,
+                     ]
+                  }
+               }
+            });
+
+            subsToCancelInCashfree = staleSubsToCancelApi.map((s) => s.cashfreeSubId);
+
+            // Clean up any pending bank approval subscriptions locally without calling Cashfree manage API
+            await tx.subscription.updateMany({
+               where: {
+                  userId: user.id,
+                  cashfreeSubId: { not: subscriptionId },
+                  status: SubscriptionStatus.BANK_APPROVAL_PENDING
+               },
+               data: { status: SubscriptionStatus.CANCELLED }
+            });
+
+            // Step 5: Allocate initial plan credits if this is the first activation
+            if (isFirstActivation) {
                const creditsToGrant = PLAN_CREDITS[planSlug];
+               const activationTxId = `act_${subscriptionId}`;
 
-               // Update candidate plan, add credits, and record period start
-               await tx.user.update({
-                  where: { id: user.id },
-                  data: {
-                     currentPlan: planSlug,
-                     credits: { increment: creditsToGrant },
-                     creditsLastAllocatedAt: new Date(),
-                     lastProcessedPeriodStart: new Date(),
-                  }
+               const existingCreditTx = await tx.creditTransaction.findUnique({
+                  where: { id: activationTxId }
                });
 
-               // Record transaction audit log for credit purchase
-               await tx.creditTransaction.create({
-                  data: {
-                     userId: user.id,
-                     amount: creditsToGrant,
-                     type: 'CREDIT_PURCHASE',
-                  }
-               });
+               if (!existingCreditTx) {
+                  // Update candidate plan, add credits, and record period start
+                  await tx.user.update({
+                     where: { id: user.id },
+                     data: {
+                        currentPlan: planSlug,
+                        credits: { increment: creditsToGrant },
+                        creditsLastAllocatedAt: new Date(),
+                        lastProcessedPeriodStart: new Date(),
+                     }
+                  });
+
+                  // Record transaction audit log with deterministic ID to guarantee uniqueness
+                  await tx.creditTransaction.create({
+                     data: {
+                        id: activationTxId,
+                        userId: user.id,
+                        amount: creditsToGrant,
+                        type: 'CREDIT_PURCHASE',
+                     }
+                  });
+               }
             } else {
                // If already active or switching plans without re-crediting, sync user's current plan
                await tx.user.update({
@@ -261,22 +369,43 @@ export const handleCashfreeSubscriptionWebhook = async (
             rawStatus === 'CUSTOMER_CANCELLED' ||
             rawStatus === SubscriptionStatus.COMPLETED
          ) {
-            // Update subscription record to CANCELLED
+            const finalStatus =
+               rawStatus === SubscriptionStatus.EXPIRED
+                  ? SubscriptionStatus.EXPIRED
+                  : rawStatus === SubscriptionStatus.COMPLETED
+                     ? SubscriptionStatus.COMPLETED
+                     : SubscriptionStatus.CANCELLED;
+
+            // Update subscription record to terminal status
             await tx.subscription.updateMany({
                where: { cashfreeSubId: subscriptionId },
-               data: { status: SubscriptionStatus.CANCELLED }
+               data: { status: finalStatus }
             });
 
-            // Revert candidate's plan tier to 'free' (remaining credits are retained)
             const existing = await tx.subscription.findUnique({
                where: { cashfreeSubId: subscriptionId }
             });
 
             if (existing) {
-               await tx.user.updateMany({
-                  where: { id: existing.userId, currentPlan: existing.planSlug },
-                  data: { currentPlan: 'free' }
+               // Concurrency lock: serialize concurrent webhooks for this user
+               await tx.$executeRaw`SELECT id FROM "User" WHERE id = ${existing.userId} FOR UPDATE`;
+
+               // Guard: Check if user has any other active subscription before reverting plan tier
+               // Prevents downgrade to 'free' when cancelling an old subscription after upgrading to a new one or re-subscribing to the same plan tier.
+               const otherActive = await tx.subscription.findFirst({
+                  where: {
+                     userId: existing.userId,
+                     status: SubscriptionStatus.ACTIVE,
+                     cashfreeSubId: { not: subscriptionId }
+                  }
                });
+
+               if (!otherActive) {
+                  await tx.user.updateMany({
+                     where: { id: existing.userId, currentPlan: existing.planSlug },
+                     data: { currentPlan: 'free' }
+                  });
+               }
             }
          }
          // Sub-flow C: Intermediate or hold states (e.g., eNACH bank approval pending or user paused)
@@ -285,74 +414,167 @@ export const handleCashfreeSubscriptionWebhook = async (
             rawStatus === SubscriptionStatus.ON_HOLD ||
             rawStatus === SubscriptionStatus.PAUSED
          ) {
+            // Guard: Never overwrite a terminal subscription back to ON_HOLD or PAUSED
             await tx.subscription.updateMany({
-               where: { cashfreeSubId: subscriptionId },
+               where: {
+                  cashfreeSubId: subscriptionId,
+                  status: { notIn: TERMINAL_STATUSES }
+               },
                data: { status: rawStatus }
             });
          }
       });
+
+      // Cancel previous active/held/paused mandates in Cashfree to prevent recurring duplicate charges
+      for (const oldSubId of subsToCancelInCashfree) {
+         try {
+            const response = await apiCashfree.post(`/subscriptions/${oldSubId}/manage`, {
+               json: { action: 'CANCEL' },
+               throwHttpErrors: false
+            });
+
+            if (!response.ok) {
+               const errorData = await response.json<Record<string, unknown>>().catch(() => null);
+               if (!isAlreadyCancelledOrTerminal(response.status, errorData)) {
+                  // eslint-disable-next-line no-console
+                  console.error(`Failed to cancel Cashfree subscription ${oldSubId}:`, errorData);
+                  // Throw so webhook route returns 500 and Cashfree retries delivery
+                  throw new Error(
+                     `Failed to cancel previous Cashfree subscription ${oldSubId}: ${JSON.stringify(errorData)}`
+                  );
+               }
+            }
+
+            // Once confirmed cancelled in Cashfree (or already terminal/404), update local DB status
+            await db.subscription.updateMany({
+               where: { cashfreeSubId: oldSubId },
+               data: { status: SubscriptionStatus.CANCELLED }
+            });
+         } catch (error: unknown) {
+            if (error instanceof Error && error.message.startsWith('Failed to cancel')) {
+               throw error;
+            }
+            if (typeof error === 'object' && error !== null && 'response' in error) {
+               const errRes = (error as { response: Response; }).response;
+               const errData = (await errRes.json().catch(() => null)) as Record<string, unknown> | null;
+               if (isAlreadyCancelledOrTerminal(errRes.status, errData)) {
+                  await db.subscription.updateMany({
+                     where: { cashfreeSubId: oldSubId },
+                     data: { status: SubscriptionStatus.CANCELLED }
+                  });
+                  continue;
+               }
+            }
+            // eslint-disable-next-line no-console
+            console.error(`Unexpected error cancelling Cashfree subscription ${oldSubId}:`, error);
+            throw error; // Let 500 trigger Cashfree retry
+         }
+      }
+
       return;
    }
 
    // EVENT 2: SUBSCRIPTION_PAYMENT_SUCCESS
    // Triggered on recurring billing cycles (month 2, month 3, etc.)
    if (eventType === 'SUBSCRIPTION_PAYMENT_SUCCESS') {
-      const paymentTime = paymentDetails?.payment_time
-         ? new Date(paymentDetails.payment_time)
-         : new Date();
+      if (!paymentDetails?.payment_time) {
+         // eslint-disable-next-line no-console
+         console.warn(`Payment success missing payment_time: ${subscriptionId}`);
+         throw new Error(`Missing payment_time in SUBSCRIPTION_PAYMENT_SUCCESS for ${subscriptionId}`);
+      }
+
+      const paymentTime = new Date(paymentDetails.payment_time);
+      if (isNaN(paymentTime.getTime())) {
+         // eslint-disable-next-line no-console
+         console.warn(`Payment success invalid payment_time: ${paymentDetails.payment_time}`);
+         throw new Error(`Invalid payment_time in SUBSCRIPTION_PAYMENT_SUCCESS for ${subscriptionId}`);
+      }
+
+      // Generate a deterministic reference key for this payment
+      const paymentRef = paymentDetails.payment_id
+         ? `pay_${paymentDetails.payment_id}`
+         : `pay_${subscriptionId}_${paymentTime.getTime()}`;
 
       await db.$transaction(async (tx) => {
-         // Step 1: Locate the active subscription
+         // Step 1: Locate the subscription
          const sub = await tx.subscription.findUnique({
             where: { cashfreeSubId: subscriptionId }
          });
-         if (!sub) return;
+
+         // If the subscription record does not exist yet (e.g. PAYMENT_SUCCESS arrived before ACTIVE),
+         // throw so Cashfree retries the webhook until ACTIVE has committed
+         if (!sub) {
+            // eslint-disable-next-line no-console
+            console.warn(`Payment success received for unknown subscription: ${subscriptionId}. Throwing to trigger retry.`);
+            throw new Error(`Subscription ${subscriptionId} not found yet for payment success`);
+         }
 
          // Step 2: Ensure user exists and is a candidate
          const user = await tx.user.findUnique({ where: { id: sub.userId } });
          if (user?.role !== 'CANDIDATE') return;
 
-         const planSlug = (sub.planSlug as PLAN) || 'starter';
+         // Concurrency lock: serialize concurrent operations for this user
+         await tx.$executeRaw`SELECT id FROM "User" WHERE id = ${user.id} FOR UPDATE`;
+
+         // Re-read subscription inside lock to ensure isTerminal is evaluated against fresh state
+         const freshSub = await tx.subscription.findUnique({
+            where: { id: sub.id }
+         });
+         if (!freshSub) return;
+
+         const isTerminal = TERMINAL_STATUSES.includes(freshSub.status);
+         const planSlug = (freshSub.planSlug as PLAN) || 'starter';
          const creditsToGrant = PLAN_CREDITS[planSlug] || 0;
 
-         // Step 3: Idempotent period claim.
-         // Atomically checks if this period payment was already processed
-         // If `lastProcessedPeriodStart` is already >= `paymentTime`, this query updates 0 rows
-         // preventing duplicate credits if Cashfree delivers this webhook multiple times
-         const claimed = await tx.user.updateMany({
-            where: {
-               id: user.id,
-               role: 'CANDIDATE',
-               OR: [
-                  { lastProcessedPeriodStart: null },
-                  { lastProcessedPeriodStart: { lt: paymentTime } }
-               ]
-            },
-            data: {
-               credits: { increment: creditsToGrant },
-               creditsLastAllocatedAt: new Date(),
-               lastProcessedPeriodStart: paymentTime,
-            }
+         // Step 3: Transaction-level idempotency claim
+         const existingTx = await tx.creditTransaction.findUnique({
+            where: { id: paymentRef }
          });
 
-         // Step 4: If claimed successfully, record transaction log and update subscription period
-         if (claimed.count > 0 && creditsToGrant > 0) {
+         // Check if initial cycle credits were already granted for this subscription at activation
+         const initialActivationTx = await tx.creditTransaction.findUnique({
+            where: { id: `act_${subscriptionId}` }
+         });
+
+         // Determine if this payment is the first cycle payment that was already credited at activation
+         const alreadyCreditedInitialCycle = Boolean(
+            initialActivationTx &&
+            freshSub.currentPeriodStart &&
+            Math.abs(paymentTime.getTime() - freshSub.currentPeriodStart.getTime()) < 25 * 24 * 60 * 60 * 1000
+         );
+
+         if (!existingTx && creditsToGrant > 0) {
+            if (!alreadyCreditedInitialCycle) {
+               // Grant credits to candidate and record period start (renewal cycles)
+               await tx.user.update({
+                  where: { id: user.id },
+                  data: {
+                     credits: { increment: creditsToGrant },
+                     creditsLastAllocatedAt: new Date(),
+                     lastProcessedPeriodStart: paymentTime,
+                  }
+               });
+            }
+
+            // Record transaction log with deterministic primary key
             await tx.creditTransaction.create({
                data: {
+                  id: paymentRef,
                   userId: user.id,
-                  amount: creditsToGrant,
+                  amount: alreadyCreditedInitialCycle ? 0 : creditsToGrant,
                   type: 'CREDIT_PURCHASE',
                }
             });
-
-            await tx.subscription.update({
-               where: { id: sub.id },
-               data: {
-                  status: SubscriptionStatus.ACTIVE,
-                  currentPeriodStart: paymentTime,
-               }
-            });
          }
+
+         // Step 4: Never resurrect a cancelled, expired, or completed subscription back to ACTIVE
+         await tx.subscription.update({
+            where: { id: freshSub.id },
+            data: {
+               status: isTerminal ? freshSub.status : SubscriptionStatus.ACTIVE,
+               currentPeriodStart: paymentTime,
+            }
+         });
       });
       return;
    }
@@ -361,11 +583,18 @@ export const handleCashfreeSubscriptionWebhook = async (
    // Triggered when a recurring charge fails (e.g., insufficient bank funds)
    if (eventType === 'SUBSCRIPTION_PAYMENT_FAILED') {
       await db.$transaction(async (tx) => {
-         // Mark subscription ON_HOLD until payment succeeds on retry or is resolved
-         await tx.subscription.updateMany({
-            where: { cashfreeSubId: subscriptionId },
-            data: { status: SubscriptionStatus.ON_HOLD }
+         const sub = await tx.subscription.findUnique({
+            where: { cashfreeSubId: subscriptionId }
          });
+         if (!sub) return;
+
+         // Do not overwrite a terminal status (CANCELLED, EXPIRED, COMPLETED) to ON_HOLD
+         if (!TERMINAL_STATUSES.includes(sub.status)) {
+            await tx.subscription.update({
+               where: { id: sub.id },
+               data: { status: SubscriptionStatus.ON_HOLD }
+            });
+         }
       });
       return;
    }
