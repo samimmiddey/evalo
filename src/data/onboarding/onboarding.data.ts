@@ -22,10 +22,6 @@ export const onboardingData: OnboardingData = {
       }
    ],
    candidateTab: {
-      selectedRoleBadge: {
-         title: 'Candidate',
-         value: 'INTERVIEWER'
-      },
       contextCard: {
          icon: Flame,
          title: 'Candidate Experience',
@@ -63,10 +59,6 @@ export const onboardingData: OnboardingData = {
       ]
    },
    interviewerTab: {
-      selectedRoleBadge: {
-         title: 'Interviewer',
-         value: 'CANDIDATE'
-      },
       formFields: [
          {
             type: 'text',
