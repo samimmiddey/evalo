@@ -10,15 +10,17 @@ import PageHeaderLayout from "@/components/layouts/page-header-layout";
 import HeaderLayout from "@/components/layouts/header-layout";
 import PrimaryTitle from "@/components/common/primary-title";
 import PrimaryBody from "@/components/common/primary-body";
+import SecondaryTitle from "@/components/common/secondary-title";
 import { Button } from "@/components/ui/button";
 import { DashboardStats, DashboardStatItem } from "./components/dashboard-stats";
 import { DashboardSessionCard } from "./components/dashboard-session-card";
 import { DashboardQuickActions } from "./components/dashboard-quick-actions";
 import { dashboardData } from "@/data/interviews/interviews.data";
 import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview-skeleton";
-import { Calendar, CheckCircle2, Compass, Flame, Video } from "lucide-react";
+import { AlertTriangle, Calendar, CheckCircle2, Compass, Flame, Video } from "lucide-react";
 import Link from "next/link";
 import ErrorCard from "@/components/common/error-card";
+import { PRO, STARTER } from "@/constants/cashfree";
 
 export const CandidateOverview = () => {
    const { user } = useAppUser();
@@ -73,6 +75,8 @@ export const CandidateOverview = () => {
       }
    ];
 
+   const checkoutPlanId = user?.currentPlan?.toLowerCase() === 'pro' ? PRO : STARTER;
+
    return (
       <div className="container s-margin space-y-6 2xl:space-y-7">
          {/* Hero Header */}
@@ -95,6 +99,43 @@ export const CandidateOverview = () => {
                </Link>
             </div>
          </PageHeaderLayout>
+
+         {/* ON_HOLD payment fix banner */}
+         {
+            user?.subscriptionStatus === 'ON_HOLD' && (
+               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-amber-500/20 bg-amber-500/10 p-5 sm:p-4">
+                  <div className="flex items-center max-sm:flex-col max-sm:text-center gap-3">
+                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/20 text-amber-400">
+                        <AlertTriangle className="h-5 w-5" />
+                     </div>
+                     <div>
+                        <SecondaryTitle
+                           text="Subscription payment on hold"
+                           className="text-[15px]! font-medium text-amber-200 mb-1"
+                        />
+                        <PrimaryBody
+                           text="Your latest renewal payment failed. Complete payment to keep your interview credits and plan active."
+                           className="text-xs lg:text-xs 2xl:text-[13px] text-amber-100/90"
+                        />
+                     </div>
+                  </div>
+                  <div className="shrink-0 max-sm:w-full flex justify-end">
+                     <Link
+                        href={`/checkout/${checkoutPlanId}`}
+                        className="relative inline-flex h-9 overflow-hidden rounded-lg p-0.5 focus:outline-none max-sm:w-full"
+                     >
+                        {/* Flowing border colors: seamless loop, no hard edge */}
+                        <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite_reverse] bg-[conic-gradient(from_0deg,#fde047,#ea580c,#fde047,#ea580c,#fde047)]" />
+
+                        {/* Static gradient body (no animation) */}
+                        <span className="relative inline-flex h-full w-full items-center justify-center rounded-md bg-linear-to-r from-yellow-400 to-orange-500 px-4 text-sm font-semibold text-zinc-950 transition-opacity hover:opacity-90">
+                           Fix Payment
+                        </span>
+                     </Link>
+                  </div>
+               </div>
+            )
+         }
 
          {/* 4 KPI Stats Cards */}
          <DashboardStats items={statItems} />

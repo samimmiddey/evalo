@@ -45,6 +45,16 @@ export const fetchPlans = async (): Promise<PlansResponse> => {
    }
 };
 
+// Helper to normalize and map Cashfree plan identifiers to local PLAN types ('starter' | 'pro' | 'free')
+const resolvePlanSlug = (planId?: string, planName?: string): PLAN => {
+   if (planId === STARTER) return 'starter';
+   if (planId === PRO) return 'pro';
+   const text = `${planId ?? ''} ${planName ?? ''}`.toLowerCase();
+   if (text.includes('starter')) return 'starter';
+   if (text.includes('pro')) return 'pro';
+   return 'free';
+};
+
 // Create a subscription
 export const createSubscription = async (plan: CreateSubscriptionParams): Promise<CreateSubscriptionResponse> => {
    const user = await checkUser();
@@ -64,9 +74,22 @@ export const createSubscription = async (plan: CreateSubscriptionParams): Promis
       throw new ForbiddenError("Only a candidate can subscribe to a plan");
    }
 
-   // Check if the user is not on the same plan already
-   if (user.currentPlan.toLowerCase().trim() === plan.name.toLowerCase().trim()) {
-      throw new ForbiddenError("You are already on the selected plan");
+   const targetPlanSlug = resolvePlanSlug(plan.id, plan.name);
+   if (targetPlanSlug === 'free') {
+      throw new ValidationError("Invalid subscription plan");
+   }
+
+   // Check if the candidate already holds an active, healthy mandate for this specific plan tier.
+   // (If on hold, paused, or cancelled, allow re-subscribing / mandate recovery).
+   const activeSub = await db.subscription.findFirst({
+      where: {
+         userId: user.id,
+         status: SubscriptionStatus.ACTIVE,
+      }
+   });
+
+   if (activeSub?.planSlug === targetPlanSlug) {
+      throw new ForbiddenError("You already have an active subscription for this plan");
    }
 
    try {
@@ -167,16 +190,6 @@ const isAlreadyCancelledOrTerminal = (status: number, data: unknown): boolean =>
       message.includes('already expired') ||
       message.includes('does not exist')
    );
-};
-
-// Helper to normalize and map Cashfree plan identifiers to local PLAN types ('starter' | 'pro' | 'free')
-const resolvePlanSlug = (planId?: string, planName?: string): PLAN => {
-   if (planId === STARTER) return 'starter';
-   if (planId === PRO) return 'pro';
-   const text = `${planId ?? ''} ${planName ?? ''}`.toLowerCase();
-   if (text.includes('starter')) return 'starter';
-   if (text.includes('pro')) return 'pro';
-   return 'free';
 };
 
 // Core processor for Cashfree Subscription lifecycle events. Handles three key events:
