@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Show } from '@clerk/nextjs';
 import { useRouter } from 'nextjs-toploader/app';
 import { useAppUser } from '@/hooks/use-app-user';
+import useUIStore from '@/store/ui-store';
 
 interface PricingCardProps {
    i: number;
@@ -19,10 +20,12 @@ interface PricingCardProps {
 const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: PricingCardProps) => {
    const { user } = useAppUser();
    const router = useRouter();
+   const { setUpgradeModal } = useUIStore();
 
    const hasActivePaidPlan = Boolean(currentPlan && currentPlan.toLowerCase() !== 'free');
    const isCurrentPlan = currentPlan?.toLowerCase() === plan.name.toLowerCase();
-   const isPopular = plan.name === "Starter";
+   const isOnHold = isCurrentPlan && user?.subscriptionStatus === 'ON_HOLD';
+   const isPopular = plan.isPopular;
 
    const handleRedirect = () => {
       const userRole = role || user?.role;
@@ -35,12 +38,8 @@ const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: P
 
       // Redirect to checkout if user exists and user is a CANDIDATE
       if (userRole === 'CANDIDATE') {
+         setUpgradeModal(false);
          router.push(`/checkout/${plan.id}`);
-      }
-
-      // If user does not exist, redirect to sign in with redirect url
-      if (!user) {
-         router.push(`/sign-in?redirect_url=/checkout/${plan.id}`);
       }
    };
 
@@ -109,22 +108,30 @@ const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: P
             {/* Checkout Button when signed in */}
             <Show when="signed-in">
                <Button
-                  disabled={isCurrentPlan || plan.id === 'free' || role === 'INTERVIEWER'}
+                  disabled={(!isOnHold && isCurrentPlan) || plan.id === 'free' || role === 'INTERVIEWER'}
                   className={`w-full h-auto py-3.25 2xl:py-3.75 rounded-xl font-semibold font-geist tracking-wide transition-all duration-300 mb-7 2xl:mb-8
-                  ${isCurrentPlan
-                        ? "bg-emerald-500/15 hover:bg-emerald-500/20 text-emerald-200 border border-emerald-500/30"
-                        : isPopular
-                           ? "bg-violet-600 hover:bg-violet-500 text-zinc-100"
-                           : "bg-white/5 hover:bg-white/10 text-zinc-200 border border-white/10"
+                  ${isOnHold
+                        ? "bg-amber-500 hover:bg-amber-400 text-zinc-950 font-semibold"
+                        : isCurrentPlan
+                           ? "bg-emerald-500/15 hover:bg-emerald-500/20 text-emerald-200 border border-emerald-500/30"
+                           : isPopular
+                              ? "bg-violet-600 hover:bg-violet-500 text-zinc-100"
+                              : "bg-white/5 hover:bg-white/10 text-zinc-200 border border-white/10"
                      }`}
                   onClick={handleRedirect}
                >
                   {
-                     isCurrentPlan
-                        ? "Current Plan"
-                        : hasActivePaidPlan
-                           ? (plan.id === "free" ? "Free Tier" : "Switch Plan")
-                           : "Subscribe"
+                     role !== 'INTERVIEWER' ? (
+                        isOnHold
+                           ? "Fix Payment"
+                           : isCurrentPlan
+                              ? "Current Plan"
+                              : hasActivePaidPlan
+                                 ? (plan.id === "free" ? "Free Tier" : "Switch Plan")
+                                 : "Subscribe"
+                     ) : (
+                        plan.name
+                     )
                   }
                </Button>
             </Show>
