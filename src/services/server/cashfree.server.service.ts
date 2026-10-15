@@ -15,18 +15,10 @@ import {
 } from "@/types/cashfree.types";
 import { PLAN, PLAN_CREDITS } from "@/types/user.types";
 import { SubscriptionStatus } from "@/generated/prisma/enums";
-import { currentUser } from "@clerk/nextjs/server";
 import { checkUser } from "./user.server.service";
 
 // Fetch Subscription Plans
 export const fetchPlans = async (): Promise<PlansResponse> => {
-   const user = await currentUser();
-
-   // Check user authentication
-   if (!user) {
-      throw new UnauthorizedError("Unauthenticated user");
-   }
-
    // Get plans
    try {
       const [starter, pro] = await Promise.all([
