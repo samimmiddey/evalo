@@ -38,3 +38,9 @@ export const GET_PLATFORM_CONFIG = '/platform-config';
 export const GET_PLANS = '/cashfree/plans';
 export const CREATE_SUBSCRIPTION = '/cashfree/create-subscription';
 export const GET_SUBSCRIPTION = '/cashfree/subscription-details';
+
+// Billing
+export const GET_BILLING = '/billing';
+export const CANCEL_SUBSCRIPTION = '/billing/cancel';
+export const GET_CASHFREE_BILLING_DATA = (id: string) => `/subscriptions/${id}/payments`;
+export const CANCEL_CASHFREE_SUBSCRIPTION = (id: string) => `/subscriptions/${id}/manage`;

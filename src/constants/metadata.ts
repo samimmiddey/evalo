@@ -102,4 +102,9 @@ export const PAGE_METADATA = {
       description:
          'Review your subscription plan details, credits allocation, and billing breakdown before authorizing payment.'
    },
+   billing: {
+      title: 'Billing & Credits',
+      description:
+         'Manage your mock interview subscription plan, track credit ledger, and review payment invoices.'
+   },
 } as const satisfies Record<string, Metadata>;
