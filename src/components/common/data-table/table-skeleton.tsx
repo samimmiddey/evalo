@@ -11,7 +11,7 @@ const TableSkeleton = ({ rows = 5, columns }: TableSkeletonProps) => {
       <>
          {
             Array.from({ length: rows }).map((_, i) => (
-               <TableRow key={i}>
+               <TableRow key={i} className="hover:bg-transparent">
                   {
                      Array.from({ length: columns }).map((_, j) => (
                         <TableCell key={j}>
