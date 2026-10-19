@@ -3,12 +3,15 @@ import { ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } fro
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { apiCashfree } from "@/lib/api-cashfree";
-import { SubscriptionStatus } from "@/generated/prisma/enums";
+import { SubscriptionStatus, TransactionType } from "@/generated/prisma/enums";
 import {
    BillingData,
+   BillingPaginationParams,
    BillingPlanInfo,
    CancelSubscriptionResponse,
    CandidateCreditTransaction,
+   CandidatePaymentsData,
+   CandidateTransactionsData,
    CashfreePaymentRecord
 } from "../types/billing.types";
 import { CANCEL_CASHFREE_SUBSCRIPTION, GET_CASHFREE_BILLING_DATA } from "@/constants/query-urls";
@@ -20,8 +23,12 @@ interface RawCashfreePayment {
    payment_status?: string;
    payment_amount?: number;
    payment_currency?: string;
-   payment_time?: string;
+   payment_initiated_date?: string;
    payment_schedule_date?: string;
+   payment_time?: string;
+   authorization_details?: {
+      authorization_time?: string;
+   };
    payment_type?: string;
    payment_method?: string;
 }
@@ -73,7 +80,7 @@ const getPlanDisplayDetails = (planSlug?: string | null) => {
    return { planName: "Free Tier", amount: 0 };
 };
 
-// Fetch full billing overview for candidate
+// Fetch billing overview (plan & credits) for candidate
 export const getCandidateBillingData = async (): Promise<BillingData> => {
    try {
       const candidate = await getAuthenticatedCandidate();
@@ -84,27 +91,143 @@ export const getCandidateBillingData = async (): Promise<BillingData> => {
          orderBy: { createdAt: "desc" }
       });
 
-      // Query candidate credit transactions
-      const transactions = await db.creditTransaction.findMany({
-         where: { userId: candidate.id },
-         orderBy: { createdAt: "desc" },
-         take: 50,
-         include: {
-            booking: {
-               select: {
-                  id: true,
-                  interviewer: {
-                     select: {
-                        firstName: true,
-                        lastName: true
+      // Format Plan Details
+      const activeOrHeld =
+         latestSub &&
+         (latestSub.status === SubscriptionStatus.ACTIVE ||
+            latestSub.status === SubscriptionStatus.ON_HOLD ||
+            latestSub.status === SubscriptionStatus.BANK_APPROVAL_PENDING ||
+            latestSub.status === SubscriptionStatus.PAUSED);
+
+      const effectiveSlug = activeOrHeld ? latestSub.planSlug : candidate.currentPlan;
+      const { planName, amount } = getPlanDisplayDetails(effectiveSlug);
+
+      const planInfo: BillingPlanInfo = {
+         planSlug: effectiveSlug || "free",
+         planName,
+         status: activeOrHeld ? latestSub.status : "FREE",
+         cashfreeSubId: activeOrHeld ? (latestSub?.cashfreeSubId ?? null) : null,
+         recurringAmount: amount,
+         currentPeriodStart: activeOrHeld ? (latestSub?.currentPeriodStart?.toISOString() ?? null) : null,
+         currentPeriodEnd: activeOrHeld ? (latestSub?.currentPeriodEnd?.toISOString() ?? null) : null,
+         customerPhone: latestSub?.customerPhone ?? candidate.phone ?? null
+      };
+
+      const cycleStart = latestSub?.currentPeriodStart ?? new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+
+      const usedAggregate = await db.creditTransaction.aggregate({
+         _sum: { amount: true },
+         where: {
+            userId: candidate.id,
+            OR: [
+               { type: TransactionType.BOOKING_DEDUCTION },
+               { type: TransactionType.ADMIN_ADJUSTMENT, amount: { lt: 0 } }
+            ],
+            createdAt: { gte: cycleStart }
+         }
+      });
+      const creditsUsed = Math.abs(usedAggregate._sum.amount ?? 0);
+
+      return {
+         plan: planInfo,
+         credit: {
+            credits: candidate.credits,
+            creditsUsed,
+            creditsLastAllocatedAt: candidate.creditsLastAllocatedAt?.toISOString() ?? null,
+            lastProcessedPeriodStart: candidate.lastProcessedPeriodStart?.toISOString() ?? null
+         }
+      };
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: "Failed to fetch candidate billing data"
+      });
+   }
+};
+
+// Fetch paginated candidate credit transactions
+export const getCandidateTransactions = async (
+   params?: BillingPaginationParams
+): Promise<CandidateTransactionsData> => {
+   try {
+      const candidate = await getAuthenticatedCandidate();
+      const page = Math.max(1, params?.page ?? 1);
+      const pageSize = Math.max(1, params?.pageSize ?? 10);
+      const skip = (page - 1) * pageSize;
+
+      const [totalCount, transactions] = await Promise.all([
+         db.creditTransaction.count({
+            where: { userId: candidate.id }
+         }),
+         db.creditTransaction.findMany({
+            where: { userId: candidate.id },
+            orderBy: { createdAt: "desc" },
+            skip,
+            take: pageSize,
+            include: {
+               booking: {
+                  select: {
+                     id: true,
+                     interviewer: {
+                        select: {
+                           firstName: true,
+                           lastName: true
+                        }
                      }
                   }
                }
             }
+         })
+      ]);
+
+      const mappedTransactions: CandidateCreditTransaction[] = transactions.map((tx) => {
+         let interviewerName: string | null = null;
+         if (tx.booking?.interviewer) {
+            interviewerName = `${tx.booking.interviewer.firstName ?? ""} ${tx.booking.interviewer.lastName ?? ""}`.trim() || null;
          }
+
+         return {
+            id: tx.id,
+            amount: tx.amount,
+            type: tx.type,
+            reason: tx.reason,
+            bookingId: tx.bookingId,
+            interviewerName,
+            createdAt: tx.createdAt.toISOString()
+         };
       });
 
-      // Query Cashfree payments for latest mandate if present
+      return {
+         data: mappedTransactions,
+         page,
+         pageSize,
+         totalCount,
+         totalPages: Math.ceil(totalCount / pageSize),
+         hasNextPage: page * pageSize < totalCount,
+         hasPrevPage: page > 1
+      };
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: "Failed to fetch candidate transactions"
+      });
+   }
+};
+
+// Fetch paginated candidate payments from Cashfree
+export const getCandidatePayments = async (
+   params?: BillingPaginationParams
+): Promise<CandidatePaymentsData> => {
+   try {
+      const candidate = await getAuthenticatedCandidate();
+      const page = Math.max(1, params?.page ?? 1);
+      const pageSize = Math.max(1, params?.pageSize ?? 10);
+
+      const latestSub = await db.subscription.findFirst({
+         where: { userId: candidate.id },
+         orderBy: { createdAt: "desc" }
+      });
+
       let payments: CashfreePaymentRecord[] = [];
       if (latestSub?.cashfreeSubId) {
          try {
@@ -130,70 +253,39 @@ export const getCandidateBillingData = async (): Promise<BillingData> => {
                      paymentStatus,
                      paymentAmount: typeof p.payment_amount === "number" ? p.payment_amount : 0,
                      paymentCurrency: p.payment_currency ?? "INR",
-                     paymentTime: p.payment_time ?? p.payment_schedule_date ?? new Date().toISOString(),
+                     paymentTime:
+                        p.payment_initiated_date ??
+                        p.authorization_details?.authorization_time ??
+                        p.payment_schedule_date ??
+                        p.payment_time ??
+                        "",
                      paymentMethod: p.payment_method ?? p.payment_type ?? "AutoPay"
                   };
                });
             }
          } catch {
-            // Non-blocking: continue with empty payments list if Cashfree endpoint errors
             payments = [];
          }
       }
 
-      // Format Plan Details
-      const activeOrHeld =
-         latestSub &&
-         (latestSub.status === SubscriptionStatus.ACTIVE ||
-            latestSub.status === SubscriptionStatus.ON_HOLD ||
-            latestSub.status === SubscriptionStatus.BANK_APPROVAL_PENDING ||
-            latestSub.status === SubscriptionStatus.PAUSED);
-
-      const effectiveSlug = activeOrHeld ? latestSub.planSlug : candidate.currentPlan;
-      const { planName, amount } = getPlanDisplayDetails(effectiveSlug);
-
-      const planInfo: BillingPlanInfo = {
-         planSlug: effectiveSlug || "free",
-         planName,
-         status: latestSub ? latestSub.status : "FREE",
-         cashfreeSubId: latestSub?.cashfreeSubId ?? null,
-         recurringAmount: amount,
-         currentPeriodStart: latestSub?.currentPeriodStart?.toISOString() ?? null,
-         currentPeriodEnd: latestSub?.currentPeriodEnd?.toISOString() ?? null,
-         customerPhone: latestSub?.customerPhone ?? candidate.phone ?? null
-      };
-
-      const mappedTransactions: CandidateCreditTransaction[] = transactions.map((tx) => {
-         let interviewerName: string | null = null;
-         if (tx.booking?.interviewer) {
-            interviewerName = `${tx.booking.interviewer.firstName ?? ""} ${tx.booking.interviewer.lastName ?? ""}`.trim() || null;
-         }
-
-         return {
-            id: tx.id,
-            amount: tx.amount,
-            type: tx.type,
-            reason: tx.reason,
-            bookingId: tx.bookingId,
-            interviewerName,
-            createdAt: tx.createdAt.toISOString()
-         };
-      });
+      const totalCount = payments.length;
+      const totalPages = Math.ceil(totalCount / pageSize);
+      const startIndex = (page - 1) * pageSize;
+      const paginatedPayments = payments.slice(startIndex, startIndex + pageSize);
 
       return {
-         plan: planInfo,
-         credit: {
-            credits: candidate.credits,
-            creditsLastAllocatedAt: candidate.creditsLastAllocatedAt?.toISOString() ?? null,
-            lastProcessedPeriodStart: candidate.lastProcessedPeriodStart?.toISOString() ?? null
-         },
-         transactions: mappedTransactions,
-         payments
+         data: paginatedPayments,
+         page,
+         pageSize,
+         totalCount,
+         totalPages,
+         hasNextPage: page * pageSize < totalCount,
+         hasPrevPage: page > 1
       };
    } catch (error: unknown) {
       return serverError({
          error,
-         fallbackMessage: "Failed to fetch candidate billing data"
+         fallbackMessage: "Failed to fetch candidate payments"
       });
    }
 };

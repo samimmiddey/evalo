@@ -1,28 +1,42 @@
 "use client";
 
-import { format, parseISO } from "date-fns";
-import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import { CandidateCreditTransaction } from "../types/billing.types";
-import SecondaryTitle from "@/components/common/secondary-title";
-import PrimaryBody from "@/components/common/primary-body";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
 import { billingData } from "@/data/billing/billing.data";
 import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
+import { useInfiniteFetch } from "@/hooks/use-infinite-fetch";
+import { getCandidateTransactions } from "../services/billing.client.service";
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTable, features } from "@/components/common/data-table/data-table";
+import { format, parseISO } from "date-fns";
+import SecondaryTitle from "@/components/common/secondary-title";
+import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import PrimaryBody from "@/components/common/primary-body";
+import ErrorCard from "@/components/common/error-card";
 
-interface CreditTransactionsTabProps {
-   transactions: CandidateCreditTransaction[];
-}
-
-export const CreditTransactionsTab = ({ transactions }: CreditTransactionsTabProps) => {
+export const CreditTransactionsTab = () => {
    const { transactionsTab } = billingData;
 
-   if (transactions.length === 0) {
+   const params = {
+      page: 1,
+      pageSize: 10
+   };
+
+   const { isLoading, data, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteFetch((page) => getCandidateTransactions({ ...params, page }));
+
+   // No data state
+   if (data.length === 0 && !isLoading) {
       return (
          <EnhancedNoDataCard
             title={transactionsTab.emptyTitle}
             body={transactionsTab.emptyDescription}
          />
+      );
+   }
+
+   // Error state
+   if (error) {
+      return (
+         <ErrorCard text={error} />
       );
    }
 
@@ -45,68 +59,98 @@ export const CreditTransactionsTab = ({ transactions }: CreditTransactionsTabPro
       }
    };
 
-   return (
-      <div className="space-y-2.5">
-         {transactions.map((tx) => {
+   const columns: ColumnDef<typeof features, CandidateCreditTransaction>[] = [
+      {
+         accessorKey: 'type',
+         header: 'Type',
+         size: 275,
+         cell: ({ row }) => {
+            const tx = row.original;
             const isPositive = tx.amount > 0;
 
             return (
-               <div
-                  key={tx.id}
-                  className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900/40 border border-white/5 hover:border-white/10 transition-colors"
-               >
-                  <div className="flex items-center gap-3 min-w-0">
-                     <div
-                        className={cn(
-                           "flex items-center justify-center w-8 h-8 rounded-lg border shrink-0",
-                           isPositive
-                              ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400"
-                              : "bg-rose-500/15 border-rose-500/30 text-rose-400"
-                        )}
-                     >
-                        {isPositive ? (
+               <div className="flex items-center gap-3 min-w-0">
+                  <div className={`${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
+                     {
+                        isPositive ? (
                            <ArrowDownLeft className="w-4 h-4" />
                         ) : (
                            <ArrowUpRight className="w-4 h-4" />
-                        )}
-                     </div>
-                     <div className="min-w-0">
-                        <SecondaryTitle
-                           text={getTransactionLabel(tx)}
-                           className="text-xs! 2xl:text-sm! mb-0.5 truncate"
-                        />
-                        <div className="flex items-center gap-2 text-zinc-500">
-                           <PrimaryBody
-                              text={format(parseISO(tx.createdAt), "PPp")}
-                              className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-zinc-500!"
-                           />
-                           {tx.bookingId && (
-                              <>
-                                 <span className="text-[11px] text-zinc-600">•</span>
-                                 <Link
-                                    href="/dashboard/appointments"
-                                    className="text-[11px] text-violet-400 hover:text-violet-300 underline underline-offset-2"
-                                 >
-                                    {transactionsTab.typeLabels.viewAppointment}
-                                 </Link>
-                              </>
-                           )}
-                        </div>
-                     </div>
+                        )
+                     }
                   </div>
-
-                  <span
-                     className={cn(
-                        "text-sm font-bold shrink-0 ml-3",
-                        isPositive ? "text-emerald-400" : "text-rose-400"
-                     )}
-                  >
-                     {isPositive ? `+${tx.amount}` : tx.amount} Credits
-                  </span>
+                  <SecondaryTitle
+                     text={getTransactionLabel(tx)}
+                     className="text-xs! 2xl:text-sm! truncate font-medium"
+                  />
                </div>
             );
-         })}
-      </div>
+         },
+      },
+      {
+         accessorKey: 'reason',
+         header: 'Reason',
+         size: 175,
+         cell: (info) => (
+            <PrimaryBody
+               className="text-xs!"
+               text={info.getValue<string | null>() ?? '-'}
+            />
+         ),
+      },
+      {
+         accessorKey: 'interviewerName',
+         header: 'Interviewer',
+         size: 200,
+         cell: (info) => (
+            <PrimaryBody
+               className="text-xs! 2xl:text-sm!"
+               text={info.getValue<string | null>() ?? '-'}
+            />
+         ),
+      },
+      {
+         accessorKey: 'amount',
+         header: 'Amount',
+         size: 150,
+         cell: ({ row }) => {
+            const { amount } = row.original;
+            const isPositive = amount > 0;
+
+            return (
+               <SecondaryTitle
+                  className={`text-xs! 2xl:text-sm! ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}
+                  text={`${isPositive ? `+${amount}` : amount} Credits`}
+               />
+            );
+         }
+      },
+      {
+         accessorKey: 'createdAt',
+         header: 'Date',
+         size: 175,
+         cell: ({ row }) => {
+            const tx = row.original;
+
+            return (
+               <PrimaryBody
+                  text={format(parseISO(tx.createdAt), 'PPp')}
+                  className="text-xs!"
+               />
+            );
+         },
+      }
+   ];
+
+   return (
+      <DataTable
+         columns={columns}
+         data={data}
+         isLoading={isLoading}
+         hasNextPage={hasNextPage}
+         isFetchingNextPage={isFetchingNextPage}
+         fetchNextPage={fetchNextPage}
+      />
    );
 };
 

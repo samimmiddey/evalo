@@ -47,13 +47,13 @@ export interface TransactionsTabData {
       bookingRefund: string;
       bookingReversal: string;
       adminAdjustment: string;
-      viewAppointment: string;
    };
 }
 
-export interface InvoicesTabData {
+export interface PaymentTabData {
    tabLabel: string;
    emptyTitle: string;
+   emptyDescription: string;
    subtext: string;
    statusBadges: {
       success: string;
@@ -79,7 +79,7 @@ export interface BillingDataStatic {
    subscriptionCard: SubscriptionCardData;
    creditWalletCard: CreditWalletCardData;
    transactionsTab: TransactionsTabData;
-   invoicesTab: InvoicesTabData;
+   paymentsTab: PaymentTabData;
    cancelModal: CancelModalData;
    paymentRecoveryBanner: PaymentRecoveryBannerData;
    noData: {

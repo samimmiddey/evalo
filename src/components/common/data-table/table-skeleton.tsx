@@ -15,7 +15,7 @@ const TableSkeleton = ({ rows = 5, columns }: TableSkeletonProps) => {
                   {
                      Array.from({ length: columns }).map((_, j) => (
                         <TableCell key={j}>
-                           <Skeleton className="h-4 w-full" />
+                           <Skeleton className="h-6 w-full bg-zinc-800/60" />
                         </TableCell>
                      ))
                   }

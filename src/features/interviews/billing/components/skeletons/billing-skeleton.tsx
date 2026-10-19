@@ -54,32 +54,6 @@ export const BillingSkeleton = () => {
                </CardLayout>
             </div>
          </div>
-
-         {/* Tabs Skeleton */}
-         <div className="space-y-4">
-            <div className="bg-zinc-900 border border-white/10 h-10 p-1 gap-1.5 rounded-lg w-fit flex items-center">
-               <div className="h-8 w-44 rounded-md bg-zinc-800/60 animate-pulse" />
-               <div className="h-8 w-44 rounded-md bg-zinc-800/60 animate-pulse" />
-            </div>
-
-            <div className="space-y-2.5">
-               {Array.from({ length: 4 }).map((_, i) => (
-                  <div
-                     key={i}
-                     className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900/40 border border-white/5"
-                  >
-                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-zinc-800 animate-pulse" />
-                        <div className="space-y-1.5">
-                           <div className="h-4 w-32 bg-zinc-800 rounded animate-pulse" />
-                           <div className="h-3 w-24 bg-zinc-800/60 rounded animate-pulse" />
-                        </div>
-                     </div>
-                     <div className="h-4 w-16 bg-zinc-800 rounded animate-pulse" />
-                  </div>
-               ))}
-            </div>
-         </div>
       </div>
    );
 };

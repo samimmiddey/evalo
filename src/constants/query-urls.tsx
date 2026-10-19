@@ -41,6 +41,8 @@ export const GET_SUBSCRIPTION = '/cashfree/subscription-details';
 
 // Billing
 export const GET_BILLING = '/billing';
+export const GET_BILLING_TRANSACTIONS = '/billing/transactions';
+export const GET_BILLING_PAYMENTS = '/billing/payments';
 export const CANCEL_SUBSCRIPTION = '/billing/cancel';
 export const GET_CASHFREE_BILLING_DATA = (id: string) => `/subscriptions/${id}/payments`;
 export const CANCEL_CASHFREE_SUBSCRIPTION = (id: string) => `/subscriptions/${id}/manage`;

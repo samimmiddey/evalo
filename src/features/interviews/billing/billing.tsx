@@ -6,6 +6,7 @@ import PrimaryTitle from "@/components/common/primary-title";
 import PrimaryBody from "@/components/common/primary-body";
 import BillingView from "./components/billing-view";
 import { billingData } from "@/data/billing/billing.data";
+import BillingTabs from "./components/billing-tabs";
 
 export const Billing = () => {
    return (
@@ -21,6 +22,7 @@ export const Billing = () => {
          </PageHeaderLayout>
 
          <BillingView />
+         <BillingTabs />
       </div>
    );
 };

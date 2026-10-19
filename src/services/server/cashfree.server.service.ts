@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { PRO, STARTER } from "@/constants/cashfree";
+import { PRO, PRO_PRICE, STARTER, STARTER_PRICE } from "@/constants/cashfree";
 import { apiCashfree } from "@/lib/api-cashfree";
 import { ForbiddenError, UnauthorizedError, ValidationError } from "@/lib/app-error";
 import { db } from "@/lib/prisma";
@@ -92,6 +92,8 @@ export const createSubscription = async (plan: CreateSubscriptionParams): Promis
       throw new ForbiddenError("You already have an active subscription for this plan");
    }
 
+   const authorizationAmount = targetPlanSlug === 'starter' ? STARTER_PRICE : PRO_PRICE;
+
    try {
       const subscriptionId = `sub_${user.id.slice(-8)}_${Date.now()}`;
       const payload = {
@@ -105,7 +107,7 @@ export const createSubscription = async (plan: CreateSubscriptionParams): Promis
             plan_id: plan.id
          },
          authorization_details: {
-            authorization_amount: 1,
+            authorization_amount: authorizationAmount,
             authorization_amount_refund: false,
             payment_methods: ['upi', 'card']
          },

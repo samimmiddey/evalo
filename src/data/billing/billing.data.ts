@@ -34,7 +34,7 @@ export const billingData: BillingDataStatic = {
    },
    creditWalletCard: {
       title: "Available Balance",
-      description: "Available to book mock interviews",
+      description: "Credit balance to book mock interviews",
       availableLabel: "Credits Available",
       singleAvailableLabel: "Credit Available",
       usedLabel: "Used This Period"
@@ -48,13 +48,13 @@ export const billingData: BillingDataStatic = {
          bookingDeductionDefault: "Mock Interview Booking",
          bookingRefund: "Session Refund",
          bookingReversal: "Session Reversal",
-         adminAdjustment: "Administrative Adjustment",
-         viewAppointment: "View Appointment"
+         adminAdjustment: "Administrative Adjustment"
       }
    },
-   invoicesTab: {
-      tabLabel: "Invoices & Payments",
-      emptyTitle: "No payment invoice records found yet.",
+   paymentsTab: {
+      tabLabel: "Payment History",
+      emptyTitle: "No payment records found yet.",
+      emptyDescription: "Your subscription billing receipts, renewal statements, and payment history will appear here once processed.",
       subtext: "Auto-billed by Cashfree",
       statusBadges: {
          success: "Successful",

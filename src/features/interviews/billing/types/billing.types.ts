@@ -14,6 +14,7 @@ export interface BillingPlanInfo {
 
 export interface CandidateCreditInfo {
    credits: number;
+   creditsUsed?: number;
    creditsLastAllocatedAt?: string | null;
    lastProcessedPeriodStart?: string | null;
 }
@@ -41,11 +42,38 @@ export interface CashfreePaymentRecord {
 export interface BillingData {
    plan: BillingPlanInfo;
    credit: CandidateCreditInfo;
-   transactions: CandidateCreditTransaction[];
-   payments: CashfreePaymentRecord[];
 }
 
 export type BillingClientResponse = BaseResponse<BillingData>;
+
+export interface BillingPaginationParams {
+   page?: number;
+   pageSize?: number;
+}
+
+export interface CandidateTransactionsData {
+   data: CandidateCreditTransaction[];
+   page: number;
+   pageSize: number;
+   totalCount: number;
+   totalPages: number;
+   hasNextPage: boolean;
+   hasPrevPage: boolean;
+}
+
+export type CandidateTransactionsClientResponse = BaseResponse<CandidateTransactionsData>;
+
+export interface CandidatePaymentsData {
+   data: CashfreePaymentRecord[];
+   page: number;
+   pageSize: number;
+   totalCount: number;
+   totalPages: number;
+   hasNextPage: boolean;
+   hasPrevPage: boolean;
+}
+
+export type CandidatePaymentsClientResponse = BaseResponse<CandidatePaymentsData>;
 
 export interface CancelSubscriptionResponse {
    success: boolean;
