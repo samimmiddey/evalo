@@ -1,5 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "@/lib/app-error";
+import { ValidationError } from "@/lib/app-error";
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import { apiCashfree } from "@/lib/api-cashfree";
@@ -16,6 +15,7 @@ import {
 } from "../types/billing.types";
 import { CANCEL_CASHFREE_SUBSCRIPTION, GET_CASHFREE_BILLING_DATA } from "@/constants/query-urls";
 import { PRO_PRICE, STARTER_PRICE } from "@/constants/cashfree";
+import { getAuthenticatedCandidate } from "../../shared/services/shared.server.service";
 
 interface RawCashfreePayment {
    cf_payment_id?: string | number;
@@ -32,41 +32,6 @@ interface RawCashfreePayment {
    payment_type?: string;
    payment_method?: string;
 }
-
-// Helper to authenticate candidate
-export const getAuthenticatedCandidate = async () => {
-   const user = await currentUser();
-
-   if (!user) {
-      throw new UnauthorizedError("Unauthenticated user");
-   }
-
-   const dbUser = await db.user.findUnique({
-      where: { clerkUserId: user.id },
-      select: {
-         id: true,
-         role: true,
-         credits: true,
-         currentPlan: true,
-         creditsLastAllocatedAt: true,
-         lastProcessedPeriodStart: true,
-         email: true,
-         firstName: true,
-         lastName: true,
-         phone: true
-      }
-   });
-
-   if (!dbUser) {
-      throw new NotFoundError("User not found");
-   }
-
-   if (dbUser.role !== "CANDIDATE") {
-      throw new ForbiddenError("Access restricted to candidates");
-   }
-
-   return dbUser;
-};
 
 // Map slug to human readable name and recurring monthly cost
 const getPlanDisplayDetails = (planSlug?: string | null) => {

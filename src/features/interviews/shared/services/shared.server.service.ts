@@ -37,3 +37,38 @@ export const getAuthenticatedInterviewer = async () => {
 
    return dbUser;
 };
+
+// Helper to authenticate candidate
+export const getAuthenticatedCandidate = async () => {
+   const user = await currentUser();
+
+   if (!user) {
+      throw new UnauthorizedError("Unauthenticated user");
+   }
+
+   const dbUser = await db.user.findUnique({
+      where: { clerkUserId: user.id },
+      select: {
+         id: true,
+         role: true,
+         credits: true,
+         currentPlan: true,
+         creditsLastAllocatedAt: true,
+         lastProcessedPeriodStart: true,
+         email: true,
+         firstName: true,
+         lastName: true,
+         phone: true
+      }
+   });
+
+   if (!dbUser) {
+      throw new NotFoundError("User not found");
+   }
+
+   if (dbUser.role !== "CANDIDATE") {
+      throw new ForbiddenError("Access restricted to candidates");
+   }
+
+   return dbUser;
+};
