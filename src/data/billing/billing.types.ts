@@ -10,12 +10,6 @@ export interface SubscriptionCardData {
       change: string;
       cancel: string;
    };
-   statusBadges: {
-      active: string;
-      onHold: string;
-      bankPending: string;
-      cancelled: string;
-   };
    quickStats: {
       recurringCostLabel: string;
       freeCostText: string;
@@ -55,10 +49,6 @@ export interface PaymentTabData {
    emptyTitle: string;
    emptyDescription: string;
    subtext: string;
-   statusBadges: {
-      success: string;
-      failed: string;
-   };
 }
 
 export interface CancelModalData {

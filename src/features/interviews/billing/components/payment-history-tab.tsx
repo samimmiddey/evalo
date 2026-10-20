@@ -11,8 +11,8 @@ import { getCandidatePayments } from "../services/billing.client.service";
 import { DataTable, features } from "@/components/common/data-table/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { CashfreePaymentRecord } from "../types/billing.types";
-import { Badge } from "@/components/ui/badge";
 import { IndianRupee } from "lucide-react";
+import getStatusBadge from "@/components/common/get-status-badge";
 
 const formatPaymentDate = (dateStr?: string | null) => {
    if (!dateStr) return "-";
@@ -52,29 +52,6 @@ const PaymentHistoryTab = () => {
          <ErrorCard text={error} />
       );
    }
-
-   const getPaymentStatusBadge = (status: string) => {
-      switch (status) {
-         case "SUCCESS":
-            return (
-               <Badge className="text-xs bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                  {paymentsTab.statusBadges.success}
-               </Badge>
-            );
-         case "FAILED":
-            return (
-               <Badge className="text-xs bg-rose-500/15 text-rose-400 border border-rose-500/30">
-                  {paymentsTab.statusBadges.failed}
-               </Badge>
-            );
-         default:
-            return (
-               <Badge className="text-xs bg-amber-500/15 text-amber-400 border border-amber-500/30">
-                  {status}
-               </Badge>
-            );
-      }
-   };
 
    const columns: ColumnDef<typeof features, CashfreePaymentRecord>[] = [
       {
@@ -126,7 +103,7 @@ const PaymentHistoryTab = () => {
          header: 'Payment Status',
          size: 200,
          cell: (info) => (
-            getPaymentStatusBadge(info.getValue<string>())
+            getStatusBadge(info.getValue<string>())
          ),
       },
       {

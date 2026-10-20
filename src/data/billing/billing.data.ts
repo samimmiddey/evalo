@@ -14,12 +14,6 @@ export const billingData: BillingDataStatic = {
          change: "Change Plan",
          cancel: "Cancel"
       },
-      statusBadges: {
-         active: "Active",
-         onHold: "Payment On Hold",
-         bankPending: "Bank Pending",
-         cancelled: "Cancelled"
-      },
       quickStats: {
          recurringCostLabel: "Recurring Cost",
          freeCostText: "Free of charge",
@@ -55,11 +49,7 @@ export const billingData: BillingDataStatic = {
       tabLabel: "Payment History",
       emptyTitle: "No payment records found yet.",
       emptyDescription: "Your subscription billing receipts, renewal statements, and payment history will appear here once processed.",
-      subtext: "Auto-billed by Cashfree",
-      statusBadges: {
-         success: "Successful",
-         failed: "Failed"
-      }
+      subtext: "Auto-billed by Cashfree"
    },
    cancelModal: {
       title: "Cancel Subscription",

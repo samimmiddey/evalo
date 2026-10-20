@@ -9,7 +9,7 @@ import { BillingPlanInfo } from "../types/billing.types";
 import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import { billingData } from "@/data/billing/billing.data";
-import { Badge } from "@/components/ui/badge";
+import getStatusBadge from "@/components/common/get-status-badge";
 
 interface SubscriptionPlanCardProps {
    plan: BillingPlanInfo;
@@ -28,36 +28,6 @@ export const SubscriptionPlanCard = ({
 
    const isOnHold = plan.status === "ON_HOLD";
 
-   const getStatusBadge = () => {
-      switch (plan.status) {
-         case "ON_HOLD":
-            return (
-               <Badge className="p-2.5 text-xs rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
-                  {subscriptionCard.statusBadges.onHold}
-               </Badge>
-            );
-         case "BANK_APPROVAL_PENDING":
-            return (
-               <Badge className="p-2.5 text-xs rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
-                  {subscriptionCard.statusBadges.bankPending}
-               </Badge>
-            );
-         case "CANCELLED":
-            return (
-               <Badge className="p-2.5 text-xs rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/30">
-                  {subscriptionCard.statusBadges.cancelled}
-               </Badge>
-            );
-         case "ACTIVE":
-         default:
-            return (
-               <Badge className="p-2.5 text-xs rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                  {subscriptionCard.statusBadges.active}
-               </Badge>
-            );
-      }
-   };
-
    return (
       <CardLayout className="space-y-6 2xl:p-7 p-5 border-white/5!">
          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -75,7 +45,7 @@ export const SubscriptionPlanCard = ({
                         text={plan.planName}
                         className="text-[15px]! 2xl:text-base! font-bold! text-zinc-100!"
                      />
-                     {getStatusBadge()}
+                     {getStatusBadge(plan.status)}
                   </div>
                </div>
             </div>
