@@ -14,6 +14,9 @@ export const onboardingSchema = z.object({
       .min(1, 'Last name is required')
       .min(3, 'Last name must be at least 3 characters long')
       .max(50, 'Last name must be at most 50 characters long'),
+   phone: z.string()
+      .min(1, 'Phone number is required')
+      .regex(/^[6-9]\d{9}$/, 'Please enter a valid 10-digit mobile number'),
 
    // Interviewer only fields
    designation: z.string().optional(),

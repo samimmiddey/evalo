@@ -19,6 +19,7 @@ import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview
 import { Calendar, CheckCircle2, Compass, Flame, Video } from "lucide-react";
 import Link from "next/link";
 import ErrorCard from "@/components/common/error-card";
+import PaymentRecoveryBanner from "@/features/interviews/shared/components/payment-recovery-banner";
 
 export const CandidateOverview = () => {
    const { user } = useAppUser();
@@ -95,6 +96,9 @@ export const CandidateOverview = () => {
                </Link>
             </div>
          </PageHeaderLayout>
+
+         {/* Reusable Payment Recovery Banner */}
+         <PaymentRecoveryBanner />
 
          {/* 4 KPI Stats Cards */}
          <DashboardStats items={statItems} />

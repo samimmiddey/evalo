@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'motion/react';
-import SelectedRoleBadge from './selected-role-badge';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useFormContext } from 'react-hook-form';
@@ -9,7 +8,6 @@ import { onboardingData } from '@/data/onboarding/onboarding.data';
 import NoDataCard from '@/components/common/no-data-card';
 import InputError from '@/components/common/input-error';
 import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
-import { AssignedRole } from '@/types/user.types';
 
 const CandidateTab = () => {
    const methods = useFormContext<OnboardingSchemaTypes>();
@@ -26,11 +24,6 @@ const CandidateTab = () => {
          transition={{ duration: 0.3 }}
          className="space-y-6"
       >
-         {/* Selected role */}
-         <SelectedRoleBadge
-            role={data.selectedRoleBadge.title}
-            onChangeRole={() => methods.setValue('role', data.selectedRoleBadge.value as AssignedRole)}
-         />
 
          {/* Context card */}
          <div className="rounded-xl border border-violet-500/20 bg-violet-500/5 p-4 2xl:p-5 space-y-3.5 relative overflow-hidden">
@@ -61,7 +54,7 @@ const CandidateTab = () => {
             {
                data.formFields.map((field) => {
                   return (
-                     <div key={field.name} className="flex flex-col gap-2">
+                     <div key={field.name} className={`flex flex-col gap-2 ${field.name === 'phone' ? 'sm:col-span-2' : ''}`}>
                         <Label htmlFor={field.name} className="text-sm font-medium text-zinc-300 flex items-center gap-1.5">
                            <field.icon className="w-3.5 h-3.5 text-violet-400" />
                            {field.label}

@@ -28,8 +28,23 @@ export const GET_DASHBOARD_NEXT_SESSION = '/dashboard/next-session';
 export const GET_SESSIONS = '/sessions';
 export const INTERVIEWER_AVAILABILITY = '/availability';
 export const GET_PAYOUTS = '/payouts';
+export const GET_PAYOUT_RECORDS = '/payouts/records';
+export const GET_PAYOUT_TRANSACTIONS = '/payouts/transactions';
 export const REQUEST_PAYOUT = '/payouts/request';
 export const UPDATE_PROFILE = '/profile';
 
 // Config
 export const GET_PLATFORM_CONFIG = '/platform-config';
+
+// Cashfree
+export const GET_PLANS = '/cashfree/plans';
+export const CREATE_SUBSCRIPTION = '/cashfree/create-subscription';
+export const GET_SUBSCRIPTION = '/cashfree/subscription-details';
+
+// Billing
+export const GET_BILLING = '/billing';
+export const GET_BILLING_TRANSACTIONS = '/billing/transactions';
+export const GET_BILLING_PAYMENTS = '/billing/payments';
+export const CANCEL_SUBSCRIPTION = '/billing/cancel';
+export const GET_CASHFREE_BILLING_DATA = (id: string) => `/subscriptions/${id}/payments`;
+export const CANCEL_CASHFREE_SUBSCRIPTION = (id: string) => `/subscriptions/${id}/manage`;

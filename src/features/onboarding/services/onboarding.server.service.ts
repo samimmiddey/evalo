@@ -17,7 +17,7 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
    const client = await clerkClient();
 
    try {
-      const { role, firstName, lastName, designation, company, experience, expertise, bio } = onboardingSchema.parse(data);
+      const { role, firstName, lastName, designation, company, experience, expertise, phone, bio } = onboardingSchema.parse(data);
 
       const clerkUser = await client.users.getUser(userId);
       const email = clerkUser.emailAddresses[0]?.emailAddress;
@@ -37,6 +37,7 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
             role,
             firstName,
             lastName,
+            phone,
             ...interviewerFields
          },
          create: {
@@ -49,6 +50,7 @@ export const completeSetup = async (data: OnboardingSchemaTypes): Promise<Comple
             role,
             firstName,
             lastName,
+            phone,
             ...interviewerFields
          },
          select: { role: true }

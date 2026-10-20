@@ -219,10 +219,6 @@ export const interviewerData: InterviewerData = {
       title: "Availability",
       description: "Set your weekly recurring time slots so candidates can book mock interview sessions with you."
    },
-   payouts: {
-      title: "Earnings & Payouts",
-      description: "Track your earned credit balance, view transaction history, and submit withdrawal requests."
-   },
    profile: {
       title: "Profile Settings",
       description: "Update your bio, current company, designation, years of experience, and interview domains."

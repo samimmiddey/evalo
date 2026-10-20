@@ -221,7 +221,8 @@ export const homeData: HomeDataTypes = {
             features: [
                "1 mock interview session",
                "HD video call via Stream",
-               "Persistent chat thread",
+               "AI feedback report",
+               "Recording and playback link"
             ],
             isPopular: false
          },
@@ -234,8 +235,8 @@ export const homeData: HomeDataTypes = {
                "5 mock interviews per month",
                "AI feedback report",
                "HD video call via stream",
-               "Persistent chat thread",
-               "Credits roll over monthly"
+               "Credits roll over monthly",
+               "Recording and playback link"
             ],
             isPopular: true
          },
@@ -248,7 +249,6 @@ export const homeData: HomeDataTypes = {
                "15 mock interview sessions",
                "AI feedback report",
                "HD video call via stream",
-               "Persistent chat thread",
                "Credits roll over monthly",
                "Recording and playback link"
             ],
