@@ -215,7 +215,7 @@ export const homeData: HomeDataTypes = {
       plans: [
          {
             title: "Free",
-            price: "$0",
+            price: "₹0",
             description: "Perfect for getting started and exploring the platform.",
             credit: "1 credit per month",
             features: [
@@ -228,7 +228,7 @@ export const homeData: HomeDataTypes = {
          },
          {
             title: "Starter",
-            price: "$29",
+            price: "₹799",
             description: "Ideal for focused preparation and consistent practice.",
             credit: "5 credits per month",
             features: [
@@ -242,7 +242,7 @@ export const homeData: HomeDataTypes = {
          },
          {
             title: "Pro",
-            price: "$79",
+            price: "₹1599",
             description: "For serious candidates aiming for top tech companies.",
             credit: "15 credits per month",
             features: [
