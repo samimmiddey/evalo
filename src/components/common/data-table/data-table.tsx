@@ -100,7 +100,7 @@ export function DataTable<TData extends RowData>({
          <div ref={sentinelRef} className="h-4 mt-1" />
 
          {/* End of list message */}
-         {!hasNextPage && !isLoading && data.length > 0 && (
+         {!hasNextPage && !isLoading && data.length > 10 && (
             <ListEndMessage
                className='bg-transparent! border-none! p-0! mt-1'
                text={endMessage ?? "You've reached the end of the list"}
