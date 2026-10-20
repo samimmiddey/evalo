@@ -1,20 +1,39 @@
+"use client";
+
 import { CreditTransactionRecord } from "../types/payout.types";
-import { format, parseISO } from "date-fns";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 import SecondaryTitle from "@/components/common/secondary-title";
 import PrimaryBody from "@/components/common/primary-body";
+import { formatDate } from "@/utils/format-date";
+import { useInfiniteFetch } from "@/hooks/use-infinite-fetch";
+import { getCreditTransactions } from "../services/payout.client.service";
+import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
+import ErrorCard from "@/components/common/error-card";
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTable, features } from "@/components/common/data-table/data-table";
 
-interface TransactionsHistoryProps {
-   transactions: CreditTransactionRecord[];
-}
+export const TransactionsHistory = () => {
+   const params = {
+      page: 1,
+      pageSize: 10
+   };
 
-export const TransactionsHistory = ({ transactions }: TransactionsHistoryProps) => {
-   if (transactions.length === 0) {
+   const { isLoading, data, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteFetch(page => getCreditTransactions({ ...params, page }));
+
+   // No data state
+   if (data.length === 0 && !isLoading) {
       return (
-         <div className="p-8 text-center bg-zinc-900/40 border border-dashed border-white/10 rounded-2xl">
-            <PrimaryBody text="No transaction records found." className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500!" />
-         </div>
+         <EnhancedNoDataCard
+            title='No transaction history found'
+            body='No transaction history is found'
+         />
+      );
+   }
+
+   // Error
+   if (error) {
+      return (
+         <ErrorCard text={error} />
       );
    }
 
@@ -33,55 +52,76 @@ export const TransactionsHistory = ({ transactions }: TransactionsHistoryProps) 
       }
    };
 
-   return (
-      <div className="space-y-2.5">
-         {transactions.map((tx) => {
+   const columns: ColumnDef<typeof features, CreditTransactionRecord>[] = [
+      {
+         accessorKey: 'type',
+         header: 'Type',
+         size: 275,
+         cell: ({ row }) => {
+            const tx = row.original;
             const isPositive = tx.amount > 0;
 
             return (
-               <div
-                  key={tx.id}
-                  className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900/40 border border-white/5"
-               >
-                  <div className="flex items-center gap-3">
-                     <div
-                        className={cn(
-                           "flex items-center justify-center w-8 h-8 rounded-lg border",
-                           isPositive
-                              ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400"
-                              : "bg-rose-500/15 border-rose-500/30 text-rose-400"
-                        )}
-                     >
-                        {isPositive ? (
+               <div className="flex items-center gap-3 min-w-0">
+                  <div className={`${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
+                     {
+                        isPositive ? (
                            <ArrowDownLeft className="w-4 h-4" />
                         ) : (
                            <ArrowUpRight className="w-4 h-4" />
-                        )}
-                     </div>
-                     <div>
-                        <SecondaryTitle
-                           text={getTransactionLabel(tx.type)}
-                           className="text-xs! 2xl:text-sm! mb-px"
-                        />
-                        <PrimaryBody
-                           text={format(parseISO(tx.createdAt), "PPp")}
-                           className="text-[11px]! lg:text-[11px]! 2xl:text-[11px]! text-zinc-500!"
-                        />
-                     </div>
+                        )
+                     }
                   </div>
-
-                  <span
-                     className={cn(
-                        "text-sm font-bold",
-                        isPositive ? "text-emerald-400" : "text-rose-400"
-                     )}
-                  >
-                     {isPositive ? `+${tx.amount}` : tx.amount} Credits
-                  </span>
+                  <SecondaryTitle
+                     text={getTransactionLabel(tx.type)}
+                     className="text-xs! 2xl:text-sm! truncate font-medium"
+                  />
                </div>
             );
-         })}
-      </div>
+         },
+      },
+      {
+         accessorKey: 'amount',
+         header: 'Amount',
+         size: 175,
+         cell: ({ row }) => {
+            const { amount } = row.original;
+            const isPositive = amount > 0;
+
+            return (
+               <SecondaryTitle
+                  className={`text-xs! 2xl:text-sm! ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}
+                  text={`${isPositive ? `+${amount}` : amount} Credits`}
+               />
+            );
+         }
+      },
+      {
+         accessorKey: 'createdAt',
+         header: 'Date',
+         size: 175,
+         cell: ({ row }) => {
+            const { createdAt } = row.original;
+
+            return (
+               <PrimaryBody
+                  text={formatDate(createdAt)}
+                  className="text-xs!"
+               />
+            );
+         }
+      },
+   ];
+
+   return (
+      <DataTable
+         columns={columns}
+         data={data}
+         isLoading={isLoading}
+         hasNextPage={hasNextPage}
+         isFetchingNextPage={isFetchingNextPage}
+         fetchNextPage={fetchNextPage}
+      />
    );
 };
 

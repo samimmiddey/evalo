@@ -1,83 +1,145 @@
-import { Badge } from "@/components/ui/badge";
-import { PayoutRecord } from "../types/payout.types";
-import { format, parseISO } from "date-fns";
+"use client";
+
 import PrimaryBody from "@/components/common/primary-body";
+import { useInfiniteFetch } from "@/hooks/use-infinite-fetch";
+import { getPayoutRecords } from "../services/payout.client.service";
+import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
+import ErrorCard from "@/components/common/error-card";
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTable, features } from "@/components/common/data-table/data-table";
+import { PayoutRecord } from "../types/payout.types";
+import SecondaryTitle from "@/components/common/secondary-title";
+import { IndianRupee } from "lucide-react";
+import getStatusBadge from "@/components/common/get-status-badge";
+import { formatDate } from "@/utils/format-date";
 
-interface PayoutHistoryListProps {
-   payouts: PayoutRecord[];
-}
+export const PayoutHistoryList = () => {
+   const params = {
+      page: 1,
+      pageSize: 10
+   };
 
-export const PayoutHistoryList = ({ payouts }: PayoutHistoryListProps) => {
-   if (payouts.length === 0) {
+   const { isLoading, data, error, hasNextPage, isFetchingNextPage, fetchNextPage } = useInfiniteFetch(page => getPayoutRecords({ ...params, page }));
+
+   // No data state
+   if (data.length === 0 && !isLoading) {
       return (
-         <div className="p-8 text-center bg-zinc-900/40 border border-dashed border-white/10 rounded-2xl">
-            <PrimaryBody text="No payout requests submitted yet." className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500!" />
-         </div>
+         <EnhancedNoDataCard
+            title='No payouts yet'
+            body='There are no payouts yet'
+         />
       );
    }
 
-   return (
-      <div className="space-y-3">
-         {payouts.map((item) => {
+   // Error state
+   if (error) {
+      return (
+         <ErrorCard text={error} />
+      );
+   }
+
+   // Columns
+   const columns: ColumnDef<typeof features, PayoutRecord>[] = [
+      {
+         accessorKey: 'credits',
+         header: 'Credits',
+         size: 150,
+         cell: ({ row }) => {
+            const { credits } = row.original;
 
             return (
-               <div
-                  key={item.id}
-                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl bg-zinc-900/40 border border-white/5"
-               >
-                  <div className="space-y-1">
-                     <div className="flex items-center gap-2.5">
-                        <span className="font-bold text-sm text-zinc-100">
-                           ${item.netAmount.toFixed(2)}
-                        </span>
-                        <span className="text-xs text-zinc-400">({item.credits} credits)</span>
-                        {item.status === "PROCESSED" && (
-                           <Badge
-                              variant="outline"
-                              className="bg-emerald-500/15 text-emerald-400 border-emerald-500/30 text-[11px]"
-                           >
-                              Processed
-                           </Badge>
-                        )}
-                        {item.status === "PROCESSING" && (
-                           <Badge
-                              variant="outline"
-                              className="bg-amber-500/15 text-amber-400 border-amber-500/30 text-[11px]"
-                           >
-                              Processing
-                           </Badge>
-                        )}
-                        {item.status === "REJECTED" && (
-                           <Badge
-                              variant="outline"
-                              className="bg-rose-500/15 text-rose-400 border-rose-500/30 text-[11px]"
-                           >
-                              Rejected
-                           </Badge>
-                        )}
-                     </div>
-                     <PrimaryBody
-                        text={`Platform fee: $${item.platformFee.toFixed(2)}${item.adminNote ? ` • ${item.adminNote}` : ''}`}
-                        className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-400!"
-                     />
-                  </div>
+               <SecondaryTitle
+                  text={credits.toString()}
+                  className="text-xs! 2xl:text-sm!"
+               />
+            );
+         },
+      },
+      {
+         accessorKey: 'netAmount',
+         header: 'Amount',
+         size: 150,
+         cell: ({ row }) => {
+            const { netAmount } = row.original;
 
-                  <div className="text-left sm:text-right text-zinc-500">
-                     <PrimaryBody
-                        text={`Requested: ${format(parseISO(item.createdAt), "PPp")}`}
-                        className="text-[11px]! lg:text-[11px]! 2xl:text-xs! text-zinc-500!"
-                     />
-                     {item.processedAt && (
-                        <PrimaryBody
-                           text={`Processed: ${format(parseISO(item.processedAt), "PPp")}`}
-                           className="text-[11px]! lg:text-[11px]! 2xl:text-xs! text-emerald-400/80!"
-                        />
-                     )}
-                  </div>
+            return (
+               <div className="flex items-center">
+                  <IndianRupee className="h-3 w-3" />
+                  <SecondaryTitle
+                     className='text-xs! 2xl:text-sm!'
+                     text={netAmount.toFixed(2).toString()}
+                  />
                </div>
             );
-         })}
-      </div>
+         },
+      },
+      {
+         accessorKey: 'platformFee',
+         header: 'Platform Fee',
+         size: 150,
+         cell: ({ row }) => {
+            const { platformFee } = row.original;
+
+            return (
+               <div className="flex items-center">
+                  <IndianRupee className="h-3 w-3" />
+                  <SecondaryTitle
+                     className='text-xs! 2xl:text-sm!'
+                     text={platformFee.toFixed(2).toString()}
+                  />
+               </div>
+            );
+         }
+      },
+      {
+         accessorKey: 'status',
+         header: 'Request Status',
+         size: 175,
+         cell: (info) => (
+            getStatusBadge(info.getValue<string>())
+         ),
+      },
+      {
+         accessorKey: 'adminNote',
+         header: 'Note',
+         size: 200,
+         cell: ({ row }) => {
+            const { adminNote } = row.original;
+
+            return (
+               <PrimaryBody
+                  text={adminNote ?? '-'}
+                  className="text-xs!"
+               />
+            );
+         },
+      },
+      {
+         accessorKey: 'createdAt',
+         header: 'Date',
+         size: 175,
+         cell: ({ row }) => {
+            const { createdAt } = row.original;
+
+            return (
+               <PrimaryBody
+                  text={formatDate(createdAt)}
+                  className="text-xs!"
+               />
+            );
+         },
+      }
+   ];
+
+   return (
+      <DataTable
+         columns={columns}
+         data={data}
+         isLoading={isLoading}
+         hasNextPage={hasNextPage}
+         isFetchingNextPage={isFetchingNextPage}
+         fetchNextPage={fetchNextPage}
+      />
    );
 };
 

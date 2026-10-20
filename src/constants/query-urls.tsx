@@ -28,6 +28,8 @@ export const GET_DASHBOARD_NEXT_SESSION = '/dashboard/next-session';
 export const GET_SESSIONS = '/sessions';
 export const INTERVIEWER_AVAILABILITY = '/availability';
 export const GET_PAYOUTS = '/payouts';
+export const GET_PAYOUT_RECORDS = '/payouts/records';
+export const GET_PAYOUT_TRANSACTIONS = '/payouts/transactions';
 export const REQUEST_PAYOUT = '/payouts/request';
 export const UPDATE_PROFILE = '/profile';
 

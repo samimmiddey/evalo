@@ -2,6 +2,11 @@ import { NotFoundError, ValidationError } from "@/lib/app-error";
 import { db } from "@/lib/prisma";
 import { serverError } from "@/lib/server-error";
 import {
+   CreditTransactionRecord,
+   PaginatedCreditTransactionsData,
+   PaginatedPayoutRecordsData,
+   PayoutPaginationParams,
+   PayoutRecord,
    PayoutsData,
 } from "../types/payout.types";
 import {
@@ -10,46 +15,115 @@ import {
 } from "../schemas/payout.schemas";
 import { getAuthenticatedInterviewer } from "@/features/interviews/shared/services/shared.server.service";
 
-// Get Payouts & Credit Transactions
+// Get Payouts Overview (Credit Balance)
 export const getPayoutsAndTransactions = async (): Promise<PayoutsData> => {
    try {
       const interviewer = await getAuthenticatedInterviewer();
 
-      const [payouts, transactions] = await Promise.all([
-         db.payout.findMany({
-            where: { interviewerId: interviewer.id },
-            orderBy: { createdAt: "desc" }
-         }),
-         db.creditTransaction.findMany({
-            where: { userId: interviewer.id },
-            orderBy: { createdAt: "desc" }
-         })
-      ]);
-
       return {
-         creditBalance: interviewer.creditBalance,
-         payouts: payouts.map((p) => ({
-            id: p.id,
-            credits: p.credits,
-            platformFee: p.platformFee,
-            netAmount: p.netAmount,
-            status: p.status,
-            adminNote: p.adminNote,
-            createdAt: p.createdAt.toISOString(),
-            processedAt: p.processedAt ? p.processedAt.toISOString() : null
-         })),
-         transactions: transactions.map((t) => ({
-            id: t.id,
-            amount: t.amount,
-            type: t.type,
-            bookingId: t.bookingId,
-            createdAt: t.createdAt.toISOString()
-         }))
+         creditBalance: interviewer.creditBalance
       };
    } catch (error: unknown) {
       return serverError({
          error,
-         fallbackMessage: "Failed to fetch payouts and transactions"
+         fallbackMessage: "Failed to fetch payouts overview data"
+      });
+   }
+};
+
+// Get Payout Records (Paginated)
+export const getPayoutRecords = async (
+   params?: PayoutPaginationParams
+): Promise<PaginatedPayoutRecordsData> => {
+   try {
+      const interviewer = await getAuthenticatedInterviewer();
+      const page = Math.max(1, params?.page ?? 1);
+      const pageSize = Math.max(1, params?.pageSize ?? 10);
+      const skip = (page - 1) * pageSize;
+
+      const [totalCount, payouts] = await Promise.all([
+         db.payout.count({
+            where: { interviewerId: interviewer.id }
+         }),
+         db.payout.findMany({
+            where: { interviewerId: interviewer.id },
+            orderBy: { createdAt: "desc" },
+            skip,
+            take: pageSize
+         })
+      ]);
+
+      const mappedPayouts: PayoutRecord[] = payouts.map((p) => ({
+         id: p.id,
+         credits: p.credits,
+         platformFee: p.platformFee,
+         netAmount: p.netAmount,
+         status: p.status,
+         adminNote: p.adminNote,
+         createdAt: p.createdAt.toISOString(),
+         processedAt: p.processedAt ? p.processedAt.toISOString() : null
+      }));
+
+      return {
+         data: mappedPayouts,
+         page,
+         pageSize,
+         totalCount,
+         totalPages: Math.ceil(totalCount / pageSize),
+         hasNextPage: page * pageSize < totalCount,
+         hasPrevPage: page > 1
+      };
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: "Failed to fetch payout records"
+      });
+   }
+};
+
+// Get Credit Transactions (Paginated)
+export const getCreditTransactions = async (
+   params?: PayoutPaginationParams
+): Promise<PaginatedCreditTransactionsData> => {
+   try {
+      const interviewer = await getAuthenticatedInterviewer();
+      const page = Math.max(1, params?.page ?? 1);
+      const pageSize = Math.max(1, params?.pageSize ?? 10);
+      const skip = (page - 1) * pageSize;
+
+      const [totalCount, transactions] = await Promise.all([
+         db.creditTransaction.count({
+            where: { userId: interviewer.id }
+         }),
+         db.creditTransaction.findMany({
+            where: { userId: interviewer.id },
+            orderBy: { createdAt: "desc" },
+            skip,
+            take: pageSize
+         })
+      ]);
+
+      const mappedTransactions: CreditTransactionRecord[] = transactions.map((t) => ({
+         id: t.id,
+         amount: t.amount,
+         type: t.type,
+         bookingId: t.bookingId,
+         createdAt: t.createdAt.toISOString()
+      }));
+
+      return {
+         data: mappedTransactions,
+         page,
+         pageSize,
+         totalCount,
+         totalPages: Math.ceil(totalCount / pageSize),
+         hasNextPage: page * pageSize < totalCount,
+         hasPrevPage: page > 1
+      };
+   } catch (error: unknown) {
+      return serverError({
+         error,
+         fallbackMessage: "Failed to fetch credit transactions"
       });
    }
 };

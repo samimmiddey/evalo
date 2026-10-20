@@ -6,6 +6,7 @@ import PrimaryTitle from "@/components/common/primary-title";
 import PrimaryBody from "@/components/common/primary-body";
 import { interviewerData } from "@/data/interviews/interviews.data";
 import PayoutsView from "./components/payouts-view";
+import PayoutTabs from "./components/payout-tabs";
 
 const Payouts = () => {
    return (
@@ -21,6 +22,7 @@ const Payouts = () => {
          </PageHeaderLayout>
 
          <PayoutsView />
+         <PayoutTabs />
       </div>
    );
 };

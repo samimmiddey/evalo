@@ -4,28 +4,19 @@ import { useState } from "react";
 import { useFetch } from "@/hooks/use-fetch";
 import { getPayoutsData } from "../services/payout.client.service";
 import { PayoutsData } from "../types/payout.types";
-import { PayoutHistoryList } from "./payout-history-list";
-import { TransactionsHistory } from "./transactions-history";
 import { RequestPayoutModal } from "./request-payout-modal";
 import { PayoutsSkeleton } from "./skeletons/payouts-skeleton";
 import { Button } from "@/components/ui/button";
-import { Coins, History, Layers, Wallet } from "lucide-react";
+import { Coins, Wallet } from "lucide-react";
 import CardLayout from "@/components/layouts/card-layout";
 import PrimaryBody from "@/components/common/primary-body";
 import SecondaryTitle from "@/components/common/secondary-title";
-import {
-   Tabs,
-   TabsContent,
-   TabsList,
-   TabsTrigger
-} from "@/components/ui/tabs";
 import { usePlatformConfig } from "@/hooks/use-config";
 import ErrorCard from "@/components/common/error-card";
 import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 
 export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }) => {
    const [openRequestModal, setOpenRequestModal] = useState(false);
-   const [activeSubTab, setActiveSubTab] = useState<"payouts" | "transactions">("payouts");
 
    const {
       isLoading,
@@ -109,7 +100,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/5 text-xs">
                <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
                   <PrimaryBody text="Rate Conversion" className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500 mb-0.5" />
-                  <PrimaryBody text={`$${ratePerCredit}.00 USD / Credit`} className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold text-zinc-100" />
+                  <PrimaryBody text={`₹${ratePerCredit}.00 / Credit`} className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold text-zinc-100" />
                </div>
                <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
                   <PrimaryBody text="Platform Service Fee" className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500 mb-0.5" />
@@ -117,43 +108,10 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
                </div>
                <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
                   <PrimaryBody text="Est. Net Cash Value" className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500 mb-0.5" />
-                  <PrimaryBody text={`$${netEstimated.toFixed(2)} USD`} className="text-xs! lg:text-xs! 2xl:text-sm! font-bold text-emerald-400" />
+                  <PrimaryBody text={`₹${netEstimated.toFixed(2)}`} className="text-xs! lg:text-xs! 2xl:text-sm! font-bold text-emerald-400" />
                </div>
             </div>
          </CardLayout>
-
-         {/* Sub Tabs: Payout Requests vs Transactions */}
-         <Tabs
-            value={activeSubTab}
-            onValueChange={(val) => setActiveSubTab(val as "payouts" | "transactions")}
-            className="space-y-4"
-         >
-            <TabsList className="bg-zinc-900 border border-white/10 h-10! group-data-horizontal/tabs:h-10! p-1 gap-1.5 rounded-lg w-fit">
-               <TabsTrigger
-                  value="payouts"
-                  className="h-full! py-2! px-3! gap-2 rounded-md data-active:bg-violet-500/15! data-active:text-violet-300! data-active:border-violet-500/30! data-active:border! text-zinc-400! hover:text-zinc-200! text-xs! font-semibold! transition-all! cursor-pointer!"
-               >
-                  <History className="w-3.5 h-3.5" />
-                  <span>Payout Requests ({data?.payouts.length ?? 0})</span>
-               </TabsTrigger>
-
-               <TabsTrigger
-                  value="transactions"
-                  className="h-full! py-2! px-3! gap-2 rounded-md data-active:bg-violet-500/15! data-active:text-violet-300! data-active:border-violet-500/30! data-active:border! text-zinc-400! hover:text-zinc-200! text-xs! font-semibold! transition-all! cursor-pointer!"
-               >
-                  <Layers className="w-3.5 h-3.5" />
-                  <span>Credit Transactions ({data?.transactions.length ?? 0})</span>
-               </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="payouts">
-               <PayoutHistoryList payouts={data?.payouts ?? []} />
-            </TabsContent>
-
-            <TabsContent value="transactions">
-               <TransactionsHistory transactions={data?.transactions ?? []} />
-            </TabsContent>
-         </Tabs>
 
          {/* Request Modal */}
          <RequestPayoutModal

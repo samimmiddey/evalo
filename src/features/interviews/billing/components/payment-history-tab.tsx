@@ -76,7 +76,7 @@ const PaymentHistoryTab = () => {
             const { paymentAmount } = row.original;
 
             return (
-               <div className="flex items-center gap-0.5">
+               <div className="flex items-center">
                   <IndianRupee className="h-3 w-3" />
                   <SecondaryTitle
                      className='text-xs! 2xl:text-sm!'

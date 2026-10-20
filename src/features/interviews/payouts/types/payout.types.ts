@@ -20,10 +20,35 @@ export interface CreditTransactionRecord {
    createdAt: string;
 }
 
+export interface PayoutPaginationParams {
+   page?: number;
+   pageSize?: number;
+}
+
+export interface PaginatedPayoutRecordsData {
+   data: PayoutRecord[];
+   page: number;
+   pageSize: number;
+   totalCount: number;
+   totalPages: number;
+   hasNextPage: boolean;
+   hasPrevPage: boolean;
+}
+
+export interface PaginatedCreditTransactionsData {
+   data: CreditTransactionRecord[];
+   page: number;
+   pageSize: number;
+   totalCount: number;
+   totalPages: number;
+   hasNextPage: boolean;
+   hasPrevPage: boolean;
+}
+
 export interface PayoutsData {
    creditBalance: number;
-   payouts: PayoutRecord[];
-   transactions: CreditTransactionRecord[];
 }
 
 export type PayoutsResponse = BaseResponse<PayoutsData>;
+export type PayoutRecordsResponse = BaseResponse<PaginatedPayoutRecordsData>;
+export type CreditTransactionsResponse = BaseResponse<PaginatedCreditTransactionsData>;
