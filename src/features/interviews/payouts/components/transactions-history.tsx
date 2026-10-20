@@ -11,8 +11,11 @@ import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 import ErrorCard from "@/components/common/error-card";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable, features } from "@/components/common/data-table/data-table";
+import { payoutsData } from "@/data/payouts/payouts.data";
 
 export const TransactionsHistory = () => {
+   const { transactionsTab } = payoutsData;
+
    const params = {
       page: 1,
       pageSize: 10
@@ -24,8 +27,8 @@ export const TransactionsHistory = () => {
    if (data.length === 0 && !isLoading) {
       return (
          <EnhancedNoDataCard
-            title='No transaction history found'
-            body='No transaction history is found'
+            title={transactionsTab.emptyTitle}
+            body={transactionsTab.emptyDescription}
          />
       );
    }
@@ -40,13 +43,13 @@ export const TransactionsHistory = () => {
    const getTransactionLabel = (type: CreditTransactionRecord["type"]) => {
       switch (type) {
          case "BOOKING_EARNING":
-            return "Session Earning";
+            return transactionsTab.typeLabels.bookingEarning;
          case "ADMIN_ADJUSTMENT":
-            return "Payout Withdrawal";
+            return transactionsTab.typeLabels.adminAdjustment;
          case "BOOKING_REFUND":
-            return "Session Refund";
+            return transactionsTab.typeLabels.bookingRefund;
          case "BOOKING_REVERSAL":
-            return "Session Reversal";
+            return transactionsTab.typeLabels.bookingReversal;
          default:
             return type;
       }

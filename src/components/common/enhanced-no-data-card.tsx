@@ -30,7 +30,7 @@ const EnhancedNoDataCard = ({ title, body, showButton = false, buttonText, butto
          {/* Body */}
          <PrimaryBody
             text={body}
-            className='max-w-md text-sm!'
+            className='max-w-lg text-sm!'
          />
 
          {/* Button */}

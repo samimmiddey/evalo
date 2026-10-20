@@ -5,9 +5,11 @@ import { History, Layers } from 'lucide-react';
 import PayoutHistoryList from './payout-history-list';
 import TransactionsHistory from './transactions-history';
 import { useState } from 'react';
+import { payoutsData } from '@/data/payouts/payouts.data';
 
 const PayoutTabs = () => {
    const [activeSubTab, setActiveSubTab] = useState<"payouts" | "transactions">("payouts");
+   const { payoutsTab, transactionsTab } = payoutsData;
 
    return (
       <Tabs
@@ -21,7 +23,7 @@ const PayoutTabs = () => {
                className="h-full! py-2! px-3! gap-2 rounded-md data-active:bg-violet-500/15! data-active:text-violet-300! data-active:border-violet-500/30! data-active:border! text-zinc-400! hover:text-zinc-200! text-xs! font-semibold! transition-all! cursor-pointer!"
             >
                <History className="w-3.5 h-3.5" />
-               <span>Payout Requests</span>
+               <span>{payoutsTab.tabLabel}</span>
             </TabsTrigger>
 
             <TabsTrigger
@@ -29,7 +31,7 @@ const PayoutTabs = () => {
                className="h-full! py-2! px-3! gap-2 rounded-md data-active:bg-violet-500/15! data-active:text-violet-300! data-active:border-violet-500/30! data-active:border! text-zinc-400! hover:text-zinc-200! text-xs! font-semibold! transition-all! cursor-pointer!"
             >
                <Layers className="w-3.5 h-3.5" />
-               <span>Credit Transactions</span>
+               <span>{transactionsTab.tabLabel}</span>
             </TabsTrigger>
          </TabsList>
 

@@ -12,8 +12,11 @@ import SecondaryTitle from "@/components/common/secondary-title";
 import { IndianRupee } from "lucide-react";
 import getStatusBadge from "@/components/common/get-status-badge";
 import { formatDate } from "@/utils/format-date";
+import { payoutsData } from "@/data/payouts/payouts.data";
 
 export const PayoutHistoryList = () => {
+   const { payoutsTab } = payoutsData;
+
    const params = {
       page: 1,
       pageSize: 10
@@ -25,8 +28,8 @@ export const PayoutHistoryList = () => {
    if (data.length === 0 && !isLoading) {
       return (
          <EnhancedNoDataCard
-            title='No payouts yet'
-            body='There are no payouts yet'
+            title={payoutsTab.emptyTitle}
+            body={payoutsTab.emptyDescription}
          />
       );
    }
