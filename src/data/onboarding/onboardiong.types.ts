@@ -22,10 +22,6 @@ export interface FormFields {
 }
 
 export interface CandidateTab {
-   selectedRoleBadge: {
-      title: string;
-      value: string;
-   };
    contextCard: {
       icon: LucideIcon;
       title: string;
@@ -39,10 +35,6 @@ export interface CandidateTab {
 }
 
 export interface InterviewerTab {
-   selectedRoleBadge: {
-      title: string;
-      value: string;
-   };
    formFields: FormFields[];
 }
 

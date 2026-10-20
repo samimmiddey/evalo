@@ -15,12 +15,26 @@ export const checkUser = async (): Promise<UserServer | null> => {
       const loggedInUser = await db.user.findUnique({
          where: {
             clerkUserId: user.id,
+         },
+         include: {
+            subscriptions: {
+               orderBy: { createdAt: 'desc' },
+               take: 1,
+               select: {
+                  status: true
+               }
+            }
          }
       });
 
       if (!loggedInUser) return null;
 
-      return loggedInUser;
+      const latestSub = loggedInUser.subscriptions?.[0] ?? null;
+
+      return {
+         ...loggedInUser,
+         subscriptionStatus: latestSub?.status ?? null
+      };
    } catch (error: unknown) {
       return serverError({
          error,

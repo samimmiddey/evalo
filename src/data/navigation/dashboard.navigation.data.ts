@@ -6,6 +6,7 @@ import {
    Clock,
    Wallet,
    SlidersHorizontal,
+   CreditCard,
 } from 'lucide-react';
 import { NavigationItem } from "./navigation.types";
 
@@ -24,6 +25,11 @@ export const candidateNavigationData: NavigationItem[] = [
       name: 'Appointments',
       href: '/dashboard/appointments',
       icon: CalendarDays
+   },
+   {
+      name: 'Billing & Credits',
+      href: '/dashboard/billing',
+      icon: CreditCard
    }
 ];
 

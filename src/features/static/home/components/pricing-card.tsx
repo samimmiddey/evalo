@@ -1,36 +1,47 @@
 "use client";
 
 import { motion } from 'motion/react';
-import { Check, Gem } from 'lucide-react';
-import { CheckoutButton, useSubscription } from '@clerk/nextjs/experimental';
-import { Plan } from '../types/pricing.types';
+import { Check, Gem, IndianRupee } from 'lucide-react';
+import { CustomPlan } from '../types/pricing.types';
 import { Button } from '@/components/ui/button';
 import { Show } from '@clerk/nextjs';
 import { useRouter } from 'nextjs-toploader/app';
+import { useAppUser } from '@/hooks/use-app-user';
+import useUIStore from '@/store/ui-store';
 
 interface PricingCardProps {
    i: number;
-   plan: Plan;
+   plan: CustomPlan;
    disableAnimation?: boolean;
+   currentPlan?: string;
+   role?: string;
 }
 
-const PricingCard = ({ i, plan, disableAnimation = false }: PricingCardProps) => {
-   const { data: subscription, revalidate } = useSubscription();
-
+const PricingCard = ({ i, plan, disableAnimation = false, currentPlan, role }: PricingCardProps) => {
+   const { user } = useAppUser();
    const router = useRouter();
+   const { setUpgradeModal } = useUIStore();
 
-   const activeSubscription = subscription?.subscriptionItems.find(
-      (item) => item.status === "active"
-   );
+   const hasActivePaidPlan = Boolean(currentPlan && currentPlan.toLowerCase() !== 'free');
+   const isCurrentPlan = currentPlan?.toLowerCase() === plan.name.toLowerCase();
+   const isOnHold = isCurrentPlan && user?.subscriptionStatus === 'ON_HOLD';
+   const isPopular = plan.isPopular;
 
-   const upcomingSubscription = subscription?.subscriptionItems.find(
-      (item) => item.status === "upcoming"
-   );
+   const handleRedirect = () => {
+      const userRole = role || user?.role;
 
-   const isCurrentPlan = activeSubscription?.plan.id === plan.id;
-   const isUpcomingPlan = upcomingSubscription?.plan.id === plan.id;
+      // Return if plan ID is free
+      if (plan.id === 'free') return;
 
-   const isPopular = plan.name === "Starter";
+      // Return if role is INTERVIEWER
+      if (userRole === 'INTERVIEWER') return;
+
+      // Redirect to checkout if user exists and user is a CANDIDATE
+      if (userRole === 'CANDIDATE') {
+         setUpgradeModal(false);
+         router.push(`/checkout/${plan.id}`);
+      }
+   };
 
    return (
       <motion.div
@@ -67,8 +78,8 @@ const PricingCard = ({ i, plan, disableAnimation = false }: PricingCardProps) =>
 
             <div className="mb-5 lg:mb-5.5 2xl:mb-6">
                <div className="flex items-end gap-1">
-                  <span className="text-3xl 2xl:text-[42px] font-bold font-geist text-zinc-100">
-                     {plan.fee?.currencySymbol}{plan.fee?.amountFormatted}
+                  <span className="text-3xl 2xl:text-[42px] font-bold font-geist text-zinc-100 flex items-center gap-px">
+                     <IndianRupee className='h-6.5 2xl:h-9 w-6.5 2xl:w-9' />{plan.amount}
                   </span>
                   <span className="text-zinc-400 mb-1 2xl:mb-1.5 font-medium text-sm 2xl:text-base">/month</span>
                </div>
@@ -83,7 +94,11 @@ const PricingCard = ({ i, plan, disableAnimation = false }: PricingCardProps) =>
                         : "bg-white/5 hover:bg-white/10 text-zinc-200 border border-white/10"
                      }`}
                   onClick={() => {
-                     router.push('/sign-in');
+                     if (plan.id !== 'free') {
+                        router.push(`/sign-in?redirect_url=/checkout/${plan.id}`);
+                     } else {
+                        router.push('/sign-in');
+                     }
                   }}
                >
                   Get Started
@@ -92,81 +107,34 @@ const PricingCard = ({ i, plan, disableAnimation = false }: PricingCardProps) =>
 
             {/* Checkout Button when signed in */}
             <Show when="signed-in">
-               <CheckoutButton
-                  for="user"
-                  planId={plan.id}
-                  planPeriod="month"
-                  onSubscriptionComplete={() => {
-                     void revalidate();
-                  }}
-                  checkoutProps={{
-                     appearance: {
-                        elements: {
-                           drawerRoot: {
-                              zIndex: 9999
-                           },
-                           drawerBackdrop: {
-                              zIndex: 9999,
-                              backgroundColor: "rgba(0, 0, 0, 0.75)"
-
-                           },
-
-                        },
-                        variables: {
-                           colorPrimary: "#8e51ff",
-                           colorPrimaryForeground: "#FFFFFF",
-                           colorBackground: "#18181B",
-                           colorForeground: "#F8FAFC",
-                           colorInput: "#2D2D31",
-                           colorInputForeground: "#FAFAFA",
-                           colorBorder: "#94A3B8",
-                           colorNeutral: "#CBD5E1",
-                           colorMuted: "#3A3A40",
-                           colorMutedForeground: "#E4E4E7",
-                           colorRing: "#8e51ff",
-                           colorShadow: "rgba(0,0,0,0.45)",
-                           borderRadius: "12px",
-                           fontFamily: "Inter, sans-serif",
-                        }
-                     },
-                  }}
-               >
-                  <Button
-                     disabled={isCurrentPlan || isUpcomingPlan}
-                     className={`w-full h-auto py-3.25 2xl:py-3.75 rounded-xl font-semibold font-geist tracking-wide transition-all duration-300 mb-7 2xl:mb-8
-    ${isCurrentPlan
+               <Button
+                  disabled={(!isOnHold && isCurrentPlan) || plan.id === 'free' || role === 'INTERVIEWER'}
+                  className={`w-full h-auto py-3.25 2xl:py-3.75 rounded-xl font-semibold font-geist tracking-wide transition-all duration-300 mb-7 2xl:mb-8
+                  ${isOnHold
+                        ? "bg-amber-500 hover:bg-amber-400 text-zinc-950 font-semibold"
+                        : isCurrentPlan
                            ? "bg-emerald-500/15 hover:bg-emerald-500/20 text-emerald-200 border border-emerald-500/30"
-                           : isUpcomingPlan
-                              ? "bg-sky-500/15 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30"
-                              : isPopular
-                                 ? "bg-violet-600 hover:bg-violet-500 text-zinc-100"
-                                 : "bg-white/5 hover:bg-white/10 text-zinc-200 border border-white/10"
-                        }`}
-                  >
-                     {isCurrentPlan
-                        ? "Current Plan"
-                        : isUpcomingPlan
-                           ? "Scheduled"
-                           : activeSubscription
-                              ? "Switch Plan"
-                              : "Subscribe"}
-                  </Button>
-
-
-               </CheckoutButton>
+                           : isPopular
+                              ? "bg-violet-600 hover:bg-violet-500 text-zinc-100"
+                              : "bg-white/5 hover:bg-white/10 text-zinc-200 border border-white/10"
+                     }`}
+                  onClick={handleRedirect}
+               >
+                  {
+                     role !== 'INTERVIEWER' ? (
+                        isOnHold
+                           ? "Fix Payment"
+                           : isCurrentPlan
+                              ? "Current Plan"
+                              : hasActivePaidPlan
+                                 ? (plan.id === "free" ? "Free Tier" : "Switch Plan")
+                                 : "Subscribe"
+                     ) : (
+                        plan.name
+                     )
+                  }
+               </Button>
             </Show>
-
-            {isUpcomingPlan && (
-               <p className="mt-2 text-center text-xs text-sky-300">
-                  Starts {upcomingSubscription.periodStart.toLocaleDateString()}
-               </p>
-            )}
-
-            {isCurrentPlan && activeSubscription?.periodEnd && (
-               <p className="mt-2 text-center text-xs text-zinc-400">
-                  Renews {activeSubscription.periodEnd.toLocaleDateString()}
-               </p>
-            )}
 
             <div className="space-y-4">
                <p className="text-[13px] sm:text-sm font-mono font-semibold tracking-wider text-zinc-400 uppercase mb-4.5 2xl:mb-5">What&apos;s included</p>
@@ -175,7 +143,7 @@ const PricingCard = ({ i, plan, disableAnimation = false }: PricingCardProps) =>
                      <div className={`p-1 rounded-full shrink-0 ${isPopular ? 'bg-violet-500/30 text-violet-400' : 'bg-white/10 text-zinc-400'}`}>
                         <Check className="h-3 2xl:w-3.5 w-3 2xl:h-3.5" strokeWidth={3} />
                      </div>
-                     <span className="text-zinc-300 text-sm 2xl:text-base">{feature.name}</span>
+                     <span className="text-zinc-300 text-sm 2xl:text-base">{feature}</span>
                   </div>
                ))}
             </div>

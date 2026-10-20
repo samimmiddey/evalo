@@ -11,7 +11,8 @@ const isPublicRoute = createRouteMatcher([
    '/sign-up(.*)',
    '/forgot-password(.*)',
    '/sso-callback(.*)',
-   '/api(.*)'
+   '/api(.*)',
+   '/success(.*)'
 ]);
 
 const isAuthRoute = createRouteMatcher([
@@ -21,7 +22,7 @@ const isAuthRoute = createRouteMatcher([
 ]);
 
 const roleRouteMap = [
-   { matcher: createRouteMatcher(['/dashboard/interviewers(.*)', '/dashboard/appointments(.*)']), allowedRole: 'CANDIDATE' },
+   { matcher: createRouteMatcher(['/dashboard/interviewers(.*)', '/dashboard/appointments(.*)', '/dashboard/billing(.*)', '/checkout(.*)']), allowedRole: 'CANDIDATE' },
    { matcher: createRouteMatcher(['/dashboard/sessions(.*)', '/dashboard/availability(.*)', '/dashboard/payouts(.*)', '/dashboard/profile(.*)']), allowedRole: 'INTERVIEWER' },
 ] as const;
 

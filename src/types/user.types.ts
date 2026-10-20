@@ -1,3 +1,4 @@
+import { SubscriptionStatus } from "@/generated/prisma/enums";
 import { BaseResponse } from "./api.types";
 
 export type PLAN = "pro" | "starter" | "free";
@@ -32,6 +33,8 @@ export interface UserServer {
    expertise: string[];
    creditRate: number;
    creditBalance: number;
+   phone: string | null;
+   subscriptionStatus?: SubscriptionStatus | null;
 }
 
 export type UserClient = Omit<

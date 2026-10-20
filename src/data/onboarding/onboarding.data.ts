@@ -1,5 +1,5 @@
 import { OnboardingSchemaTypes } from "@/features/onboarding/schemas/onboarding.schemas";
-import { ArrowRight, Briefcase, ShieldCheck, Flame, User, Zap, Brain } from "lucide-react";
+import { ArrowRight, Briefcase, ShieldCheck, Flame, User, Zap, Brain, Phone } from "lucide-react";
 import { DomainsData, OnboardingData, YearsOfExperienceData } from "./onboardiong.types";
 
 export const onboardingData: OnboardingData = {
@@ -7,7 +7,7 @@ export const onboardingData: OnboardingData = {
       btnText: 'Onboarding',
       btnIcon: User,
       title: 'Setup Your Profile',
-      description: "We'd love to get to know you. Tell us a little about yourself so we can personalize your experience.",
+      description: "We'd love to get to know you. Take a quick moment to tell us about yourself so we can personalize your experience.",
    },
    tabs: [
       {
@@ -22,10 +22,6 @@ export const onboardingData: OnboardingData = {
       }
    ],
    candidateTab: {
-      selectedRoleBadge: {
-         title: 'Candidate',
-         value: 'INTERVIEWER'
-      },
       contextCard: {
          icon: Flame,
          title: 'Candidate Experience',
@@ -50,65 +46,75 @@ export const onboardingData: OnboardingData = {
             type: 'text',
             name: 'firstName',
             label: 'First Name',
-            placeholder: 'Enter Your first Name',
+            placeholder: 'Enter your first name',
             icon: Briefcase,
          },
          {
             type: 'text',
             name: 'lastName',
             label: 'Last Name',
-            placeholder: 'Enter Your last Name',
+            placeholder: 'Enter your last name',
             icon: Briefcase,
+         },
+         {
+            type: 'text',
+            name: 'phone',
+            label: 'Phone Number',
+            placeholder: 'Enter your 10-digit phone number',
+            icon: Phone,
          }
       ]
    },
    interviewerTab: {
-      selectedRoleBadge: {
-         title: 'Interviewer',
-         value: 'CANDIDATE'
-      },
       formFields: [
          {
             type: 'text',
             name: 'firstName',
             label: 'First Name',
-            placeholder: 'Enter Your first Name',
+            placeholder: 'Enter your first name',
             icon: Briefcase,
          },
          {
             type: 'text',
             name: 'lastName',
             label: 'Last Name',
-            placeholder: 'Enter Your last Name',
+            placeholder: 'Enter your last name',
             icon: Briefcase,
          },
          {
             type: 'text',
             name: 'designation',
             label: 'Designation',
-            placeholder: 'Enter Your Designation',
+            placeholder: 'Enter your designation',
             icon: Briefcase,
          },
          {
             type: 'text',
             name: 'company',
             label: 'Company',
-            placeholder: 'Enter Your Company',
+            placeholder: 'Enter your company',
             icon: Briefcase,
          },
          {
             type: 'select',
             name: 'experience',
             label: 'Years of Experience',
-            placeholder: 'Enter Your Years of Experience',
+            placeholder: 'Enter your years of experience',
             icon: Briefcase,
          },
          {
             type: 'chips',
             name: 'expertise',
             label: 'Expertise',
-            placeholder: 'Enter Your Expertise',
+            placeholder: 'Enter your expertise',
             icon: Briefcase,
+         },
+         {
+            type: 'text',
+            name: 'phone',
+            label: 'Phone Number',
+            placeholder: 'Enter your 10-digit phone number',
+            icon: Phone,
          },
          {
             type: 'textarea',
@@ -131,7 +137,8 @@ export const defaultValues: OnboardingSchemaTypes = {
    company: '',
    experience: '',
    expertise: [],
-   bio: ''
+   bio: '',
+   phone: ''
 };
 
 export const YEARS_OF_EXPERIENCE: YearsOfExperienceData[] = [

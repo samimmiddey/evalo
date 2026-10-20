@@ -6,7 +6,7 @@ import {
    SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-const SKELETON_WIDTHS = ["w-24", "w-32", "w-28"];
+const SKELETON_WIDTHS = ["w-24", "w-32", "w-28", "w-24", "w-28"];
 
 const MenuItemSkeleton = () => {
    return (

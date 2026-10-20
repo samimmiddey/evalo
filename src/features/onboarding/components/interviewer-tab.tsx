@@ -4,7 +4,6 @@ import { motion } from 'motion/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import SelectedRoleBadge from './selected-role-badge';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useFormContext } from 'react-hook-form';
 import { DOMAINS, onboardingData, YEARS_OF_EXPERIENCE } from '@/data/onboarding/onboarding.data';
@@ -13,13 +12,12 @@ import InputError from '@/components/common/input-error';
 import { OnboardingSchemaTypes } from '../schemas/onboarding.schemas';
 import { DomainValue } from '@/data/onboarding/onboardiong.types';
 import { MultiSelect } from '@/components/common/multi-select';
-import { AssignedRole } from '@/types/user.types';
 
 const InterviewerTab = () => {
    const methods = useFormContext<OnboardingSchemaTypes>();
    const data = onboardingData.interviewerTab;
 
-   if (!true) {
+   if (!data) {
       return <NoDataCard text="No Data Available" />;
    }
 
@@ -30,11 +28,6 @@ const InterviewerTab = () => {
          transition={{ duration: 0.3 }}
          className="space-y-6"
       >
-         {/* Selected role badge */}
-         <SelectedRoleBadge
-            role={data.selectedRoleBadge.title}
-            onChangeRole={() => methods.setValue('role', data.selectedRoleBadge.value as AssignedRole)}
-         />
 
          {/* Form fields */}
          <div className="space-y-4">
@@ -46,7 +39,7 @@ const InterviewerTab = () => {
                   data.formFields.map((field) => (
                      <div
                         key={field.name}
-                        className={`flex flex-col gap-2 ${field.type === "textarea"
+                        className={`flex flex-col gap-2 ${(field.name === "bio" || field.name === 'phone')
                            ? "sm:col-span-2"
                            : ""
                            }`}

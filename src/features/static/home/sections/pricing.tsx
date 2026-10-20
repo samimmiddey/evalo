@@ -5,21 +5,37 @@ import PrimaryBody from '@/components/common/primary-body';
 import PrimaryTitle from '@/components/common/primary-title';
 import HeaderLayout from '@/components/layouts/header-layout';
 import { homeData } from '@/data/home/home.data';
-import { usePlans } from '@clerk/nextjs/experimental';
-import CustomSpinner from '@/components/common/custom-spinner';
 import NoDataCard from '@/components/common/no-data-card';
 import PricingCardContainer from '../components/pricing-card-container';
+import { useAppUser } from '@/hooks/use-app-user';
+import useSubscription from '@/hooks/use-subscription';
+import ErrorCard from '@/components/common/error-card';
+import PricingSkeleton from '../components/skeletons/pricing-skeleton';
 
 const Pricing = () => {
-   const { data: plans, isLoading } = usePlans({ for: 'user', pageSize: 10 });
+   const { user } = useAppUser();
+   const { allPlans, isLoading, error } = useSubscription();
 
    // Loading state
    if (isLoading) {
-      return <CustomSpinner text='Loading plans...' containerClass='justify-center' />;
+      return (
+         <div className="s-margin-t container animate-pulse">
+            <PricingSkeleton />
+         </div>
+      );
+   }
+
+   // Error State
+   if (error) {
+      return (
+         <div className="container s-margin-t">
+            <ErrorCard text={error} />
+         </div>
+      );
    }
 
    // No plan exists
-   if (!plans?.length) {
+   if (!allPlans?.length) {
       return (
          <div className="s-margin-t container">
             <NoDataCard text='No plans available' />
@@ -40,7 +56,11 @@ const Pricing = () => {
             />
          </HeaderLayout>
 
-         <PricingCardContainer plans={plans} />
+         <PricingCardContainer
+            plans={allPlans}
+            currentPlan={user?.role === 'CANDIDATE' ? user.currentPlan : undefined}
+            role={user?.role}
+         />
       </div>
    );
 };

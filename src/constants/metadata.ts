@@ -92,4 +92,19 @@ export const PAGE_METADATA = {
       description:
          'Join your scheduled live technical interview session with real-time video, coding chat, and AI assistance.'
    },
+   success: {
+      title: 'Payment Successful',
+      description:
+         'Your subscription has been activated and your mock interview credits are ready.'
+   },
+   checkout: {
+      title: 'Checkout & Subscription',
+      description:
+         'Review your subscription plan details, credits allocation, and billing breakdown before authorizing payment.'
+   },
+   billing: {
+      title: 'Billing & Credits',
+      description:
+         'Manage your mock interview subscription plan, track credit ledger, and review payment history.'
+   },
 } as const satisfies Record<string, Metadata>;

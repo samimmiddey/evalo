@@ -10,6 +10,7 @@ import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TopLoader } from "@/components/common/top-loader";
 import { PAGE_METADATA } from "@/constants/metadata";
+import Script from 'next/script';
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -65,6 +66,11 @@ export default function RootLayout({
             <Toaster position="top-center" richColors />
           </ThemeProvider>
         </ClerkProvider>
+
+        <Script
+          src="https://sdk.cashfree.com/js/v3/cashfree.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

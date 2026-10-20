@@ -75,7 +75,6 @@ export interface SlotPreset {
 export interface InterviewerData {
    sessions: SectionHeader;
    availability: SectionHeader;
-   payouts: SectionHeader;
    profile: SectionHeader;
    slotPresets: SlotPreset[];
 }
