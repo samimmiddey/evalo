@@ -5,10 +5,6 @@ import ky from "ky";
 const appId = process.env.CASHFREE_PG_APP_KEY || "";
 const secretKey = process.env.CASHFREE_PG_SECRET_KEY || "";
 
-if (!appId || !secretKey) {
-   throw new Error("App ID or Secret Key is missing");
-}
-
 const baseURL = 'https://sandbox.cashfree.com/pg';
 
 export const apiCashfree = ky.create({
