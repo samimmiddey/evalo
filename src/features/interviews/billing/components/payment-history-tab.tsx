@@ -1,6 +1,5 @@
 "use client";
 
-import { format, parseISO } from "date-fns";
 import SecondaryTitle from "@/components/common/secondary-title";
 import PrimaryBody from "@/components/common/primary-body";
 import { billingData } from "@/data/billing/billing.data";
@@ -13,18 +12,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CashfreePaymentRecord } from "../types/billing.types";
 import { IndianRupee } from "lucide-react";
 import getStatusBadge from "@/components/common/get-status-badge";
-
-const formatPaymentDate = (dateStr?: string | null) => {
-   if (!dateStr) return "-";
-   try {
-      // Normalizes "YYYY-MM-DD HH:mm:ss" to ISO if needed
-      const normalized = dateStr.includes("T") ? dateStr : dateStr.replace(" ", "T");
-      const parsed = parseISO(normalized);
-      return isNaN(parsed.getTime()) ? dateStr : format(parsed, "PPp");
-   } catch {
-      return dateStr;
-   }
-};
+import { formatDate } from "@/utils/format-date";
 
 const PaymentHistoryTab = () => {
    const { paymentsTab } = billingData;
@@ -115,7 +103,7 @@ const PaymentHistoryTab = () => {
 
             return (
                <PrimaryBody
-                  text={formatPaymentDate(tx.paymentTime)}
+                  text={formatDate(tx.paymentTime)}
                   className="text-xs!"
                />
             );

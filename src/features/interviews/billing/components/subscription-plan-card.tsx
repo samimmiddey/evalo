@@ -6,7 +6,7 @@ import PrimaryBody from "@/components/common/primary-body";
 import SecondaryTitle from "@/components/common/secondary-title";
 import { Button } from "@/components/ui/button";
 import { BillingPlanInfo } from "../types/billing.types";
-import { format, parseISO } from "date-fns";
+import { formatDate } from "@/utils/format-date";
 import { cn } from "@/lib/utils";
 import { billingData } from "@/data/billing/billing.data";
 import getStatusBadge from "@/components/common/get-status-badge";
@@ -106,7 +106,7 @@ export const SubscriptionPlanCard = ({
                <SecondaryTitle
                   text={
                      plan.currentPeriodEnd
-                        ? format(parseISO(plan.currentPeriodEnd), "PP")
+                        ? formatDate(plan.currentPeriodEnd, "PP")
                         : isSubscribed
                            ? subscriptionCard.quickStats.renewsMonthlyText
                            : subscriptionCard.quickStats.noRenewalText

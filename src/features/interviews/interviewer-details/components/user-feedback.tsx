@@ -78,7 +78,7 @@ const UserFeedback = ({ id }: { id: string; }) => {
                                     {item.review?.comment ?? 'N/A'}
                                  </p>
                                  <span className="text-[11px] text-zinc-500 block">
-                                    {item.review?.createdAt ? formatDate(item.review.createdAt) : 'N/A'}
+                                    {item.review?.createdAt ? formatDate(item.review?.createdAt, "MMM dd, yyyy") : 'N/A'}
                                  </span>
                               </div>
                            ))}

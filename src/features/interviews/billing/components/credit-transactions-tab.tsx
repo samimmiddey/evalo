@@ -7,11 +7,11 @@ import { useInfiniteFetch } from "@/hooks/use-infinite-fetch";
 import { getCandidateTransactions } from "../services/billing.client.service";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable, features } from "@/components/common/data-table/data-table";
-import { format, parseISO } from "date-fns";
 import SecondaryTitle from "@/components/common/secondary-title";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import PrimaryBody from "@/components/common/primary-body";
 import ErrorCard from "@/components/common/error-card";
+import { formatDate } from "@/utils/format-date";
 
 export const CreditTransactionsTab = () => {
    const { transactionsTab } = billingData;
@@ -134,7 +134,7 @@ export const CreditTransactionsTab = () => {
 
             return (
                <PrimaryBody
-                  text={format(parseISO(tx.createdAt), 'PPp')}
+                  text={formatDate(tx.createdAt)}
                   className="text-xs!"
                />
             );
