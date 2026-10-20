@@ -14,7 +14,7 @@ import {
 } from "../schemas/payout.schemas";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
-import { DollarSign, Wallet } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { useAppUser } from "@/hooks/use-app-user";
 import { payoutsData } from "@/data/payouts/payouts.data";
 
@@ -99,17 +99,17 @@ export const RequestPayoutModal = ({
                </div>
                <div className="flex items-center justify-between text-xs text-zinc-400">
                   <span>{requestModal.labels.conversionRate}:</span>
-                  <span>${ratePerCredit} {requestModal.labels.conversionRateUnit}</span>
+                  <span>₹{ratePerCredit} {requestModal.labels.conversionRateUnit}</span>
                </div>
                <div className="flex items-center justify-between text-xs text-zinc-400">
                   <span>{requestModal.labels.platformFee} ({platformFeePercent}%):</span>
-                  <span className="text-rose-400">-${platformFee.toFixed(2)}</span>
+                  <span className="text-rose-400">-₹{platformFee.toFixed(2)}</span>
                </div>
                <div className="pt-2 border-t border-zinc-500/15 flex items-center justify-between text-sm font-semibold text-zinc-100">
                   <span className="flex items-center gap-1.5 text-zinc-300">
-                     <DollarSign className="w-4 h-4" /> {requestModal.labels.netPayoutAmount}:
+                     {requestModal.labels.netPayoutAmount}:
                   </span>
-                  <span className="text-emerald-400 text-base">${netAmount.toFixed(2)}</span>
+                  <span className="text-emerald-400 text-base">₹{netAmount.toFixed(2)}</span>
                </div>
             </div>
 
