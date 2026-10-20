@@ -2,8 +2,8 @@ import "server-only";
 
 import ky from "ky";
 
-const appId = process.env.CASHFREE_PG_APP_KEY;
-const secretKey = process.env.CASHFREE_PG_SECRET_KEY;
+const appId = process.env.CASHFREE_PG_APP_KEY || "";
+const secretKey = process.env.CASHFREE_PG_SECRET_KEY || "";
 
 if (!appId || !secretKey) {
    throw new Error("App ID or Secret Key is missing");
