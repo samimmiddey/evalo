@@ -4,7 +4,7 @@ import { InterviewExpertise } from "@/generated/prisma/enums";
 
 export const interviewsData: InterviewsData = {
    header: {
-      title: "Find your perfect interviewer",
+      title: "Explore interviewers",
       description: "Connect with industry experts from top companies for mock interviews, career guidance, and technical mentorship."
    },
    expertise: [
