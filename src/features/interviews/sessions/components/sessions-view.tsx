@@ -29,13 +29,7 @@ import {
 import { toast } from "sonner";
 import { Grid2x2, Rows3 } from "lucide-react";
 import { SessionsFilterParams } from "../types/session.types";
-
-const statusFilterOptions: { label: string; value: SessionsFilterParams["status"]; }[] = [
-   { label: "All Sessions", value: "ALL" },
-   { label: "Scheduled", value: "SCHEDULED" },
-   { label: "Completed", value: "COMPLETED" },
-   { label: "Cancelled", value: "CANCELLED" }
-];
+import { sessionsData } from "@/data/sessions/sessions.data";
 
 export const SessionsView = () => {
    const [statusFilter, setStatusFilter] = useState<SessionsFilterParams["status"]>("ALL");
@@ -95,7 +89,7 @@ export const SessionsView = () => {
                   <SelectValue placeholder="All Sessions" />
                </SelectTrigger>
                <SelectContent className="bg-zinc-900 border-white/10 text-zinc-200">
-                  {statusFilterOptions.map((opt) => (
+                  {sessionsData.statusFilterOptions.map((opt) => (
                      <SelectItem key={opt.value} value={opt.value ?? "ALL"}>
                         {opt.label}
                      </SelectItem>
@@ -108,7 +102,7 @@ export const SessionsView = () => {
                <SearchBar
                   value={searchQuery}
                   setValue={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search candidates..."
+                  placeholder={sessionsData.search.placeholder}
                   showLabel={false}
                   inputClassName="h-10!"
                />
@@ -171,11 +165,11 @@ export const SessionsView = () => {
             </>
          ) : (
             <EnhancedNoDataCard
-               title="No Sessions Found"
+               title={sessionsData.noData.title}
                body={
                   statusFilter === "SCHEDULED"
-                     ? "You have no upcoming scheduled sessions. Set your availability slots so candidates can book sessions with you."
-                     : "No session records match your selected filters."
+                     ? sessionsData.noData.scheduledBody
+                     : sessionsData.noData.defaultBody
                }
             />
          )}

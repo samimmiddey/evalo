@@ -23,6 +23,7 @@ import { ProfileSkeleton } from "./skeletons/profile-skeleton";
 import CardLayout from "@/components/layouts/card-layout";
 import SecondaryTitle from "@/components/common/secondary-title";
 import PrimaryBody from "@/components/common/primary-body";
+import { profileData } from "@/data/profile/profile.data";
 
 interface ProfileFormProps {
    onProfileUpdated?: () => void;
@@ -89,11 +90,11 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                </div>
                <div className="flex flex-col gap-1.5 sm:gap-0.5">
                   <SecondaryTitle
-                     text="Interviewer Profile & Session Rates"
+                     text={profileData.formCard.title}
                      className="text-base! 2xl:text-lg!"
                   />
                   <PrimaryBody
-                     text="Customize how your profile appears to candidates and configure your booking rate."
+                     text={profileData.formCard.description}
                      className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-400!"
                   />
                </div>
@@ -113,11 +114,11 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                         className="text-xs 2xl:text-[13px] font-medium text-zinc-300 flex items-center gap-1.5"
                      >
                         <Briefcase className="w-3.5 h-3.5 text-violet-400" />
-                        Designation / Role Title
+                        {profileData.fields.designation.label}
                      </Label>
                      <Input
                         id="designation"
-                        placeholder="e.g. Senior Frontend Engineer"
+                        placeholder={profileData.fields.designation.placeholder}
                         {...register("designation")}
                         className="bg-zinc-900 border-white/10 text-zinc-100 text-sm!"
                      />
@@ -132,11 +133,11 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                         className="text-xs 2xl:text-[13px] font-medium text-zinc-300 flex items-center gap-1.5"
                      >
                         <Building2 className="w-3.5 h-3.5 text-violet-400" />
-                        Current Company
+                        {profileData.fields.company.label}
                      </Label>
                      <Input
                         id="company"
-                        placeholder="e.g. Google, Stripe, Microsoft"
+                        placeholder={profileData.fields.company.placeholder}
                         {...register("company")}
                         className="bg-zinc-900 border-white/10 text-zinc-100 text-sm!"
                      />
@@ -154,7 +155,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                         className="text-xs 2xl:text-[13px] font-medium text-zinc-300 flex items-center gap-1.5"
                      >
                         <Flame className="w-3.5 h-3.5 text-violet-400" />
-                        Years of Industry Experience
+                        {profileData.fields.experience.label}
                      </Label>
                      <Input
                         id="experience"
@@ -172,7 +173,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                   <div className="space-y-2">
                      <Label className="text-xs 2xl:text-[13px] font-medium text-zinc-300 flex items-center gap-1.5">
                         <Settings className="w-3.5 h-3.5 text-violet-400" />
-                        Interview Domains & Technical Expertise
+                        {profileData.fields.expertise.label}
                      </Label>
                      <MultiSelect
                         options={DOMAINS}
@@ -184,7 +185,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                               { shouldValidate: true, shouldDirty: true }
                            )
                         }
-                        placeholder="Select expertise domains..."
+                        placeholder={profileData.fields.expertise.placeholder}
                         variant="inverted"
                         className="rounded-lg border border-white/15 bg-zinc-900 px-3 min-h-11 text-sm focus-visible:border-violet-500 hover:bg-zinc-900"
                         maxCount={2}
@@ -202,12 +203,12 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                      className="text-xs 2xl:text-[13px] font-medium text-zinc-300 flex items-center gap-1.5"
                   >
                      <User className="w-3.5 h-3.5 text-violet-400" />
-                     About Me & Interview Style
+                     {profileData.fields.bio.label}
                   </Label>
                   <Textarea
                      id="bio"
                      rows={4}
-                     placeholder="Describe your background, what candidates can expect in your sessions, and your technical focus areas..."
+                     placeholder={profileData.fields.bio.placeholder}
                      {...register("bio")}
                      className="bg-zinc-900 border-white/10 text-zinc-100 text-sm resize-none h-25"
                   />
@@ -222,7 +223,7 @@ export const ProfileForm = ({ onProfileUpdated }: ProfileFormProps) => {
                      className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5"
                   >
                      {isPending ? <Spinner className="size-4" /> : <Save className="w-4 h-4" />}
-                     Save Changes
+                     {profileData.submitButton}
                   </Button>
                </div>
             </form>
