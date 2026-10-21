@@ -119,6 +119,8 @@ const PaymentHistoryTab = () => {
          hasNextPage={hasNextPage}
          isFetchingNextPage={isFetchingNextPage}
          fetchNextPage={fetchNextPage}
+         pageSize={params.pageSize}
+         contentType="payments"
       />
    );
 };

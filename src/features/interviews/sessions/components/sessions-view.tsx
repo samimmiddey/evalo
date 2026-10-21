@@ -50,6 +50,13 @@ export const SessionsView = () => {
       candidateName: string;
    } | null>(null);
 
+   const params = {
+      page: 1,
+      pageSize: 10,
+      search: debouncedSearch,
+      status: statusFilter
+   };
+
    const {
       isLoading,
       isFetchingNextPage,
@@ -59,13 +66,7 @@ export const SessionsView = () => {
       fetchNextPage,
       refetch: refetchSessions
    } = useInfiniteFetch<DashboardSession>(
-      (page) =>
-         getDashboardSessions({
-            status: statusFilter,
-            search: debouncedSearch,
-            page,
-            pageSize: 10
-         }),
+      (page) => getDashboardSessions({ ...params, page }),
       [statusFilter, debouncedSearch]
    );
 
@@ -159,9 +160,9 @@ export const SessionsView = () => {
                )}
 
                {/* End of list state */}
-               {!hasNextPage && sessions.length > 0 && (
-                  <div className="mt-8 2xl:mt-10">
-                     <ListEndMessage text="You've reached the end of the list" />
+               {!hasNextPage && sessions?.length > params.pageSize && (
+                  <div className='mt-8 2xl:mt-10'>
+                     <ListEndMessage text={`Showing all ${sessions.length} sessions`} />
                   </div>
                )}
 

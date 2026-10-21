@@ -92,11 +92,12 @@ const UserFeedback = ({ id }: { id: string; }) => {
             {isFetchingNextPage && <FeedbackSkeletonLoader />}
 
             {/* Empty state */}
-            {!hasNextPage && data?.length > 0 && (
-               <div className='mt-6 2xl:mt-8'>
+            {!hasNextPage && data?.length > params.pageSize && (
+               <div className='mt-8 2xl:mt-10'>
                   <ListEndMessage
-                     text="You've reached the end of the list"
-                     className='p-0! border-none!'
+                     text={`Showing all ${data.length} reviews`}
+                     simpleVariant={true}
+                     showLines={false}
                   />
                </div>
             )}

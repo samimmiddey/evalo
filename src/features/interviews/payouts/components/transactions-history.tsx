@@ -124,6 +124,8 @@ export const TransactionsHistory = () => {
          hasNextPage={hasNextPage}
          isFetchingNextPage={isFetchingNextPage}
          fetchNextPage={fetchNextPage}
+         pageSize={params.pageSize}
+         contentType="transactions"
       />
    );
 };
