@@ -17,7 +17,8 @@ interface DataTableProps<TData extends RowData> {
    hasNextPage?: boolean;
    isFetchingNextPage?: boolean;
    fetchNextPage?: () => void;
-   endMessage?: string;
+   pageSize: number;
+   contentType: string;
 }
 
 export function DataTable<TData extends RowData>({
@@ -27,7 +28,8 @@ export function DataTable<TData extends RowData>({
    hasNextPage,
    isFetchingNextPage,
    fetchNextPage,
-   endMessage
+   pageSize,
+   contentType
 }: DataTableProps<TData>) {
    const table = useTable({ features, columns, data });
 
@@ -100,11 +102,10 @@ export function DataTable<TData extends RowData>({
          <div ref={sentinelRef} className="h-4 mt-1" />
 
          {/* End of list message */}
-         {!hasNextPage && !isLoading && data.length > 10 && (
-            <ListEndMessage
-               className='bg-transparent! border-none! p-0! mt-1'
-               text={endMessage ?? "You've reached the end of the list"}
-            />
+         {!hasNextPage && data?.length > pageSize && (
+            <div className='mt-3 2xl:mt-5'>
+               <ListEndMessage text={`Showing all ${data.length} ${contentType}`} />
+            </div>
          )}
       </div>
    );

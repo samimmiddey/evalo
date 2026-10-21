@@ -150,6 +150,8 @@ export const CreditTransactionsTab = () => {
          hasNextPage={hasNextPage}
          isFetchingNextPage={isFetchingNextPage}
          fetchNextPage={fetchNextPage}
+         pageSize={params.pageSize}
+         contentType="credit transactions"
       />
    );
 };

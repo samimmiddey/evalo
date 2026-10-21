@@ -11,7 +11,7 @@ import {
    CheckCircle2,
    ChevronRight
 } from 'lucide-react';
-import { interviewerDetailsData } from '@/data/interviews/interviews.data';
+import { interviewerDetailsData } from '@/data/interviewers/interviewers.data';
 import HeaderTitle from './header-title';
 import GradientWrapper from '@/components/wrappers/gradient-wrapper';
 import { InterviewerDetails } from '../types/details.types';
