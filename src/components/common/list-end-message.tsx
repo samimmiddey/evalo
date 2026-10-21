@@ -4,17 +4,18 @@ import { cn } from '@/lib/utils';
 
 interface ListEndMessageProps {
    text: string;
+   containerClassName?: string;
    className?: string;
    iconClassName?: string;
    showLines?: boolean;
    simpleVariant?: boolean;
 }
 
-const ListEndMessage = ({ text, className, iconClassName, showLines = true, simpleVariant = false }: ListEndMessageProps) => {
+const ListEndMessage = ({ text, containerClassName, className, iconClassName, showLines = true, simpleVariant = false }: ListEndMessageProps) => {
    return (
       <div
          role='status'
-         className='flex w-full select-none items-center gap-4 justify-center'
+         className={cn('flex w-full select-none items-center gap-4 justify-center', containerClassName)}
       >
          {showLines && <span className='h-px flex-1 bg-linear-to-r from-transparent to-white/10' />}
 
