@@ -1,6 +1,6 @@
 "use client";
 
-import { interviewerDetailsData } from '@/data/interviews/interviews.data';
+import { interviewerDetailsData } from '@/data/interviewers/interviewers.data';
 import UserProfile from './components/user-profile';
 import WhatToExpect from './components/what-to-expect';
 import UserFeedback from './components/user-feedback';
@@ -24,7 +24,7 @@ const InterviewerDetails = ({ interviewer, id }: InterviewerDetailsProps) => {
 
    if (!interviewer) {
       return (
-         <ScreenNoData text='No interviewer found' />
+         <ScreenNoData text={interviewerDetailsData.noInterviewerText} />
       );
    }
 
@@ -44,7 +44,7 @@ const InterviewerDetails = ({ interviewer, id }: InterviewerDetailsProps) => {
                className="block lg:hidden bg-violet-600 hover:bg-violet-700 text-zinc-100 border-0 transition-all"
                onClick={() => setOpenBooking(true)}
             >
-               Schedule Interview
+               {interviewerDetailsData.scheduleButton}
             </Button>
          </div>
 
@@ -67,8 +67,8 @@ const InterviewerDetails = ({ interviewer, id }: InterviewerDetailsProps) => {
                <ModalWrapper
                   open={openBooking}
                   onClose={() => setOpenBooking(false)}
-                  title='Appointment Form'
-                  description='Choose your preferred date and time to reserve your interview.'
+                  title={interviewerDetailsData.appointmentModal.title}
+                  description={interviewerDetailsData.appointmentModal.description}
                   bodyClassName='p-0!'
                >
                   {
@@ -79,7 +79,7 @@ const InterviewerDetails = ({ interviewer, id }: InterviewerDetailsProps) => {
                         >
                            <div className="min-h-30 2xl:h-40 flex items-center justify-center">
                               <NoDataCard
-                                 text='No available slots'
+                                 text={interviewerDetailsData.noSlotsText}
                                  className='w-full bg-transparent border-transparent flex-col'
                                  iconClassName='size-6'
                               />
@@ -103,7 +103,7 @@ const InterviewerDetails = ({ interviewer, id }: InterviewerDetailsProps) => {
                      >
                         <div className="min-h-30 2xl:h-40 flex items-center justify-center">
                            <NoDataCard
-                              text='No available slots'
+                              text={interviewerDetailsData.noSlotsText}
                               className='w-full bg-transparent border-transparent flex-col'
                               iconClassName='size-6'
                            />

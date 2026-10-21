@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CardLayout from '@/components/layouts/card-layout';
-import { interviewerDetailsData } from '@/data/interviews/interviews.data';
+import { interviewerDetailsData } from '@/data/interviewers/interviewers.data';
 import { Star } from 'lucide-react';
 import HeaderTitle from './header-title';
 import NoDataCard from '@/components/common/no-data-card';
@@ -44,7 +44,7 @@ const UserFeedback = ({ id }: { id: string; }) => {
                   error ? <ErrorCard text={error} className='mb-0!' /> : (
                      data.length === 0 ? (
                         <NoDataCard
-                           text='No user feedback available'
+                           text={interviewerDetailsData.testimonial.noFeedbackText}
                            className='bg-transparent border-0 mb-5 2xl:mb-6'
                         />
                      ) : (

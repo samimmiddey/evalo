@@ -1,7 +1,7 @@
 import PrimaryBody from '@/components/common/primary-body';
 import { BadgeCheck } from 'lucide-react';
 import CardLayout from '@/components/layouts/card-layout';
-import { interviewerDetailsData } from '@/data/interviews/interviews.data';
+import { interviewerDetailsData } from '@/data/interviewers/interviewers.data';
 import HeaderTitle from './header-title';
 import { homeData } from '@/data/home/home.data';
 
@@ -12,8 +12,8 @@ const WhatToExpect = ({ currentPlan }: { currentPlan: string; }) => {
       <CardLayout>
          <div className="space-y-4 2xl:space-y-5 relative z-10">
             <HeaderTitle
-               title={interviewerDetailsData.whatToExpect.header.title}
-               icon={interviewerDetailsData.whatToExpect.header.icon}
+               title={interviewerDetailsData.whatToExpect.title}
+               icon={interviewerDetailsData.whatToExpect.icon}
             />
 
             <ul className="space-y-3">

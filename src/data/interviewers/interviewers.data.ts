@@ -1,3 +1,4 @@
+import { ArrowLeft, BookCheck, Brain, MessageSquare, User } from "lucide-react";
 import { InterviewersDataStatic } from "./interviewers.types";
 
 export const interviewersData: InterviewersDataStatic = {
@@ -87,5 +88,38 @@ export const interviewersData: InterviewersDataStatic = {
    noData: {
       title: "No interviewers found",
       body: "We couldn't find any interviewers matching your filters. Try adjusting your search criteria or filters."
+   },
+   details: {
+      backBtn: {
+         title: "Back to Interviewers",
+         icon: ArrowLeft
+      },
+      scheduleButton: "Schedule Interview",
+      creditRate: 1,
+      bio: {
+         title: "About Me",
+         icon: User
+      },
+      whatToExpect: {
+         title: "What to Expect",
+         icon: Brain
+      },
+      testimonial: {
+         title: "Candidate Reviews",
+         icon: MessageSquare,
+         noFeedbackText: "No user feedback available"
+      },
+      booking: {
+         title: "Book a Session",
+         icon: BookCheck
+      },
+      appointmentModal: {
+         title: "Appointment Form",
+         description: "Choose your preferred date and time to reserve your interview."
+      },
+      noSlotsText: "No available slots",
+      noInterviewerText: "No interviewer found"
    }
 };
+
+export const interviewerDetailsData = interviewersData.details;

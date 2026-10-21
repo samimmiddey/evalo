@@ -2,7 +2,7 @@ import PrimaryBody from '@/components/common/primary-body';
 import CardLayout from '@/components/layouts/card-layout';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { interviewerDetailsData } from '@/data/interviews/interviews.data';
+import { interviewerDetailsData } from '@/data/interviewers/interviewers.data';
 import { Star, Award, Coins } from 'lucide-react';
 import HeaderTitle from './header-title';
 import { InterviewerDetails } from '../types/details.types';

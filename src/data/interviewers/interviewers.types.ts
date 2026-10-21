@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export type ExpertiseEnum =
    | "FRONTEND"
    | "BACKEND"
@@ -51,6 +53,31 @@ export interface InterviewersNoData {
    body: string;
 }
 
+export interface DetailsCardHeader {
+   title: string;
+   icon: LucideIcon;
+}
+
+export interface AppointmentModalData {
+   title: string;
+   description: string;
+}
+
+export interface InterviewerDetailsStatic {
+   backBtn: DetailsCardHeader;
+   scheduleButton: string;
+   creditRate: number;
+   bio: DetailsCardHeader;
+   whatToExpect: DetailsCardHeader;
+   testimonial: DetailsCardHeader & {
+      noFeedbackText: string;
+   };
+   booking: DetailsCardHeader;
+   appointmentModal: AppointmentModalData;
+   noSlotsText: string;
+   noInterviewerText: string;
+}
+
 export interface InterviewersDataStatic {
    header: InterviewersHeaderData;
    search: InterviewersSearchData;
@@ -59,6 +86,7 @@ export interface InterviewersDataStatic {
    experience: ExperienceItem[];
    card: InterviewersCardData;
    noData: InterviewersNoData;
+   details: InterviewerDetailsStatic;
 }
 
 export type InterviewersData = InterviewersDataStatic;
