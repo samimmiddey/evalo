@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { DashboardStats, DashboardStatItem } from "./components/dashboard-stats";
 import { DashboardSessionCard } from "./components/dashboard-session-card";
 import { DashboardQuickActions } from "./components/dashboard-quick-actions";
-import { dashboardData } from "@/data/interviews/interviews.data";
+import { dashboardData } from "@/data/dashboard/dashboard.data";
 import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview-skeleton";
 import { Calendar, CheckCircle2, Compass, Flame, Video } from "lucide-react";
 import Link from "next/link";
@@ -41,36 +41,37 @@ export const CandidateOverview = () => {
    }
 
    const firstName = user?.firstName ?? "there";
+   const { header, stats: statsConfig, sessionCard, quickActions } = dashboardData.candidate;
 
    const statItems: DashboardStatItem[] = [
       {
-         label: "Total Interviews",
+         label: statsConfig.total.label,
          value: stats?.totalCount ?? 0,
          icon: Video,
          accent: "text-violet-400 bg-violet-500/15 border-violet-500/30",
-         subtext: "All booked sessions"
+         subtext: statsConfig.total.subtext
       },
       {
-         label: "Upcoming",
+         label: statsConfig.scheduled.label,
          value: stats?.scheduledCount ?? 0,
          icon: Calendar,
          accent: "text-blue-400 bg-blue-500/15 border-blue-500/30",
-         subtext: "Scheduled on calendar"
+         subtext: statsConfig.scheduled.subtext
       },
       {
-         label: "Completed",
+         label: statsConfig.completed.label,
          value: stats?.completedCount ?? 0,
          icon: CheckCircle2,
          accent: "text-emerald-400 bg-emerald-500/15 border-emerald-500/30",
-         subtext: "With AI feedback"
+         subtext: statsConfig.completed.subtext
       },
       {
-         label: "Success Rate",
+         label: statsConfig.successRate.label,
          value: stats?.successRate ?? 0,
          suffix: "%",
          icon: Flame,
          accent: "text-amber-400 bg-amber-500/15 border-amber-500/30",
-         subtext: "Completion benchmark"
+         subtext: statsConfig.successRate.subtext
       }
    ];
 
@@ -81,17 +82,17 @@ export const CandidateOverview = () => {
             <HeaderLayout className="gap-4! items-start text-start mb-0! mx-0!">
                <PrimaryTitle text={`Welcome back, ${firstName}!`} className="tracking-tight" />
                <PrimaryBody
-                  text="Track your mock interview metrics, upcoming sessions, and review structured feedback from verified engineers."
+                  text={header.description}
                   className="max-w-2xl text-zinc-400 text-sm md:text-base leading-relaxed"
                />
             </HeaderLayout>
 
             {/* Quick Action Button */}
             <div className="flex items-center gap-3">
-               <Link href="/dashboard/interviewers" className="max-sm:w-full">
+               <Link href={header.actionButton.href} className="max-sm:w-full">
                   <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                      <Compass className="w-3.5 h-3.5" />
-                     <span>Explore Interviewers</span>
+                     <span>{header.actionButton.label}</span>
                   </Button>
                </Link>
             </div>
@@ -108,19 +109,19 @@ export const CandidateOverview = () => {
             {/* Left Column: Next Up Session Card & Guidance */}
             <div className="lg:col-span-2 space-y-6">
                <DashboardSessionCard
-                  title="Upcoming Interviews"
+                  title={sessionCard.title}
                   session={nextSession}
-                  viewAllHref="/dashboard/appointments"
-                  viewAllLabel="View all appointments"
-                  manageLabel="Manage Booking"
-                  emptyTitle="No Upcoming Interviews"
-                  emptyDescription="Ready to practice? Connect with engineering leaders for mock coding and system design rounds."
+                  viewAllHref={sessionCard.viewAllHref}
+                  viewAllLabel={sessionCard.viewAllLabel}
+                  manageLabel={sessionCard.manageLabel}
+                  emptyTitle={sessionCard.emptyTitle}
+                  emptyDescription={sessionCard.emptyDescription}
                />
             </div>
 
             {/* Right Column: Wallet & Quick Actions */}
             <div>
-               <DashboardQuickActions actions={dashboardData.candidate.quickActions} />
+               <DashboardQuickActions actions={quickActions} />
             </div>
          </div>
       </div>

@@ -1,5 +1,5 @@
-import { ArrowLeft, BookCheck, Brain, MessageSquare, User, Calendar, Clock, Compass, SlidersHorizontal, Wallet } from "lucide-react";
-import { InterviewsData, InterviewerDetails, InterviewerData, DashboardData } from "./interviews.types";
+import { ArrowLeft, BookCheck, Brain, MessageSquare, User } from "lucide-react";
+import { InterviewsData, InterviewerDetails, InterviewerData } from "./interviews.types";
 import { InterviewExpertise } from "@/generated/prisma/enums";
 
 export const interviewsData: InterviewsData = {
@@ -228,70 +228,4 @@ export const interviewerData: InterviewerData = {
       { label: "Afternoon (02:00 PM - 05:00 PM)", start: "14:00", end: "17:00" },
       { label: "Evening (06:00 PM - 09:00 PM)", start: "18:00", end: "21:00" }
    ]
-};
-
-export const dashboardData: DashboardData = {
-   candidate: {
-      header: {
-         title: "Overview",
-         description: "Track your mock interview progress, upcoming sessions, and review your performance breakdown."
-      },
-      statsLabels: {
-         total: "Total Interviews",
-         scheduled: "Upcoming",
-         completed: "Completed",
-         successRate: "Success Rate"
-      },
-      quickActions: [
-         {
-            title: "Explore Interviewers",
-            description: "Browse verified engineering leaders and schedule technical mock sessions.",
-            href: "/dashboard/interviewers",
-            icon: Compass,
-            accent: "violet"
-         },
-         {
-            title: "View Appointments",
-            description: "Check your booking schedule, access call rooms, and review AI feedback.",
-            href: "/dashboard/appointments",
-            icon: Calendar,
-            accent: "blue"
-         }
-      ]
-   },
-   interviewer: {
-      header: {
-         title: "Interviewer Overview",
-         description: "Manage your sessions, configure booking slots, and track credit earnings and reviews."
-      },
-      statsLabels: {
-         total: "Total Sessions",
-         scheduled: "Upcoming",
-         balance: "Credit Balance",
-         rating: "Average Rating"
-      },
-      quickActions: [
-         {
-            title: "Manage Availability",
-            description: "Set your weekly recurring time slots so candidates can book sessions.",
-            href: "/dashboard/availability",
-            icon: Clock,
-            accent: "violet"
-         },
-         {
-            title: "Earnings & Payouts",
-            description: "Review credit transactions, wallet history, and request bank payouts.",
-            href: "/dashboard/payouts",
-            icon: Wallet,
-            accent: "emerald"
-         },
-         {
-            title: "Profile & Domains",
-            description: "Keep your bio, years of experience, and interview domains up to date.",
-            href: "/dashboard/profile",
-            icon: SlidersHorizontal,
-            accent: "blue"
-         }
-      ]
-   }
 };
