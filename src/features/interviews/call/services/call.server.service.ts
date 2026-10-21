@@ -4,7 +4,7 @@ import { serverError } from "@/lib/server-error";
 import { currentUser } from "@clerk/nextjs/server";
 import { StreamClient } from "@stream-io/node-sdk";
 import { GeneratedQuestion, GetCallDataServerResponse } from "../types/call.types";
-import { EXPERTISE_PROMPTS } from "@/data/interviews/interviews.data";
+import { EXPERTISE_PROMPTS } from "@/data/call/call.data";
 import { InterviewExpertise } from "@/generated/prisma/enums";
 import { GoogleGenerativeAI, ResponseSchema, SchemaType } from '@google/generative-ai';
 

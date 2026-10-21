@@ -1,6 +1,6 @@
-import { InterviewExpertise } from "@/generated/prisma/enums";
+import { ExpertisePrompts } from "./call.types";
 
-export const EXPERTISE_PROMPTS: Record<InterviewExpertise, string> = {
+export const EXPERTISE_PROMPTS: ExpertisePrompts = {
    FRONTEND: "React.js, Next.js, JavaScript (ES6+), TypeScript, HTML5, CSS3, Tailwind CSS, State Management (Redux, Zustand, React Query), Web Performance, Core Web Vitals, SSR, ISR, SSG, DOM Manipulation, Browser APIs, Client-side Caching, Component Lifecycle, Accessibility (a11y), Responsive Design, Micro-frontends",
    BACKEND: "Node.js, Express, NestJS, Python (Django/FastAPI), Go, Java (Spring Boot), RESTful APIs, GraphQL, gRPC, Microservices Architecture, Relational Databases (PostgreSQL, MySQL), NoSQL (MongoDB, Redis), ORMs (Prisma, TypeORM), Authentication & Authorization (JWT, OAuth2, RBAC), Caching Strategies, Message Queues (Kafka, RabbitMQ), API Rate Limiting, Concurrency, WebSockets",
    FULLSTACK: "End-to-End Web Architecture, Frontend Frameworks (React, Next.js), Backend Runtimes (Node.js, Python), REST & GraphQL API Design, Database Design & Query Optimization (SQL & NoSQL), State Management, SSR & Static Site Generation, Authentication Flows, CI/CD Integration, Fullstack Testing, Performance Tuning, Security Best Practices",
