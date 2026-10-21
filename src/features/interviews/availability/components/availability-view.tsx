@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import CardLayout from "@/components/layouts/card-layout";
 import SecondaryTitle from "@/components/common/secondary-title";
 import PrimaryBody from "@/components/common/primary-body";
+import { availabilityData } from "@/data/availability/availability.data";
 
 export const AvailabilityView = () => {
    const [openAddModal, setOpenAddModal] = useState<boolean>(false);
@@ -89,7 +90,7 @@ export const AvailabilityView = () => {
          <div className="flex items-center justify-between gap-4 px-3 2xl:px-4 py-2 2xl:py-3 bg-zinc-900/40 border border-white/5 rounded-xl mb-7 2xl:mb-8 relative z-10 backdrop-blur-xl">
             <div>
                <SecondaryTitle
-                  text="Configured Slots"
+                  text={availabilityData.actionBar.configuredTitle}
                   className="text-sm! 2xl:text-base!"
                />
                <PrimaryBody
@@ -102,7 +103,7 @@ export const AvailabilityView = () => {
                className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5"
             >
                <Plus className="w-4 h-4" />
-               Add Slots
+               {availabilityData.actionBar.addButton}
             </Button>
          </div>
 
@@ -146,8 +147,8 @@ export const AvailabilityView = () => {
             </div>
          ) : (
             <EnhancedNoDataCard
-               title="No Availability Configured"
-               body="You haven't set any availability slots yet. Add your available hours so candidates can schedule mock technical interviews."
+               title={availabilityData.noData.title}
+               body={availabilityData.noData.body}
             />
          )}
 

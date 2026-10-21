@@ -9,6 +9,7 @@ import useDebounce from '@/hooks/use-debounce';
 import { usePaginationTrigger } from '@/hooks/use-pagination-trigger';
 import ListEndMessage from '@/components/common/list-end-message';
 import EnhancedNoDataCard from '@/components/common/enhanced-no-data-card';
+import { interviewersData } from '@/data/interviewers/interviewers.data';
 
 interface InterviewerListProps {
    view: ViewType;
@@ -53,8 +54,8 @@ const InterviewerList = ({ view, filterParams }: InterviewerListProps) => {
    // No data state
    if (!data || data?.length === 0) {
       return <EnhancedNoDataCard
-         title="No interviewers found"
-         body="We couldn't find any interviewers matching your filters. Try adjusting your search criteria or filters."
+         title={interviewersData.noData.title}
+         body={interviewersData.noData.body}
       />;
    }
 
@@ -80,9 +81,9 @@ const InterviewerList = ({ view, filterParams }: InterviewerListProps) => {
          </div>
 
          {/* Empty state */}
-         {!hasNextPage && data?.length > 0 && (
+         {!hasNextPage && data?.length > params.pageSize && (
             <div className='mt-8 2xl:mt-10'>
-               <ListEndMessage text="You've reached the end of the list" />
+               <ListEndMessage text={`Showing all ${data.length} interviewers`} />
             </div>
          )}
 

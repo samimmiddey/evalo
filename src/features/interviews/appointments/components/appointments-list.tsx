@@ -84,9 +84,9 @@ const AppointmentsList = ({ filterParams, view, onViewFeedback }: AppointmentsLi
          </div>
 
          {/* Empty state */}
-         {!hasNextPage && data?.length > 0 && (
+         {!hasNextPage && data?.length > params.pageSize && (
             <div className='mt-8 2xl:mt-10'>
-               <ListEndMessage text="You've reached the end of the list" />
+               <ListEndMessage text={`Showing all ${data.length} appointments`} />
             </div>
          )}
 

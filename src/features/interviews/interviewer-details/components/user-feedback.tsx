@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CardLayout from '@/components/layouts/card-layout';
-import { interviewerDetailsData } from '@/data/interviews/interviews.data';
+import { interviewerDetailsData } from '@/data/interviewers/interviewers.data';
 import { Star } from 'lucide-react';
 import HeaderTitle from './header-title';
 import NoDataCard from '@/components/common/no-data-card';
@@ -44,7 +44,7 @@ const UserFeedback = ({ id }: { id: string; }) => {
                   error ? <ErrorCard text={error} className='mb-0!' /> : (
                      data.length === 0 ? (
                         <NoDataCard
-                           text='No user feedback available'
+                           text={interviewerDetailsData.testimonial.noFeedbackText}
                            className='bg-transparent border-0 mb-5 2xl:mb-6'
                         />
                      ) : (
@@ -92,11 +92,12 @@ const UserFeedback = ({ id }: { id: string; }) => {
             {isFetchingNextPage && <FeedbackSkeletonLoader />}
 
             {/* Empty state */}
-            {!hasNextPage && data?.length > 0 && (
-               <div className='mt-6 2xl:mt-8'>
+            {!hasNextPage && data?.length > params.pageSize && (
+               <div className='mt-8 2xl:mt-10'>
                   <ListEndMessage
-                     text="You've reached the end of the list"
-                     className='p-0! border-none!'
+                     text={`Showing all ${data.length} reviews`}
+                     simpleVariant={true}
+                     showLines={false}
                   />
                </div>
             )}

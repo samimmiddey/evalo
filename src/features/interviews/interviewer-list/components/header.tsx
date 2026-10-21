@@ -8,7 +8,7 @@ import { ViewType } from '@/types/ui.types';
 import { Filter, Grid2x2, Rows3 } from 'lucide-react';
 import SearchBar from '../../../../components/common/search-bar';
 import { FilterParams } from '../types/list.type';
-import { interviewsData } from '@/data/interviews/interviews.data';
+import { interviewersData } from '@/data/interviewers/interviewers.data';
 import PageHeaderLayout from '@/components/layouts/page-header-layout';
 
 interface HeaderProps {
@@ -28,8 +28,8 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView, filt
       <PageHeaderLayout>
          <div className="max-w-2xl">
             <HeaderLayout className='gap-4! items-start text-start mb-0!'>
-               <PrimaryTitle text={interviewsData.header.title} />
-               <PrimaryBody text={interviewsData.header.description} />
+               <PrimaryTitle text={interviewersData.header.title} />
+               <PrimaryBody text={interviewersData.header.description} />
             </HeaderLayout>
          </div>
 
@@ -38,7 +38,7 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView, filt
                <SearchBar
                   value={filterParams?.search}
                   setValue={e => onFilterParams(prevState => ({ ...prevState, search: e.target.value }))}
-                  placeholder="Search interviewers..."
+                  placeholder={interviewersData.search.placeholder}
                />
             </div>
             <div className="flex items-center gap-2.5 2xl:gap-3">
@@ -58,7 +58,7 @@ const Header = ({ onOpenSidebar, onHideFilters, hideFilters, view, setView, filt
                         className={`max-lg:h-10 w-fit shrink-0 bg-zinc-900 hover:bg-zinc-800 border-white/10 text-zinc-100 ${hideFilters ? 'opacity-50! hover:opacity-60!' : 'opacity-100'}`}
                      >
                         <Filter className="w-4 h-4 md:mr-2" />
-                        <span className='hidden md:block'>Filters</span>
+                        <span className='hidden md:block'>{interviewersData.filters.title}</span>
                      </Button>
                   }
                   content={

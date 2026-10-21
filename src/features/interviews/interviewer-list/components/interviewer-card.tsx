@@ -8,6 +8,7 @@ import { getImage } from '@/utils/get-image';
 import Link from 'next/link';
 import CardLayout from '@/components/layouts/card-layout';
 import Image from 'next/image';
+import { interviewersData } from '@/data/interviewers/interviewers.data';
 
 interface InterviewerCardProps {
    interviewer: Interviewer;
@@ -65,7 +66,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
 
          <PrimaryBody
             className="text-sm! mb-5 2xl:mb-6 line-clamp-2 leading-relaxed"
-            text={interviewer.bio ?? "No bio available"}
+            text={interviewer.bio ?? interviewersData.card.fallbackBio}
          />
 
          <div className="flex flex-wrap gap-2 mb-4.5 2xl:mb-5 relative z-10">
@@ -88,7 +89,7 @@ const InterviwerCard = ({ interviewer }: InterviewerCardProps) => {
                size='lg'
                className="w-full bg-violet-600 hover:bg-violet-700 text-zinc-100 border-0 transition-all"
             >
-               View Profile
+               {interviewersData.card.viewProfileButton}
             </Button>
          </Link>
       </CardLayout>

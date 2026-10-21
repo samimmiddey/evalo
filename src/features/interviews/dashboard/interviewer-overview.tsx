@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { DashboardStats, DashboardStatItem } from "./components/dashboard-stats";
 import { DashboardSessionCard } from "./components/dashboard-session-card";
 import { DashboardQuickActions } from "./components/dashboard-quick-actions";
-import { dashboardData } from "@/data/interviews/interviews.data";
+import { dashboardData } from "@/data/dashboard/dashboard.data";
 import DashboardOverviewSkeleton from "./components/skeletons/dashboard-overview-skeleton";
 import { Calendar, Clock, Coins, Star, Video } from "lucide-react";
 import Link from "next/link";
@@ -41,24 +41,25 @@ export const InterviewerOverview = () => {
    }
 
    const firstName = user?.firstName ?? "there";
+   const { header, stats: statsConfig, sessionCard, quickActions } = dashboardData.interviewer;
 
    const statItems: DashboardStatItem[] = [
       {
-         label: "Total Sessions",
+         label: statsConfig.total.label,
          value: stats?.totalSessions ?? 0,
          icon: Video,
          accent: "text-violet-400 bg-violet-500/15 border-violet-500/30",
          subtext: `${stats?.completedSessions ?? 0} completed rounds`
       },
       {
-         label: "Upcoming",
+         label: statsConfig.scheduled.label,
          value: stats?.scheduledSessions ?? 0,
          icon: Calendar,
          accent: "text-blue-400 bg-blue-500/15 border-blue-500/30",
-         subtext: "On calendar schedule"
+         subtext: statsConfig.scheduled.subtext
       },
       {
-         label: "Credit Balance",
+         label: statsConfig.balance.label,
          value: stats?.creditBalance ?? 0,
          icon: Coins,
          accent: "text-emerald-400 bg-emerald-500/15 border-emerald-500/30",
@@ -67,7 +68,7 @@ export const InterviewerOverview = () => {
             : "N/A"
       },
       {
-         label: "Rating",
+         label: statsConfig.rating.label,
          value: stats?.averageRating ? stats.averageRating.toFixed(1) : "N/A",
          icon: Star,
          accent: "text-amber-400 bg-amber-500/15 border-amber-500/30",
@@ -82,17 +83,17 @@ export const InterviewerOverview = () => {
             <HeaderLayout className="gap-4! items-start text-start mb-0! mx-0!">
                <PrimaryTitle text={`Welcome back, ${firstName}!`} className="tracking-tight" />
                <PrimaryBody
-                  text="Monitor your mock interview schedule, manage slot bookings, and track credit earnings and candidate reviews."
+                  text={header.description}
                   className="max-w-2xl text-zinc-400 text-sm md:text-base leading-relaxed"
                />
             </HeaderLayout>
 
             {/* Quick Action Button */}
             <div className="flex items-center gap-3">
-               <Link href="/dashboard/availability" className="max-sm:w-full">
+               <Link href={header.actionButton.href} className="max-sm:w-full">
                   <Button className="cursor-pointer bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5 max-sm:w-full">
                      <Clock className="w-3.5 h-3.5" />
-                     <span>Configure Slots</span>
+                     <span>{header.actionButton.label}</span>
                   </Button>
                </Link>
             </div>
@@ -106,19 +107,19 @@ export const InterviewerOverview = () => {
             {/* Left Column: Next Up Session Card */}
             <div className="lg:col-span-2 space-y-6">
                <DashboardSessionCard
-                  title="Upcoming Sessions"
+                  title={sessionCard.title}
                   session={nextSession}
-                  viewAllHref="/dashboard/sessions"
-                  viewAllLabel="View all sessions"
-                  manageLabel="Manage Session"
-                  emptyTitle="No Scheduled Sessions"
-                  emptyDescription="Keep your calendar up to date by configuring availability slots for candidates to book."
+                  viewAllHref={sessionCard.viewAllHref}
+                  viewAllLabel={sessionCard.viewAllLabel}
+                  manageLabel={sessionCard.manageLabel}
+                  emptyTitle={sessionCard.emptyTitle}
+                  emptyDescription={sessionCard.emptyDescription}
                />
             </div>
 
             {/* Right Column: Wallet & Quick Actions */}
             <div>
-               <DashboardQuickActions actions={dashboardData.interviewer.quickActions} />
+               <DashboardQuickActions actions={quickActions} />
             </div>
          </div>
       </div>

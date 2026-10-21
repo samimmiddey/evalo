@@ -1,6 +1,24 @@
-import { SessionsData } from "./sessions.types";
+import { SessionsDataStatic } from "./sessions.types";
 
-export const sessionsData: SessionsData = {
+export const sessionsData: SessionsDataStatic = {
+   header: {
+      title: "Sessions",
+      description: "Manage and review your upcoming mock interviews and review completed session feedback."
+   },
+   statusFilterOptions: [
+      { label: "All Sessions", value: "ALL" },
+      { label: "Scheduled", value: "SCHEDULED" },
+      { label: "Completed", value: "COMPLETED" },
+      { label: "Cancelled", value: "CANCELLED" }
+   ],
+   search: {
+      placeholder: "Search candidates..."
+   },
+   noData: {
+      title: "No Sessions Found",
+      scheduledBody: "You have no upcoming scheduled sessions. Set your availability slots so candidates can book sessions with you.",
+      defaultBody: "No session records match your selected filters."
+   },
    helpfulTips: {
       header: "Session Guidelines",
       body: [

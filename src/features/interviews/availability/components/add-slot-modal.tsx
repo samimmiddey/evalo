@@ -5,7 +5,7 @@ import ModalWrapper from "@/components/wrappers/modal-wrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { interviewerData } from "@/data/interviews/interviews.data";
+import { availabilityData } from "@/data/availability/availability.data";
 import { addDays, addMinutes, format, parse } from "date-fns";
 import { Plus, ClockFading } from "lucide-react";
 import { useMutation } from "@/hooks/use-mutation";
@@ -54,7 +54,7 @@ const isPresetExpired = (preset: { start: string; end: string; }, dateStr: strin
 // Calculate smart initial default date and preset
 const getSmartInitialDefaults = (todayStr: string) => {
    // Find the first preset that has not expired for today
-   const validTodayPreset = interviewerData.slotPresets.find(
+   const validTodayPreset = availabilityData.slotPresets.find(
       (preset) => !isPresetExpired(preset, todayStr, todayStr)
    );
 
@@ -68,7 +68,7 @@ const getSmartInitialDefaults = (todayStr: string) => {
 
    // If all presets today have passed, default to tomorrow with the first preset (Morning)
    const tomorrowStr = format(addDays(new Date(), 1), "yyyy-MM-dd");
-   const firstPreset = interviewerData.slotPresets[0];
+   const firstPreset = availabilityData.slotPresets[0];
 
    return {
       date: tomorrowStr,
@@ -208,16 +208,16 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
       <ModalWrapper
          open={open}
          onClose={onClose}
-         title="Add Availability Slots"
-         description="Choose a date and time window. The scheduler will automatically split your window into bookable slots."
+         title={availabilityData.addSlotModal.title}
+         description={availabilityData.addSlotModal.description}
          headerIcon={<ClockFading className="w-4 h-4 text-violet-400" />}
       >
          <div className="space-y-5 2xl:space-y-6 text-zinc-100">
             {/* Quick Presets */}
             <div className="space-y-2">
-               <Label className="text-xs 2xl:text-[13px] font-medium text-zinc-300">Quick Presets</Label>
+               <Label className="text-xs 2xl:text-[13px] font-medium text-zinc-300">{availabilityData.addSlotModal.quickPresetsLabel}</Label>
                <div className="flex flex-wrap gap-2">
-                  {interviewerData.slotPresets.map((preset, idx) => {
+                  {availabilityData.slotPresets.map((preset, idx) => {
                      const isExpired = isPresetExpired(preset, selectedDate, todayStr);
                      const isActive = !isExpired && preset.start === startTime && preset.end === endTime;
 
@@ -248,7 +248,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                {/* Date Picker */}
                <div className="space-y-2">
                   <Label htmlFor="slot-date" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
-                     Date
+                     {availabilityData.addSlotModal.dateLabel}
                   </Label>
                   <div className="relative">
                      <Input
@@ -269,7 +269,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                                  todayStr
                               );
                               if (isCurrentExpired) {
-                                 const firstValid = interviewerData.slotPresets.find(
+                                 const firstValid = availabilityData.slotPresets.find(
                                     (p) => !isPresetExpired(p, newDate, todayStr)
                                  );
                                  if (firstValid) {
@@ -287,7 +287,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                {/* Start Time */}
                <div className="space-y-2">
                   <Label htmlFor="start-time" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
-                     Start Time
+                     {availabilityData.addSlotModal.startTimeLabel}
                   </Label>
                   <Input
                      id="start-time"
@@ -304,7 +304,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                {/* End Time */}
                <div className="space-y-2">
                   <Label htmlFor="end-time" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
-                     End Time
+                     {availabilityData.addSlotModal.endTimeLabel}
                   </Label>
                   <Input
                      id="end-time"
@@ -422,7 +422,7 @@ export const AddSlotModal = ({ open, existingSlots = [], onClose, onSuccess }: A
                   className="bg-violet-600 hover:bg-violet-700 text-zinc-100 text-xs rounded-lg h-9 px-4.5 font-semibold flex items-center gap-1.5"
                >
                   {isPending ? <Spinner className="size-4" /> : <Plus className="w-4 h-4" />}
-                  Save Slots
+                  {availabilityData.addSlotModal.submitButton}
                </Button>
             </div>
          </div>

@@ -142,6 +142,8 @@ export const PayoutHistoryList = () => {
          hasNextPage={hasNextPage}
          isFetchingNextPage={isFetchingNextPage}
          fetchNextPage={fetchNextPage}
+         pageSize={params.pageSize}
+         contentType="payouts"
       />
    );
 };
