@@ -1,6 +1,6 @@
 import PrimaryBody from "@/components/common/primary-body";
 import { Badge } from "@/components/ui/badge";
-import { interviewsData } from "@/data/interviews/interviews.data";
+import { interviewersData } from "@/data/interviewers/interviewers.data";
 import { FilterParams } from "../../types/list.type";
 
 interface ExpertiseProps {
@@ -26,9 +26,9 @@ const Expertise = ({ filterParams, onFilterParams }: ExpertiseProps) => {
 
    return (
       <div className="flex flex-col gap-2.5 2xl:gap-3">
-         <PrimaryBody className="text-sm! font-medium! text-zinc-300!" text='Expertise' />
+         <PrimaryBody className="text-sm! font-medium! text-zinc-300!" text={interviewersData.filters.expertiseTitle} />
          <div className="flex flex-wrap gap-2 2xl:gap-2.5 w-full">
-            {interviewsData.expertise.map((item) => (
+            {interviewersData.expertise.map((item) => (
                <Badge
                   key={item.value}
                   variant={filterParams.expertise?.includes(item.value) ? "default" : "outline"}

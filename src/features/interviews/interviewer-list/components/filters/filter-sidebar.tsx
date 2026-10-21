@@ -8,6 +8,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from '
 import CustomTooltip from '@/components/common/custom-tooltip';
 import { FilterParams } from '../../types/list.type';
 import { useEffect, useState } from 'react';
+import { interviewersData } from '@/data/interviewers/interviewers.data';
 
 interface FilterSidebarProps {
    open: boolean;
@@ -61,7 +62,7 @@ const DesktopSidebar = ({ filterParams, onFilterParams, onClear, isFiltersEnable
          <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-zinc-100 flex items-center gap-2 font-geist">
                <Filter className="w-4 h-4 text-violet-400" />
-               Filters
+               {interviewersData.filters.title}
             </h2>
             <CustomTooltip
                trigger={
@@ -72,11 +73,11 @@ const DesktopSidebar = ({ filterParams, onFilterParams, onClear, isFiltersEnable
                      onClick={onClear}
                      disabled={!isFiltersEnabled}
                   >
-                     Clear
+                     {interviewersData.filters.clearButton}
                   </Button>
                }
                content={
-                  <p>Clear Filters</p>
+                  <p>{interviewersData.filters.clearTooltip}</p>
                }
             />
          </div>
@@ -87,7 +88,7 @@ const DesktopSidebar = ({ filterParams, onFilterParams, onClear, isFiltersEnable
          <SearchBar
             value={filterParams?.search}
             setValue={e => onFilterParams(prevState => ({ ...prevState, search: e.target.value }))}
-            placeholder="Search interviewers..."
+            placeholder={interviewersData.search.placeholder}
          />
 
          <Separator className='my-2' />
@@ -153,28 +154,28 @@ const MobileSidebar = ({ open, onClose, filterParams, onFilterParams, onClear, i
             <DrawerHeader className='p-0! mb-4 mt-2 shrink-0'>
                <DrawerTitle className="m-0 text-lg font-semibold text-zinc-100 flex items-center gap-2 font-geist">
                   <Filter className="w-4 h-4 text-violet-400" />
-                  Filters
+                  {interviewersData.filters.title}
                </DrawerTitle>
             </DrawerHeader>
 
             <div className="flex-1 overflow-y-auto min-h-0 pr-2">
                <div className="flex flex-col gap-4 h-full pb-6 lg:pb-8">
 
-                  <Separator className='my-2' />
+                   <Separator className='my-2' />
 
-                  {/* Expertise */}
-                  <Expertise
-                     filterParams={currentParams}
-                     onFilterParams={setCurrentParams}
-                  />
+                   {/* Expertise */}
+                   <Expertise
+                      filterParams={currentParams}
+                      onFilterParams={setCurrentParams}
+                   />
 
-                  <Separator className='my-2' />
+                   <Separator className='my-2' />
 
-                  {/* Experience */}
-                  <Experience
-                     filterParams={currentParams}
-                     onFilterParams={setCurrentParams}
-                  />
+                   {/* Experience */}
+                   <Experience
+                      filterParams={currentParams}
+                      onFilterParams={setCurrentParams}
+                   />
 
                </div>
             </div>
@@ -186,7 +187,7 @@ const MobileSidebar = ({ open, onClose, filterParams, onFilterParams, onClear, i
                   onClick={handleClear}
                   disabled={!isFiltersEnabled}
                >
-                  Clear
+                  {interviewersData.filters.clearButton}
                </Button>
                <Button
                   variant='white'
@@ -194,7 +195,7 @@ const MobileSidebar = ({ open, onClose, filterParams, onFilterParams, onClear, i
                   onClick={handleApply}
                   disabled={!hasChanges}
                >
-                  Apply
+                  {interviewersData.filters.applyButton}
                </Button>
             </DrawerFooter>
          </DrawerContent>
