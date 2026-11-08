@@ -91,6 +91,11 @@ enum SubscriptionStatus {
   EXPIRED
 }
 
+enum UserStatus {
+  ACTIVE
+  BANNED
+}
+
 // USER
 
 model User {
@@ -121,6 +126,7 @@ model User {
   creditBalance Int                  @default(0)
   averageRating Float?
   totalRatings  Int                  @default(0)
+  status        UserStatus           @default(ACTIVE)
 
   availabilities        Availability[]
   bookingsAsCandidate   Booking[]           @relation("CandidateBookings")
@@ -166,26 +172,26 @@ model Availability {
 // BOOKINGS
 
 model Booking {
-  id             String              @id @default(uuid())
-  candidateId    String
-  candidate      User                @relation("CandidateBookings", fields: [candidateId], references: [id])
-  interviewerId  String
-  interviewer    User                @relation("InterviewerBookings", fields: [interviewerId], references: [id])
-  startTime      DateTime
-  endTime        DateTime
+  id               String              @id @default(uuid())
+  candidateId      String
+  candidate        User                @relation("CandidateBookings", fields: [candidateId], references: [id])
+  interviewerId    String
+  interviewer      User                @relation("InterviewerBookings", fields: [interviewerId], references: [id])
+  startTime        DateTime
+  endTime          DateTime
   status           BookingStatus       @default(SCHEDULED)
   completionReason CompletionReason?
   streamStatus     StreamStatus        @default(READY)
-  creditsCharged Int
-  streamCallId   String?             @unique
-  recordingUrl   String?
-  isRefunded     Boolean             @default(false)
-  feedback       Feedback?
-  review         Review?
-  transactions   CreditTransaction[]
-  sessions       BookingSession[]
-  createdAt      DateTime            @default(now())
-  updatedAt      DateTime            @updatedAt
+  creditsCharged   Int
+  streamCallId     String?             @unique
+  recordingUrl     String?
+  isRefunded       Boolean             @default(false)
+  feedback         Feedback?
+  review           Review?
+  transactions     CreditTransaction[]
+  sessions         BookingSession[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
 
   @@index([status, createdAt])
   @@index([interviewerId, status])
@@ -223,15 +229,15 @@ model Review {
 // CREDIT TRANSACTIONS
 
 model CreditTransaction {
-  id        String          @id @default(uuid())
+  id        String            @id @default(uuid())
   userId    String
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   amount    Int
   type      TransactionType
   reason    CompletionReason?
   bookingId String?
-  booking   Booking?        @relation(fields: [bookingId], references: [id])
-  createdAt DateTime        @default(now())
+  booking   Booking?          @relation(fields: [bookingId], references: [id])
+  createdAt DateTime          @default(now())
 }
 
 // PAYOUTS
@@ -257,15 +263,15 @@ model Payout {
 // BOOKING SESSIONS
 
 model BookingSession {
-  id                String   @id @default(uuid())
-  bookingId         String
-  booking           Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
-  streamSessionId   String
+  id                         String   @id @default(uuid())
+  bookingId                  String
+  booking                    Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  streamSessionId            String
   coPresenceSeconds          Int      @default(0)
   interviewerPresenceSeconds Int      @default(0)
   candidatePresenceSeconds   Int      @default(0)
   createdAt                  DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  updatedAt                  DateTime @updatedAt
 
   @@unique([bookingId, streamSessionId])
   @@index([bookingId])
@@ -282,4 +288,3 @@ model PlatformConfig {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 }
-
