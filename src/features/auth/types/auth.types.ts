@@ -88,3 +88,19 @@ export interface SsoCallbackParams {
    onNavigateSignUp: () => void;
    onTransferToSignIn: () => void;
 }
+
+export interface CheckAccountStatusBody {
+   email?: string;
+}
+
+export interface CheckAccountStatusResponse {
+   isBanned: boolean;
+}
+
+export interface CheckAccountStatusBody {
+   email?: string;
+}
+
+export interface CheckAccountStatusResponse {
+   isBanned: boolean;
+}

@@ -1,4 +1,8 @@
 import { getClerkErrorMessage } from "@/utils/clerk-error";
+import { CHECK_AUTH_STATUS } from "@/constants/query-urls";
+import { api } from "@/lib/api";
+import { apiError } from "@/lib/api-error";
+import { BaseResponse } from "@/types/api.types";
 import {
    SignupParams,
    AuthResult,
@@ -14,6 +18,7 @@ import {
    GoogleSsoParams,
    ResetSignUpParams,
    SsoCallbackParams,
+   CheckAccountStatusResponse,
 } from "../types/auth.types";
 import { sanitizeRedirectUrl } from "@/utils/redirect-url-sanitizer";
 
@@ -82,6 +87,26 @@ export const resetSignUp = async ({ signUp }: ResetSignUpParams): Promise<AuthRe
    }
 
    return { success: true };
+};
+
+// Check if user account is banned
+export const checkAccountStatus = async (email: string): Promise<CheckAccountStatusResponse> => {
+   try {
+      const res = await api
+         .post(CHECK_AUTH_STATUS, { json: { email } })
+         .json<BaseResponse<CheckAccountStatusResponse>>();
+
+      if (!res.success) {
+         throw new Error(res.error);
+      }
+
+      return res.data;
+   } catch (error: unknown) {
+      return apiError({
+         error,
+         fallbackMessage: "Failed to verify account status"
+      });
+   }
 };
 
 // Sign in with password

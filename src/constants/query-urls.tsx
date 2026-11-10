@@ -1,3 +1,6 @@
+// Auth
+export const CHECK_AUTH_STATUS = '/auth/status';
+
 // User
 export const DB_USER = '/user';
 
