@@ -97,10 +97,3 @@ export interface CheckAccountStatusResponse {
    isBanned: boolean;
 }
 
-export interface CheckAccountStatusBody {
-   email?: string;
-}
-
-export interface CheckAccountStatusResponse {
-   isBanned: boolean;
-}

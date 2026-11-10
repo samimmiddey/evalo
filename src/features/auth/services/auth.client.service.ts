@@ -3,6 +3,8 @@ import { CHECK_AUTH_STATUS } from "@/constants/query-urls";
 import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
 import { BaseResponse } from "@/types/api.types";
+import { toast } from "sonner";
+import { checkBannedUser } from "../util/check-banned-user";
 import {
    SignupParams,
    AuthResult,
@@ -281,49 +283,110 @@ export const ssoCallback = async ({
    onNavigateSignUp,
    onTransferToSignIn,
 }: SsoCallbackParams): Promise<void> => {
-   // Returning Google user — sign-in is complete
-   if (signIn.status === 'complete') {
-      await signIn.finalize({ navigate: onNavigateSignIn });
-      return;
-   }
+   try {
+      // 1. Intercept Clerk native ban or verification errors
+      const verificationError =
+         signIn.firstFactorVerification?.error ||
+         signUp.verifications?.externalAccount?.error;
 
-   // Google account already exists as a Clerk user — transfer sign-up to sign-in
-   if (signUp.isTransferable) {
-      await signIn.create({ transfer: true });
-      const signInStatus = signIn.status as typeof signIn.status | 'complete';
-      if (signInStatus === 'complete') {
+      if (verificationError) {
+         const isBanned =
+            verificationError.code === "user_banned" ||
+            verificationError.message?.toLowerCase().includes("banned");
+         toast.error(
+            isBanned
+               ? "Your account has been suspended. Please contact support."
+               : (verificationError.longMessage || verificationError.message || "Failed to sign in with Google")
+         );
+         await clerk.signOut();
+         onTransferToSignIn();
+         return;
+      }
+
+      // 2. Check if the returning email is banned in our database
+      const email = signUp.emailAddress || signIn.identifier;
+      if (email && (await checkBannedUser(email))) {
+         await clerk.signOut();
+         onTransferToSignIn();
+         return;
+      }
+
+      // 3. Returning Google user — sign-in is complete
+      if (signIn.status === 'complete') {
          await signIn.finalize({ navigate: onNavigateSignIn });
          return;
       }
-      onTransferToSignIn();
-      return;
-   }
 
-   // New Google user — transfer sign-in attempt to a sign-up
-   if (signIn.isTransferable) {
-      await signUp.create({ transfer: true });
+      // 4. Google account already exists as a Clerk user — transfer sign-up to sign-in
+      if (signUp.isTransferable) {
+         const { error: transferError } = await signIn.create({ transfer: true });
+         if (transferError) throw transferError;
+
+         const transferEmail = signUp.emailAddress || signIn.identifier;
+         if (transferEmail && (await checkBannedUser(transferEmail))) {
+            await clerk.signOut();
+            onTransferToSignIn();
+            return;
+         }
+
+         const signInStatus = signIn.status as typeof signIn.status | 'complete';
+         if (signInStatus === 'complete') {
+            await signIn.finalize({ navigate: onNavigateSignIn });
+            return;
+         }
+         onTransferToSignIn();
+         return;
+      }
+
+      // 5. New Google user — transfer sign-in attempt to a sign-up
+      if (signIn.isTransferable) {
+         const { error: transferError } = await signUp.create({ transfer: true });
+         if (transferError) throw transferError;
+         const transferEmail = signUp.emailAddress || signIn.identifier;
+         if (transferEmail && (await checkBannedUser(transferEmail))) {
+            await clerk.signOut();
+            onTransferToSignIn();
+            return;
+         }
+
+         if (signUp.status === 'complete') {
+            await signUp.finalize({ navigate: onNavigateSignUp });
+            return;
+         }
+         onTransferToSignIn();
+         return;
+      }
+
+      // 6. New Google sign-up is complete
       if (signUp.status === 'complete') {
          await signUp.finalize({ navigate: onNavigateSignUp });
          return;
       }
-      onTransferToSignIn();
-      return;
-   }
 
-   // New Google sign-up is complete
-   if (signUp.status === 'complete') {
-      await signUp.finalize({ navigate: onNavigateSignUp });
-      return;
-   }
-
-   // User already has an active session on this client — activate it directly
-   if (signIn.existingSession || signUp.existingSession) {
-      const sessionId = signIn.existingSession?.sessionId ?? signUp.existingSession?.sessionId;
-      if (sessionId) {
-         await clerk.setActive({
-            session: sessionId,
-            navigate: onNavigateSignIn
-         });
+      // 7. User already has an active session on this client — activate it directly
+      if (signIn.existingSession || signUp.existingSession) {
+         const sessionId = signIn.existingSession?.sessionId ?? signUp.existingSession?.sessionId;
+         if (sessionId) {
+            await clerk.setActive({
+               session: sessionId,
+               navigate: onNavigateSignIn
+            });
+            return;
+         }
       }
+
+      // 8. Fallback in case none of the states matched so user isn't stuck on loader
+      toast.error("Failed to sign in with Google. Please try again.");
+      await clerk.signOut();
+      onTransferToSignIn();
+   } catch (error: unknown) {
+      const message =
+         error && typeof error === "object"
+            ? getClerkErrorMessage(error)
+            : "Failed to sign in with Google";
+      const isBanned = message.toLowerCase().includes("banned");
+      toast.error(isBanned ? "Your account has been suspended. Please contact support." : message);
+      await clerk.signOut();
+      onTransferToSignIn();
    }
 };

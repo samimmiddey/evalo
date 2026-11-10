@@ -8,6 +8,7 @@ import { useEffect, useRef } from 'react';
 import { ssoCallback } from './services/auth.client.service';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
+import { checkBannedUser } from './util/check-banned-user';
 
 export default function SSOCallback() {
    const clerk = useClerk();
@@ -32,18 +33,36 @@ export default function SSOCallback() {
             signIn,
             signUp,
             onNavigateSignIn: () => {
-               if (sanitizedUrl) {
-                  router.replace(sanitizedUrl);
-               } else {
-                  void roleBasedRedirect();
-               }
+               void (async () => {
+                  const email = clerk.user?.primaryEmailAddress?.emailAddress;
+                  if (email && (await checkBannedUser(email))) {
+                     await clerk.signOut();
+                     router.replace('/sign-in');
+                     return;
+                  }
+
+                  if (sanitizedUrl) {
+                     router.replace(sanitizedUrl);
+                  } else {
+                     void roleBasedRedirect();
+                  }
+               })();
             },
             onNavigateSignUp: () => {
-               const onboardingUrl = sanitizedUrl ?
-                  `/onboarding?redirect_url=${encodeURIComponent(sanitizedUrl)}` :
-                  '/onboarding';
+               void (async () => {
+                  const email = clerk.user?.primaryEmailAddress?.emailAddress;
+                  if (email && (await checkBannedUser(email))) {
+                     await clerk.signOut();
+                     router.replace('/sign-in');
+                     return;
+                  }
 
-               router.replace(onboardingUrl);
+                  const onboardingUrl = sanitizedUrl ?
+                     `/onboarding?redirect_url=${encodeURIComponent(sanitizedUrl)}` :
+                     '/onboarding';
+
+                  router.replace(onboardingUrl);
+               })();
             },
             onTransferToSignIn: () => {
                const signInUrl = sanitizedUrl ?
