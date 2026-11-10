@@ -186,6 +186,7 @@ model Booking {
   streamCallId     String?             @unique
   recordingUrl     String?
   isRefunded       Boolean             @default(false)
+  adminNote        String?
   feedback         Feedback?
   review           Review?
   transactions     CreditTransaction[]
