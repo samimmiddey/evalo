@@ -90,13 +90,30 @@ export const CreditTransactionsTab = () => {
       {
          accessorKey: 'reason',
          header: 'Reason',
-         size: 175,
-         cell: (info) => (
-            <PrimaryBody
-               className="text-xs!"
-               text={info.getValue<string | null>() ?? '-'}
-            />
-         ),
+         size: 200,
+         cell: ({ row }) => {
+            const { reason } = row.original;
+
+            let reasonText = '';
+
+            switch (reason) {
+               case 'MUTUAL':
+                  reasonText = 'Mutual';
+                  break;
+               case 'CANDIDATE_NO_SHOW':
+                  reasonText = 'Candidate No-Show';
+                  break;
+               default:
+                  reasonText = reason ?? '';
+            }
+
+            return (
+               <PrimaryBody
+                  className="text-xs!"
+                  text={reasonText || '-'}
+               />
+            );
+         }
       },
       {
          accessorKey: 'interviewerName',
