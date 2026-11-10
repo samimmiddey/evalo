@@ -23,7 +23,6 @@ import { availabilityData } from "@/data/availability/availability.data";
 
 export const AvailabilityView = () => {
    const [openAddModal, setOpenAddModal] = useState<boolean>(false);
-   const [deletingId, setDeletingId] = useState<string | null>(null);
 
    const {
       isLoading,
@@ -32,7 +31,7 @@ export const AvailabilityView = () => {
       refetch
    } = useFetch<AvailabilitySlot[]>(() => getAvailabilitySlots());
 
-   const { mutate: deleteSlotMutate } = useMutation((slotId: string) =>
+   const { isPending: isDeleteSlotPending, error: isDeleteSlotError, mutate: deleteSlotMutation } = useMutation((slotId: string) =>
       deleteAvailabilitySlot(slotId)
    );
 
@@ -40,7 +39,11 @@ export const AvailabilityView = () => {
       if (error) {
          toast.error(error);
       }
-   }, [error]);
+
+      if (isDeleteSlotError) {
+         toast.error(isDeleteSlotError);
+      }
+   }, [error, isDeleteSlotError]);
 
    // Group slots by date string YYYY-MM-DD
    const groupedSlots = useMemo(() => {
@@ -75,9 +78,13 @@ export const AvailabilityView = () => {
    }, [slots]);
 
    const handleDeleteSlot = async (slotId: string) => {
-      setDeletingId(slotId);
-      const res = await deleteSlotMutate(slotId);
-      setDeletingId(null);
+      if (!slotId) {
+         toast.error('Slot ID is required');
+         return;
+      }
+
+      const res = await deleteSlotMutation(slotId);
+
       if (res) {
          toast.success("Availability slot removed");
          void refetch();
@@ -138,7 +145,7 @@ export const AvailabilityView = () => {
                               key={slot.id}
                               slot={slot}
                               onDelete={handleDeleteSlot}
-                              isDeleting={deletingId === slot.id}
+                              isDeleting={isDeleteSlotPending}
                            />
                         ))}
                      </div>
