@@ -453,7 +453,7 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                      </div>
                   )}
 
-                  {/* Session Expired & Refund Claimed */}
+                  {/* Session Expired & Refunded */}
                   {status === 'EXPIRED' && isRefunded && (
                      <div className="p-6 2xl:p-7 border-b border-white/5">
                         <div className="flex max-sm:flex-col items-start gap-3.5">
@@ -462,10 +462,10 @@ const AppointmentCard = ({ appointment, view, onViewFeedback, refetchInterviewLi
                            </div>
                            <div>
                               <span className="text-xs font-semibold text-zinc-300 uppercase tracking-widest">
-                                 Session Expired & Refund Claimed
+                                 Session Expired & Refunded
                               </span>
                               <PrimaryBody
-                                 text="This interview session has expired and refund has been claimed successfully. You can use your refunded credits anytime to schedule a new mock interview that better fits your timeline."
+                                 text="This interview session has expired and refunded successfully. You can use your refunded credits anytime to schedule a new mock interview that better fits your timeline."
                                  className="text-[13px]! mt-2"
                               />
                            </div>
