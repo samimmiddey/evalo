@@ -3,6 +3,7 @@ import { Button } from '../ui/button';
 import SecondaryTitle from './secondary-title';
 import PrimaryBody from './primary-body';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 interface EnhancedNoDataCardProps {
    title: string;
@@ -10,14 +11,15 @@ interface EnhancedNoDataCardProps {
    showButton?: boolean;
    buttonText?: string;
    buttonLink?: string;
+   className?: string;
 }
 
-const EnhancedNoDataCard = ({ title, body, showButton = false, buttonText, buttonLink }: EnhancedNoDataCardProps) => {
+const EnhancedNoDataCard = ({ title, body, showButton = false, buttonText, buttonLink, className }: EnhancedNoDataCardProps) => {
    return (
-      <div className="flex flex-col items-center justify-center text-center py-8 sm:py-9 2xl:py-10 px-6 bg-zinc-900/40 border border-dashed border-white/10 rounded-2xl relative overflow-hidden">
+      <div className={cn("flex flex-col items-center justify-center text-center py-8 sm:py-9 2xl:py-10 px-6 bg-zinc-900/40 border border-dashed border-white/10 rounded-2xl relative overflow-hidden", className)}>
 
          {/* Icon */}
-         <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-zinc-900/80 border border-white/5 mb-6 shadow-inner">
+         <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-zinc-900/80 border border-white/5 mb-5 shadow-inner">
             <Database className="w-6 h-6 text-zinc-500" />
          </div>
 
