@@ -5,6 +5,9 @@ import { columnSizingFeature, tableFeatures, useTable, type ColumnDef, type RowD
 import TableSkeleton from './table-skeleton';
 import { usePaginationTrigger } from '@/hooks/use-pagination-trigger';
 import ListEndMessage from '../list-end-message';
+import ErrorCard from '../error-card';
+import { globalData } from '@/data/global/global.data';
+import EnhancedNoDataCard from '../enhanced-no-data-card';
 
 export const features = tableFeatures({
    columnSizingFeature
@@ -14,22 +17,26 @@ interface DataTableProps<TData extends RowData> {
    columns: ColumnDef<typeof features, TData>[];
    data: TData[];
    isLoading?: boolean;
+   skeletonRows?: number;
    hasNextPage?: boolean;
    isFetchingNextPage?: boolean;
    fetchNextPage?: () => void;
    pageSize: number;
    contentType: string;
+   error: string | null;
 }
 
 export function DataTable<TData extends RowData>({
    columns,
    data,
    isLoading,
+   skeletonRows,
    hasNextPage,
    isFetchingNextPage,
    fetchNextPage,
    pageSize,
-   contentType
+   contentType,
+   error
 }: DataTableProps<TData>) {
    const table = useTable({ features, columns, data });
 
@@ -67,7 +74,29 @@ export function DataTable<TData extends RowData>({
                <TableBody className="divide-y divide-white/5">
                   {
                      isLoading ? (
-                        <TableSkeleton columns={columns.length} />
+                        <TableSkeleton
+                           columns={columns.length}
+                           rows={skeletonRows}
+                        />
+                     ) : error ? (
+                        <TableRow>
+                           <TableCell colSpan={columns.length}>
+                              <ErrorCard
+                                 text={error}
+                                 className="border-none! bg-transparent!"
+                              />
+                           </TableCell>
+                        </TableRow>
+                     ) : data.length === 0 ? (
+                        <TableRow>
+                           <TableCell colSpan={columns.length}>
+                              <EnhancedNoDataCard
+                                 title={globalData.tableNoData.title}
+                                 body={globalData.tableNoData.body}
+                                 className="border-none! bg-transparent!"
+                              />
+                           </TableCell>
+                        </TableRow>
                      ) : (
                         <>
                            {/* Existing rendered rows */}
@@ -89,7 +118,7 @@ export function DataTable<TData extends RowData>({
                            }
                            {/* Bottom Loader: Render extra skeleton rows while fetching next page */}
                            {isFetchingNextPage && (
-                              <TableSkeleton rows={3} columns={columns.length} />
+                              <TableSkeleton rows={5} columns={columns.length} />
                            )}
                         </>
                      )

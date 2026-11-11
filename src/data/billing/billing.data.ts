@@ -35,8 +35,6 @@ export const billingData: BillingDataStatic = {
    },
    transactionsTab: {
       tabLabel: "Credit Transactions",
-      emptyTitle: "No Credit Transactions Yet",
-      emptyDescription: "Your mock interview credit grants, booking deductions, and session refunds will appear here.",
       typeLabels: {
          creditPurchase: "Subscription Credit Grant",
          bookingDeductionDefault: "Mock Interview Booking",
@@ -46,10 +44,7 @@ export const billingData: BillingDataStatic = {
       }
    },
    paymentsTab: {
-      tabLabel: "Payment History",
-      emptyTitle: "No payment records found yet.",
-      emptyDescription: "Your subscription billing receipts, renewal statements, and payment history will appear here once processed.",
-      subtext: "Auto-billed by Cashfree"
+      tabLabel: "Payment History"
    },
    cancelModal: {
       title: "Cancel Subscription",

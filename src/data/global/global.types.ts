@@ -16,6 +16,12 @@ export interface StatusBadges {
    paused: string;
 }
 
+export interface TableNoDataState {
+   title: string;
+   body: string;
+}
+
 export interface GlobalTypes {
    statusBadges: StatusBadges;
+   tableNoData: TableNoDataState;
 }
