@@ -7,8 +7,6 @@ import PrimaryBody from "@/components/common/primary-body";
 import { formatDate } from "@/utils/format-date";
 import { useInfiniteFetch } from "@/hooks/use-infinite-fetch";
 import { getCreditTransactions } from "../services/payout.client.service";
-import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
-import ErrorCard from "@/components/common/error-card";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable, features } from "@/components/common/data-table/data-table";
 import { payoutsData } from "@/data/payouts/payouts.data";
@@ -22,23 +20,6 @@ export const TransactionsHistory = () => {
    };
 
    const { isLoading, data, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteFetch(page => getCreditTransactions({ ...params, page }));
-
-   // No data state
-   if (data.length === 0 && !isLoading) {
-      return (
-         <EnhancedNoDataCard
-            title={transactionsTab.emptyTitle}
-            body={transactionsTab.emptyDescription}
-         />
-      );
-   }
-
-   // Error
-   if (error) {
-      return (
-         <ErrorCard text={error} />
-      );
-   }
 
    const getTransactionLabel = (type: CreditTransactionRecord["type"]) => {
       switch (type) {
@@ -121,6 +102,8 @@ export const TransactionsHistory = () => {
          columns={columns}
          data={data}
          isLoading={isLoading}
+         skeletonRows={5}
+         error={error}
          hasNextPage={hasNextPage}
          isFetchingNextPage={isFetchingNextPage}
          fetchNextPage={fetchNextPage}

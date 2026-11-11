@@ -15,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import ScreenLoader from '@/components/common/screen-loader';
 import { sendResetCode, submitNewPassword, verifyResetCode } from './services/auth.client.service';
+import { checkBannedUser } from './util/check-banned-user';
 import InputError from '@/components/common/input-error';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 import { useSearchParams } from 'next/navigation';
@@ -60,6 +61,12 @@ export default function ForgotPassword() {
       setIsSendingCode(true);
 
       const data = getValues();
+
+      const isBanned = await checkBannedUser(data.email);
+      if (isBanned) {
+         setIsSendingCode(false);
+         return;
+      }
 
       const result = await sendResetCode({ signIn, email: data.email });
 
