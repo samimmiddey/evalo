@@ -23,14 +23,16 @@ const FilterBar = ({ view, setView, filterParams, onFilterParams, data, isLoadin
          all: 0,
          scheduled: 0,
          completed: 0,
-         cancelled: 0
+         cancelled: 0,
+         expired: 0
       };
 
       return {
          all: data?.totalCount,
          scheduled: data?.scheduledCount,
          completed: data?.completedCount,
-         cancelled: data?.cancelledCount
+         cancelled: data?.cancelledCount,
+         expired: data?.expiredCount
       };
    }, [data]);
 
@@ -38,8 +40,8 @@ const FilterBar = ({ view, setView, filterParams, onFilterParams, data, isLoadin
 
    return (
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-2 bg-zinc-900/40 border border-white/5 rounded-xl mb-7 2xl:mb-8 relative z-10 backdrop-blur-xl">
-         <div className="lg:flex lg:flex-wrap lg:items-center max-lg:grid max-lg:grid-cols-4 max-sm:grid-cols-2 gap-2">
-            {(['all', 'scheduled', 'completed', 'cancelled'] as const).map((tab) => {
+         <div className="lg:flex lg:flex-wrap lg:items-center max-lg:grid max-lg:grid-cols-5 max-sm:grid-cols-2 gap-2">
+            {(['all', 'scheduled', 'completed', 'cancelled', 'expired'] as const).map((tab) => {
                const isActive = new Set([filterParams.status?.toLowerCase() ?? 'all']).has(tab);
                const count = stats[tab];
                return (

@@ -15,24 +15,44 @@ export const getDashboardSessions = async (
       const page = filters?.page || 1;
       const pageSize = filters?.pageSize || 10;
 
-      const whereClause: Prisma.BookingWhereInput = {
-         interviewerId: interviewer.id
-      };
+      const andConditions: Prisma.BookingWhereInput[] = [
+         { interviewerId: interviewer.id }
+      ];
 
       if (filters?.status && filters.status !== "ALL") {
-         whereClause.status = filters.status;
+         if (filters.status === "SCHEDULED") {
+            andConditions.push({
+               status: "SCHEDULED",
+               endTime: { gte: new Date() }
+            });
+         } else if (filters.status === "EXPIRED") {
+            andConditions.push({
+               OR: [
+                  { status: "EXPIRED" },
+                  { status: "SCHEDULED", endTime: { lt: new Date() } }
+               ]
+            });
+         } else {
+            andConditions.push({
+               status: filters.status
+            });
+         }
       }
 
       if (filters?.search?.trim()) {
          const searchTerm = filters.search.trim();
-         whereClause.candidate = {
-            OR: [
-               { firstName: { contains: searchTerm, mode: "insensitive" } },
-               { lastName: { contains: searchTerm, mode: "insensitive" } },
-               { email: { contains: searchTerm, mode: "insensitive" } }
-            ]
-         };
+         andConditions.push({
+            candidate: {
+               OR: [
+                  { firstName: { contains: searchTerm, mode: "insensitive" } },
+                  { lastName: { contains: searchTerm, mode: "insensitive" } },
+                  { email: { contains: searchTerm, mode: "insensitive" } }
+               ]
+            }
+         });
       }
+
+      const whereClause: Prisma.BookingWhereInput = { AND: andConditions };
 
       const [totalCount, bookings] = await Promise.all([
          db.booking.count({ where: whereClause }),

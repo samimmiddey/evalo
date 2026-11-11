@@ -58,6 +58,13 @@ export const getAppointments = async (params: GetAppointmentsParams = {}): Promi
             status: 'SCHEDULED',
             endTime: { gte: new Date() }
          });
+      } else if (status === 'EXPIRED') {
+         andConditions.push({
+            OR: [
+               { status: 'EXPIRED' },
+               { status: 'SCHEDULED', endTime: { lt: new Date() } }
+            ]
+         });
       } else if (status) {
          andConditions.push({
             status
@@ -136,7 +143,7 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
 
       const now = new Date();
 
-      const [completedCount, scheduledCount, cancelledCount] = await Promise.all([
+      const [completedCount, scheduledCount, cancelledCount, expiredCount] = await Promise.all([
          db.booking.count({
             where: {
                candidateId: dbUser.id,
@@ -156,10 +163,19 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
                status: "CANCELLED",
             },
          }),
+         db.booking.count({
+            where: {
+               candidateId: dbUser.id,
+               OR: [
+                  { status: "EXPIRED" },
+                  { status: "SCHEDULED", endTime: { lt: now } }
+               ]
+            },
+         }),
       ]);
 
       const totalCount =
-         completedCount + scheduledCount + cancelledCount;
+         completedCount + scheduledCount + cancelledCount + expiredCount;
 
       const successRate =
          totalCount > 0
@@ -171,6 +187,7 @@ export const getAppointmentStats = async (): Promise<AppointmentsStatsServerResp
          completedCount,
          scheduledCount,
          cancelledCount,
+         expiredCount,
          successRate,
       };
    } catch (error: unknown) {

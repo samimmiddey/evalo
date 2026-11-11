@@ -33,8 +33,6 @@ export interface CreditWalletCardData {
 
 export interface TransactionsTabData {
    tabLabel: string;
-   emptyTitle: string;
-   emptyDescription: string;
    typeLabels: {
       creditPurchase: string;
       bookingDeductionDefault: string;
@@ -46,9 +44,6 @@ export interface TransactionsTabData {
 
 export interface PaymentTabData {
    tabLabel: string;
-   emptyTitle: string;
-   emptyDescription: string;
-   subtext: string;
 }
 
 export interface CancelModalData {

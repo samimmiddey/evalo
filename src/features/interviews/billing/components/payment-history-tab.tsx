@@ -2,9 +2,6 @@
 
 import SecondaryTitle from "@/components/common/secondary-title";
 import PrimaryBody from "@/components/common/primary-body";
-import { billingData } from "@/data/billing/billing.data";
-import ErrorCard from "@/components/common/error-card";
-import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 import { useInfiniteFetch } from "@/hooks/use-infinite-fetch";
 import { getCandidatePayments } from "../services/billing.client.service";
 import { DataTable, features } from "@/components/common/data-table/data-table";
@@ -15,31 +12,12 @@ import getStatusBadge from "@/components/common/get-status-badge";
 import { formatDate } from "@/utils/format-date";
 
 const PaymentHistoryTab = () => {
-   const { paymentsTab } = billingData;
-
    const params = {
       page: 1,
       pageSize: 10
    };
 
    const { isLoading, data, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteFetch((page) => getCandidatePayments({ ...params, page }));
-
-   // No data state
-   if (data.length === 0 && !isLoading) {
-      return (
-         <EnhancedNoDataCard
-            title={paymentsTab.emptyTitle}
-            body={paymentsTab.emptyDescription}
-         />
-      );
-   }
-
-   // Error state
-   if (error) {
-      return (
-         <ErrorCard text={error} />
-      );
-   }
 
    const columns: ColumnDef<typeof features, CashfreePaymentRecord>[] = [
       {
@@ -116,6 +94,8 @@ const PaymentHistoryTab = () => {
          columns={columns}
          data={data}
          isLoading={isLoading}
+         skeletonRows={5}
+         error={error}
          hasNextPage={hasNextPage}
          isFetchingNextPage={isFetchingNextPage}
          fetchNextPage={fetchNextPage}

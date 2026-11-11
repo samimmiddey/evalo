@@ -133,6 +133,8 @@ export const getCandidateTransactions = async (
                booking: {
                   select: {
                      id: true,
+                     completionReason: true,
+                     adminNote: true,
                      interviewer: {
                         select: {
                            firstName: true,
@@ -155,7 +157,7 @@ export const getCandidateTransactions = async (
             id: tx.id,
             amount: tx.amount,
             type: tx.type,
-            reason: tx.reason,
+            reason: tx.reason ?? tx.booking?.completionReason ?? tx.booking?.adminNote ?? null,
             bookingId: tx.bookingId,
             interviewerName,
             createdAt: tx.createdAt.toISOString()

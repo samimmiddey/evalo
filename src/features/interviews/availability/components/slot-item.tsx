@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { AvailabilitySlot } from "../types/availability.types";
 import { format } from "date-fns";
 import { Clock, Trash2 } from "lucide-react";
-import { Spinner } from "@/components/ui/spinner";
 import ConfirmDialog from "@/components/common/confirm-dialog";
 import { useState } from "react";
 
@@ -67,7 +66,7 @@ export const SlotItem = ({ slot, onDelete, isDeleting = false }: SlotItemProps) 
                      className="text-zinc-500 hover:text-rose-400 hover:bg-rose-500/15 transition-colors cursor-pointer"
                      aria-label="Delete slot"
                   >
-                     {isDeleting ? <Spinner className="size-3.5" /> : <Trash2 className="w-3.5 h-3.5" />}
+                     <Trash2 className="w-3.5 h-3.5" />
                   </Button>
                )}
             </div>

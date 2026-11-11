@@ -9,7 +9,8 @@ export const sessionsData: SessionsDataStatic = {
       { label: "All Sessions", value: "ALL" },
       { label: "Scheduled", value: "SCHEDULED" },
       { label: "Completed", value: "COMPLETED" },
-      { label: "Cancelled", value: "CANCELLED" }
+      { label: "Cancelled", value: "CANCELLED" },
+      { label: "Expired", value: "EXPIRED" }
    ],
    search: {
       placeholder: "Search candidates..."

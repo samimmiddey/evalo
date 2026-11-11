@@ -19,14 +19,10 @@ export interface PayoutWalletCardData {
 
 export interface PayoutHistoryTabData {
    tabLabel: string;
-   emptyTitle: string;
-   emptyDescription: string;
 }
 
 export interface PayoutTransactionsTabData {
    tabLabel: string;
-   emptyTitle: string;
-   emptyDescription: string;
    typeLabels: {
       bookingEarning: string;
       adminAdjustment: string;

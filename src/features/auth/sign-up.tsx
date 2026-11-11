@@ -24,6 +24,7 @@ import {
    signupWithPassword,
    verifyCode,
 } from './services/auth.client.service';
+import { checkBannedUser } from './util/check-banned-user';
 import CustomSpinner from '@/components/common/custom-spinner';
 import ScreenLoader from '@/components/common/screen-loader';
 import InputError from '@/components/common/input-error';
@@ -53,6 +54,12 @@ const SignUp = () => {
    // Sign up with email and password
    const onSubmit = async (data: AuthSchemaTypes) => {
       setIsSigningUp(true);
+
+      const isBanned = await checkBannedUser(data.email);
+      if (isBanned) {
+         setIsSigningUp(false);
+         return;
+      }
 
       const result = await signupWithPassword({
          signUp,

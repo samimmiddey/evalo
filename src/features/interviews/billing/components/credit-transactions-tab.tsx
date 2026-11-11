@@ -2,7 +2,6 @@
 
 import { CandidateCreditTransaction } from "../types/billing.types";
 import { billingData } from "@/data/billing/billing.data";
-import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 import { useInfiniteFetch } from "@/hooks/use-infinite-fetch";
 import { getCandidateTransactions } from "../services/billing.client.service";
 import { ColumnDef } from "@tanstack/react-table";
@@ -10,7 +9,6 @@ import { DataTable, features } from "@/components/common/data-table/data-table";
 import SecondaryTitle from "@/components/common/secondary-title";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import PrimaryBody from "@/components/common/primary-body";
-import ErrorCard from "@/components/common/error-card";
 import { formatDate } from "@/utils/format-date";
 
 export const CreditTransactionsTab = () => {
@@ -22,23 +20,6 @@ export const CreditTransactionsTab = () => {
    };
 
    const { isLoading, data, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteFetch((page) => getCandidateTransactions({ ...params, page }));
-
-   // No data state
-   if (data.length === 0 && !isLoading) {
-      return (
-         <EnhancedNoDataCard
-            title={transactionsTab.emptyTitle}
-            body={transactionsTab.emptyDescription}
-         />
-      );
-   }
-
-   // Error state
-   if (error) {
-      return (
-         <ErrorCard text={error} />
-      );
-   }
 
    const getTransactionLabel = (tx: CandidateCreditTransaction) => {
       switch (tx.type) {
@@ -90,13 +71,30 @@ export const CreditTransactionsTab = () => {
       {
          accessorKey: 'reason',
          header: 'Reason',
-         size: 175,
-         cell: (info) => (
-            <PrimaryBody
-               className="text-xs!"
-               text={info.getValue<string | null>() ?? '-'}
-            />
-         ),
+         size: 200,
+         cell: ({ row }) => {
+            const { reason } = row.original;
+
+            let reasonText = '';
+
+            switch (reason) {
+               case 'MUTUAL':
+                  reasonText = 'Mutual';
+                  break;
+               case 'CANDIDATE_NO_SHOW':
+                  reasonText = 'Candidate No-Show';
+                  break;
+               default:
+                  reasonText = reason ?? '';
+            }
+
+            return (
+               <PrimaryBody
+                  className="text-xs!"
+                  text={reasonText || '-'}
+               />
+            );
+         }
       },
       {
          accessorKey: 'interviewerName',
@@ -147,6 +145,8 @@ export const CreditTransactionsTab = () => {
          columns={columns}
          data={data}
          isLoading={isLoading}
+         skeletonRows={5}
+         error={error}
          hasNextPage={hasNextPage}
          isFetchingNextPage={isFetchingNextPage}
          fetchNextPage={fetchNextPage}

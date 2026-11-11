@@ -86,6 +86,7 @@ export interface AppointmentsStatsData {
    completedCount: number;
    scheduledCount: number;
    cancelledCount: number;
+   expiredCount: number;
    successRate: number;
 }
 

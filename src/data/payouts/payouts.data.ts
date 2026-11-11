@@ -19,14 +19,10 @@ export const payoutsData: PayoutsDataStatic = {
       }
    },
    payoutsTab: {
-      tabLabel: "Payout Requests",
-      emptyTitle: "No Payout Requests Yet",
-      emptyDescription: "You haven't submitted any payout requests yet. All of your withdrawal records and transfer statuses will appear here."
+      tabLabel: "Payout Requests"
    },
    transactionsTab: {
       tabLabel: "Credit Transactions",
-      emptyTitle: "No Credit Transactions Yet",
-      emptyDescription: "Your credit earnings from completed mock interview sessions, payout withdrawals, and adjustments will appear here.",
       typeLabels: {
          bookingEarning: "Session Earning",
          adminAdjustment: "Payout Withdrawal",
