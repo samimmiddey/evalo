@@ -8,7 +8,7 @@ import { useEffect, useRef } from 'react';
 import { ssoCallback } from './services/auth.client.service';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
 import { sanitizeRedirectUrl } from '@/utils/redirect-url-sanitizer';
-import { checkBannedUser } from './util/check-banned-user';
+import { checkUserStatus } from './util/check-user-status';
 
 export default function SSOCallback() {
    const clerk = useClerk();
@@ -35,7 +35,7 @@ export default function SSOCallback() {
             onNavigateSignIn: () => {
                void (async () => {
                   const email = clerk.user?.primaryEmailAddress?.emailAddress;
-                  if (email && (await checkBannedUser(email))) {
+                  if (email && (await checkUserStatus(email))) {
                      await clerk.signOut();
                      router.replace('/sign-in');
                      return;
@@ -51,7 +51,7 @@ export default function SSOCallback() {
             onNavigateSignUp: () => {
                void (async () => {
                   const email = clerk.user?.primaryEmailAddress?.emailAddress;
-                  if (email && (await checkBannedUser(email))) {
+                  if (email && (await checkUserStatus(email))) {
                      await clerk.signOut();
                      router.replace('/sign-in');
                      return;

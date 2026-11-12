@@ -4,7 +4,7 @@ import { api } from "@/lib/api";
 import { apiError } from "@/lib/api-error";
 import { BaseResponse } from "@/types/api.types";
 import { toast } from "sonner";
-import { checkBannedUser } from "../util/check-banned-user";
+import { checkUserStatus } from "../util/check-user-status";
 import {
    SignupParams,
    AuthResult,
@@ -305,7 +305,7 @@ export const ssoCallback = async ({
 
       // 2. Check if the returning email is banned in our database
       const email = signUp.emailAddress || signIn.identifier;
-      if (email && (await checkBannedUser(email))) {
+      if (email && (await checkUserStatus(email))) {
          await clerk.signOut();
          onTransferToSignIn();
          return;
@@ -323,7 +323,7 @@ export const ssoCallback = async ({
          if (transferError) throw transferError;
 
          const transferEmail = signUp.emailAddress || signIn.identifier;
-         if (transferEmail && (await checkBannedUser(transferEmail))) {
+         if (transferEmail && (await checkUserStatus(transferEmail))) {
             await clerk.signOut();
             onTransferToSignIn();
             return;
@@ -343,7 +343,7 @@ export const ssoCallback = async ({
          const { error: transferError } = await signUp.create({ transfer: true });
          if (transferError) throw transferError;
          const transferEmail = signUp.emailAddress || signIn.identifier;
-         if (transferEmail && (await checkBannedUser(transferEmail))) {
+         if (transferEmail && (await checkUserStatus(transferEmail))) {
             await clerk.signOut();
             onTransferToSignIn();
             return;
