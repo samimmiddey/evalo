@@ -95,5 +95,6 @@ export interface CheckAccountStatusBody {
 
 export interface CheckAccountStatusResponse {
    isBanned: boolean;
+   isAdmin?: boolean;
 }
 
