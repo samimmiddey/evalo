@@ -24,7 +24,7 @@ import {
    signInWithPassword,
    verifySignInCode,
 } from './services/auth.client.service';
-import { checkBannedUser } from './util/check-banned-user';
+import { checkUserStatus } from './util/check-user-status';
 import ScreenLoader from '@/components/common/screen-loader';
 import InputError from '@/components/common/input-error';
 import { useRoleBasedRedirect } from '@/hooks/use-role-based-redirect';
@@ -69,7 +69,7 @@ const SignIn = () => {
    const onSubmit = async (data: AuthSchemaTypes) => {
       setIsSigningIn(true);
 
-      const isBanned = await checkBannedUser(data.email);
+      const isBanned = await checkUserStatus(data.email);
       if (isBanned) {
          setIsSigningIn(false);
          return;
