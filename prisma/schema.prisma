@@ -48,6 +48,7 @@ enum PayoutStatus {
   PROCESSING
   PROCESSED
   REJECTED
+  EXPIRED
 }
 
 enum InterviewExpertise {
@@ -251,6 +252,8 @@ model Payout {
   platformFee   Float
   netAmount     Float
   status        PayoutStatus @default(PROCESSING)
+  cashgramId    String?
+  cashgramUrl   String?
   adminNote     String?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
