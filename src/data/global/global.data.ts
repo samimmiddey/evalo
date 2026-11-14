@@ -16,7 +16,8 @@ export const globalData: GlobalTypes = {
       expired: "Expired",
       bankPending: "Bank Pending",
       free: "Free",
-      paused: "Paused"
+      paused: "Paused",
+      approved: "Approved"
    },
    tableNoData: {
       title: "No records found",
