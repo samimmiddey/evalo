@@ -14,6 +14,7 @@ export interface StatusBadges {
    bankPending: string;
    free: string;
    paused: string;
+   approved: string;
 }
 
 export interface TableNoDataState {
