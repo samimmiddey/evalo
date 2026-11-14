@@ -49,6 +49,7 @@ enum PayoutStatus {
   PROCESSED
   REJECTED
   EXPIRED
+  APPROVED
 }
 
 enum InterviewExpertise {
