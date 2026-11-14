@@ -96,9 +96,9 @@ export const handleCashgramWebhook = async (
 
       if (!cashgramId) {
          return {
-            success: false,
-            message: "Missing cashgramId in webhook payload",
-            statusCode: 400,
+            success: true,
+            message: `Event ${event || "TEST"} acknowledged successfully`,
+            statusCode: 200,
          };
       }
 
