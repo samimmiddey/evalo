@@ -82,3 +82,23 @@ export interface SubscriptionResponse {
 }
 
 export type SubscriptionClientResponse = BaseResponse<SubscriptionResponse>;
+
+export interface CashgramWebhookPayload {
+   event?: string;
+   cashgramid?: string;
+   cashgramId?: string;
+   referenceId?: string;
+   eventTime?: string;
+   utr?: string;
+   signature?: string;
+   reason?: string;
+   type?: string;
+   data?: {
+      cashgramId?: string;
+      cashgramid?: string;
+      status?: string;
+      transfer_utr?: string;
+      reason?: string;
+   };
+   [key: string]: unknown;
+}
