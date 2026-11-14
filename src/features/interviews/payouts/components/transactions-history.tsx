@@ -10,8 +10,14 @@ import { getCreditTransactions } from "../services/payout.client.service";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable, features } from "@/components/common/data-table/data-table";
 import { payoutsData } from "@/data/payouts/payouts.data";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { RefetchFunctions } from "../payouts";
 
-export const TransactionsHistory = () => {
+interface TransactionsHistoryProps {
+   setRefetchFn: Dispatch<SetStateAction<RefetchFunctions>>;
+}
+
+export const TransactionsHistory = ({ setRefetchFn }: TransactionsHistoryProps) => {
    const { transactionsTab } = payoutsData;
 
    const params = {
@@ -19,7 +25,17 @@ export const TransactionsHistory = () => {
       pageSize: 10
    };
 
-   const { isLoading, data, error, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteFetch(page => getCreditTransactions({ ...params, page }));
+   const { isLoading, data, error, hasNextPage, fetchNextPage, isFetchingNextPage, refetch: refetchCreditTransactions } = useInfiniteFetch(page => getCreditTransactions({ ...params, page }));
+
+   const refetchRef = useRef(refetchCreditTransactions);
+
+   useEffect(() => {
+      refetchRef.current = refetchCreditTransactions;
+   });
+
+   useEffect(() => {
+      setRefetchFn(prev => ({ ...prev, refetchTransaction: () => refetchRef.current() }));
+   }, [setRefetchFn]);
 
    const getTransactionLabel = (type: CreditTransactionRecord["type"]) => {
       switch (type) {

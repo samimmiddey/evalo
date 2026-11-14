@@ -10,14 +10,30 @@ import SecondaryTitle from "@/components/common/secondary-title";
 import { IndianRupee } from "lucide-react";
 import getStatusBadge from "@/components/common/get-status-badge";
 import { formatDate } from "@/utils/format-date";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { RefetchFunctions } from "../payouts";
 
-export const PayoutHistoryList = () => {
+interface PayoutHistoryListProps {
+   setRefetchFn: Dispatch<SetStateAction<RefetchFunctions>>;
+}
+
+export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
    const params = {
       page: 1,
       pageSize: 10
    };
 
-   const { isLoading, data, error, hasNextPage, isFetchingNextPage, fetchNextPage } = useInfiniteFetch(page => getPayoutRecords({ ...params, page }));
+   const { isLoading, data, error, hasNextPage, isFetchingNextPage, fetchNextPage, refetch: refetchPayoutRecords } = useInfiniteFetch(page => getPayoutRecords({ ...params, page }));
+
+   const refetchRef = useRef(refetchPayoutRecords);
+
+   useEffect(() => {
+      refetchRef.current = refetchPayoutRecords;
+   });
+
+   useEffect(() => {
+      setRefetchFn(prev => ({ ...prev, refetchPayout: () => refetchRef.current() }));
+   }, [setRefetchFn]);
 
    // Columns
    const columns: ColumnDef<typeof features, PayoutRecord>[] = [
