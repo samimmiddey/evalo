@@ -7,8 +7,16 @@ import PrimaryBody from "@/components/common/primary-body";
 import { payoutsData } from "@/data/payouts/payouts.data";
 import PayoutsView from "./components/payouts-view";
 import PayoutTabs from "./components/payout-tabs";
+import { useState } from "react";
+
+export interface RefetchFunctions {
+   refetchPayout?: () => void;
+   refetchTransaction?: () => void;
+}
 
 const Payouts = () => {
+   const [refetchFn, setRefetchFn] = useState<RefetchFunctions>({});
+
    return (
       <div className="container s-margin">
          <PageHeaderLayout>
@@ -21,8 +29,13 @@ const Payouts = () => {
             </HeaderLayout>
          </PageHeaderLayout>
 
-         <PayoutsView />
-         <PayoutTabs />
+         <PayoutsView
+            onRefreshStats={() => {
+               refetchFn.refetchPayout?.();
+               refetchFn.refetchTransaction?.();
+            }}
+         />
+         <PayoutTabs setRefetchFn={setRefetchFn} />
       </div>
    );
 };

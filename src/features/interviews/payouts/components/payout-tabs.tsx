@@ -4,10 +4,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { History, Layers } from 'lucide-react';
 import PayoutHistoryList from './payout-history-list';
 import TransactionsHistory from './transactions-history';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { payoutsData } from '@/data/payouts/payouts.data';
+import { RefetchFunctions } from '../payouts';
 
-const PayoutTabs = () => {
+interface PayoutTabsProps {
+   setRefetchFn: Dispatch<SetStateAction<RefetchFunctions>>;
+}
+
+const PayoutTabs = ({ setRefetchFn }: PayoutTabsProps) => {
    const [activeSubTab, setActiveSubTab] = useState<"payouts" | "transactions">("payouts");
    const { payoutsTab, transactionsTab } = payoutsData;
 
@@ -36,11 +41,11 @@ const PayoutTabs = () => {
          </TabsList>
 
          <TabsContent value="payouts">
-            <PayoutHistoryList />
+            <PayoutHistoryList setRefetchFn={setRefetchFn} />
          </TabsContent>
 
          <TabsContent value="transactions">
-            <TransactionsHistory />
+            <TransactionsHistory setRefetchFn={setRefetchFn} />
          </TabsContent>
       </Tabs>
    );
