@@ -13,13 +13,15 @@ import { formatDate } from "@/utils/format-date";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { RefetchFunctions } from "../payouts";
 import { copyText } from "@/utils/copy-text";
+import { toast } from "sonner";
 
 interface PayoutHistoryListProps {
    setRefetchFn: Dispatch<SetStateAction<RefetchFunctions>>;
 }
 
 export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
-   const [copied, setCopied] = useState<boolean>(false);
+   const [copiedId, setCopiedId] = useState<string | null>(null);
+   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
    const params = {
       page: 1,
@@ -39,13 +41,29 @@ export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
    }, [setRefetchFn]);
 
    // Handle copy cashgram Url
-   const handleCopyText = async (value: string) => {
+   const handleCopyText = async (value: string, id: string) => {
       const ok = await copyText(value);
-      if (ok) {
-         setCopied(true);
-         setTimeout(() => setCopied(false), 1500);
+      if (!ok) {
+         toast.error('Failed to copy to clipboard');
+         return;
       }
+
+      if (copyTimeoutRef.current) {
+         clearTimeout(copyTimeoutRef.current);
+      }
+
+      setCopiedId(id);
+      copyTimeoutRef.current = setTimeout(() => setCopiedId(null), 1500);
    };
+
+   // Clear copy timeout on unmount
+   useEffect(() => {
+      return () => {
+         if (copyTimeoutRef.current) {
+            clearTimeout(copyTimeoutRef.current);
+         }
+      };
+   }, []);
 
    // Columns
    const columns: ColumnDef<typeof features, PayoutRecord>[] = [
@@ -113,7 +131,7 @@ export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
          header: 'UTR',
          size: 175,
          cell: ({ row }) => {
-            const { utr } = row.original;
+            const { utr, id } = row.original;
 
             return (
                <div className="flex items-center gap-2">
@@ -124,11 +142,11 @@ export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
                   {
                      utr &&
                      (
-                        copied ?
-                           <CircleCheckBig className='h-3.5 w-3.5 text-emerald-400' /> :
+                        copiedId === id ?
+                           <CircleCheckBig className='h-3.5 w-3.5 text-emerald-400 shrink-0' /> :
                            <Copy
-                              className='h-3.5 w-3.5 text-zinc-400 cursor-pointer'
-                              onClick={() => void handleCopyText(utr)}
+                              className='h-3.5 w-3.5 text-zinc-400 cursor-pointer shrink-0'
+                              onClick={() => void handleCopyText(utr, id)}
                            />
                      )
                   }

@@ -17,6 +17,8 @@ import { Spinner } from "@/components/ui/spinner";
 import { Wallet } from "lucide-react";
 import { useAppUser } from "@/hooks/use-app-user";
 import { payoutsData } from "@/data/payouts/payouts.data";
+import { MIN_PAYOUT_CREDITS } from "@/constants/interviews";
+import { useEffect, useMemo } from "react";
 
 interface RequestPayoutModalProps {
    open: boolean;
@@ -38,15 +40,23 @@ export const RequestPayoutModal = ({
    const { refetch: refetchUser } = useAppUser();
    const { requestModal } = payoutsData;
 
+   const formSchema = useMemo(
+      () =>
+         requestPayoutSchema.refine((data) => data.credits <= maxCredits, {
+            message: `You can only withdraw up to ${maxCredits} credits.`,
+            path: ["credits"]
+         }),
+      [maxCredits]
+   );
+
    const {
       register,
       handleSubmit,
-      setValue,
       watch,
       reset,
       formState: { errors }
    } = useForm<RequestPayoutSchemaTypes>({
-      resolver: zodResolver(requestPayoutSchema),
+      resolver: zodResolver(formSchema),
       defaultValues: {
          credits: maxCredits
       }
@@ -61,11 +71,6 @@ export const RequestPayoutModal = ({
    const { isPending, mutate } = useMutation(requestPayout);
 
    const onSubmit = async (data: RequestPayoutSchemaTypes) => {
-      if (data.credits > maxCredits) {
-         toast.error(`You can only withdraw up to ${maxCredits} credits.`);
-         return;
-      }
-
       const res = await mutate(data);
 
       if (res?.success) {
@@ -76,6 +81,12 @@ export const RequestPayoutModal = ({
          await refetchUser();
       }
    };
+
+   useEffect(() => {
+      if (open) {
+         reset({ credits: maxCredits });
+      }
+   }, [open, maxCredits, reset]);
 
    return (
       <ModalWrapper
@@ -121,19 +132,14 @@ export const RequestPayoutModal = ({
                      <Label htmlFor="credits" className="text-xs 2xl:text-[13px] font-medium text-zinc-300">
                         {requestModal.labels.creditsToWithdraw}
                      </Label>
-                     <button
-                        type="button"
-                        onClick={() => setValue("credits", maxCredits, { shouldValidate: true })}
-                        className="text-[11px] text-violet-400 hover:text-violet-300 transition-colors cursor-pointer"
-                     >
+                     <Label htmlFor="credits" className="text-[11px] font-medium text-violet-400">
                         {requestModal.labels.maxButton} ({maxCredits})
-                     </button>
+                     </Label>
                   </div>
                   <Input
                      id="credits"
-                     type="number"
-                     min={1}
-                     max={maxCredits}
+                     type="text"
+                     inputMode="numeric"
                      {...register("credits", { valueAsNumber: true })}
                      className="bg-zinc-900 border-white/10 text-zinc-100"
                   />
@@ -156,7 +162,7 @@ export const RequestPayoutModal = ({
                </Button>
                <Button
                   type="submit"
-                  disabled={isPending || maxCredits < 1}
+                  disabled={isPending || maxCredits < MIN_PAYOUT_CREDITS}
                   className="bg-violet-600 hover:bg-violet-500 text-white gap-2 text-xs rounded-lg h-9 px-4.5"
                >
                   {isPending ? <Spinner className="size-4" /> : <Wallet className="w-4 h-4" />}
