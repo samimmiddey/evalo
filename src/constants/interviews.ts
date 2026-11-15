@@ -6,3 +6,6 @@ export const HOST_WAIT_RATIO = 0.85;
 
 // Maximum presence ratio allowed for a candidate to still be categorized as a no-show (5%)
 export const CANDIDATE_NO_SHOW_MAX_RATIO = 0.005;
+
+// Minimum withdrawable credit
+export const MIN_PAYOUT_CREDITS = 5;

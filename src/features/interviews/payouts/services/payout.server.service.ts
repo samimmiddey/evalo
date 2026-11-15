@@ -14,6 +14,7 @@ import {
    requestPayoutSchema
 } from "../schemas/payout.schemas";
 import { getAuthenticatedInterviewer } from "@/features/interviews/shared/services/shared.server.service";
+import { MIN_PAYOUT_CREDITS } from "@/constants/interviews";
 
 // Get Payouts Overview (Credit Balance)
 export const getPayoutsAndTransactions = async (): Promise<PayoutsData> => {
@@ -138,9 +139,17 @@ export const requestPayout = async (
       const interviewer = await getAuthenticatedInterviewer();
       const { credits } = requestPayoutSchema.parse(data);
 
-      if (interviewer.creditBalance < credits) {
+      if (interviewer.creditBalance < MIN_PAYOUT_CREDITS) {
          throw new ValidationError(
-            `Insufficient credit balance. You have ${interviewer.creditBalance} credits available.`
+            `Insufficient withdrawable balance. You must have at least ${MIN_PAYOUT_CREDITS} credits to request a payout (Available: ${interviewer.creditBalance}).`
+         );
+      }
+      if (credits < MIN_PAYOUT_CREDITS) {
+         throw new ValidationError(`Minimum withdrawal amount is ${MIN_PAYOUT_CREDITS} credits.`);
+      }
+      if (credits > interviewer.creditBalance) {
+         throw new ValidationError(
+            `Withdrawal amount cannot exceed your available balance of ${interviewer.creditBalance} credits.`
          );
       }
 

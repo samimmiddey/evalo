@@ -15,6 +15,7 @@ import { usePlatformConfig } from "@/hooks/use-config";
 import ErrorCard from "@/components/common/error-card";
 import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 import { payoutsData } from "@/data/payouts/payouts.data";
+import { MIN_PAYOUT_CREDITS } from "@/constants/interviews";
 
 export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }) => {
    const [openRequestModal, setOpenRequestModal] = useState(false);
@@ -91,7 +92,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
 
                <Button
                   size='lg'
-                  disabled={creditBalance < 1}
+                  disabled={creditBalance < MIN_PAYOUT_CREDITS}
                   onClick={() => setOpenRequestModal(true)}
                   className="bg-violet-600 hover:bg-violet-700 text-white gap-2 cursor-pointer disabled:opacity-50 max-sm:w-full"
                >
