@@ -8,8 +8,10 @@ export interface PayoutRecord {
    netAmount: number;
    status: PayoutStatus;
    adminNote: string | null;
+   utr: string | null;
    createdAt: string;
    processedAt: string | null;
+   updatedAt: string | null;
 }
 
 export interface CreditTransactionRecord {

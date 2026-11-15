@@ -7,17 +7,20 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTable, features } from "@/components/common/data-table/data-table";
 import { PayoutRecord } from "../types/payout.types";
 import SecondaryTitle from "@/components/common/secondary-title";
-import { IndianRupee } from "lucide-react";
+import { CircleCheckBig, Copy, IndianRupee } from "lucide-react";
 import getStatusBadge from "@/components/common/get-status-badge";
 import { formatDate } from "@/utils/format-date";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { RefetchFunctions } from "../payouts";
+import { copyText } from "@/utils/copy-text";
 
 interface PayoutHistoryListProps {
    setRefetchFn: Dispatch<SetStateAction<RefetchFunctions>>;
 }
 
 export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
+   const [copied, setCopied] = useState<boolean>(false);
+
    const params = {
       page: 1,
       pageSize: 10
@@ -35,12 +38,21 @@ export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
       setRefetchFn(prev => ({ ...prev, refetchPayout: () => refetchRef.current() }));
    }, [setRefetchFn]);
 
+   // Handle copy cashgram Url
+   const handleCopyText = async (value: string) => {
+      const ok = await copyText(value);
+      if (ok) {
+         setCopied(true);
+         setTimeout(() => setCopied(false), 1500);
+      }
+   };
+
    // Columns
    const columns: ColumnDef<typeof features, PayoutRecord>[] = [
       {
          accessorKey: 'credits',
          header: 'Credits',
-         size: 150,
+         size: 110,
          cell: ({ row }) => {
             const { credits } = row.original;
 
@@ -55,7 +67,7 @@ export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
       {
          accessorKey: 'netAmount',
          header: 'Amount',
-         size: 150,
+         size: 140,
          cell: ({ row }) => {
             const { netAmount } = row.original;
 
@@ -73,7 +85,7 @@ export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
       {
          accessorKey: 'platformFee',
          header: 'Platform Fee',
-         size: 150,
+         size: 140,
          cell: ({ row }) => {
             const { platformFee } = row.original;
 
@@ -91,29 +103,59 @@ export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
       {
          accessorKey: 'status',
          header: 'Request Status',
-         size: 175,
+         size: 160,
          cell: (info) => (
             getStatusBadge(info.getValue<string>())
          ),
       },
       {
+         accessorKey: 'utr',
+         header: 'UTR',
+         size: 175,
+         cell: ({ row }) => {
+            const { utr } = row.original;
+
+            return (
+               <div className="flex items-center gap-2">
+                  <PrimaryBody
+                     text={utr ?? '-'}
+                     className="text-xs! truncate"
+                  />
+                  {
+                     utr &&
+                     (
+                        copied ?
+                           <CircleCheckBig className='h-3.5 w-3.5 text-emerald-400' /> :
+                           <Copy
+                              className='h-3.5 w-3.5 text-zinc-400 cursor-pointer'
+                              onClick={() => void handleCopyText(utr)}
+                           />
+                     )
+                  }
+               </div>
+            );
+         },
+      },
+      {
          accessorKey: 'adminNote',
          header: 'Note',
-         size: 200,
+         size: 175,
          cell: ({ row }) => {
             const { adminNote } = row.original;
 
             return (
-               <PrimaryBody
-                  text={adminNote ?? '-'}
-                  className="text-xs!"
-               />
+               <div className="max-w-43.75 wrap-break-word whitespace-normal">
+                  <PrimaryBody
+                     text={adminNote ?? '-'}
+                     className="text-xs!"
+                  />
+               </div>
             );
          },
       },
       {
          accessorKey: 'createdAt',
-         header: 'Date',
+         header: 'Requested Date',
          size: 175,
          cell: ({ row }) => {
             const { createdAt } = row.original;
@@ -121,6 +163,21 @@ export const PayoutHistoryList = ({ setRefetchFn }: PayoutHistoryListProps) => {
             return (
                <PrimaryBody
                   text={formatDate(createdAt)}
+                  className="text-xs!"
+               />
+            );
+         },
+      },
+      {
+         accessorKey: 'updatedAt',
+         header: 'Last Updated',
+         size: 175,
+         cell: ({ row }) => {
+            const { updatedAt } = row.original;
+
+            return (
+               <PrimaryBody
+                  text={formatDate(updatedAt)}
                   className="text-xs!"
                />
             );
