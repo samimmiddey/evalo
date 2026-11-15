@@ -60,8 +60,10 @@ export const getPayoutRecords = async (
          netAmount: p.netAmount,
          status: p.status,
          adminNote: p.adminNote,
+         utr: p.utr,
          createdAt: p.createdAt.toISOString(),
-         processedAt: p.processedAt ? p.processedAt.toISOString() : null
+         processedAt: p.processedAt ? p.processedAt.toISOString() : null,
+         updatedAt: p.updatedAt ? p.updatedAt.toISOString() : null
       }));
 
       return {
