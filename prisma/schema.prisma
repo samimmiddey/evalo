@@ -255,6 +255,7 @@ model Payout {
   status        PayoutStatus @default(PROCESSING)
   cashgramId    String?
   cashgramUrl   String?
+  utr           String?
   adminNote     String?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt

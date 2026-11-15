@@ -134,16 +134,15 @@ export const handleCashgramWebhook = async (
                };
             }
 
-            const utr = payload.utr || payload.data?.transfer_utr;
-            const noteSuffix = utr ? `Redeemed (UTR: ${utr})` : "Redeemed successfully";
-            const updatedNote = payout.adminNote ? `${payout.adminNote} | ${noteSuffix}` : noteSuffix;
+            const rawUtr = payload.utr || payload.data?.transfer_utr;
+            const utr = rawUtr ? String(rawUtr).trim() : null;
 
             await db.payout.update({
                where: { id: payout.id },
                data: {
                   status: PayoutStatus.PROCESSED,
                   processedAt: new Date(),
-                  adminNote: updatedNote,
+                  ...(utr ? { utr } : {}),
                },
             });
 
@@ -163,15 +162,12 @@ export const handleCashgramWebhook = async (
                };
             }
 
-            const updatedNote = payout.adminNote ? `${payout.adminNote} | Link expired` : "Cashgram link expired";
-
             await db.$transaction([
                db.payout.update({
                   where: { id: payout.id },
                   data: {
                      status: PayoutStatus.EXPIRED,
                      processedAt: new Date(),
-                     adminNote: updatedNote,
                   },
                }),
                db.user.update({
@@ -209,16 +205,12 @@ export const handleCashgramWebhook = async (
                };
             }
 
-            const reason = payload.reason || payload.data?.reason || "Transfer reversed";
-            const updatedNote = payout.adminNote ? `${payout.adminNote} | Reversal: ${reason}` : `Reversal: ${reason}`;
-
             await db.$transaction([
                db.payout.update({
                   where: { id: payout.id },
                   data: {
                      status: PayoutStatus.REJECTED,
                      processedAt: new Date(),
-                     adminNote: updatedNote,
                   },
                }),
                db.user.update({
