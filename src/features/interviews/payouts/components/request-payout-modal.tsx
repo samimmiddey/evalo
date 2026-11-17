@@ -17,7 +17,6 @@ import { Spinner } from "@/components/ui/spinner";
 import { Wallet } from "lucide-react";
 import { useAppUser } from "@/hooks/use-app-user";
 import { payoutsData } from "@/data/payouts/payouts.data";
-import { MIN_PAYOUT_CREDITS } from "@/constants/interviews";
 import { useEffect, useMemo } from "react";
 
 interface RequestPayoutModalProps {
@@ -26,6 +25,7 @@ interface RequestPayoutModalProps {
    maxCredits: number;
    ratePerCredit: number;
    platformFeePercent: number;
+   minPayoutCredits: number;
    onSuccess: () => void;
 }
 
@@ -35,6 +35,7 @@ export const RequestPayoutModal = ({
    maxCredits,
    ratePerCredit,
    platformFeePercent,
+   minPayoutCredits,
    onSuccess
 }: RequestPayoutModalProps) => {
    const { refetch: refetchUser } = useAppUser();
@@ -42,11 +43,16 @@ export const RequestPayoutModal = ({
 
    const formSchema = useMemo(
       () =>
-         requestPayoutSchema.refine((data) => data.credits <= maxCredits, {
-            message: `You can only withdraw up to ${maxCredits} credits.`,
-            path: ["credits"]
-         }),
-      [maxCredits]
+         requestPayoutSchema
+            .refine((data) => data.credits >= minPayoutCredits, {
+               message: `Must withdraw at least ${minPayoutCredits} credits.`,
+               path: ["credits"]
+            })
+            .refine((data) => data.credits <= maxCredits, {
+               message: `You can only withdraw up to ${maxCredits} credits.`,
+               path: ["credits"]
+            }),
+      [maxCredits, minPayoutCredits]
    );
 
    const {
@@ -162,7 +168,7 @@ export const RequestPayoutModal = ({
                </Button>
                <Button
                   type="submit"
-                  disabled={isPending || maxCredits < MIN_PAYOUT_CREDITS}
+                  disabled={isPending || maxCredits < minPayoutCredits}
                   className="bg-violet-600 hover:bg-violet-500 text-white gap-2 text-xs rounded-lg h-9 px-4.5"
                >
                   {isPending ? <Spinner className="size-4" /> : <Wallet className="w-4 h-4" />}
