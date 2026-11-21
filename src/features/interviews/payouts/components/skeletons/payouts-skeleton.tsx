@@ -17,8 +17,8 @@ export const PayoutsSkeleton = () => {
             </div>
 
             {/* Quick Math Grid Bone */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/5">
-               {Array.from({ length: 3 }).map((_, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pt-4 border-t border-white/5">
+               {Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="p-3 rounded-xl bg-zinc-900/40 border border-white/5 space-y-1.5">
                      <div className="h-3 w-20 bg-zinc-800/60 rounded animate-pulse" />
                      <div className="h-4 w-28 bg-zinc-800/60 rounded animate-pulse" />

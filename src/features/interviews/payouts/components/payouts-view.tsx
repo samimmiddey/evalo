@@ -15,7 +15,6 @@ import { usePlatformConfig } from "@/hooks/use-config";
 import ErrorCard from "@/components/common/error-card";
 import EnhancedNoDataCard from "@/components/common/enhanced-no-data-card";
 import { payoutsData } from "@/data/payouts/payouts.data";
-import { MIN_PAYOUT_CREDITS } from "@/constants/interviews";
 
 export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }) => {
    const [openRequestModal, setOpenRequestModal] = useState(false);
@@ -55,6 +54,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
    const creditBalance = data.creditBalance;
    const ratePerCredit = config.creditPayoutRate;
    const platformFeePercent = config.platformFeePercent;
+   const minPayoutCredits = config.minPayoutCredits;
 
    const grossEstimated = creditBalance * ratePerCredit;
    const netEstimated = grossEstimated * (1 - platformFeePercent / 100);
@@ -92,7 +92,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
 
                <Button
                   size='lg'
-                  disabled={creditBalance < MIN_PAYOUT_CREDITS}
+                  disabled={creditBalance < minPayoutCredits}
                   onClick={() => setOpenRequestModal(true)}
                   className="bg-violet-600 hover:bg-violet-700 text-white gap-2 cursor-pointer disabled:opacity-50 max-sm:w-full"
                >
@@ -102,7 +102,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
             </div>
 
             {/* Quick Math Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/5 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pt-4 border-t border-white/5 text-xs">
                <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
                   <PrimaryBody text={walletCard.quickStats.rateConversionLabel} className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500 mb-0.5" />
                   <PrimaryBody text={`₹${ratePerCredit}.00 ${walletCard.quickStats.rateConversionUnit}`} className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold text-zinc-100" />
@@ -110,6 +110,10 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
                <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
                   <PrimaryBody text={walletCard.quickStats.platformFeeLabel} className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500 mb-0.5" />
                   <PrimaryBody text={`${platformFeePercent}% ${walletCard.quickStats.platformFeeSubtext}`} className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold text-zinc-100" />
+               </div>
+               <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
+                  <PrimaryBody text={walletCard.quickStats.minPayoutLabel} className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500 mb-0.5" />
+                  <PrimaryBody text={`${minPayoutCredits} ${minPayoutCredits > 1 ? "credits" : "credit"} ${walletCard.quickStats.minPayoutSubtext}`} className="text-xs! lg:text-xs! 2xl:text-sm! font-semibold text-zinc-100" />
                </div>
                <div className="p-3 rounded-xl bg-zinc-900/40 border border-white/5">
                   <PrimaryBody text={walletCard.quickStats.netCashValueLabel} className="text-xs! lg:text-xs! 2xl:text-[13px]! text-zinc-500 mb-0.5" />
@@ -125,6 +129,7 @@ export const PayoutsView = ({ onRefreshStats }: { onRefreshStats?: () => void; }
             maxCredits={creditBalance}
             ratePerCredit={ratePerCredit}
             platformFeePercent={platformFeePercent}
+            minPayoutCredits={minPayoutCredits}
             onSuccess={handleSuccess}
          />
       </div>

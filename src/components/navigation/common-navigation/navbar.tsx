@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import useMediaQuery from '@/hooks/use-media-query';
 import { authData } from '@/data/auth/auth.data';
-import { useAppUser } from '@/hooks/use-app-user';
 import Logo from '../../common/logo';
 import { userButtonAppearance, userProfileAppearance } from '@/constants/clerk-appearance';
 
@@ -18,7 +17,6 @@ interface NavbarProps {
 
 const Navbar = ({ onMenuClick }: NavbarProps) => {
    const { isLoaded } = useUser();
-   const { user } = useAppUser();
 
    const pathname = usePathname();
    const mdWidth = useMediaQuery(768);
@@ -61,14 +59,11 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                      </Show>
                   </div>
                   <div className="flex items-center lg:mr-1">
-                     {
-                        user &&
-                        <Show when='signed-in'>
-                           <Link href='/dashboard'>
-                              <Button variant="ghost" size="lg">Dashboard</Button>
-                           </Link>
-                        </Show>
-                     }
+                     <Show when='signed-in'>
+                        <Link href='/dashboard'>
+                           <Button variant="ghost" size="lg">Dashboard</Button>
+                        </Link>
+                     </Show>
                   </div>
                   {!isLoaded ? (
                      <div className="h-8 w-8 rounded-full bg-zinc-800 animate-pulse" />

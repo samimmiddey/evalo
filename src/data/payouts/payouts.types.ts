@@ -14,6 +14,8 @@ export interface PayoutWalletCardData {
       platformFeeLabel: string;
       platformFeeSubtext: string;
       netCashValueLabel: string;
+      minPayoutLabel: string;
+      minPayoutSubtext: string;
    };
 }
 
