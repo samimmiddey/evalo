@@ -15,7 +15,9 @@ export const payoutsData: PayoutsDataStatic = {
          rateConversionUnit: "/ Credit",
          platformFeeLabel: "Platform Service Fee",
          platformFeeSubtext: "on withdrawal",
-         netCashValueLabel: "Est. Net Cash Value"
+         netCashValueLabel: "Est. Net Cash Value",
+         minPayoutLabel: "Payout Threshold",
+         minPayoutSubtext: "per request"
       }
    },
    payoutsTab: {
