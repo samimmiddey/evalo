@@ -27,19 +27,20 @@ Preparing for technical interviews often lacks realistic simulation, structured 
 | **Language** | TypeScript, JavaScript |
 | **Framework** | Next.js 16 (App Router, Standalone build) |
 | **Frontend & UI** | React 19, Tailwind CSS v4, Radix UI primitives, Lucide React, Zustand, Sonner |
-| **Database & ORM** | PostgreSQL (hosted on Supabase), Prisma ORM 7 with `@prisma/adapter-pg` |
-| **Authentication** | Clerk (`@clerk/nextjs`) |
-| **Video & Chat** | Stream Video & Chat SDKs (`@stream-io/video-react-sdk`, `stream-chat`) |
-| **AI / Evaluation** | Google Gemini API (`@google/generative-ai`) |
+| **Database & ORM** | PostgreSQL (hosted on Supabase), Prisma ORM |
+| **Authentication** | Clerk (Role-Based Access Control) |
+| **Video & Chat** | Stream Video & Chat SDKs |
+| **AI / Evaluation** | Google Gemini API |
 | **Payments** | Cashfree (Payment Gateway & Cashgram Payouts) |
-| **Security & Rate Limiting** | Arcjet (`@arcjet/next`), Svix (webhook signature verification) |
+| **Security & Rate Limiting** | Arcjet, Svix (webhook signature verification) |
 | **HTTP Client** | Ky |
 
 ## Deployment
 
-- **Docker**: Multi-stage build with Next.js standalone output, running as a non-root user.
-- **CI**: Pull requests to `staging` and `main` run lint, type checks, and a production build.
-- **CD**: Pushes to `staging` run database migrations, publish the image to GitHub Container Registry, and redeploy on Render.
+- Multi-stage Docker container utilizing Next.js standalone output for minimal image footprint.
+- GitHub Actions CI workflow running lint checks, Prisma client generation, static type verification, and build validation on pull requests targeting main, staging, and production branches.
+- Staging deployment building and publishing Docker container images to GitHub Packages (GHCR) and triggering updates via Render deploy hooks on pushes to staging branch.
+- Production deployment hosted on Vercel with automated deployments triggered on pushes to production branch.
 
 ## License
 
