@@ -1,4 +1,3 @@
-// import arcjet, { detectBot, shield } from '@arcjet/next';
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
@@ -28,32 +27,7 @@ const roleRouteMap = [
 
 const isOnboardingRoute = createRouteMatcher(['/onboarding(.*)']);
 
-// const aj = arcjet({
-//    key: process.env.ARCJET_KEY!,
-//    rules: [
-//       shield({ mode: "LIVE" }),
-//       detectBot({
-//          mode: "LIVE",
-//          allow: [
-//             "CATEGORY:SEARCH_ENGINE",
-//             "CATEGORY:PREVIEW",
-//             "CATEGORY:OPTIMIZER",
-//             "CATEGORY:GOOGLE"
-//          ]
-//       })
-//    ]
-// });
-
 export default clerkMiddleware(async (auth, req) => {
-   // Apply Arcjet protection
-   // if (!req.nextUrl.pathname.startsWith('/api/webhooks')) {
-   //    const decision = await aj.protect(req);
-
-   //    if (decision.isDenied()) {
-   //       return NextResponse.json({ error: "Request blocked" }, { status: 403 });
-   //    }
-   // }
-
    const { isAuthenticated, sessionClaims } = await auth();
 
    // Redirect to home page if user is already authenticated and is on auth page

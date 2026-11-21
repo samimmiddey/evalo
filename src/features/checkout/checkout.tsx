@@ -12,6 +12,7 @@ import useSubscription from "@/hooks/use-subscription";
 import CheckoutSkeleton from "./components/skeletons/checkout-skeleton";
 import { useAppUser } from "@/hooks/use-app-user";
 import { checkoutData } from "@/data/checkout/checkout.data";
+import { SubscriptionStatus } from "@/generated/prisma/enums";
 
 const Checkout = ({ id }: { id: string; }) => {
    const { allPlans, isLoading, error } = useSubscription();
@@ -59,8 +60,11 @@ const Checkout = ({ id }: { id: string; }) => {
       );
    }
 
-   // Check if it is the same plan as the user is subscribed to
-   if (user?.currentPlan?.toLowerCase() === selectedPlan.name.toLowerCase()) {
+   // Check if it is the same plan as the user is subscribed to (allow re-subscribing if on hold)
+   if (
+      user?.currentPlan?.toLowerCase() === selectedPlan.name.toLowerCase() &&
+      user?.subscriptionStatus !== SubscriptionStatus.ON_HOLD
+   ) {
       return (
          <CheckoutContainer>
             <EnhancedNoDataCard
