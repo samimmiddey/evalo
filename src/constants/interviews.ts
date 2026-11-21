@@ -6,3 +6,6 @@ export const HOST_WAIT_RATIO = 0.85;
 
 // Maximum presence ratio allowed for a candidate to still be categorized as a no-show (5%)
 export const CANDIDATE_NO_SHOW_MAX_RATIO = 0.005;
+
+// 30 days in milliseconds for monthly billing cycle and credit renewal checks
+export const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
