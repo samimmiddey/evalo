@@ -17,6 +17,8 @@ Preparing for technical interviews often lacks realistic simulation, structured 
 - **AI Question Generation**: Context-aware technical interview questions generated in real time during live calls via Google Gemini.
 - **Algorithmic Co-Presence Settlement**: Automated webhook processing of Stream business events to compute simultaneous participant presence, classify completion outcomes, and resolve escrow without human mediation.
 - **Automated AI Candidate Feedback**: Post-session transcription processing with Google Gemini delivering structured rubrics across technical accuracy, communication, and problem-solving.
+- **Interviewer Ratings & Reviews**: Post-interview candidate evaluation loop featuring ratings, written reviews, and aggregate scoring metrics.
+- **Cancellation & Automated Refunds**: Policy-based session cancellation with transactional credit restitution and self-service refund claims for unfulfilled sessions.
 - **Payments & Payouts**: Cashfree integration supporting subscription plan mandates for candidate credits and payout processing for interviewer earnings.
 - **Abuse Prevention**: Arcjet rate limiting on booking endpoints to mitigate automated slot exhaustion.
 
